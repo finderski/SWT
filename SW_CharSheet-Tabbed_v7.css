@@ -501,6 +501,35 @@ font-family: 'Days One', sans-serif;*/
 
 /*----------- End Background Info -----------*/
 
+/*----------- Character Type Header -----------*/
+.charsheet h2.sheet-charTypeWC,
+.charsheet h2.sheet-charTypeMook {
+    width: 100%;
+    text-align: center;
+    display: none;
+    /*font-family: 'Cinzel', serif;*/
+    font-family: "cinzelregular";
+}
+
+.sheet-is-npc:checked ~ h2.sheet-charTypeMook {
+    color: black; 
+    background-color: #c7c3b0;
+    display: inline-block;
+}
+
+.sheet-is-npc:not(:checked) ~ h2.sheet-charTypeWC {
+    background-color: #dbc792; 
+    color: #755b27;
+    display: inline-block;
+}
+
+input.sheet-Shaken:checked ~ h2.sheet-charTypeWC::after,
+input.sheet-Shaken:checked ~ h2.sheet-charTypeMook::after {
+    content: ' **Shaken**';
+}
+
+/*----------- End Character Header -----------*/
+
 /*----------- Logo Configuration Info -----------*/
 
 .sheet-SWD,
@@ -1052,6 +1081,11 @@ div.sheet-core-content { display: none; width:840px;}
 .charsheet span.sheet-10pxshim {
 	display: block;
 	margin-left: 10px;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 22px;
 }
 
 h1.sheet-sheetHeaderWC {
@@ -1834,6 +1868,7 @@ select.sheet-dtype {
 .sheet-Homeworld,
 .sheet-Major,
 .sheet-archetype,
+.sheet-Shaken,
 .sheet-IF,
 .sheet-FencingStyle,
 .sheet-Languages,
@@ -1963,7 +1998,8 @@ select.sheet-dtype {
 /*Showing*/
 
 .sheet-useBurn:checked ~ .sheet-Burn,
-.sheet-useIRSC:checked + .sheet-IRSC {
+.sheet-useIRSC:checked + .sheet-IRSC,
+.sheet-showShaken:checked + .sheet-Shaken {
 	display: inline-block;
 }
 
@@ -2777,6 +2813,14 @@ select.sheet-dtype {
 	color: white;
 }
 
+.charsheet .sheet-showWildDie {
+    display: inline-block;
+}
+
+.charsheet .sheet-is-npc:checked + div.sheet-showWildDie {
+    display: none;
+}
+
 /*----------- End Hiding/Unhiding Things -----------*/
 
 /*----------- Experimental New Hiding/Unhiding Things ---------*/
@@ -2878,7 +2922,8 @@ select.sheet-dtype {
 
 /* New Roll Template */
 
-.sheet-rolltemplate-spadestrait2 h2.sheet-caption {
+.sheet-rolltemplate-spadestrait2 h2.sheet-caption,
+.sheet-rolltemplate-statblock h2.sheet-caption {
 	width: 90%;
 	max-width: 200px;
 	text-align: center; 
@@ -2891,6 +2936,14 @@ select.sheet-dtype {
 	font-size: 1.125em;
 	font-weight: bold;
 	margin: 5px;
+}
+
+.sheet-rolltemplate-statblock a[href^='~'] {
+    background-color:transparent;
+    border:0;
+    color:#ce0f69;
+    display:inline;
+    padding:0;
 }
 
 .sheet-rolltemplate-spadestrait2 div.sheet-rtcard,

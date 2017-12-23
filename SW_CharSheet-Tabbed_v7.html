@@ -817,6 +817,7 @@
         	        getAttrs(["magility", "msmarts", "mspirit", "mstrength", "mvigor", "magMod", "msmMod", "mspMod", "mstMod", "mviMod", "magrollMod", "msmrollMod", "msprollMod", "mstrollMod", "mvirollMod"], function(attr) {
         	            console.log("<===== Updating Attributes =====>");
         	            setAttrs({
+        	               wdNum: 0,
         	               agility: attr.magility,
                            smarts: attr.msmarts,
                            spirit: attr.mspirit,
@@ -1134,10 +1135,6 @@
 	            }
 	            else { //character is not a mook and no update is necessary
 	                console.log("**** Character is not a mook...no need to update ****");
-	                console.log("**** Updating Sheet Version ****");
-	                setAttrs({
-                        character_sheet: sheetVersionPrefix + sheetVersion
-                    });
 	            }
 	        });
 	    }
@@ -1155,9 +1152,10 @@
         //if (!version) initializeSheet();
         upgradeSheet(version);
       });
-      /*setAttrs({
-        version: sheetVersion
-      });*/
+      console.log("**** Updating Sheet Version ****");
+      setAttrs({
+        character_sheet: sheetVersionPrefix + sheetVersion
+      });
       console.log("<===== End Sheet Upgrade Conversion Process =====>");
     });
 	
@@ -1657,10 +1655,11 @@
 		//'use strict';
 		getAttrs(["armortotalweightcarried", "meleetotalweightcarried", "rangedtotalweightcarried", "geartotalweightcarried"], function(lvalue) {
 			//@{armortotalweightcarried} + @{meleetotalweightcarried} + @{rangedtotalweightcarried} + @{geartotalweightcarried}
-			var armor = parseInt(lvalue.armortotalweightcarried)||0;
-			var melee = parseInt(lvalue.meleetotalweightcarried)||0;
-            var range = parseInt(lvalue.rangedtotalweightcarried)||0;
-            var gear = parseInt(lvalue.geartotalweightcarried)||0;
+			//These used to be parseInt instead of parseFloat
+			var armor = parseFloat(lvalue.armortotalweightcarried)||0;
+			var melee = parseFloat(lvalue.meleetotalweightcarried)||0;
+            var range = parseFloat(lvalue.rangedtotalweightcarried)||0;
+            var gear = parseFloat(lvalue.geartotalweightcarried)||0;
       		setAttrs({ totalloadcarried: armor + melee + range + gear });
    		});
 	});
@@ -1670,13 +1669,15 @@
 		//'use strict';
 		getAttrs(["loadlimit", "totalloadcarried"], function(lvalue) {
 			//floor(((@{loadlimit}) - (@{totalloadcarried}))/(@{loadlimit}))
-			var load = parseInt(lvalue.totalloadcarried)||0;
+			//These used to be parseInt instead of parseFloat
+			var load = parseFloat(lvalue.totalloadcarried)||0;
 			if (load === 0) {
       			load = 1; //If there is no current load, then need to set it to 1, so the result of the calc = 0
       		}
-			var limit = parseInt(lvalue.loadlimit)||0;
+			var limit = parseFloat(lvalue.loadlimit)||0;
            
       		setAttrs({ encumbrance: Math.floor((limit - load) / limit) });
+      		/*setAttrs({ encumbrance: (limit - load) / limit });*/
    		});
 	});
 	
@@ -1819,12 +1820,47 @@
 		<input type="radio" class="sheet-useBackground" style="display: none;" name="attr_background" value="12" />
 		<!-- Be sure to update the CSS with the file information) -->
 		<div class='sheet-background'>
+		    <!-- Release Notes Info for New Buttons -->
+			<!--<input type='checkbox' class='sheet-Dismiss' style='display: none;' name='attr_dismissRN' value='1' />
+			<div class='sheet-row sheet-CSRelease' style='width: 100%; padding-top: 5px; padding-bottom: 5px;'>
+		        <label style='width: 100%; display: inline-block;'>
+		        <input type='checkbox' class='sheet-releasenotes' style='opacity: 100%;' name='attr_releasenotes' value='1' /><span class='sheet-releasenotes' style='color: red;'><h3 style='display: inline-block; color: red;'>!! Important Notice !!</h3></span></label>
+		        <input type='checkbox' class='sheet-releasenotes' style='display: none;' name='attr_releasenotes' value='1' />
+		        <div class='sheet-row sheet-releasenotes' style='width: 100%; padding: 0px; margin: 0px'>
+		            <input type='checkbox' class='sheet-Dismiss' name='attr_dismissRN' value='1' /><span class='sheet-Dismiss'>&nbsp;&nbsp;Dismiss</span>
+		            
+		            <p>
+		                In the near future a potentially character sheet breaking update will be rolled to production.  This change is necessary to make the maintenance of the sheet less time consuming, less resource intensive, and allow universal macros for Wild Cards and Mooks.  To minimize the potential for catastrophic impacts to games, I'm inviting anyone who is concerned to join my Test/QA game at: <br /><br />
+		                https://tinyurl.com/SWTabbedQA<br /><br />
+		                That game allows characters to be imported from the Character Vault. The characters potentially impacted by the upcoming changes will be Mooks; Wild Cards should be unaffected by these changes.<br /><br />
+		                If you have other questions, feel free to drop by the above linked game and leave a message in the forum, or you can PM me. My profile is:<br /><br />
+		                https://app.roll20.net/users/173448/finderski<br /><br />
+		                To hide this message, simply click on the downward pointing triangle above this message.
+		            </p>
+		        </div>
+			</div>-->
+			<!-- End Release Notes Info for New Buttons -->
+			<!-- Mook or Wild Card Header -->
+			<div class='sheet-row' style='width: 100%;'>
+			    <input type='checkbox' class='sheet-Shaken' name='attr_isShaken' style='display: none;' />
+			    <input class="sheet-is-npc" style='display: none;' type="checkbox" name="attr_is_npc" value="1" />
+			    <h2 class='sheet-charTypeWC'>Wild Card</h2>
+			    <h2 class='sheet-charTypeMook'>Mook</h2>
+			</div>
+			<!-- End Mook or Wild Card Header -->
+			<button type='roll' name='attr_Statblock' style='margin-top: -55px; margin-left: 20px;' value='/w gm &{template:statblock} {{name=@{character_name}}} @{attributesBlock} @{skillsBlock}'>Stat Block</button><br />
 			<div class='sheet-3colrow' style='padding-top: 5px; margin-left: 30px;'>
 				<div class='sheet-col' style='margin-right: 20px;'>
 					<input type="checkbox" class="sheet-useCodeName" name="attr_codename" style="width: 15px; display: none;" />
 					<input class="sheet-basicstandard" type="text" title="@{character_name}" name="attr_character_name" style='text-align: center;' /><label class='sheet-characterName sheet-basiclabel'></label>
 				</div>
 				<div class='sheet-col' style='margin-right: 20px;'>
+				    
+				    <!--Begin Statblock fields-->
+				    <input type='hidden' name='attr_attributesBlock' value='{{Agility=[@{agility_rank}](~tAgilityRoll)}} {{Smarts=[@{smarts_rank}](~tSmartsRoll)}} {{Spirit=[@{spirit_rank}](~tSpiritRoll)}} {{Strength=[@{strength_rank}](~tStrengthRoll)}} {{Vigor=[@{vigor_rank}](~tVigorRoll)}} {{Pace=[&lbrack;&lbrack;@{paceCur}&rbrack;&rbrack;](~Running)}} {{Parry=@{parryCur}}} {{Toughness=[[@{toughnesscur}]](@{toughnessArmor})}}' />
+				    <input type='hidden' name='attr_skillsBlock' value='{{Skills=Fighting&#13;Boating}}' />
+				    <!--End Statblock fields-->
+				    
 					<input type="checkbox" class="sheet-useCodeName" name="attr_codename" style="width: 15px; display: none;" />
 					<div class="sheet-civilian">
 						<input class="sheet-basicstandard" type="text" title="@{character_name}" name="attr_civilian_name" placeholder='Civilian Name' style='text-align: center;'  /><label class='sheet-basiclabel'>Civilian Name</label>
@@ -1849,293 +1885,315 @@
 				<div class="sheet-config" style='border-style: dotted; border-color: #dbc792; padding: 5px; background-color: white; background-image: none;'>
 					sheet version: 2 Apr 2017
 					<div class='sheet-row'><h2 class='sheet-sectionHeader'>CONFIGURATION</h2></div>
-					API: Initiative Edges <span class="sheet-tooltip">i<span><strong style='line-height: 30px; text-align: center;'>DealInit API Script</strong><br><p>Initiative Edges must be stored in a comma separated list in an Attribute named InitEdges. (e.g. Qu,LH)</p><p>The Edge shorthand is as follows:<br /><ul><li><strong>Qui</strong> = Quick</li><li><strong>LH</strong> = Level Headed</li><li><strong>ILH</strong> = Improved Level Headed</li><li><strong>WCE</strong> = Any Joker Activated Wild Card Edge</li></ul></p></span></span>
-					<input class="sheet-standard" type="text" title="@{InitEdges}" name="attr_InitEdges"/><br />
-					<!--Nerves of Steel--><span title="Enable Nerves of Steel and Improved Nerves of Steel Edges"><input type="checkbox" class="sheet-useNoS" name="attr_Nerves" style="width: 15px;" />Nerves of Steel</span><br />
-					<input type="checkbox" class="sheet-HideUITweaks" name="attr_wcUIConfig" checked /><span class="sheet-is-wcUI"></span>
-					<input type="checkbox" class="sheet-HideQuickConfig" name="attr_quickConfig" checked /><span class="sheet-is-quickConfig"></span>
-					<input type="checkbox" class="sheet-HideGameSettings" name="attr_SettingsConfig" checked /><span class="sheet-is-gameSettings"></span>
-					<input type="checkbox" class="sheet-HideReplacements" name="attr_SettingsFieldReplacements" checked /><span class="sheet-is-fieldreplacements"></span>
-					<input type="checkbox" class="sheet-HideNewFields" name="attr_SettingsNewFields" checked /><span class="sheet-is-newfields"></span>
-					<div class='sheet-UITweaks' style="padding: 10px;">
-						<div class="sheet-row">
-							<div class="sheet-2colrow">
-								<div class="sheet-col">
-									<h3>Backgrounds</h3>
-										<span class="sheet-5pxshim">
-											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="1" title="No Background Image" checked /> No Background Image<br />
-											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="7" title="Cyberpunk" /> Cyberpunk<br />
-											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="8" title="Hellfrost" /> Hellfrost<br />
-											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="9" title="Hellfrost: Land of Fire" /> Hellfrost: Land of Fire<br />
-											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="5" title="Last Parsec" /> Last Parsec<br />
-											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="4" title="Noir" /> Noir<br />
-											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="2" title="Old Map (PotSM)" /> Old Map<br />
-											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="10" title="Parchment" /> Parchment<br />
-											<input type='checkbox' class='sheet-useBackground' style='width: 15px;' name='attr_background' value='12' title='Rippers' /> Rippers <br />
-											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="11" title="Rifts" /> Rifts/Sci Fi<br />
-											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="6" title="Supers" /> Superhero<br />
-											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="3" title="Zombiepocalypse" /> Zombie-esque<br />
-										</span>
-								</div>
-								<div class="sheet-col">
-									<h3>Logos</h3>
-										<span class="sheet-5pxshim">
-											<input type="radio" name="attr_logo" value="1" title="Savage Worlds Deluxe" style="width: 15px; display: none;" checked /><input type="checkbox" style="width: 15px;" name="attr_logo" value="1" /> Savage Worlds Deluxe <br />
-											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="4" title="Zombie SWD" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="4" /> Savage Worlds Deluxe (Bloodied) <br />
-											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="13" title="All For One" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="13" /> All For One <br />
-											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="6" title="Deadlands" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="6" /> Deadlands <br />
-											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="7" title="DeadlandsNoir" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="7" /> Deadlands: Noir <br />
-											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="8" title="DeadlandsHoE" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="8" /> Deadlands: Hell on Earth <br />
-											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="14" title="ETU" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="14" /> East Texas University <br />
-											<input type="radio" name="attr_logo" value="10" title="Hellfrost" style="width: 15px; display: none;" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="10" /> Hellfrost <br />
-											<input type="radio" name="attr_logo" value="11" title="Hellfrost: Land of Fire" style="width: 15px; display: none;" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="11" /> Hellfrost: Land of Fire <br />
-											<input type="radio" name="attr_logo" value="9" title="Interface Zero 2.0" style="width: 15px; display: none;" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="9" /> Interface Zero 2.0 <br />
-											<input type="radio" class="sheet-ShowLogo" name="attr_logo" value="12" title="Lankhmar" style="width: 15px; display: none;" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="12" /> Lankhmar <br />
-											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="3" title="The Last Parsec" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="3" /> The Last Parsec <br />
-											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="5" title="Necessary Evil" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="5" /> Necessary Evil <br />
-											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="2" title="Pirates of the Spanish Main" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="2" /> Pirates of the Spanish Main <br />
-											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="15" title="Rifts" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="15" /> Rifts <br />
-											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="16" title="Rippers" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="16" /> Rippers <br />
-											<!-- Need to update the Disclaimer Information section of the CSS File with the appropriate information
-												 Also need to update the bottom of this html page; be sure to use the checkbox input and not the radio input-->
-										</span>
-								</div>
-							</div>
-						</div>
-						<div class="sheet-row">
-							<h4 class="sheet-subsectionHeader">Other Miscellaneous Tweaks</h4>
-							<div class="sheet-col" style="padding-right: 10px; margin-right: 0px; border-right: solid 1px;">
-								<span class="sheet-5pxshim"></span><input type="checkbox" class="sheet-NewDieType" name="attr_DieTypeConfig" style="width: 15px;" /> Use Dice Drop Down Menus (Attributes & Skills)<br />
-								<input type="checkbox" class="sheet-NewDieType" name="attr_WildDieTypeConfig" style="width: 15px;" /> Use Dice Drop Down Menus (Wild Die)<br />
-								<input type="checkbox" class="sheet-hideArcanum" name="attr_ArcanumTab" style="width: 15px;"> Hide the Arcanum Tab<br />
-								<input class="sheet-showAdvancements" type="checkbox" name="attr_showAdvancements" /> Show Advancements (on Journal Tab)
-							</div>
-							<div class="sheet-col" style="margin-left: -5px; border-left: solid 1px; padding-left: 10px;">
-								<input type="checkbox" class="sheet-showVehicles sheet-useVehicles" name="attr_vehicle" style="width: 15px;"> Show the Vehicles Tab<br />
-								<!--<input class="sheet-useVehicles" type="checkbox" name="attr_vehicle" /> Show Vehicles (on Equipment Tab)<br />-->
-								<div class="sheet-vehicleTypes">
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-useSailingShips" type="checkbox" name="attr_sailingShip" /> Show Sailing Ship<br />
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-useFlyingShips" type="checkbox" name="attr_flyingShip" /> Show Flying Ship<br />
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-useGroundVehicle" type="checkbox" name="attr_groundVehicle" /> Show Ground Vehicle<br />
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-usePowerArmor" type="checkbox" name="attr_PowerArmor" /> Show Power Armor<br />
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-useRobotArmor" type="checkbox" name="attr_RobotArmor" /> Show Robot Armor<br />
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-useWalker" type="checkbox" name="attr_Walker" /> Show Walker<br />
-								</div><br />
-								Quest Font Type: 
-								<!-- If you're going to add more fonts, you will need to update the CSS file.  
-										o Add the appropriate details via an @font-face 
-										o Update the Font Drop Down Menu section
-										o Update this html file in the Quest Log section with the additon.
-								-->
-								<div class="sheet-fontDropdown">
-									<div class="sheet-fontlist">
-										<input type="radio" style="width: 10px;" name="attr_font" value="1" checked="true" /> <span>Default</span>
-										<input type="radio" style="width: 10px;" name="attr_font" value="2" /> <span style='font-family: "Handwriting"; font-size: 175%;'>Option 1</span>
-										<input type="radio" style="width: 10px;" name="attr_font" value="3" /> <span style='font-family: "Glitch"; font-size: 175%;'>Option 2</span>
-										<input type="radio" style="width: 10px;" name="attr_font" value="4" /> <span style='font-family: "CuttyFruty"; font-size: 95%;'>Option 3</span>
-										<input type="radio" style="width: 10px;" name="attr_font" value="5" /> <span style='font-family: "Saucy";'>Option 4</span>
-										<input type="radio" style="width: 10px;" name="attr_font" value="6" /> <span style='font-family: "Rujis";'>Option 5</span>
-										<input type="radio" style="width: 10px;" name="attr_font" value="7" /> <span style='font-family: "Dashley"; font-size: 130%;'>Option 6</span>
-										<input type="radio" style="width: 10px;" name="attr_font" value="8" /> <span style='font-family: "Graziano"; font-size: 130%;'>Option 7</span>
-										<!--<input type="radio" style="width: 10px;" name="attr_font" value="9" /> <span style='font-family: "BlackletterHand"; font-size: 130%;'>Option 8</span>-->
-										<input type="radio" style="width: 10px;" name="attr_font" value="10" /> <span style='font-family: "Architect"; font-size: 75%;'>Option 8</span>
-										<div class="sheet-font1">Default</div>
-										<div class="sheet-font2">Handwriting</div>
-										<div class="sheet-font3">Glitch</div>
-										<div class="sheet-font4">CuttyFruty</div>
-										<div class="sheet-font5">Saucy</div>
-										<div class="sheet-font6">Rujis</div>
-										<div class="sheet-font7">Dashley</div>
-										<div class="sheet-font8">Graziano</div>
-										<!--<div class="sheet-font9">Blackletter Hand</div>-->
-										<div class="sheet-font10">Architect</div>
-									</div>
-								</div><!--End font drop down-->
-							</div>
-							<hr />
-							<input type="hidden" name="attr_defsTemplate" value="&{template:solidtrait}" />
-							<input type="hidden" name="attr_defdTemplate" value="&{template:soliddamage}" />
-							<div class="sheet-row">
-								<div class="sheet-col" style="width: 20%">Trait Roll Template:</div>
-								<div class="sheet-col">
-									<input type="checkbox" class="sheet-rt sheet-rt0" name="attr_skillrt" value="0" title="No Roll Template" />
-									<span class="sheet-rt sheet-rt0">
-										<span class="sheet-rtinner">No Roll Template</span>
-									</span><!--&{template:solidtrait}-->
-									<input type="checkbox" class="sheet-rt sheet-rt1" name="attr_skillrt" value="&{template:solidtrait}" title="Solid Trait Layout" checked />
-									<span class="sheet-rt sheet-rt1">
-										<span class="sheet-rtinner"><img src="http://www.geeksville.us/roll20/SolidTrait.png" value="Ace of Spades Card Template" /></span>
-									</span>
-									<input type="checkbox" class="sheet-rt sheet-rt2" name="attr_skillrt" value="&{template:spadestrait2}" title="Ace of Spades Trait Layout" />
-									<span class="sheet-rt sheet-rt2">
-										<span class="sheet-rtinner"><img src="http://www.geeksville.us/roll20/SpadesTrait.png" value="Ace of Spades Card Template" /></span>
-									</span>
-								</div>
-							</div>
-							<div class="sheet-row">
-								<div class="sheet-col" style="width: 20%;">Damage Roll Template:</div>
-								<div class="sheet-col">
-									<input type="checkbox" class="sheet-rt sheet-rt0" name="attr_skillwrt" value="0" title="No Roll Template" checked />
-									<span class="sheet-rt sheet-rt0">
-										<span class="sheet-rtinner">No Roll Template</span>
-									</span>
-									<input type="checkbox" class="sheet-rt sheet-rt1" name="attr_skillwrt" value="&{template:soliddamage}" title="Solid Trait Layout" />
-									<span class="sheet-rt sheet-rt1">
-										<span class="sheet-rtinner"><img src="http://www.geeksville.us/roll20/SolidDamage.png" value="Ace of Spades Card Template" /></span>
-									</span>
-									<input type="checkbox" class="sheet-rt sheet-rt2" name="attr_skillwrt" value="&{template:clubsdamage}" title="Ace of Spades Traite Layout" />
-									<span class="sheet-rt sheet-rt2">
-										<span class="sheet-rtinner"><img src="http://www.geeksville.us/roll20/ClubsDamage.png" value="Ace of Spades Card Template" /></span>
-									</span>
-								</div>
-							</div>
-						</div><!--End 2colrow-->
-					</div> <!--End UI Tweaks-->
-					<div class='sheet-QuickSettings' style="padding: 10px;">
-						<div class='sheet-row'>
-							<h3 style="text-align: center;">Quick Setting Configuration</h3>
-							<p>Select a setting to preset the configuration for the Setting. You can also <input type='checkbox' class='sheet-ConfigReset' name='attr_settingconfig' value='0' /><span class='sheet-reset' style='width:120px; margin-left: -120px; text-align: center; background-color: black; color: white; border-radius: 4px;'>Reset to Default <span style='font-family: "Pictos";'>0</span></span></p>
-							<div class='sheet-3colrow'>
-								<div class='sheet-col'>
-									<!--<input type='radio' name='attr_settingconfig' value='0' />CLEAR<br />-->
-									<input type='checkbox' name='attr_settingconfig' value='1' /> 50 Fathoms<br />
-									<input type='checkbox' name='attr_settingconfig' value='2' /> All For One<br />
-									<input type='checkbox' name='attr_settingconfig' value='3' /> Deadlands Reloaded<br />
-									<input type='checkbox' name='attr_settingconfig' value='4' /> East Texas University<br />
-									<input type='checkbox' name='attr_settingconfig' value='5' /> Hellfrost<br />
-								</div>
-								<div class='sheet-col'>
-									<input type='checkbox' name='attr_settingconfig' value='6' /> Interface Zero 2.0<br />
-									<input type='checkbox' name='attr_settingconfig' value='7' /> Lankhmar<br />
-									<input type='checkbox' name='attr_settingconfig' value='8' /> Last Parsec<br />
-									<input type='checkbox' name='attr_settingconfig' value='9' /> Low Life<br />
-									<input type='checkbox' name='attr_settingconfig' value='10' /> Necessary Evil<br />
-								</div>
-								<div class='sheet-col'>
-									<input type='checkbox' name='attr_settingconfig' value='11' /> Pirates of the Spanish Main<br />
-									<input type='checkbox' name='attr_settingconfig' value='13' /> Rifts<br />
-									<input type='checkbox' name='attr_settingconfig' value='14' /> Rippers<br />
-									<input type='checkbox' name='attr_settingconfig' value='12' /> Tour of Darkness<br />
-								</div>
-							</div>
-						</div>
+					<div class="sheet-row">
+						<h4 class="sheet-subsectionHeader">API Fields</h4>
+						API: Initiative Edges <span class="sheet-tooltip">i<span><strong style='line-height: 30px; text-align: center;'>DealInit API Script</strong><br><p>Initiative Edges must be stored in a comma separated list in an Attribute named InitEdges. (e.g. Qu,LH)</p><p>The Edge shorthand is as follows:<br /><ul><li><strong>Qui</strong> = Quick</li><li><strong>LH</strong> = Level Headed</li><li><strong>ILH</strong> = Improved Level Headed</li><li><strong>WCE</strong> = Any Joker Activated Wild Card Edge</li></ul></p></span></span>
+					    <input class="sheet-standard" type="text" title="@{InitEdges}" name="attr_InitEdges"/>
 					</div>
-					<!--<input type="checkbox" class="sheet-HideGameSettings" name="attr_SettingsConfig" checked /><span class="sheet-is-gameSettings"></span>-->
-					<div class='sheet-GameSettings' style="padding: 10px;">
-						<div class="sheet-row">
-							<h3 style="text-align: center;">Additional Derived Stats</h3>
-							<div class="sheet-3colrow">									
-								<!-- Settings that have been incorporated already:
-										o The Last Parsec
-										o Pirates of the Spanish Main
-										o Tour of Darkness
-										o Necessary Evil
-										o Deadlands
-										o 50 Fathoms
-										o Low Life
-										o Interface Zero 2.0
-										o Lankhmar
-										o Hellfrost 
-										o All For One 
-										o ETU 
-										o Rifts -->
-								<!-- When updating this section, will likely need to modify the CSS file Section:
-									/*----------- Hiding/Unhiding Things -----------*/
-								-->
-								<div class="sheet-col">
-									<!--Academics--><span title="Used to track a character's academic score. ETU uses this field."><input class='sheet-useAcademics' type='checkbox' name='attr_useacademics' value='1' style='width: 15px;' />Academics</span><br />
-									<!--Corruption--><span title="Used to track a character's corruption. Settings like Lankhmar use this field."><input type="checkbox" class="sheet-useCorruption" name="attr_Corruption" style="width: 15px;" />Corruption</span><br />
-									<!--Fame--><span title="Used to track how famous a character is. Settings like Pirates of the Spanish Main use this field."><input type="checkbox" class="sheet-useFame" name="attr_potsmFame" style="width: 15px;" />Fame</span><br />
-									<!--Firewall--><span title="Protects a character from being hacked. Starts at 4 and can be modified. This field is useful for settings like Interface Zero 2.0 or other Cyberpunk settings."><input type="checkbox" class="sheet-useFirewall" style="width: 15px;" name="attr_izFirewall" />Firewall</span><br />
-								</div>
-								<div class="sheet-col">
-									<!--Fame--><span title="Used to track how glorious a character is. Settings like Hellfrost use this field."><input type="checkbox" class="sheet-useGlory" name="attr_hfGlory" style="width: 15px;" />Glory</span><br />
-									<!--Grit--><span title="A measure of one's resistance against horrors. Useful in Horror-esque settings such as Deadlands. This is a derived stat based on the character's Rank."><input type="checkbox" class="sheet-useGrit" name="attr_DLGrit" style="width: 15px;" />Grit</span><br />
-									<!--Neural Toughness--><span title="A measure of one's resistance against hacking attacks. Useful in cyberpunk settings such as Interface Zero 2.0. This is a derived stat based on the character's Toughness."><input type="checkbox" class="sheet-useNT" name="attr_neuraltoughness" style="width: 15px;" />Neural Toughness</span><br />
-									<!--Reason--><span title="Used in Rippers to measure one's sanity."><input type="checkbox" class="sheet-useReason" name="attr_ripReason" style="width: 15px;" />Reason</span><br />	
-								</div>
-								<div class="sheet-col">
-									<!--Sanity--><span title="Used to track a character's sanity. Useful for most Horroresque settings. This is a derived stat based on (Spirit/2)+2."><input type="checkbox" class="sheet-useSanity" name="attr_tdsanity" style="width: 15px;" />Sanity<br /></span>
-									<!--Status--><span title="A reflection of ones position in society, and the esteem with which others regard the hero. This is used in Rippers."><input type="checkbox" class="sheet-useStatus" name="attr_ripStatus" style="width: 15px;" />Status</span><br />	
-									<!--Strain--><span title="Used to measure how much strain a character is under due to augmentation from bioware. This field is useful for settings like Interface Zero 2.0 or other Cyberpunk settings."><input type="checkbox" class="sheet-useStrain" style="width: 15px;" name="attr_izStrain" />Strain</span><br />
-									<!--Street Cred--><span title="Used to measure a character's reputation on the streets. Base = 2 per Character Rank. This field is useful for settings like Interface Zero 2.0 or other Cyberpunk settings."><input type="checkbox" class="sheet-useStreetCred" style="width: 15px;" name="attr_izStreetCred" />Street Cred</span><br />
-								</div>
-							</div>
-						</div>
+					<hr />
+					<div class="sheet-row">
+						<h4 class="sheet-subsectionHeader">Edges/Hindrances</h4>
+						<!--Nerves of Steel--><span title="Enable Nerves of Steel and Improved Nerves of Steel Edges"><input type="checkbox" class="sheet-useNoS" name="attr_Nerves" style="width: 15px;" />Nerves of Steel</span><br />
+						<!--Fleet Footed-->
+						Running Die-type: <span title="Change the Running Die type from a d6 to something different for things like: Lame and Obese hindranes, Fleet Footed edge, or any racial modifications">
+						    <select name='attr_runningDie' title="@{runningDie}" class="sheet-dtype" value="1d6" style='width:35px; padding:0px; height: 25px; border: 0px; margin-top: -5px;'>
+						        <option value='1d4'>d4</option>
+						        <option value='1d6' selected>d6</option>
+						        <option value='1d8'>d8</option>
+						        <option value='1d10'>d10</option>
+						        <option value='1d12'>d12</option>
+						    </select>
+						</span>
 					</div>
-					
-					<!--<input type="checkbox" class="sheet-HideReplacements" name="attr_SettingsFieldReplacements" checked /><span class="sheet-is-fieldreplacements"></span>-->
-					<div class='sheet-fields' style="padding: 10px;">
-						<div class="sheet-row">
-							<h3 style="text-align: center;">Field Name Replacements</h3>
-							<div class="sheet-3colrow">
-								<div class='sheet-col'>
-									<!--Class--><span title="Replaces 'Rank' with 'Class'. Appropriate for ETU."><input type="checkbox" class="sheet-useClass" name="attr_ETUClass" style="width: 15px;" value="1" />Class (Rank)</span><br />
-									<!--Clams--><span title="Replaces 'Money' with 'Clams'. Appropriate for Low Life or any other setting where Clams may be an appropriate replacement for money."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="2" />Clams (Money)</span><br />
-									<!--Code Name--><span title="Useful for games where the character is known by a code- or superhero name such as Necessary Evil or spy themed games. This will add an additional field for Civilian Name."><input type="checkbox" class="sheet-useCodeName" name="attr_codename" style="width: 15px;" />Code Name (Character Name)</span><br />
-									<!--Credits--><span title="Replaces 'Money' with 'Credits'. Appropriate for Interface Zero or any other setting where Credits may be an appropriate replacement for money."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="4" />Credits (Money)</span><br />
-									<!--Cybernetics--><span title="Replaces 'Augmentations' with 'Cybernetics'. Appropriate for Rifts and any othe setting where Cybernetics is the vernacular."><input type="checkbox" class="sheet-useCybernetics" name="attr_Cybernetics" style="width: 15px;" value="1" />Cybernetics (Augmentations)</span><br />
-								</div>
-								<div class='sheet-col'>
-									<!--Increased Max Fatigue--><span title="Modify the Max Fatigue value to three (3). Useful for Interface Zero and other settings with a higher max fatigue value."><input type="checkbox" class="sheet-useParaHuman" name="attr_increasedfatigue" style="width: 15px;" value="1" />Increased Max Fatigue (3)</span><br />
-									<!--Lankhmar Money--><span title="Replaces 'Money' with: Iron Tiks, Bronze Agols, Silver Smerduks, and Gold Rilks. Appropriate for the Lankhmar: City of Thieves setting."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="3" />Lankhmar Currency (Money)</span><br />
-									<!--All for One Money--><span title="Replaces 'Money' with 'Livre. Appropriate for the All for One setting."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="5" />Livre (Money)</span><br />
-									<!--Pieces of Eight--><span title="Replaces 'Money' with 'Pieces of Eight'. Appropriate for 50 Fathoms or any other Pirate themed setting."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="1" />Pieces of Eight (Money)</span><br />
-									<!--Origin of Parahuman Abilities--><span title="Modify the Physical Appearance Text Area to include the Origins of Parahuman Abilties. Useful for Necessary Evil and other Superhero-esque settings."><input type="checkbox" class="sheet-useParaHuman" name="attr_powerOrigins" style="width: 15px;" />Origin of Parahuman Abilities</span><br />
-								</div>
-								<div class='sheet-col'>	
-									<!--PPE for Rifts--><span title="Change Power Points to PPE (Potential Psychic Energy) for Rifts"><input type="checkbox" class="sheet-usePPE" name="attr_ppe" style="width: 15px;" />PPE (Power Points)</span><br />
-									<input type="checkbox" class="sheet-showPowerTypes" name="attr_usePowerTypes" style="width: 15px;"> Power Type<br />
-									<div class="sheet-PowerTypes" style='padding: 0px; margin: 0px;'>
-										<!--Miracles--><span title="Replaces Powers with Miracles. Can be used for characters with Faith-based magic.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='1' />Miracles</span><br />
-										<!--Psionics--><span title="Replaces Powers with Psionics. Can be used for characters with Psionics.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='2' />Psionics</span><br />
-										<!--Spells--><span title="Replaces Powers with Spells. Can be used for characters with traditional-type magic.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='3' />Spells</span><br />
-										<!--Rituals--><span title="Replaces Powers with Rituals. Can be used for characters or settings (like ETU) where all powers are Ritualistic in nature.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='4' />Rituals</span><br />
-										<!--Weird Science--><span title="Replaces Powers with Weird Science. Can be used for characters who create magic through gadgets, such as Mad Scientists in Deadlands.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='5' />Weird Science Gadgets</span><br />
-									</div>									
-									<!--Species--><span title="Can be used for Sci-Fi settings like The Last Parsec, or any setting where Species is used instead of Race."><input type="checkbox" class="sheet-useSpecies" name="attr_tlpSpecies" style="width: 15px;" />Species (Race)</span><br />
-									<!--Threat Rating--><span title="Change the Rank designation to Threat Rating ala Necessary Evil."><input type="checkbox" class="sheet-useThreatRating" name="attr_ThreatRating" style="width: 15px;" />Threat Rating (Rank)</span><br />
-								</div>
-							</div>
-						</div>
-					</div>
-					
-					<!--<input type="checkbox" class="sheet-HideNewFields" name="attr_SettingsNewFields" checked /><span class="sheet-is-newfields"></span>-->
-					<div class='sheet-newfields' style="padding: 10px;">
-						<div class="sheet-row">
-							<h3 style="text-align: center;">Additional Setting Fields</h3>
-							<div class="sheet-3colrow">
-								<div class='sheet-col'>
-									<!--Activities/Exams--><span title="Show fields to record Activities and Exams. Used in ETU."><input type='checkbox' class='sheet-useActExams' name='attr_activitiesexams' value='1' style=' width: 15px;' />Activities & Exams</span><br />
-									<!--Archetype--><span title="The character's archetype. Used in settings like All for One."><input type="checkbox" class="sheet-useHomeworld" name="attr_a41archetype" style="width: 15px;" />Archetype</span><br />
-									<!--Augmentation--><span title="Record the Character's Augmentations. Appropriate for Interface Zero 2.0 or any other cyberpunk/sci-fi setting where people can implant augmentation devicds."><input type="checkbox" class="sheet-useAugmentations" name="attr_augment" style="width: 15px;" />Augmentations</span><br />
-									<!--Burn        --><span title="Track the character's Burn. Appropriate for the Juicer Iconic Framework in Rifts."><input type='checkbox' class='sheet-useBurn' name='attr_useBurn' />Burn</span><br />
-									<!--Engrams--><span title="Record the Character's Engrams s/he has. Appropriate for Interface Zero 2.0"><input type="checkbox" class="sheet-useEngrams" name="attr_izengrams" style="width: 15px;" />Engrams</span><br />
-									<!--Fencing Styles and School--><span title="Fencing Style and Fencing Schools provide characters bonuses when fencing in certain styles. This rule is used in All For One"><input type="checkbox" class="sheet-useFencingStyle" name="attr_fencinginfo" /> Fencing Styles & Schools</span><br />
-									<!--Homeworld--><span title="Can be used for Sci-Fi settings like The Last Parsec, etc."><input type="checkbox" class="sheet-useHomeworld" name="attr_tlpHW" style="padding-left: 10px; width: 15px;" />Home World</span><br />
-									<!--Hero's Journey--><span title="Hero's Journey as found in Rifts."><input type="checkbox" class="sheet-useHeroicPath" name="attr_heroicpath" style="width: 15px;" />Hero's Journey</span><br />
-								</div>
-								<div class='sheet-col'>
-									<!--Iconic Frameworks--><span title="Used for Rifts to capture a character's iconic framework, if one exists."><input type="checkbox" class="sheet-useIF" name="attr_IconicFramwork" style="padding-left: 10px; width: 15px;" />Iconic Framework</span><br />
-									<!--Inner Strength Points--><span title="Adds ISP (Inner Strength Points) as found in Rifts. This is part of the Arcanum section of the sheet."><input type="checkbox" class="sheet-useISP" name="attr_useISP" style="width: 15px;" />Inner Strength Points (ISP)</span><br />
-									<!--Internal Repair System Charges--><span title="Used for Rifts to record the character's Internal Repair System Charges (IRSC or IRS Charges) for the Juicer Iconic Framework."><input type='checkbox' class='sheet-useIRSC' name='attr_useIRSC' />Internal Repair System Charges</span><br />
-									<!--Languages--><span title="Can be used for any setting where Languages are known and no Knowledge skills is required"><input type="checkbox" class="sheet-useLanguages" name="attr_Lang" style="padding-left: 10px; width: 15px;" />Languages</span><br />
-									<!--Max Load--><span title="Enable the Max Load to be modified by a flat bonus/penalty"><input type="checkbox" class="sheet-useMaxLoad" name="attr_MaxLoad" style="width: 15px;" />Max Load Modifier</span><br />									
-									<!--Minor/Major--><span title="Used to declare a Minor and Major. Used in ETU. Each field is a textarea so carriage returns and resizing are allowed."><input class='sheet-useMajor' type='checkbox' name='attr_majorminor' style='width: 15px;' />Minor/Major</span><br />
-									<!--Motivation--><span title="Motivation can be used in settings where the character's motivation is important, such All for One."><input type="checkbox" class="sheet-useMotivation" name="attr_a41motivation" style="width: 15px;" />Motivation</span><br />
-								</div>
-								<div class='sheet-col'>
-									<!--Occupation--><span title="Can be used for any setting where a character's occupation is important."><input type="checkbox" class="sheet-useOccupation" name="attr_tlpOccupation" style="width: 15px;" />Occupation</span><br />
-									<!--Permanent Injuries--><span title="Record the Character's Permanent Injuries."><input type="checkbox" class="sheet-useInjuries" name="attr_permInjuries" style="width: 15px;" />Permanent Injuries</span><br />
-									<!--Rippertech--><span title='Add Rippertech to the equipment section. Appropriate for Rippers'><input type='checkbox' class='sheet-useRippertech' name='attr_useRippertech' style='width: 15px;' />Rippertech</span><br />
-									<!--Ship Name--><span title="Can be used for any setting where the characters may have a ship of some sort."><input type="checkbox" class="sheet-useShipName" name="attr_tlpShipName" style="width: 15px;" />Ship Name</span><br />	
-									<!--Talismans--><span title="Shows Talismans repeating section on the Aracanum tab."><input class='sheet-useTalismans' type='checkbox' name='attr_talismans' value='1' style='width: 15px;' />Talismans</span><br />
-									<!--TAP Readout--><span title="Displays the TAP Readout Information in one location. Used in the setting: Interface Zero 2.0>"><input type="checkbox" class="sheet-usetap" name="attr_iztap" style="width: 15px;" />TAP Readout</span><br />									
-									<!--Worst Nightmare--><span title="Record the Character's Worst Nightmare. This is important for Deadlands, but may be useful for other settings where a character's worst dreams can come true."><input type="checkbox" class="sheet-useWorstNightmare" name="attr_worstNightmare" style="width: 15px;" />Worst Nightmare</span><br />
-								</div>
-							</div>
-						</div>
-					</div>
+					<hr />
+					<div class="sheet-row">
+						<h4 class="sheet-subsectionHeader">Sheet Settings</h4>
+    					<input type="checkbox" class="sheet-HideUITweaks" name="attr_wcUIConfig" checked /><span class="sheet-is-wcUI"></span>
+    					<input type="checkbox" class="sheet-HideQuickConfig" name="attr_quickConfig" checked /><span class="sheet-is-quickConfig"></span>
+    					<input type="checkbox" class="sheet-HideGameSettings" name="attr_SettingsConfig" checked /><span class="sheet-is-gameSettings"></span>
+    					<input type="checkbox" class="sheet-HideReplacements" name="attr_SettingsFieldReplacements" checked /><span class="sheet-is-fieldreplacements"></span>
+    					<input type="checkbox" class="sheet-HideNewFields" name="attr_SettingsNewFields" checked /><span class="sheet-is-newfields"></span>
+    					<div class='sheet-UITweaks' style="padding: 10px;">
+    						<div class="sheet-row">
+    							<div class="sheet-2colrow">
+    								<div class="sheet-col">
+    									<h3>Backgrounds</h3>
+    										<span class="sheet-5pxshim">
+    											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="1" title="No Background Image" checked /> No Background Image<br />
+    											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="7" title="Cyberpunk" /> Cyberpunk<br />
+    											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="8" title="Hellfrost" /> Hellfrost<br />
+    											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="9" title="Hellfrost: Land of Fire" /> Hellfrost: Land of Fire<br />
+    											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="5" title="Last Parsec" /> Last Parsec<br />
+    											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="4" title="Noir" /> Noir<br />
+    											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="2" title="Old Map (PotSM)" /> Old Map<br />
+    											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="10" title="Parchment" /> Parchment<br />
+    											<input type='checkbox' class='sheet-useBackground' style='width: 15px;' name='attr_background' value='12' title='Rippers' /> Rippers <br />
+    											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="11" title="Rifts" /> Rifts/Sci Fi<br />
+    											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="6" title="Supers" /> Superhero<br />
+    											<input type="checkbox" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="3" title="Zombiepocalypse" /> Zombie-esque<br />
+    										</span>
+    								</div>
+    								<div class="sheet-col">
+    									<h3>Logos</h3>
+    										<span class="sheet-5pxshim">
+    											<input type="radio" name="attr_logo" value="1" title="Savage Worlds Deluxe" style="width: 15px; display: none;" checked /><input type="checkbox" style="width: 15px;" name="attr_logo" value="1" /> Savage Worlds Deluxe <br />
+    											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="4" title="Zombie SWD" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="4" /> Savage Worlds Deluxe (Bloodied) <br />
+    											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="13" title="All For One" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="13" /> All For One <br />
+    											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="6" title="Deadlands" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="6" /> Deadlands <br />
+    											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="7" title="DeadlandsNoir" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="7" /> Deadlands: Noir <br />
+    											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="8" title="DeadlandsHoE" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="8" /> Deadlands: Hell on Earth <br />
+    											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="14" title="ETU" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="14" /> East Texas University <br />
+    											<input type="radio" name="attr_logo" value="10" title="Hellfrost" style="width: 15px; display: none;" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="10" /> Hellfrost <br />
+    											<input type="radio" name="attr_logo" value="11" title="Hellfrost: Land of Fire" style="width: 15px; display: none;" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="11" /> Hellfrost: Land of Fire <br />
+    											<input type="radio" name="attr_logo" value="9" title="Interface Zero 2.0" style="width: 15px; display: none;" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="9" /> Interface Zero 2.0 <br />
+    											<input type="radio" class="sheet-ShowLogo" name="attr_logo" value="12" title="Lankhmar" style="width: 15px; display: none;" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="12" /> Lankhmar <br />
+    											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="3" title="The Last Parsec" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="3" /> The Last Parsec <br />
+    											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="5" title="Necessary Evil" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="5" /> Necessary Evil <br />
+    											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="2" title="Pirates of the Spanish Main" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="2" /> Pirates of the Spanish Main <br />
+    											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="15" title="Rifts" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="15" /> Rifts <br />
+    											<input type="radio" class="sheet-ShowLogo" style="width: 15px; display: none;" name="attr_logo" value="16" title="Rippers" /><input type="checkbox" style="width: 15px;" name="attr_logo" value="16" /> Rippers <br />
+    											<!-- Need to update the Disclaimer Information section of the CSS File with the appropriate information
+    												 Also need to update the bottom of this html page; be sure to use the checkbox input and not the radio input-->
+    										</span>
+    								</div>
+    							</div>
+    						</div>
+    						<div class="sheet-row">
+    							<h4 class="sheet-subsectionHeader">Other Miscellaneous Tweaks</h4>
+    							<div class="sheet-col" style="padding-right: 10px; margin-right: 0px; border-right: solid 1px;">
+    								<span class="sheet-5pxshim"></span><input type="checkbox" class="sheet-NewDieType" name="attr_DieTypeConfig" style="width: 15px;" /> Use Dice Drop Down Menus (Attributes & Skills)<br />
+    								<input type="checkbox" class="sheet-NewDieType" name="attr_WildDieTypeConfig" style="width: 15px;" /> Use Dice Drop Down Menus (Wild Die)<br />
+    								<input type="checkbox" class="sheet-hideArcanum" name="attr_ArcanumTab" style="width: 15px;"> Hide the Arcanum Tab<br />
+    								<input class="sheet-showAdvancements" type="checkbox" name="attr_showAdvancements" /> Show Advancements (on Journal Tab)
+    							</div>
+    							<div class="sheet-col" style="margin-left: -5px; border-left: solid 1px; padding-left: 10px;">
+    								<input type='checkbox' class='sheet-showShaken' name='attr_showShaken' /> Show Shaken Checkbox<br />
+    								<input type="checkbox" class="sheet-showVehicles sheet-useVehicles" name="attr_vehicle" style="width: 15px;"> Show the Vehicles Tab<br />
+    								<!--<input class="sheet-useVehicles" type="checkbox" name="attr_vehicle" /> Show Vehicles (on Equipment Tab)<br />-->
+    								<div class="sheet-vehicleTypes">
+    									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-useSailingShips" type="checkbox" name="attr_sailingShip" /> Show Sailing Ship<br />
+    									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-useFlyingShips" type="checkbox" name="attr_flyingShip" /> Show Flying Ship<br />
+    									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-useGroundVehicle" type="checkbox" name="attr_groundVehicle" /> Show Ground Vehicle<br />
+    									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-usePowerArmor" type="checkbox" name="attr_PowerArmor" /> Show Power Armor<br />
+    									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-useRobotArmor" type="checkbox" name="attr_RobotArmor" /> Show Robot Armor<br />
+    									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-useWalker" type="checkbox" name="attr_Walker" /> Show Walker<br />
+    								</div><br />
+    								Quest Font Type: 
+    								<!-- If you're going to add more fonts, you will need to update the CSS file.  
+    										o Add the appropriate details via an @font-face 
+    										o Update the Font Drop Down Menu section
+    										o Update this html file in the Quest Log section with the additon.
+    								-->
+    								<div class="sheet-fontDropdown">
+    									<div class="sheet-fontlist">
+    										<input type="radio" style="width: 10px;" name="attr_font" value="1" checked="true" /> <span>Default</span>
+    										<input type="radio" style="width: 10px;" name="attr_font" value="2" /> <span style='font-family: "Handwriting"; font-size: 175%;'>Option 1</span>
+    										<input type="radio" style="width: 10px;" name="attr_font" value="3" /> <span style='font-family: "Glitch"; font-size: 175%;'>Option 2</span>
+    										<input type="radio" style="width: 10px;" name="attr_font" value="4" /> <span style='font-family: "CuttyFruty"; font-size: 95%;'>Option 3</span>
+    										<input type="radio" style="width: 10px;" name="attr_font" value="5" /> <span style='font-family: "Saucy";'>Option 4</span>
+    										<input type="radio" style="width: 10px;" name="attr_font" value="6" /> <span style='font-family: "Rujis";'>Option 5</span>
+    										<input type="radio" style="width: 10px;" name="attr_font" value="7" /> <span style='font-family: "Dashley"; font-size: 130%;'>Option 6</span>
+    										<input type="radio" style="width: 10px;" name="attr_font" value="8" /> <span style='font-family: "Graziano"; font-size: 130%;'>Option 7</span>
+    										<!--<input type="radio" style="width: 10px;" name="attr_font" value="9" /> <span style='font-family: "BlackletterHand"; font-size: 130%;'>Option 8</span>-->
+    										<input type="radio" style="width: 10px;" name="attr_font" value="10" /> <span style='font-family: "Architect"; font-size: 75%;'>Option 8</span>
+    										<div class="sheet-font1">Default</div>
+    										<div class="sheet-font2">Handwriting</div>
+    										<div class="sheet-font3">Glitch</div>
+    										<div class="sheet-font4">CuttyFruty</div>
+    										<div class="sheet-font5">Saucy</div>
+    										<div class="sheet-font6">Rujis</div>
+    										<div class="sheet-font7">Dashley</div>
+    										<div class="sheet-font8">Graziano</div>
+    										<!--<div class="sheet-font9">Blackletter Hand</div>-->
+    										<div class="sheet-font10">Architect</div>
+    									</div>
+    								</div><!--End font drop down-->
+    							</div>
+    							<hr />
+    							<input type="hidden" name="attr_defsTemplate" value="&{template:solidtrait}" />
+    							<input type="hidden" name="attr_defdTemplate" value="&{template:soliddamage}" />
+    							<div class="sheet-row">
+    								<div class="sheet-col" style="width: 20%">Trait Roll Template:</div>
+    								<div class="sheet-col">
+    									<input type="checkbox" class="sheet-rt sheet-rt0" name="attr_skillrt" value="0" title="No Roll Template" />
+    									<span class="sheet-rt sheet-rt0">
+    										<span class="sheet-rtinner">No Roll Template</span>
+    									</span><!--&{template:solidtrait}-->
+    									<input type="checkbox" class="sheet-rt sheet-rt1" name="attr_skillrt" value="&{template:solidtrait}" title="Solid Trait Layout" checked />
+    									<span class="sheet-rt sheet-rt1">
+    										<span class="sheet-rtinner"><img src="http://www.geeksville.us/roll20/SolidTrait.png" value="Ace of Spades Card Template" /></span>
+    									</span>
+    									<input type="checkbox" class="sheet-rt sheet-rt2" name="attr_skillrt" value="&{template:spadestrait2}" title="Ace of Spades Trait Layout" />
+    									<span class="sheet-rt sheet-rt2">
+    										<span class="sheet-rtinner"><img src="http://www.geeksville.us/roll20/SpadesTrait.png" value="Ace of Spades Card Template" /></span>
+    									</span>
+    								</div>
+    							</div>
+    							<div class="sheet-row">
+    								<div class="sheet-col" style="width: 20%;">Damage Roll Template:</div>
+    								<div class="sheet-col">
+    									<input type="checkbox" class="sheet-rt sheet-rt0" name="attr_skillwrt" value="0" title="No Roll Template" checked />
+    									<span class="sheet-rt sheet-rt0">
+    										<span class="sheet-rtinner">No Roll Template</span>
+    									</span>
+    									<input type="checkbox" class="sheet-rt sheet-rt1" name="attr_skillwrt" value="&{template:soliddamage}" title="Solid Trait Layout" />
+    									<span class="sheet-rt sheet-rt1">
+    										<span class="sheet-rtinner"><img src="http://www.geeksville.us/roll20/SolidDamage.png" value="Ace of Spades Card Template" /></span>
+    									</span>
+    									<input type="checkbox" class="sheet-rt sheet-rt2" name="attr_skillwrt" value="&{template:clubsdamage}" title="Ace of Spades Traite Layout" />
+    									<span class="sheet-rt sheet-rt2">
+    										<span class="sheet-rtinner"><img src="http://www.geeksville.us/roll20/ClubsDamage.png" value="Ace of Spades Card Template" /></span>
+    									</span>
+    								</div>
+    							</div>
+    						</div><!--End 2colrow-->
+    					</div> <!--End UI Tweaks-->
+    					<div class='sheet-QuickSettings' style="padding: 10px;">
+    						<div class='sheet-row'>
+    							<h3 style="text-align: center;">Quick Setting Configuration</h3>
+    							<p>Select a setting to preset the configuration for the Setting. You can also <input type='checkbox' class='sheet-ConfigReset' name='attr_settingconfig' value='0' /><span class='sheet-reset' style='width:120px; margin-left: -120px; text-align: center; background-color: black; color: white; border-radius: 4px;'>Reset to Default <span style='font-family: "Pictos";'>0</span></span></p>
+    							<div class='sheet-3colrow'>
+    								<div class='sheet-col'>
+    									<!--<input type='radio' name='attr_settingconfig' value='0' />CLEAR<br />-->
+    									<input type='checkbox' name='attr_settingconfig' value='1' /> 50 Fathoms<br />
+    									<input type='checkbox' name='attr_settingconfig' value='2' /> All For One<br />
+    									<input type='checkbox' name='attr_settingconfig' value='3' /> Deadlands Reloaded<br />
+    									<input type='checkbox' name='attr_settingconfig' value='4' /> East Texas University<br />
+    									<input type='checkbox' name='attr_settingconfig' value='5' /> Hellfrost<br />
+    								</div>
+    								<div class='sheet-col'>
+    									<input type='checkbox' name='attr_settingconfig' value='6' /> Interface Zero 2.0<br />
+    									<input type='checkbox' name='attr_settingconfig' value='7' /> Lankhmar<br />
+    									<input type='checkbox' name='attr_settingconfig' value='8' /> Last Parsec<br />
+    									<input type='checkbox' name='attr_settingconfig' value='9' /> Low Life<br />
+    									<input type='checkbox' name='attr_settingconfig' value='10' /> Necessary Evil<br />
+    								</div>
+    								<div class='sheet-col'>
+    									<input type='checkbox' name='attr_settingconfig' value='11' /> Pirates of the Spanish Main<br />
+    									<input type='checkbox' name='attr_settingconfig' value='13' /> Rifts<br />
+    									<input type='checkbox' name='attr_settingconfig' value='14' /> Rippers<br />
+    									<input type='checkbox' name='attr_settingconfig' value='12' /> Tour of Darkness<br />
+    								</div>
+    							</div>
+    						</div>
+    					</div>
+    					<!--<input type="checkbox" class="sheet-HideGameSettings" name="attr_SettingsConfig" checked /><span class="sheet-is-gameSettings"></span>-->
+    					<div class='sheet-GameSettings' style="padding: 10px;">
+    						<div class="sheet-row">
+    							<h3 style="text-align: center;">Additional Derived Stats</h3>
+    							<div class="sheet-3colrow">									
+    								<!-- Settings that have been incorporated already:
+    										o The Last Parsec
+    										o Pirates of the Spanish Main
+    										o Tour of Darkness
+    										o Necessary Evil
+    										o Deadlands
+    										o 50 Fathoms
+    										o Low Life
+    										o Interface Zero 2.0
+    										o Lankhmar
+    										o Hellfrost 
+    										o All For One 
+    										o ETU 
+    										o Rifts -->
+    								<!-- When updating this section, will likely need to modify the CSS file Section:
+    									/*----------- Hiding/Unhiding Things -----------*/
+    								-->
+    								<div class="sheet-col">
+    									<!--Academics--><span title="Used to track a character's academic score. ETU uses this field."><input class='sheet-useAcademics' type='checkbox' name='attr_useacademics' value='1' style='width: 15px;' />Academics</span><br />
+    									<!--Corruption--><span title="Used to track a character's corruption. Settings like Lankhmar use this field."><input type="checkbox" class="sheet-useCorruption" name="attr_Corruption" style="width: 15px;" />Corruption</span><br />
+    									<!--Fame--><span title="Used to track how famous a character is. Settings like Pirates of the Spanish Main use this field."><input type="checkbox" class="sheet-useFame" name="attr_potsmFame" style="width: 15px;" />Fame</span><br />
+    									<!--Firewall--><span title="Protects a character from being hacked. Starts at 4 and can be modified. This field is useful for settings like Interface Zero 2.0 or other Cyberpunk settings."><input type="checkbox" class="sheet-useFirewall" style="width: 15px;" name="attr_izFirewall" />Firewall</span><br />
+    								</div>
+    								<div class="sheet-col">
+    									<!--Fame--><span title="Used to track how glorious a character is. Settings like Hellfrost use this field."><input type="checkbox" class="sheet-useGlory" name="attr_hfGlory" style="width: 15px;" />Glory</span><br />
+    									<!--Grit--><span title="A measure of one's resistance against horrors. Useful in Horror-esque settings such as Deadlands. This is a derived stat based on the character's Rank."><input type="checkbox" class="sheet-useGrit" name="attr_DLGrit" style="width: 15px;" />Grit</span><br />
+    									<!--Neural Toughness--><span title="A measure of one's resistance against hacking attacks. Useful in cyberpunk settings such as Interface Zero 2.0. This is a derived stat based on the character's Toughness."><input type="checkbox" class="sheet-useNT" name="attr_neuraltoughness" style="width: 15px;" />Neural Toughness</span><br />
+    									<!--Reason--><span title="Used in Rippers to measure one's sanity."><input type="checkbox" class="sheet-useReason" name="attr_ripReason" style="width: 15px;" />Reason</span><br />	
+    								</div>
+    								<div class="sheet-col">
+    									<!--Sanity--><span title="Used to track a character's sanity. Useful for most Horroresque settings. This is a derived stat based on (Spirit/2)+2."><input type="checkbox" class="sheet-useSanity" name="attr_tdsanity" style="width: 15px;" />Sanity<br /></span>
+    									<!--Status--><span title="A reflection of ones position in society, and the esteem with which others regard the hero. This is used in Rippers."><input type="checkbox" class="sheet-useStatus" name="attr_ripStatus" style="width: 15px;" />Status</span><br />	
+    									<!--Strain--><span title="Used to measure how much strain a character is under due to augmentation from bioware. This field is useful for settings like Interface Zero 2.0 or other Cyberpunk settings."><input type="checkbox" class="sheet-useStrain" style="width: 15px;" name="attr_izStrain" />Strain</span><br />
+    									<!--Street Cred--><span title="Used to measure a character's reputation on the streets. Base = 2 per Character Rank. This field is useful for settings like Interface Zero 2.0 or other Cyberpunk settings."><input type="checkbox" class="sheet-useStreetCred" style="width: 15px;" name="attr_izStreetCred" />Street Cred</span><br />
+    								</div>
+    							</div>
+    						</div>
+    					</div>
+    					
+    					<!--<input type="checkbox" class="sheet-HideReplacements" name="attr_SettingsFieldReplacements" checked /><span class="sheet-is-fieldreplacements"></span>-->
+    					<div class='sheet-fields' style="padding: 10px;">
+    						<div class="sheet-row">
+    							<h3 style="text-align: center;">Field Name Replacements</h3>
+    							<div class="sheet-3colrow">
+    								<div class='sheet-col'>
+    									<!--Class--><span title="Replaces 'Rank' with 'Class'. Appropriate for ETU."><input type="checkbox" class="sheet-useClass" name="attr_ETUClass" style="width: 15px;" value="1" />Class (Rank)</span><br />
+    									<!--Clams--><span title="Replaces 'Money' with 'Clams'. Appropriate for Low Life or any other setting where Clams may be an appropriate replacement for money."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="2" />Clams (Money)</span><br />
+    									<!--Code Name--><span title="Useful for games where the character is known by a code- or superhero name such as Necessary Evil or spy themed games. This will add an additional field for Civilian Name."><input type="checkbox" class="sheet-useCodeName" name="attr_codename" style="width: 15px;" />Code Name (Character Name)</span><br />
+    									<!--Credits--><span title="Replaces 'Money' with 'Credits'. Appropriate for Interface Zero or any other setting where Credits may be an appropriate replacement for money."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="4" />Credits (Money)</span><br />
+    									<!--Cybernetics--><span title="Replaces 'Augmentations' with 'Cybernetics'. Appropriate for Rifts and any othe setting where Cybernetics is the vernacular."><input type="checkbox" class="sheet-useCybernetics" name="attr_Cybernetics" style="width: 15px;" value="1" />Cybernetics (Augmentations)</span><br />
+    								</div>
+    								<div class='sheet-col'>
+    									<!--Increased Max Fatigue--><span title="Modify the Max Fatigue value to three (3). Useful for Interface Zero and other settings with a higher max fatigue value."><input type="checkbox" class="sheet-useParaHuman" name="attr_increasedfatigue" style="width: 15px;" value="1" />Increased Max Fatigue (3)</span><br />
+    									<!--Lankhmar Money--><span title="Replaces 'Money' with: Iron Tiks, Bronze Agols, Silver Smerduks, and Gold Rilks. Appropriate for the Lankhmar: City of Thieves setting."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="3" />Lankhmar Currency (Money)</span><br />
+    									<!--All for One Money--><span title="Replaces 'Money' with 'Livre. Appropriate for the All for One setting."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="5" />Livre (Money)</span><br />
+    									<!--Pieces of Eight--><span title="Replaces 'Money' with 'Pieces of Eight'. Appropriate for 50 Fathoms or any other Pirate themed setting."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="1" />Pieces of Eight (Money)</span><br />
+    									<!--Origin of Parahuman Abilities--><span title="Modify the Physical Appearance Text Area to include the Origins of Parahuman Abilties. Useful for Necessary Evil and other Superhero-esque settings."><input type="checkbox" class="sheet-useParaHuman" name="attr_powerOrigins" style="width: 15px;" />Origin of Parahuman Abilities</span><br />
+    								</div>
+    								<div class='sheet-col'>	
+    									<!--PPE for Rifts--><span title="Change Power Points to PPE (Potential Psychic Energy) for Rifts"><input type="checkbox" class="sheet-usePPE" name="attr_ppe" style="width: 15px;" />PPE (Power Points)</span><br />
+    									<input type="checkbox" class="sheet-showPowerTypes" name="attr_usePowerTypes" style="width: 15px;"> Power Type<br />
+    									<div class="sheet-PowerTypes" style='padding: 0px; margin: 0px;'>
+    										<!--Miracles--><span title="Replaces Powers with Miracles. Can be used for characters with Faith-based magic.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='1' />Miracles</span><br />
+    										<!--Psionics--><span title="Replaces Powers with Psionics. Can be used for characters with Psionics.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='2' />Psionics</span><br />
+    										<!--Spells--><span title="Replaces Powers with Spells. Can be used for characters with traditional-type magic.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='3' />Spells</span><br />
+    										<!--Rituals--><span title="Replaces Powers with Rituals. Can be used for characters or settings (like ETU) where all powers are Ritualistic in nature.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='4' />Rituals</span><br />
+    										<!--Weird Science--><span title="Replaces Powers with Weird Science. Can be used for characters who create magic through gadgets, such as Mad Scientists in Deadlands.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='5' />Weird Science Gadgets</span><br />
+    									</div>									
+    									<!--Species--><span title="Can be used for Sci-Fi settings like The Last Parsec, or any setting where Species is used instead of Race."><input type="checkbox" class="sheet-useSpecies" name="attr_tlpSpecies" style="width: 15px;" />Species (Race)</span><br />
+    									<!--Threat Rating--><span title="Change the Rank designation to Threat Rating ala Necessary Evil."><input type="checkbox" class="sheet-useThreatRating" name="attr_ThreatRating" style="width: 15px;" />Threat Rating (Rank)</span><br />
+    								</div>
+    							</div>
+    						</div>
+    					</div>
+    					
+    					<!--<input type="checkbox" class="sheet-HideNewFields" name="attr_SettingsNewFields" checked /><span class="sheet-is-newfields"></span>-->
+    					<div class='sheet-newfields' style="padding: 10px;">
+    						<div class="sheet-row">
+    							<h3 style="text-align: center;">Additional Setting Fields</h3>
+    							<div class="sheet-3colrow">
+    								<div class='sheet-col'>
+    									<!--Activities/Exams--><span title="Show fields to record Activities and Exams. Used in ETU."><input type='checkbox' class='sheet-useActExams' name='attr_activitiesexams' value='1' style=' width: 15px;' />Activities & Exams</span><br />
+    									<!--Archetype--><span title="The character's archetype. Used in settings like All for One."><input type="checkbox" class="sheet-useHomeworld" name="attr_a41archetype" style="width: 15px;" />Archetype</span><br />
+    									<!--Augmentation--><span title="Record the Character's Augmentations. Appropriate for Interface Zero 2.0 or any other cyberpunk/sci-fi setting where people can implant augmentation devicds."><input type="checkbox" class="sheet-useAugmentations" name="attr_augment" style="width: 15px;" />Augmentations</span><br />
+    									<!--Burn        --><span title="Track the character's Burn. Appropriate for the Juicer Iconic Framework in Rifts."><input type='checkbox' class='sheet-useBurn' name='attr_useBurn' />Burn</span><br />
+    									<!--Engrams--><span title="Record the Character's Engrams s/he has. Appropriate for Interface Zero 2.0"><input type="checkbox" class="sheet-useEngrams" name="attr_izengrams" style="width: 15px;" />Engrams</span><br />
+    									<!--Fencing Styles and School--><span title="Fencing Style and Fencing Schools provide characters bonuses when fencing in certain styles. This rule is used in All For One"><input type="checkbox" class="sheet-useFencingStyle" name="attr_fencinginfo" /> Fencing Styles & Schools</span><br />
+    									<!--Homeworld--><span title="Can be used for Sci-Fi settings like The Last Parsec, etc."><input type="checkbox" class="sheet-useHomeworld" name="attr_tlpHW" style="padding-left: 10px; width: 15px;" />Home World</span><br />
+    									<!--Hero's Journey--><span title="Hero's Journey as found in Rifts."><input type="checkbox" class="sheet-useHeroicPath" name="attr_heroicpath" style="width: 15px;" />Hero's Journey</span><br />
+    								</div>
+    								<div class='sheet-col'>
+    									<!--Iconic Frameworks--><span title="Used for Rifts to capture a character's iconic framework, if one exists."><input type="checkbox" class="sheet-useIF" name="attr_IconicFramwork" style="padding-left: 10px; width: 15px;" />Iconic Framework</span><br />
+    									<!--Inner Strength Points--><span title="Adds ISP (Inner Strength Points) as found in Rifts. This is part of the Arcanum section of the sheet."><input type="checkbox" class="sheet-useISP" name="attr_useISP" style="width: 15px;" />Inner Strength Points (ISP)</span><br />
+    									<!--Internal Repair System Charges--><span title="Used for Rifts to record the character's Internal Repair System Charges (IRSC or IRS Charges) for the Juicer Iconic Framework."><input type='checkbox' class='sheet-useIRSC' name='attr_useIRSC' />Internal Repair System Charges</span><br />
+    									<!--Languages--><span title="Can be used for any setting where Languages are known and no Knowledge skills is required"><input type="checkbox" class="sheet-useLanguages" name="attr_Lang" style="padding-left: 10px; width: 15px;" />Languages</span><br />
+    									<!--Max Load--><span title="Enable the Max Load to be modified by a flat bonus/penalty"><input type="checkbox" class="sheet-useMaxLoad" name="attr_MaxLoad" style="width: 15px;" />Max Load Modifier</span><br />									
+    									<!--Minor/Major--><span title="Used to declare a Minor and Major. Used in ETU. Each field is a textarea so carriage returns and resizing are allowed."><input class='sheet-useMajor' type='checkbox' name='attr_majorminor' style='width: 15px;' />Minor/Major</span><br />
+    									<!--Motivation--><span title="Motivation can be used in settings where the character's motivation is important, such All for One."><input type="checkbox" class="sheet-useMotivation" name="attr_a41motivation" style="width: 15px;" />Motivation</span><br />
+    								</div>
+    								<div class='sheet-col'>
+    									<!--Occupation--><span title="Can be used for any setting where a character's occupation is important."><input type="checkbox" class="sheet-useOccupation" name="attr_tlpOccupation" style="width: 15px;" />Occupation</span><br />
+    									<!--Permanent Injuries--><span title="Record the Character's Permanent Injuries."><input type="checkbox" class="sheet-useInjuries" name="attr_permInjuries" style="width: 15px;" />Permanent Injuries</span><br />
+    									<!--Rippertech--><span title='Add Rippertech to the equipment section. Appropriate for Rippers'><input type='checkbox' class='sheet-useRippertech' name='attr_useRippertech' style='width: 15px;' />Rippertech</span><br />
+    									<!--Ship Name--><span title="Can be used for any setting where the characters may have a ship of some sort."><input type="checkbox" class="sheet-useShipName" name="attr_tlpShipName" style="width: 15px;" />Ship Name</span><br />	
+    									<!--Talismans--><span title="Shows Talismans repeating section on the Aracanum tab."><input class='sheet-useTalismans' type='checkbox' name='attr_talismans' value='1' style='width: 15px;' />Talismans</span><br />
+    									<!--TAP Readout--><span title="Displays the TAP Readout Information in one location. Used in the setting: Interface Zero 2.0>"><input type="checkbox" class="sheet-usetap" name="attr_iztap" style="width: 15px;" />TAP Readout</span><br />									
+    									<!--Worst Nightmare--><span title="Record the Character's Worst Nightmare. This is important for Deadlands, but may be useful for other settings where a character's worst dreams can come true."><input type="checkbox" class="sheet-useWorstNightmare" name="attr_worstNightmare" style="width: 15px;" />Worst Nightmare</span><br />
+    								</div>
+    							</div>
+    						</div>
+    					</div>
+    				</div>
 					
 					<hr />
 					
@@ -2258,7 +2316,7 @@
 								<label class='sheet-nameRankXp'>Pace:</label>
 									<input type="number" name="attr_pace" title="@{pace}" class="sheet-derivedStat" style="text-align: center;" value="6" />
 									<input type="number" name="attr_paceMod" title="@{paceMod}" class="sheet-standardNum" value="0" />
-									<span class="sheet-numSpan">&nbsp;</span>
+									<span class="sheet-numSpan"><button type='roll' name='roll_Running' style='margin-left:-1px;' title="@{Running}" value='/em @{character_name} runs (@{runningDie}): [[@{runningDie}+@{paceCur}]] inches!'>Run</button></span>
 									<input type="number" name="attr_paceCur" title="@{paceCur}" class="sheet-derivedStat" value="@{pace}+@{paceMod}" disabled="true" /><br />
 					
 								<label class='sheet-nameRankXp'>Parry:</label>
@@ -2418,26 +2476,33 @@
 							<!-- Third Column of Demographics -->
 							<div class='sheet-col' style='width:220px;'>
 								<br />
-								<label class='sheet-nameRankXp'>Wild Die:</label>
-								<input type="checkbox" class="sheet-NewDieType" name="attr_WildDieTypeConfig" style="width: 15px; display: none;" />
-								<div class="sheet-dtypedropdown" style="width: 45px;">
-									<div class="sheet-dietype">
-										<input type="radio" name="attr_wilddie" value="4" title="@{wilddie}" checked="true" style="width:10px;" /> <span>d4</span>
-										<input type="radio" name="attr_wilddie" value="6" title="@{wilddie}" style="width:10px;"/> <span>d6</span>
-										<input type="radio" name="attr_wilddie" value="8" title="@{wilddie}" style="width:10px;"/> <span>d8</span>
-										<input type="radio" name="attr_wilddie" value="10" title="@{wilddie}" style="width:10px;"/> <span>d10</span>
-										<input type="radio" name="attr_wilddie" value="12" title="@{wilddie}" style="width:10px;"/> <span>d12</span>
-										<div class="sheet-d4" style="width: 35px;">d</div>
-										<div class="sheet-d6" style="width: 35px;">f</div>
-										<div class="sheet-d8" style="width: 35px;">h</div>
-										<div class="sheet-d10" style="width: 35px;">k</div>
-										<div class="sheet-d12" style="width: 35px;">l</div>
-									</div>
+								<input class="sheet-is-npc" type="checkbox" name="attr_is_npc" style='display: none;' value="1" />
+								<div class='sheet-showWildDie'>
+								    <!--Start Div for Wild Die so it can be hidden when character is a Mook-->
+    								<label class='sheet-nameRankXp'>Wild Die:</label>
+    								<input type="checkbox" class="sheet-NewDieType" name="attr_WildDieTypeConfig" style="width: 15px; display: none;" />
+    								<div class="sheet-dtypedropdown" style="width: 45px;">
+    									<div class="sheet-dietype">
+    										<input type="radio" name="attr_wilddie" value="4" title="@{wilddie}" checked="true" style="width:10px;" /> <span>d4</span>
+    										<input type="radio" name="attr_wilddie" value="6" title="@{wilddie}" style="width:10px;"/> <span>d6</span>
+    										<input type="radio" name="attr_wilddie" value="8" title="@{wilddie}" style="width:10px;"/> <span>d8</span>
+    										<input type="radio" name="attr_wilddie" value="10" title="@{wilddie}" style="width:10px;"/> <span>d10</span>
+    										<input type="radio" name="attr_wilddie" value="12" title="@{wilddie}" style="width:10px;"/> <span>d12</span>
+    										<div class="sheet-d4" style="width: 35px;">d</div>
+    										<div class="sheet-d6" style="width: 35px;">f</div>
+    										<div class="sheet-d8" style="width: 35px;">h</div>
+    										<div class="sheet-d10" style="width: 35px;">k</div>
+    										<div class="sheet-d12" style="width: 35px;">l</div>
+    									</div>
+    								</div>
+    								<input type="checkbox" class="sheet-NewDieType" name="attr_WildDieTypeConfig" style="width: 15px; display: none;" />
+    								<div class="sheet-dtypeOrig" style="color: black;">
+    									<strong>d</strong><input type="number" name="attr_wilddie" title="@{wilddie}" style='width: 25px; padding-left: 0px; padding-bottom: 8px; margin-left:0px; border: none; background-color: transparent; font-weight: bold; color: black;' value="6"/>
+    								</div>
+    								<!--End Div for Wild Die-->
 								</div>
-								<input type="checkbox" class="sheet-NewDieType" name="attr_WildDieTypeConfig" style="width: 15px; display: none;" />
-								<div class="sheet-dtypeOrig" style="color: black;">
-									<strong>d</strong><input type="number" name="attr_wilddie" title="@{wilddie}" style='width: 25px; padding-left: 0px; padding-bottom: 8px; margin-left:0px; border: none; background-color: transparent; font-weight: bold; color: black;' value="6"/>
-								</div>
+								
+								
 								<input type="checkbox" class="sheet-useClass" name="attr_ETUClass" style="width: 15px; display: none;" value="1" />
 								<input type="checkbox" class="sheet-useThreatRating" name="attr_ThreatRating" style="width: 15px; display:none;" />
 								<label class='sheet-Rank-n-XP sheet-nameRankXp'></label>
@@ -2769,6 +2834,11 @@
 							</div><!-- End Health Column -->
 							<div class='sheet-col' style='width:250px; text-align:bottom;'>
 								<h2 class="sheet-subsectionHeader">Miscellaneous</h2><br />
+									<input type='checkbox' class='sheet-showShaken' name='attr_showShaken' style='display: none;' />
+									<div class='sheet-Shaken'>
+										<label class='sheet-nameRankXp' style='width: 140px;'>Shaken</label>
+											&nbsp;&nbsp;&nbsp;<input type='checkbox' name='attr_isShaken' />
+									</div>
 									<label class="sheet-nameRankXp" style='width:140px; font-size: 80%'>Unshake Roll Modifier</label>
 										<input type="number" class="sheet-standardNum" name="attr_UnshakenMod" title="@{UnshakenMod}" style='margin-left:4px;' value="0"/>
 										<button type='roll' name='roll_Unshaken' title="@{Unshaken}" value='/em @{character_name} rolls attempts to become unshaken and gets [[{1d@{spirit}![Spirit], [[@{wdNum}]]d@{wilddie}![Wild Die]}kh1 +@{spMod}[Spirit Rank Modifier] + @{UnshakenMod}[Unshaken Modifier] + @{ttmod}[Trait Test Modifier] - @{woundsMod}[Wounds] - @{fatigue}[Fatigue]]]'></button><br />
@@ -2842,7 +2912,10 @@
 							<div class='sheet-col' style='width:157px;'>
 								<h3 class="sheet-repeatingHeader">Hindrance</h3>
 							</div>
-							<div class='sheet-col' style='width:633px;'>
+							<div class='sheet-col' style='width:80px;'>
+							    <h3 class='sheet-repeatingHeader'>Type</h3>
+							</div>
+							<div class='sheet-col' style='width:553px;'>
 								<h3 class="sheet-repeatingHeader">Description</h3>
 							</div>
 						</div>
@@ -2851,8 +2924,11 @@
 								<div class='sheet-col' style='width:157px;'>
 									<input class="sheet-standard" type="text" name="attr_hindrance" title="@{repeating_hindrances_$#_hindrance}" style='width:152px;'/>
 								</div>
+								<div class='sheet-col' style='width:80px;'>
+									<input class="sheet-standard" type="text" name="attr_hindranceType" title="@{repeating_hindrances_$#_hindranceType}" style='width:75px;'/>
+								</div>
 								<div class='sheet-col'>
-									<textarea class="sheet-standardtext" style="width: 625px; height: 50px;" name='attr_hindrancedescription' title="@{repeating_hindrances_$#_hindrancedescription}" ></textarea>
+									<textarea class="sheet-standardtext" style="width: 545px; height: 50px;" name='attr_hindrancedescription' title="@{repeating_hindrances_$#_hindrancedescription}" ></textarea>
 								</div>
 							</fieldset>
 						</div>
@@ -10529,6 +10605,17 @@
 	</div>
 	
 	<!-- Roll Template Section -->
+	<rolltemplate class="sheet-rolltemplate-statblock">
+	    <h2 class='sheet-caption'>{{name}} Statblock</h2>
+	    <h3 class='sheet-statheader'>Attributes</h3>
+	    **Agility**: {{Agility}}<span class='sheet-showDie' style='font-family: "dicefontd20";'>t</span>, **Smarts**: {{Smarts}}, **Spirit**: {{Spirit}}, **Strength**: {{Strength}}, **Vigor**: {{Vigor}}
+	    <h3 class='sheet-statheader'>Skills</h3>
+	    {{Skills}}
+	    <br />
+	    **Pace**: {{Pace}}; **Parry**: {{Parry}}; **Toughness**: {{Toughness}}
+	    <h3 class='sheet-statheader'>Gear</h3>
+	    <h3 class='sheet-statheader'>Special Abilities</h3>
+	</rolltemplate>
 	
 	<rolltemplate class="sheet-rolltemplate-spadestrait2">
 		<h2 class="sheet-caption">{{name}}</h2>
