@@ -1378,6 +1378,282 @@
    		});
 	});
 	
+	//Set Static Skill Statblock information
+	
+	on("change:staticboating change:staticclimbing change:staticdriving change:staticfaith change:staticgambling change:staticguts change:statichealing change:staticintimidation change:staticinvestigation change:staticlockpicking change:staticnotice change:staticpersuasion change:staticpiloting change:staticpsionics change:staticrepair change:staticriding change:staticritual change:staticshooting change:staticspellcasting change:staticstealth change:staticstreetwise change:staticsurvival change:staticswimming change:statictaunt change:staticthrowing change:statictracking change:staticweirdscience change:fightingmod change:boatingmod change:climbingmod change:drivingmod change:faithmod change:gamblingmod change:gutsmod change:healingmod change:intimidationmod change:investigationmod change:lockpickingmod change:noticemod change:persuasionmod change:pilotingmod change:psionicsmod change:repairmod change:ridingmod change:ritualmod change:shootingmod change:spellcastingmod change:stealthmod change:streetwisemod change:survivalmod change:swimmingmod change:tauntmod change:throwingmod change:trackingmod change:weirdsciencemod", function() {
+	    var statskillblock = '**Fighting**: [d@{fighting}';
+	    console.log("<==Made it here!!==>")
+	    getAttrs(["FightingMod", "staticBoating", "BoatingMod", "staticClimbing", "ClimbingMod", "staticDriving", "DrivingMod", "staticFaith", "FaithMod", "staticGambling", "GamblingMod", "staticGuts", "GutsMod", "staticHealing", "HealingMod",  "staticIntimidation", "IntimidationMod", "staticInvestigation", "InvestigationMod", "staticLockpicking", "lockpickingMod", "staticNotice", "NoticeMod", "staticPersuasion", "PersuasionMod", "staticPiloting", "PilotingMod", "staticPsionics", "PsionicsMod", "staticRepair", "RepairMod", "staticRiding", "RidingMod", "staticRitual", "RitualMod", "staticShooting", "ShootingMod", "staticSpellcasting", "SpellcastingMod", "staticStealth", "StealthMod", "staticStreetwise", "StreetwiseMod", "staticSurvival", "SurvivalMod", "staticSwimming", "SwimmingMod", "staticTaunt", "TauntMod", "staticThrowing", "ThrowingMod", "staticTracking", "TrackingMod", "staticWeirdScience","WeirdScienceMod"], function(value) {
+	        if (value.FightingMod != "0") {
+	            statskillblock += "+@{FightingMod}](~tFightingRoll)";
+	        }
+	        else {
+	            statskillblock += "](~tFightingRoll)";
+	        }
+            if (value.staticBoating === 'on') {
+                console.log("<==Boating is on==>");
+                if (value.BoatingMod === "0") {
+                    statskillblock += ", **Boating**: [d@{boating}](~tBoatingRoll)";
+                }
+                else {
+                    statskillblock += ", **Boating**: [d@{boating}+@{BoatingMod}](~tBoatingRoll)";
+                }
+			}
+			if (value.staticClimbing === 'on') {
+			    console.log("<==Climbing is on==>");
+			    if (value.ClimbingMod != "0") {
+			        statskillblock += ", **Climbing**: [d@{Climbing}+@{ClimbingMod}](~tClimbingRoll)";
+			    }
+                else {
+                    statskillblock += ", **Climbing**: [d@{Climbing}](~tClimbingRoll)";
+                }
+			}
+			if (value.staticDriving === "on") {
+			    console.log("<==Driving is on==>");
+			    if (value.DrivingMod != "0") {
+			        statskillblock += ", **Driving**: [d@{Driving}+@{DrivingMod}](~tDrivingRoll)";
+			    }
+                else {
+                    statskillblock += ", **Driving**: [d@{Driving}](~tDrivingRoll)";
+                }
+			}
+			if (value.staticFaith === "on") {
+			    console.log("<==Faith is on==>");
+			    if (value.FaithMod != "0") {
+			        statskillblock += ", **Faith**: [d@{Faith}+@{FaithMod}](~tFaithRoll)";
+			    }
+                else {
+                    statskillblock += ", **Faith**: [d@{Faith}](~tFaithRoll)";
+                }
+			}
+			if (value.staticGambling === "on") {
+			    console.log("<==Gambling is on==>");
+			    if (value.GamblingMod != "0") {
+			        statskillblock += ", **Gambling**: [d@{Gambling}+@{GamblingMod}](~tGamblingRoll)";
+			    }
+                else {
+                    statskillblock += ", **Gambling**: [d@{Gambling}](~tGamblingRoll)";
+                }
+			}
+			if (value.staticGuts === "on") {
+			    console.log("<==Guts is on==>");
+			    if (value.GutsMod != "0") {
+			        statskillblock += ", **Guts**: [d@{Guts}+@{GutsMod}](~tGutsRoll)";
+			    }
+                else {
+                    statskillblock += ", **Guts**: [d@{Guts}](~tGutsRoll)";
+                }
+			}
+			if (value.staticHealing === "on") {
+			    console.log("<==Healing is on==>");
+			    if (value.HealingMod != "0") {
+			        statskillblock += ", **Healing**: [d@{Healing}+@{HealingMod}](~tHealingRoll)";
+			    }
+                else {
+                    statskillblock += ", **Healing**: [d@{Healing}](~tHealingRoll)";
+                }
+			}
+			if (value.staticIntimidation === "on") {
+			    console.log("<==Intimidation is on==>");
+			    if (value.IntimidationMod != "0") {
+			        statskillblock += ", **Intimidation**: [d@{Intimidation}+@{IntimidationMod}](~tIntimidationRoll)";
+			    }
+                else {
+                    statskillblock += ", **Intimidation**: [d@{Intimidation}](~tIntimidationRoll)";
+                }
+			}
+			if (value.staticInvestigation === "on") {
+			    console.log("<==Investigation is on==>");
+			    if (value.InvestigationMod != "0") {
+			        statskillblock += ", **Investigation**: [d@{Investigation}+@{InvestigationMod}](~tInvestigationRoll)";
+			    }
+                else {
+                    statskillblock += ", **Investigation**: [d@{Investigation}](~tInvestigationRoll)";
+                }
+			}
+			if (value.staticLockpicking === "on") {
+			    console.log("<==Lockpicking is on==>");
+			    if (value.lockpickingMod != "0") {
+			        statskillblock += ", **Lockpicking**: [d@{Lockpicking}+@{LockpickingMod}](~tLockpickingRoll)";
+			    }
+                else {
+                    statskillblock += ", **Lockpicking**: [d@{Lockpicking}](~tLockpickingRoll)";
+                }
+			}
+			if (value.staticNotice === "on") {
+			    console.log("<==Notice is on==>");
+                if (value.NoticeMod !="0") {
+					statskillblock += ", **Notice**: [d@{Notice}+@{NoticeMod}](~tNoticeRoll)";
+                }
+				else {
+					statskillblock += ", **Notice**: [d@{Notice}](~tNoticeRoll)";
+				}
+			}
+			if (value.staticPersuasion === "on") {
+			    console.log("<==Persuasion is on==>");
+			    if (value.PersuasionMod !="0") {
+					statskillblock += ", **Persuasion**: [d@{Persuasion}+@{PersuasionMod}](~tPersuasionRoll)";
+			    }
+				else {
+					statskillblock += ", **Persuasion**: [d@{Persuasion}](~tPersuasionRoll)";
+				}
+			}
+			if (value.staticPiloting === "on") {
+			    console.log("<==Piloting is on==>");
+                if (value.PilotingMod !="0") {
+					statskillblock += ", **Piloting**: [d@{Piloting}+@{PilotingMod}](~tPilotingRoll)";
+                }
+				else {
+					statskillblock += ", **Piloting**: [d@{Piloting}](~tPilotingRoll)";
+				}
+			}
+			if (value.staticPsionics === "on") {
+			    console.log("<==Psionics is on==>");
+                if (value.PsionicsMod !="0") {
+					statskillblock += ", **Psionics**: [d@{Psionics}+@{PsionicsMod}](~tPsionicsRoll)";
+                }
+				else {
+					statskillblock += ", **Psionics**: [d@{Psionics}](~tPsionicsRoll)";
+				}
+			}
+			if (value.staticRepair === "on") {
+			    console.log("<==Repair is on==>");
+                if (value.RepairMod !="0") {
+					statskillblock += ", **Repair**: [d@{Repair}+@{RepairMod}](~tRepairRoll)";
+                }
+				else {
+					statskillblock += ", **Repair**: [d@{Repair}](~tRepairRoll)";
+				}
+			}
+			if (value.staticRiding === "on") {
+			    console.log("<==Riding is on==>");
+                if (value.RidingMod !="0") {
+					statskillblock += ", **Riding**: [d@{Riding}+@{RidingMod}](~tRidingRoll)";
+				
+				}
+				else {
+					statskillblock += ", **Riding**: [d@{Riding}](~tRidingRoll)";
+				}
+			}
+			if (value.staticRitual === "on") {
+			    console.log("<==Ritual is on==>");
+                if (value.RitualMod !="0") {
+					statskillblock += ", **Ritual**: [d@{Ritual}+@{RitualMod}](~tRitualRoll)";
+				
+				}
+				else {
+					statskillblock += ", **Ritual**: [d@{Ritual}](~tRitualRoll)";
+				}
+			}
+			if (value.staticShooting === "on") {
+			    console.log("<==Shooting is on==>");
+                if (value.ShootingMod !="0") {
+					statskillblock += ", **Shooting**: [d@{Shooting}+@{ShootingMod}](~tShootingRoll)";
+				
+				}
+				else {
+					statskillblock += ", **Shooting**: [d@{Shooting}](~tShootingRoll)";
+				}
+			}
+			if (value.staticSpellcasting === "on") {
+			    console.log("<==Spellcasting is on==>");
+                if (value.SpellcastingMod !="0") {
+					statskillblock += ", **Spellcasting**: [d@{Spellcasting}+@{SpellcastingMod}](~tSpellcastingRoll)";
+				
+				}
+				else {
+					statskillblock += ", **Spellcasting**: [d@{Spellcasting}](~tSpellcastingRoll)";
+				}
+			}
+			if (value.staticStealth === "on") {
+			    console.log("<==Stealth is on==>");
+                if (value.StealthMod !="0") {
+					statskillblock += ", **Stealth**: [d@{Stealth}+@{StealthMod}](~tStealthRoll)";
+				
+				}
+				else {
+					statskillblock += ", **Stealth**: [d@{Stealth}](~tStealthRoll)";
+				}
+			}
+			if (value.staticStreetwise === "on") {
+			    console.log("<==Streetwise is on==>");
+                if (value.StreetwiseMod !="0") {
+					statskillblock += ", **Streetwise**: [d@{Streetwise}+@{StreetwiseMod}](~tStreetwiseRoll)";
+				
+				}
+				else {
+					statskillblock += ", **Streetwise**: [d@{Streetwise}](~tStreetwiseRoll)";
+				}
+			}
+			if (value.staticSurvival === "on") {
+			    console.log("<==Survival is on==>");
+                if (value.SurvivalMod !="0") {
+					statskillblock += ", **Survival**: [d@{Survival}+@{SurvivalMod}](~tSurvivalRoll)";
+				
+				}
+				else {
+					statskillblock += ", **Survival**: [d@{Survival}](~tSurvivalRoll)";
+				}
+			}
+			if (value.staticSwimming === "on") {
+			    console.log("<==Swimming is on==>");
+                if (value.SwimmingMod !="0") {
+					statskillblock += ", **Swimming**: [d@{Swimming}+@{SwimmingMod}](~tSwimmingRoll)";
+				
+				}
+				else {
+					statskillblock += ", **Swimming**: [d@{Swimming}](~tSwimmingRoll)";
+				}
+			}
+			if (value.staticTaunt === "on") {
+			    console.log("<==Taunt is on==>");
+                if (value.TauntMod !="0") {
+					statskillblock += ", **Taunt**: [d@{Taunt}+@{TauntMod}](~tTauntRoll)";
+				
+				}
+				else {
+					statskillblock += ", **Taunt**: [d@{Taunt}](~tTauntRoll)";
+				}
+			}
+			if (value.staticThrowing === "on") {
+			    console.log("<==Throwing is on==>");
+                if (value.ThrowingMod !="0") {
+					statskillblock += ", **Throwing**: [d@{Throwing}+@{ThrowingMod}](~tThrowingRoll)";
+				
+				}
+				else {
+					statskillblock += ", **Throwing**: [d@{Throwing}](~tThrowingRoll)";
+				}
+			}
+			if (value.staticTracking === "on") {
+			    console.log("<==Tracking is on==>");
+                if (value.TrackingMod !="0") {
+					statskillblock += ", **Tracking**: [d@{Tracking}+@{TrackingMod}](~tTrackingRoll)";
+				
+				}
+				else {
+					statskillblock += ", **Tracking**: [d@{Tracking}](~tTrackingRoll)";
+				}
+			}
+			if (value.staticWeirdScience === "on") {
+			    console.log("<==WeirdScience is on==>");
+                if (value.WeirdScienceMod !="0") {
+					statskillblock += ", **WeirdScience**: [d@{WeirdScience}+@{WeirdScienceMod}](~tWeirdScienceRoll)";
+				
+				}
+				else {
+					statskillblock += ", **WeirdScience**: [d@{WeirdScience}](~tWeirdScienceRoll)";
+				}
+			}
+			setAttrs({staticSkillBlock: statskillblock});
+	    });
+	});
+	
+	//Set Repeating Skill Statblock information
+	on("change:", function() {
+	    
+	)};
+	
 	//Set Rank according to the XP value
 	on("sheet:opened change:xp change:rank", function() {
 		getAttrs(["xp", "rank", "class"], function(value) {
@@ -1858,7 +2134,8 @@
 				    
 				    <!--Begin Statblock fields-->
 				    <input type='hidden' name='attr_attributesBlock' value='{{Agility=[@{agility_rank}](~tAgilityRoll)}} {{Smarts=[@{smarts_rank}](~tSmartsRoll)}} {{Spirit=[@{spirit_rank}](~tSpiritRoll)}} {{Strength=[@{strength_rank}](~tStrengthRoll)}} {{Vigor=[@{vigor_rank}](~tVigorRoll)}} {{Pace=[&lbrack;&lbrack;@{paceCur}&rbrack;&rbrack;](~Running)}} {{Parry=@{parryCur}}} {{Toughness=[[@{toughnesscur}]](@{toughnessArmor})}}' />
-				    <input type='hidden' name='attr_skillsBlock' value='{{Skills=Fighting&#13;Boating}}' />
+				    <input type='hidden' name='attr_skillsBlock' value='{{Skills=@{staticSkillBlock} }}' />
+				    <input type='hidden' name='attr_staticSkillBlock' />
 				    <!--End Statblock fields-->
 				    
 					<input type="checkbox" class="sheet-useCodeName" name="attr_codename" style="width: 15px; display: none;" />
@@ -10607,12 +10884,11 @@
 	<!-- Roll Template Section -->
 	<rolltemplate class="sheet-rolltemplate-statblock">
 	    <h2 class='sheet-caption'>{{name}} Statblock</h2>
+	    **Pace**: {{Pace}}; **Parry**: {{Parry}}; **Toughness**: {{Toughness}}
 	    <h3 class='sheet-statheader'>Attributes</h3>
 	    **Agility**: {{Agility}}<span class='sheet-showDie' style='font-family: "dicefontd20";'>t</span>, **Smarts**: {{Smarts}}, **Spirit**: {{Spirit}}, **Strength**: {{Strength}}, **Vigor**: {{Vigor}}
 	    <h3 class='sheet-statheader'>Skills</h3>
 	    {{Skills}}
-	    <br />
-	    **Pace**: {{Pace}}; **Parry**: {{Parry}}; **Toughness**: {{Toughness}}
 	    <h3 class='sheet-statheader'>Gear</h3>
 	    <h3 class='sheet-statheader'>Special Abilities</h3>
 	</rolltemplate>
