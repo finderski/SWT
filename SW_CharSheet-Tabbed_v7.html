@@ -689,7 +689,8 @@
 	                const sattrs = {};
 	                for(var i=0; i < idArray.length; i++) {
                         var newrowid = generateRowID();
-                        console.log("***** New Row ID: "+newrowid+" *****");
+                        console.log("~~~~ ConvertRS Iteration " + i + ":: for Section: "+ mookSection + ":: id generated: " + newrowid +" ~~~~");
+                        //console.log("***** New Row ID: "+newrowid+" *****");
                         var mookRF = "repeating_" + mookSection + "_" + idArray[i] + "_m";
                         var wcRF = "repeating_" + wcSection + "_" + newrowid + "_";
                         //For this idArray SectionID value need to get the ATTRS for the entire row and create them
@@ -705,11 +706,12 @@
                             sattrs[putWCRF]=v[getMRF];
                         }
                     }
+                    console.log("##### sattrs: " + JSON.stringify(sattrs) + " #####");
                     setAttrs(sattrs);
 	            });
 	        }
 	        else {
-	            console.log("<===== "+mookSection+" had no rows =====>")
+	            console.log("<===== "+mookSection+" had no rows =====>");
 	        }
 	    });
 	    
@@ -997,13 +999,13 @@
         	        convertRS("mmeleeweapons","meleeweapons",meleeFields,wcmeleeFields);
         	        
         	        var rangeFields = ["RWeaponType","WeaponRange","WeaponRoF","NoDmgDice","RDmgType","RDmgMod","RWeaponWeight","RDmgRaise","rangeWNotes"];
-        	        convertRS("mrangeweapons","rangeweapons",rangeFields,rangeFields);
+	                convertRS("mrangeweapons","rangeweapons",rangeFields,rangeFields);
         	        
         	        var spellsFields = ["Spell","SpellCost","SpellRange","SpellDuration","NoSpllDmgDice","SDmgType","SDmgMod","DmgSpellNotes"];
-        	        convertRS("mdmgspells","dmgspells",spellsFields,spellsFields);
+	                convertRS("mdmgspells","dmgspells",spellsFields,spellsFields);
         	        
         	        var augFields = ["augment","augStrain","augDeets"];
-        	        convertRS("maugmentation","augmentation",augFields,augFields);
+	                convertRS("maugmentation","augmentation",augFields,augFields);
         	        
         	        var talismanFields = ["Talisman","actpen","teffect"];
         	        convertRS("mtalismans","talismans",talismanFields,talismanFields);
@@ -1136,6 +1138,8 @@
 	            else { //character is not a mook and no update is necessary
 	                console.log("**** Character is not a mook...no need to update ****");
 	            }
+	            console.log("**** Initialize Statblock ****");
+	            setAttrs({initializeStatblock: "on"});
 	        });
 	    }
 	    else {
@@ -1145,7 +1149,11 @@
 	};
     
     on('sheet:opened', function() {
-      getAttrs(['character_sheet'], function(v) {
+      getAttrs(['character_sheet','initializeStatblock'], function(v) {
+        if(v.initializeStatblock === '0') {
+            createStatBlock();
+            setAttrs({initializeStatblock: 'on'});
+        }
         console.log("<===== Begin Sheet Upgrade Conversion Process =====>");
         console.log("Sheet Version: " + v.character_sheet.slice(22));
         const version = parseFloat(v.character_sheet.slice(22)) || 0;
@@ -1378,11 +1386,131 @@
    		});
 	});
 	
-	//Set Static Skill Statblock information
+	/*****************************
+	* Skill Block functions
+	*****************************/
+	//Initialize the Statblock
+	function createStatBlock() {
+	   console.log("^^^^Call Function to Create Derived Stats Calcs List^^^^");
+	   derivedStatsBlock();
+	   console.log("^^^^Call Function to Create Static Skills List^^^^");
+	   statSkillBlock();
+	   console.log("^^^^Call Function to Create Repeating Skills List^^^^");
+	   repeatingSkillBlock();
+	   console.log("^^^^Call Function to Create Hindrances List^^^^");
+	   specHindranceBlock();
+	   console.log("^^^^Call Function to Create Edges List^^^^");
+	   specEdgesBlock();
+	   console.log("^^^^Call Function to Create Cybernetics List^^^^");
+	   specCyberBlock();
+	   console.log("^^^^Call Function to Create Rippertech List^^^^");
+	   specRipperBlock();
+	   console.log("^^^^Call Function to Create Armor List^^^^");
+	   gearArmorBlock();
+	   console.log("^^^^Call Function to Create Melee Weapon List^^^^");
+	   gearMeleeBlock();
+	   console.log("^^^^Call Function to Create Ranged Weapon List^^^^");
+	   gearRangedBlock();
+	   console.log("^^^^Call Function to Create Talisman List^^^^");
+	   specTalismanBlock();
+	   console.log("^^^^Call Function to Create Damaging Spell List^^^^");
+	   specDSpellsBlock();
+	   console.log("^^^^Call Function to Create Non-Damaging Spell List^^^^");
+	   specNDSpellsBlock();
+	   console.log("^^^^Set the intial value for Power Points^^^^");
+	   setAttrs({ppString: "Power Points: @{PowerPoints|max}"});
+	   console.log("^^^^All Functions called");
+	}
+	/*on("change:initializeStatblock", function() {
+	   createStatBlock();
+	});*/
 	
-	on("change:staticboating change:staticclimbing change:staticdriving change:staticfaith change:staticgambling change:staticguts change:statichealing change:staticintimidation change:staticinvestigation change:staticlockpicking change:staticnotice change:staticpersuasion change:staticpiloting change:staticpsionics change:staticrepair change:staticriding change:staticritual change:staticshooting change:staticspellcasting change:staticstealth change:staticstreetwise change:staticsurvival change:staticswimming change:statictaunt change:staticthrowing change:statictracking change:staticweirdscience change:fightingmod change:boatingmod change:climbingmod change:drivingmod change:faithmod change:gamblingmod change:gutsmod change:healingmod change:intimidationmod change:investigationmod change:lockpickingmod change:noticemod change:persuasionmod change:pilotingmod change:psionicsmod change:repairmod change:ridingmod change:ritualmod change:shootingmod change:spellcastingmod change:stealthmod change:streetwisemod change:survivalmod change:swimmingmod change:tauntmod change:throwingmod change:trackingmod change:weirdsciencemod", function() {
+	function derivedStatsBlock() {
+	    var dsAcademics = 0;
+        var dsCorruption = 0;
+        var dsFame = 0;
+        var dsFirewall = 0;
+        var dsGlory = 0;
+        var dsGrit = 0;
+        var dsNToughness = 0;
+        var dsReason = 0;
+        var dsSanity = 0;
+        var dsStatus = 0;
+        var dsStrain = 0;
+        var dsStreetCred = 0;
+	    getAttrs(["useacademics","Corruption","potsmFame","izFirewall","hfGlory","DLGrit","neuraltoughness","ripReason","tdsanity","ripStatus","izStrain","izStreetCred"],function(value) {
+	        console.log("^^^Use Academics: "+value.useacademics+"^^^");
+	        console.log("^^^Use Corruption: "+value.Corruption+"^^^");
+	        console.log("^^^Use Fame: "+value.potsmFame+"^^^");
+	        console.log("^^^Use Firewall: "+value.izFirewall+"^^^");
+	        console.log("^^^Use Glory: "+value.hfGlory+"^^^");
+	        console.log("^^^Use Grit: "+value.DLGrit+"^^^");
+	        console.log("^^^Use N Toughness: "+value.neuraltoughness+"^^^");
+	        console.log("^^^Use Reason: "+value.ripReason+"^^^");
+	        console.log("^^^Use Sanity: "+value.tdsanity+"^^^");
+	        console.log("^^^Use Status: "+value.ripStatus+"^^^");
+	        console.log("^^^Use Strain: "+value.izStrain+"^^^");
+	        console.log("^^^Use Street Cred: "+value.izStreetCred+"^^^");
+	        if (value.useacademics != "0") {
+	            dsAcademics = 1;
+	        }
+	        if (value.Corruption != "0") {
+	            dsCorruption = 1;
+	        }
+	        if (value.potsmFame != "0") {
+	            dsFame = 1;
+	        }
+	        if (value.izFirewall != "0") {
+	            dsFirewall = 1;
+	        }
+	        if (value.hfGlory != "0") {
+	            dsGlory = 1;
+	        }
+	        if (value.DLGrit != "0") {
+	            dsGrit = 1;
+	        }
+	        if (value.neuraltoughness != "0") {
+	            dsNToughness = 1;
+	        }
+	        if (value.ripReason != "0") {
+	            dsReason = 1;
+	        }
+	        if (value.tdsanity != "0") {
+	            dsSanity = 1;
+	        }
+	        if (value.ripStatus != "0") {
+	            dsStatus = 1;
+	        }
+	        if (value.izStrain != "0") {
+	            dsStrain = 1;
+	        }
+	        if (value.izStreetCred != "0") {
+	            dsStreetCred = 1;
+	        }
+	        setAttrs({
+	            dsAcademics: dsAcademics,
+                dsCorruption: dsCorruption,
+                dsFame: dsFame,
+                dsFirewall: dsFirewall,
+                dsGlory: dsGlory,
+                dsGrit: dsGrit,
+                dsNToughness: dsNToughness,
+                dsReason: dsReason,
+                dsSanity: dsSanity,
+                dsStatus: dsStatus,
+                dsStrain: dsStrain,
+                dsStreetCred: dsStreetCred
+	        });
+	    });
+	}
+	
+	on("change:useacademics  change:corruption  change:potsmfame  change:izfirewall  change:hfglory  change:dlgrit  change:neuraltoughness  change:ripreason  change:tdsanity  change:ripstatus  change:izstrain  change:izstreetcred", function() {
+	    derivedStatsBlock();
+	});
+	
+	function statSkillBlock() {
 	    var statskillblock = '**Fighting**: [d@{fighting}';
-	    console.log("<==Made it here!!==>")
+	    console.log("<==Creating Core Skills Statblock!!==>");
 	    getAttrs(["FightingMod", "staticBoating", "BoatingMod", "staticClimbing", "ClimbingMod", "staticDriving", "DrivingMod", "staticFaith", "FaithMod", "staticGambling", "GamblingMod", "staticGuts", "GutsMod", "staticHealing", "HealingMod",  "staticIntimidation", "IntimidationMod", "staticInvestigation", "InvestigationMod", "staticLockpicking", "lockpickingMod", "staticNotice", "NoticeMod", "staticPersuasion", "PersuasionMod", "staticPiloting", "PilotingMod", "staticPsionics", "PsionicsMod", "staticRepair", "RepairMod", "staticRiding", "RidingMod", "staticRitual", "RitualMod", "staticShooting", "ShootingMod", "staticSpellcasting", "SpellcastingMod", "staticStealth", "StealthMod", "staticStreetwise", "StreetwiseMod", "staticSurvival", "SurvivalMod", "staticSwimming", "SwimmingMod", "staticTaunt", "TauntMod", "staticThrowing", "ThrowingMod", "staticTracking", "TrackingMod", "staticWeirdScience","WeirdScienceMod"], function(value) {
 	        if (value.FightingMod != "0") {
 	            statskillblock += "+@{FightingMod}](~tFightingRoll)";
@@ -1647,12 +1775,518 @@
 			}
 			setAttrs({staticSkillBlock: statskillblock});
 	    });
+	}
+	 
+	//Set Static Skill Statblock information
+	on("change:staticboating change:staticclimbing change:staticdriving change:staticfaith change:staticgambling change:staticguts change:statichealing change:staticintimidation change:staticinvestigation change:staticlockpicking change:staticnotice change:staticpersuasion change:staticpiloting change:staticpsionics change:staticrepair change:staticriding change:staticritual change:staticshooting change:staticspellcasting change:staticstealth change:staticstreetwise change:staticsurvival change:staticswimming change:statictaunt change:staticthrowing change:statictracking change:staticweirdscience change:fightingmod change:boatingmod change:climbingmod change:drivingmod change:faithmod change:gamblingmod change:gutsmod change:healingmod change:intimidationmod change:investigationmod change:lockpickingmod change:noticemod change:persuasionmod change:pilotingmod change:psionicsmod change:repairmod change:ridingmod change:ritualmod change:shootingmod change:spellcastingmod change:stealthmod change:streetwisemod change:survivalmod change:swimmingmod change:tauntmod change:throwingmod change:trackingmod change:weirdsciencemod", function() {
+	    getAttrs(["initializeStatblock"], function(sbinit) {
+	        if (sbinit.initializeStatblock === "on") {
+	            console.log("Statblock already initialized, update it");
+	            statSkillBlock();
+	        }
+	        else {
+	            console.log("Statblock not initialized, do not update the statblock");
+	        }
+	    });
 	});
 	
 	//Set Repeating Skill Statblock information
-	/*on("change:", function() {
+    function repeatingSkillBlock() {
+        console.log("<==Creating Repeating Skills Statblock!!==>");
+        var repstatblockskill = "";
+        getSectionIDs("repeating_skills", function(skillsarray) {
+            console.log("<==Got Section IDs!!==>");
+            if (skillsarray.length > 0) {
+                console.log("**** Number of Rows in Repeating Skills: " + skillsarray.length +" ****");
+                for(var i=0; i < skillsarray.length; i++) {
+                   console.log("~~~~ Iteration " + i + " ~~~~");
+    	           repstatblockskill += ", **@{repeating_skills_$"+i+"_SkillName}**: [d@{repeating_skills_$"+i+"_SkillNameRank}+@{repeating_skills_$"+i+"_SkillNameMod}](~repeating_skills_$"+i+"_tSkillRoll)";
+    	           /*var skillMod = [];
+    	           skillMod[0] = "repeating_skills_"+idarray[i]+"_SkillNameMod";
+    	           getAttrs(skillMod, (value) => {
+    	               console.log("**** Skill Mod: "+value[skillMod]+" ****");
+    	               if (value[skillMod] != "0") {
+    	                   repstatblockskill += ", **@{repeating_skills_$"+i+"_SkillName}**: [d@{repeating_skills_$"+i+"_SkillNameRank}+@{repeating_skills_$"+i+"_SkillNameMod}](~repeating_skills_$"+i+"_tSkillRoll)";
+    	               }
+    	               else {
+    	                   repstatblockskill += ", **@{repeating_skills_$"+i+"_SkillName}**: [d@{repeating_skills_$"+i+"_SkillNameRank}](~repeating_skills_$"+i+"_tSkillRoll)";
+    	               }
+    	           });*/
+    	        }
+    	        setAttrs({repSkillBlock: repstatblockskill});
+            }
+            else {
+                console.log("!!! No Repeating Rows to Find !!!");
+            }
+        });
+    }
+	 
+    on("change:repeating_skills remove:repeating_skills", function() {
+	    getAttrs(["initializeStatblock"], function(sbinit) {
+	        if (sbinit.initializeStatblock === "on") {
+	            console.log("Statblock already initialized, update it");
+	            //repeatingSkillBlock();
+	            /*getSectionIDs("skills", function(skillsarray) {
+	                console.log("Number of Skills in Repeating Section: " + skillsarray.length);
+	            });*/
+	            repeatingSkillBlock();
+	        }
+	        else {
+	            console.log("Statblock not initialized, do not update the statblock");
+	        }
+	    });
+	});
+	
+	//Set Special Abilities (Hindrances & Edges) for Statblock
+	function specHindranceBlock() {
+        console.log("<==Creating Hindrance Statblock!!==>");
+        /*getSectionIDs("mhindrances", function(midarray) {
+            console.log("****");
+	        console.log("** Number of Mook Hindrances:" + midarray.length);
+	        console.log("****");
+        });*/
+        var specHindrances = "";
+	    var numHindrances = 0;
+	    getSectionIDs("repeating_hindrances", function(idarray) {
+	        numHindrances = idarray.length;
+	        console.log("****");
+	        console.log("** Number of Hindrances:" + numHindrances);
+	        console.log("****");
+	        console.log("####");
+	        console.log("## Hindrance ID Array: " + idarray);
+	        console.log("####");
+	        for(var i=0; i<idarray.length; i++) {
+	            specHindrances += "<li>**@{repeating_hindrances_$"+i+"_hindrance}**: @{repeating_hindrances_$"+i+"_hindrancedescription}</li>";
+	        }
+	       console.log("**** Special Abilities ("+numHindrances+"): "+specHindrances+" ****");
+	       setAttrs({
+	           specHindrances: specHindrances,
+	           numHindrances: numHindrances
+	       });
+	    });
+	}
+	 
+	function specEdgesBlock() {
 	    
-	)};*/
+        console.log("<==Creating Edges Statblock!!==>");
+	    var specEdges = "";
+	    var numEdges = 0;
+	    getSectionIDs("repeating_edges", function(idarray) {
+	        numEdges = idarray.length;
+	        for(var i=0; i<idarray.length; i++) {
+	            specEdges += "<li>**@{repeating_edges_$"+i+"_edge}**: @{repeating_edges_$"+i+"_edgedescription}</li>";
+	        }
+	       console.log("**** Special Abilities ("+numEdges+"): "+specEdges+" ****");
+	       setAttrs({
+	           specEdges: specEdges,
+	           numEdges: numEdges
+	       });
+	    });
+	}
+	
+	function specCyberBlock() {
+	    
+        console.log("<==Creating Cybernetics Statblock!!==>");
+	    var specCyber = "";
+	    var numCyber = 0;
+	    getSectionIDs("repeating_augmentation", function(idarray) {
+	        numEdges = idarray.length;
+	        for(var i=0; i<idarray.length; i++) {
+	            specCyber += "<li>**@{repeating_augmentation_$"+i+"_augment}**: @{repeating_augmentation_$"+i+"_augDeets}</li>";
+	        }
+	       console.log("**** Special Abilities ("+numCyber+"): "+specCyber+" ****");
+	       setAttrs({
+	           specCyber: specCyber,
+	           numCyber: numCyber
+	       });
+	    });
+	}
+	
+	function specRipperBlock() {
+	    
+        console.log("<==Creating Rippertech Statblock!!==>");
+	    var specRipper = "";
+	    var numRipper = 0;
+	    getSectionIDs("repeating_rippertech", function(idarray) {
+	        numRipper = idarray.length;
+	        for(var i=0; i<idarray.length; i++) {
+	            specRipper += "<li>**@{repeating_rippertech_$"+i+"_RTtype}**: @{repeating_rippertech_$"+i+"_RTinfo} [Roll Damage](~repeating_rippertech_$"+i+"_tRTdmgRoll)</li>";
+	        }
+	       console.log("**** Special Abilities ("+numRipper+"): "+specRipper+" ****");
+	       setAttrs({
+	           specRipper: specRipper,
+	           numRipper: numRipper
+	       });
+	    });
+	}
+	
+	on("change:repeating_hindrances remove:repeating_hindrances", function() {
+	    getAttrs(["initializeStatblock"], function(sbinit) {
+	        if (sbinit.initializeStatblock === "on") {
+	            console.log("Statblock already initialized, update it");
+	            specHindranceBlock();
+	        }
+	        else {
+	            console.log("Statblock not initialized, do not update the statblock");
+	        }
+	    });
+	});
+	
+	on("change:repeating_edges remove:repeating_edges", function() {
+	    getAttrs(["initializeStatblock"], function(sbinit) {
+	        if (sbinit.initializeStatblock === "on") {
+	            console.log("Statblock already initialized, update it");
+	            specEdgesBlock();
+	        }
+	        else {
+	            console.log("Statblock not initialized, do not update the statblock");
+	        }
+	    });
+	});
+	
+	on("change:repeating_augmentation remove:repeating_augmentation", function() {
+	    getAttrs(["initializeStatblock"], function(sbinit) {
+	        if (sbinit.initializeStatblock === "on") {
+	            console.log("Statblock already initialized, update it");
+	            specCyberBlock();
+	        }
+	        else {
+	            console.log("Statblock not initialized, do not update the statblock");
+	        }
+	    });
+	});
+	
+	on("change:repeating_rippertech remove:repeating_rippertech", function() {
+	    getAttrs(["initializeStatblock"], function(sbinit) {
+	        if (sbinit.initializeStatblock === "on") {
+	            console.log("Statblock already initialized, update it");
+	            specRipperBlock();
+	        }
+	        else {
+	            console.log("Statblock not initialized, do not update the statblock");
+	        }
+	    });
+	});
+	
+	//
+	//Set up Gear Statblock
+	//
+	//Armor
+	function gearArmorBlock() {
+        console.log("<==Creating Armor Statblock!!==>");
+	    var armorBlock = "";
+	    var armorNum = 0;
+	    getSectionIDs("repeating_armor", function(idarray) {
+	        armorNum += idarray.length;
+	        if (idarray.length > 0) {
+	            for(var i=0; i < idarray.length; i++) {
+    	            if (i === 0) {
+    	                armorBlock += "@{repeating_armor_$"+i+"_ArmorType} (+@{repeating_armor_$"+i+"_ArmorTypeProtection})";
+    	            }
+    	            else {
+    	                armorBlock += ", @{repeating_armor_$"+i+"_ArmorType} (+@{repeating_armor_$"+i+"_ArmorTypeProtection})";
+    	            }
+    	        }
+    	        setAttrs({
+    	            armorBlock: armorBlock,
+    	            armorNum: armorNum
+    	        });
+	        }
+	        else {
+	            setAttrs({
+    	            armorBlock: armorBlock,
+    	            armorNum: armorNum
+    	        });
+	        }
+	        
+	    });
+	}
+	on("change:repeating_armor remove:repeating_armor", function() {
+	    getAttrs(["initializeStatblock"], function(sbinit) {
+	        if (sbinit.initializeStatblock === "on") {
+	            console.log("Statblock already initialized, update it");
+	            gearArmorBlock();
+	        }
+	        else {
+	            console.log("Statblock not initialized, do not update the statblock");
+	        }
+	    });
+	});
+	
+	function gearMeleeBlock() {
+        console.log("<==Creating Repeating Melee Statblock!!==>");
+        getSectionIDs("repeating_meleeweapons", function(mweaparray) {
+            console.log("<==Got Section IDs!!==>");
+            if (mweaparray.length > 0) {
+                var meleeNum = mweaparray.length;
+                console.log("**** Number of Rows in Repeating Melee Weapons: " + mweaparray.length +" ****");
+                var weapmods = [];
+                for (var i=0; i < mweaparray.length; i++) {
+                    console.log("Created entry for Weapon Mods list");
+                    weapmods[weapmods.length] = "repeating_meleeweapons_"+mweaparray[i]+"_MDmgMod";
+                }
+                weapmods[weapmods.length] = "armorNum";
+                getAttrs(weapmods, function(value) {
+                    console.log("Got the attribute Values");
+                    //var armorNum = weapmods[weapmods.length];
+                    console.log("armorNum value: " + value.armorNum);
+                    if (value.armorNum > 0) {
+                        var repstatblockmelee = ", ";
+                    }
+                    else {
+                        var repstatblockmelee = "";
+                    }
+                    for(var i=0; i < mweaparray.length; i++) {
+                       if (i > 0) {
+                           repstatblockmelee +=", ";
+                       }
+                       var curMod = weapmods[i];
+                       console.log("~~~~ Iteration " + i + " ~~~~");
+    	               console.log("**** Skill Mod: "+value[curMod]+" ****");
+    	               if (value[curMod] != "0") {
+    	                   repstatblockmelee += "**@{repeating_meleeweapons_$"+i+"_WeaponType}**: [STR+@{repeating_meleeweapons_$"+i+"_MeleeDieNum}d@{repeating_meleeweapons_$"+i+"_DmgType}+@{repeating_meleeweapons_$"+i+"_MDmgMod}](~repeating_meleeweapons_$"+i+"_tMeleeWeapon)";
+    	               }
+    	               else {
+    	                   repstatblockmelee += "**@{repeating_meleeweapons_$"+i+"_WeaponType}**: [STR+@{repeating_meleeweapons_$"+i+"_MeleeDieNum}d@{repeating_meleeweapons_$"+i+"_DmgType}](~repeating_meleeweapons_$"+i+"_tMeleeWeapon)";
+    	               }
+        	        }
+        	        setAttrs({meleeBlock: repstatblockmelee,
+        	                  meleeNum: meleeNum
+        	        });
+                });
+                
+            }
+            else {
+                console.log("!!! No Repeating Rows to Find !!!");
+                setAttrs({meleeBlock: "",
+                          meleeNum: 0});
+            }
+        });
+    }
+    
+    on("change:repeating_meleeweapons:weapontype change:repeating_meleeweapons:mdmgmod change:repeating_meleeweapons:meleedienum remove:repeating_meleeweapons change:armorNum", function() {
+	    getAttrs(["initializeStatblock"], function(sbinit) {
+	        if (sbinit.initializeStatblock === "on") {
+	            console.log("Statblock already initialized, update it");
+	            gearMeleeBlock();
+	        }
+	        else {
+	            console.log("Statblock not initialized, do not update the statblock");
+	        }
+	    });
+	});
+	
+	function gearRangedBlock() {
+        console.log("<==Creating Repeating Ranged Statblock!!==>");
+        getSectionIDs("repeating_rangeweapons", function(rweaparray) {
+            console.log("<==Got Section IDs!!==>");
+            if (rweaparray.length > 0) {
+                var rangeNum = rweaparray.length;
+                console.log("**** Number of Rows in Repeating Range Weapons: " + rweaparray.length +" ****");
+                var weapmods = [];
+                for (var i=0; i < rweaparray.length; i++) {
+                    console.log("Created entry for Weapon Mods list");
+                    weapmods[weapmods.length] = "repeating_meleeweapons_"+rweaparray[i]+"_RDmgMod";
+                }
+                weapmods[weapmods.length] = "armorNum";
+                weapmods[weapmods.length] = "meleeNum";
+                getAttrs(weapmods, function(value) {
+                    console.log("Got the attribute Values");
+                    //var armorNum = weapmods[weapmods.length];
+                    console.log("armorNum value: " + value.armorNum);
+                    gearNum = value.armorNum + value.meleeNum;
+                    if (gearNum > 0) {
+                        var repstatblockrange = ", ";
+                    }
+                    else {
+                        var repstatblockrange = "";
+                    }
+                    for(var i=0; i < rweaparray.length; i++) {
+                       if (i > 0) {
+                           repstatblockrange +=", ";
+                       }
+                       var curMod = weapmods[i];
+                       console.log("~~~~ Iteration " + i + " ~~~~");
+    	               console.log("**** Skill Mod: "+value[curMod]+" ****");
+    	               if (value[curMod] != "0") {
+    	                   repstatblockrange += "**@{repeating_rangeweapons_$"+i+"_RWeaponType}**: [@{repeating_rangeweapons_$"+i+"_NoDmgDice}@{repeating_rangeweapons_$"+i+"_RDmgType}+@{repeating_rangeweapons_$"+i+"_RDmgMod}](~repeating_rangeweapons_$"+i+"_tRangeWeaponRoll)";
+    	               }
+    	               else {
+    	                   repstatblockrange += "**@{repeating_rangeweapons_$"+i+"_RWeaponType}**: [@{repeating_rangeweapons_$"+i+"_NoDmgDice}@{repeating_rangeweapons_$"+i+"_RDmgType}](~repeating_rangeweapons_$"+i+"_tRangeWeaponRoll)";
+    	               }
+        	        }
+        	        setAttrs({rangeBlock: repstatblockrange,
+        	                  rangeNum: rangeNum
+        	        });
+                });
+                
+            }
+            else {
+                console.log("!!! No Repeating Rows to Find !!!");
+                setAttrs({rangeBlock: "",
+        	                  rangeNum: 0
+        	    });
+            }
+        });
+    }
+    
+    on("change:meleeNum change:armorNum change:repeating_rangeweapons:rdmgmod change:repeating_rangeweapons:nodmgdice change:repeating_rangeweapons:rweapontype change:repeating_rangeweapons:rdmgtype remove:repeating_rangeweapons ", function() {
+	    getAttrs(["initializeStatblock"], function(sbinit) {
+	        if (sbinit.initializeStatblock === "on") {
+	            console.log("Statblock already initialized, update it");
+	            gearRangedBlock();
+	        }
+	        else {
+	            console.log("Statblock not initialized, do not update the statblock");
+	        }
+	    });
+	});
+	
+	function specTalismanBlock() {
+        console.log("<==Creating Talisman Statblock!!==>");
+	    var specTalisman = "";
+	    var numTalisman = 0;
+	    getSectionIDs("repeating_talismans", function(idarray) {
+	        numTalisman = idarray.length;
+	        for(var i=0; i<idarray.length; i++) {
+	            specTalisman += "<li>**@{repeating_talismans_$"+i+"_Talisman} (@{repeating_talismans_$"+i+"_actpen})**: @{repeating_talismans_$"+i+"_teffect} [Activate](~repeating_talismans_$"+i+"_tActivation)</li>";
+	        }
+	       console.log("**** Talismans ("+numTalisman+"): "+specTalisman+" ****");
+	       setAttrs({
+	           specTalisman: specTalisman,
+	           numTalisman: numTalisman
+	       });
+	    });
+	}
+	
+	on("change:repeating_talismans:talisman remove:repeating_talismans", function() {
+	    getAttrs(["initializeStatblock"], function(sbinit) {
+	        if (sbinit.initializeStatblock === "on") {
+	            console.log("Statblock already initialized, update it");
+	            specTalismanBlock();
+	        }
+	        else {
+	            console.log("Statblock not initialized, do not update the statblock");
+	        }
+	    });
+	});
+	
+	function specDSpellsBlock() {
+        console.log("<==Creating Damaging Spell Statblock!!==>");
+	    var specDSpells = "";
+	    var numDSpells = 0;
+	    getSectionIDs("repeating_dmgspells", function(idarray) {
+	        numDSpells = idarray.length;
+	        for(var i=0; i<idarray.length; i++) {
+	            specDSpells += "<li>**@{repeating_dmgspells_$"+i+"_Spell}**: @{repeating_dmgspells_$"+i+"_DmgSpellNotes} [Roll Damage](~repeating_dmgspells_$"+i+"_tSpell)</li>";
+	        }
+	       console.log("**** Special Abilities ("+numDSpells+"): "+specDSpells+" ****");
+	       setAttrs({
+	           specDSpells: specDSpells,
+	           numDSpells: numDSpells
+	       });
+	    });
+	}
+	
+	function specNDSpellsBlock() {
+        console.log("<==Creating Non-Damaging Spell Statblock!!==>");
+	    var specNDSpells = "";
+	    var numNDSpells = 0;
+	    getSectionIDs("repeating_ndspells", function(idarray) {
+	        numDSpells = idarray.length;
+	        for(var i=0; i<idarray.length; i++) {
+	            specNDSpells += "<li>**@{repeating_ndspells_$"+i+"_NDSpell}**: @{repeating_ndspells_$"+i+"_NDSpellNotes}</li>";
+	        }
+	       console.log("**** Special Abilities ("+numNDSpells+"): "+specNDSpells+" ****");
+	       setAttrs({
+	           specNDSpells: specNDSpells,
+	           numNDSpells: numNDSpells
+	       });
+	    });
+	}
+	
+	on("change:repeating_dmgspells:spell remove:repeating_dmgspells", function() {
+	    getAttrs(["initializeStatblock"], function(sbinit) {
+	        if (sbinit.initializeStatblock === "on") {
+	            console.log("Statblock already initialized, update it");
+	            //create string for Damaging Spells
+	            specDSpellsBlock();
+	        }
+	        else {
+	            console.log("Statblock not initialized, do not update the statblock");
+	        }
+	    });
+	});
+	
+	on("change:repeating_ndspells:ndspell remove:repeating_ndspells", function() {
+	    getAttrs(["initializeStatblock"], function(sbinit) {
+	        if (sbinit.initializeStatblock === "on") {
+	            console.log("Statblock already initialized, update it");
+	            //create string for Damaging Spells
+	            specNDSpellsBlock();
+	        }
+	        else {
+	            console.log("Statblock not initialized, do not update the statblock");
+	        }
+	    });
+	});
+	
+	on("change:ppe change:useisp change:nopprule change:usepowertypes change:magictype change:powerpoints_max change:innerstrpts_max", function() {
+	    var powerType = "";
+	    var ppString = "";
+	    getAttrs(["initializeStatblock","ppe","useISP","NoPPRule","usePowerTypes","magictype"], function(sbinit) {
+	        if (sbinit.usePowerTypes === "0") { //Does not use Power Types
+	            powerType = "Spells";
+	        }
+	        else {
+	            //determine the power type
+	            console.log("***Power Type: "+sbinit.magictype+" ***");
+	            switch(sbinit.magictype) {
+	                case '1': 
+	                    powerType = 'Miracles';
+	                    break;
+	                case '2': 
+	                    powerType = 'Psionic Powers';
+	                    break;
+	                case '3': 
+	                    powerType = 'Spells';
+	                    break;
+	                case '4': 
+	                    powerType = 'Rituals';
+	                    break;
+	                case '5': 
+	                    powerType = 'Weird Science Gadgets';
+	                    break;
+	            }
+	        }
+	        if (sbinit.initializeStatblock === "on") {
+	            console.log("Statblock already initialized, update it");
+	            if (sbinit.NoPPRule === "0") { //is using Power Points...
+	                if (sbinit.ppe === "0") { //Not using PPE
+    	                ppString += "Power Points: @{PowerPoints|max}";
+    	            }
+    	            else {
+    	                ppString += "PPE: @{PowerPoints|max}";
+    	            }
+    	            if(sbinit.useISP === "0") { //Not using ISP
+    	                console.log("** Not using ISP **");
+    	            }
+    	            else {
+    	                ppString += "; ISP: @{InnerStrPts|max}";
+    	            }
+	            }
+	            else { //Not using Power Points
+	                console.log("** Not using Power Points **");
+	            }
+	        }
+	        else {
+	            console.log("Statblock not initialized, do not update the statblock");
+	        }
+	        setAttrs({ppString: ppString,
+	                  powerType: powerType
+	        });
+	    });
+	});
 	
 	//Set Rank according to the XP value
 	on("sheet:opened change:xp change:rank", function() {
@@ -2096,35 +2730,16 @@
 		<input type="radio" class="sheet-useBackground" style="display: none;" name="attr_background" value="12" />
 		<!-- Be sure to update the CSS with the file information) -->
 		<div class='sheet-background'>
-		    <!-- Release Notes Info for New Buttons -->
-			<!--<input type='checkbox' class='sheet-Dismiss' style='display: none;' name='attr_dismissRN' value='1' />
-			<div class='sheet-row sheet-CSRelease' style='width: 100%; padding-top: 5px; padding-bottom: 5px;'>
-		        <label style='width: 100%; display: inline-block;'>
-		        <input type='checkbox' class='sheet-releasenotes' style='opacity: 100%;' name='attr_releasenotes' value='1' /><span class='sheet-releasenotes' style='color: red;'><h3 style='display: inline-block; color: red;'>!! Important Notice !!</h3></span></label>
-		        <input type='checkbox' class='sheet-releasenotes' style='display: none;' name='attr_releasenotes' value='1' />
-		        <div class='sheet-row sheet-releasenotes' style='width: 100%; padding: 0px; margin: 0px'>
-		            <input type='checkbox' class='sheet-Dismiss' name='attr_dismissRN' value='1' /><span class='sheet-Dismiss'>&nbsp;&nbsp;Dismiss</span>
-		            
-		            <p>
-		                In the near future a potentially character sheet breaking update will be rolled to production.  This change is necessary to make the maintenance of the sheet less time consuming, less resource intensive, and allow universal macros for Wild Cards and Mooks.  To minimize the potential for catastrophic impacts to games, I'm inviting anyone who is concerned to join my Test/QA game at: <br /><br />
-		                https://tinyurl.com/SWTabbedQA<br /><br />
-		                That game allows characters to be imported from the Character Vault. The characters potentially impacted by the upcoming changes will be Mooks; Wild Cards should be unaffected by these changes.<br /><br />
-		                If you have other questions, feel free to drop by the above linked game and leave a message in the forum, or you can PM me. My profile is:<br /><br />
-		                https://app.roll20.net/users/173448/finderski<br /><br />
-		                To hide this message, simply click on the downward pointing triangle above this message.
-		            </p>
-		        </div>
-			</div>-->
-			<!-- End Release Notes Info for New Buttons -->
 			<!-- Mook or Wild Card Header -->
 			<div class='sheet-row' style='width: 100%;'>
 			    <input type='checkbox' class='sheet-Shaken' name='attr_isShaken' style='display: none;' />
 			    <input class="sheet-is-npc" style='display: none;' type="checkbox" name="attr_is_npc" value="1" />
-			    <h2 class='sheet-charTypeWC'>Wild Card</h2>
-			    <h2 class='sheet-charTypeMook'>Mook</h2>
+			    <h2 class='sheet-charTypeWC' data-i18n="wild-card-header">Wild Card</h2>
+			    <h2 class='sheet-charTypeMook' data-i18n="mook-header">Mook</h2>
 			</div>
 			<!-- End Mook or Wild Card Header -->
-			<button type='roll' name='attr_Statblock' style='margin-top: -55px; margin-left: 20px;' value='/w gm &{template:statblock} {{name=@{character_name}}} @{attributesBlock} @{skillsBlock}'>Stat Block</button><br />
+			<input class='sheet-sbButtonCheck' type='checkbox' style='display: none;' name='attr_initializeStatblock' />
+			<button type='roll' data-i18n="stat-block-button" class='sheet-sbButton' name='attr_Statblock' style='margin-top: -55px; margin-left: 20px;' value='/w gm &{template:statblock} {{name=@{character_name}}} {{WCI=@{WCI}}} {{mook=[[1d0+@{wdNum}]]}} @{attributesBlock} @{skillsBlock} @{gearBlock} {{SpecAbilities=@{specHindrances}@{specEdges}@{specCyber}@{specRipper}}} {{NumSpecAbilities=[[1d0+[[@{numHindrances}+@{numEdges}+@{numCyber}+@{numRipper}]]]]}} {{NumGear=[[1d0+[[@{armorNum}+@{meleeNum}+@r{rangeNum}]]]]}} {{NumSpells=[[1d0+[[@{numDSpells}+@{numNDSpells}]] ]] }} {{NumTalismans=[[1d0+@{numTalisman}]]}} {{dsAcademics=[[1d0+@{dsAcademics}]]}} {{dsCorruption=[[1d0+@{dsCorruption}]]}} {{dsFame=[[1d0+@{dsFame}]]}} {{dsFirewall=[[1d0+@{dsFirewall}]]}} {{dsGlory=[[1d0+@{dsGlory}]]}} {{dsGrit=[[1d0+@{dsGrit}]]}} {{dsNToughness=[[1d0+@{dsNToughness}]]}} {{dsReason=[[1d0+@{dsReason}]]}} {{dsSanity=[[1d0+@{dsSanity}]]}} {{dsStatus=[[1d0+@{dsStatus}]]}} {{dsStrain=[[1d0+@{dsStrain}]]}} {{dsStreetCred=[[1d0+@{dsStreetCred}]]}}'>Stat Block</button><br />
 			<div class='sheet-3colrow' style='padding-top: 5px; margin-left: 30px;'>
 				<div class='sheet-col' style='margin-right: 20px;'>
 					<input type="checkbox" class="sheet-useCodeName" name="attr_codename" style="width: 15px; display: none;" />
@@ -2133,9 +2748,49 @@
 				<div class='sheet-col' style='margin-right: 20px;'>
 				    
 				    <!--Begin Statblock fields-->
-				    <input type='hidden' name='attr_attributesBlock' value='{{Agility=[@{agility_rank}](~tAgilityRoll)}} {{Smarts=[@{smarts_rank}](~tSmartsRoll)}} {{Spirit=[@{spirit_rank}](~tSpiritRoll)}} {{Strength=[@{strength_rank}](~tStrengthRoll)}} {{Vigor=[@{vigor_rank}](~tVigorRoll)}} {{Pace=[&lbrack;&lbrack;@{paceCur}&rbrack;&rbrack;](~Running)}} {{Parry=@{parryCur}}} {{Toughness=[[@{toughnesscur}]](@{toughnessArmor})}}' />
-				    <input type='hidden' name='attr_skillsBlock' value='{{Skills=@{staticSkillBlock} }}' />
-				    <input type='hidden' name='attr_staticSkillBlock' />
+				    <input type='hidden' name='attr_attributesBlock' value='{{Description=@{physdescription}}} {{Agility=[@{agility_rank}](~tAgilityRoll)}} {{Smarts=[@{smarts_rank}](~tSmartsRoll)}} {{Spirit=[@{spirit_rank}](~tSpiritRoll)}} {{Strength=[@{strength_rank}](~tStrengthRoll)}} {{Vigor=[@{vigor_rank}](~tVigorRoll)}} {{Pace=[&lbrack;&lbrack;@{paceCur}&rbrack;&rbrack;](~Running)}} {{Parry=@{parryCur}}} {{Toughness=[[@{toughnesscur}]](@{toughnessArmor})}} {{PPString=@{ppString} }} {{pType=@{powerType} }} {{Spells=@{specDSpells}@{specNDSpells} }} {{Talismans=@{specTalisman} }} {{Academics=[[@{academicsCur}]]}} {{Sanity=[[@{sanityCur}]]}} {{Charisma=[[@{charismaCur}]]}} {{Fame=[[@{fameCur}]]}} {{Reason=[[@{reasonCur}]]}} {{Status=[[@{statusCur}]]}} {{Glory=[[@{gloryCur}]]}} {{Firewall=[[@{FirewallCur}]]}} {{Grit=[[@{gritCur}]]}} {{NToughness=[[@{ntoughnesscur}]](@{ntoughnessArmor})}} {{Corruption=[[@{corruptionCur}]]}} {{StreetCred=[[@{StreetCredCur}]]}} {{Strain=[[@{StrainCur}]]}} {{StrainMax=@{Strain|max}}}' />
+				    <input type='hidden' name='attr_skillsBlock' value='{{Skills=@{staticSkillBlock}@{repSkillBlock} }}' />
+				    <input type='hidden' name='attr_staticSkillBlock' value='' />
+				    <input type='hidden' name='attr_repSkillBlock' value='' />
+				    <!--<input type='hidden' name='attr_SpecAbilitiesBlock' value='{{NumSpecAbilities=[[1d10+2]] }} {{SpecAbilities=<ul>@{specHindrances}@{specEdges}@{specCyber}@{specRipper}</ul>}}' />-->
+				    <input type='hidden' name='attr_specHindrances' value='' />
+				    <input type='hidden' name='attr_numHindrances' value='0' />
+				    <input type='hidden' name='attr_specEdges' value='' />
+				    <input type='hidden' name='attr_numEdges' value='0' />
+				    <input type='hidden' name='attr_specCyber' value='' />
+				    <input type='hidden' name='attr_numCyber' value='0' />
+				    <input type='hidden' name='attr_specRipper' value='' />
+				    <input type='hidden' name='attr_numRipper' value='0' />
+				    <input type='hidden' name='attr_gearBlock' value='{{Gear=@{armorBlock}@{meleeBlock}@{rangeBlock} }}' />
+				    <input type='hidden' name='attr_armorBlock' value='' />
+				    <input type='hidden' name='attr_armorNum' value='0' />
+				    <input type='hidden' name='attr_meleeBlock' value='' />
+				    <input type='hidden' name='attr_meleeNum' value='0' />
+				    <input type='hidden' name='attr_rangeNum' value='0' />
+				    <input type='hidden' name='attr_rangeBlock' value='' />
+				    <input type='hidden' name='attr_rangeNum' value='0' />
+				    <input type='hidden' name='attr_numTalisman' value='0' />
+				    <input type='hidden' name='attr_specTalisman' value='' />
+				    <input type='hidden' name='attr_powerType' value='' />
+				    <!--<input type='hidden' name='attr_specSpellsBlock' value='{{PPString=@{ppString} }} {{pType=@{powerType} }} {{Spells=@{specDSpells}@{specNDSpells} }}' />-->
+				    <input type='hidden' name='attr_numDSpells' value='0' />
+				    <input type='hidden' name='attr_specDSpells' value='' />
+				    <input type='hidden' name='attr_numNDSpells' value='0' />
+				    <input type='hidden' name='attr_specNDSpells' value='' />
+				    <input type='hidden' name='attr_ppString' value='' />
+				    <!-- Additional Derived Stats -->
+				    <input type='hidden' name='attr_dsAcademics' value='0' />
+				    <input type='hidden' name='attr_dsCorruption' value='0' />
+				    <input type='hidden' name='attr_dsFame' value='0' />
+				    <input type='hidden' name='attr_dsFirewall' value='0' />
+				    <input type='hidden' name='attr_dsGlory' value='0' />
+				    <input type='hidden' name='attr_dsGrit' value='0' />
+				    <input type='hidden' name='attr_dsNToughness' value='0' />
+				    <input type='hidden' name='attr_dsReason' value='0' />
+				    <input type='hidden' name='attr_dsSanity' value='0' />
+				    <input type='hidden' name='attr_dsStatus' value='0' />
+				    <input type='hidden' name='attr_dsStrain' value='0' />
+				    <input type='hidden' name='attr_dsStreetCred' value='0' />
 				    <!--End Statblock fields-->
 				    
 					<input type="checkbox" class="sheet-useCodeName" name="attr_codename" style="width: 15px; display: none;" />
@@ -2470,6 +3125,17 @@
     							</div>
     						</div>
     					</div>
+    					<input class='sheet-sbButtonCheck' type='checkbox' style='display: none;' name='attr_initializeStatblock' />
+						<label class='sheet-isbButton' style='cursor: pointer; width: 150px;'>Initilize Statblock<input type='checkbox' style='display: none;' name='attr_initializeStatblock' /></label>
+						<div class='sheet-row'>
+						    <span data-i18n="wild-card-icon">Wild Card Icon</span>: <select name='attr_WCI' size="1" style="font-size: 1.5em; width: 50px; border: none;">
+						        <option value="⊛">⊛</option>
+						        <option value="✪">✪</option>
+						        <option value="♕">♕</option>
+						        <option value="†">†</option>
+						        <option value="༒">༒</option>
+						    </select>
+						</div>
     				</div>
 					
 					<hr />
@@ -2482,6 +3148,31 @@
 						<span title="Roll for extra experience based on the Bennies remaining"><input type='checkbox' name='attr_bennies' class='sheet-Bennies' value='2' />Roll for extra XP for remaining Bennies</span><br />
 						<span title="Roll for extra experience based on the Bennies used"><input type='checkbox' name='attr_bennies' class='sheet-Bennies' value='1' />Roll for extra XP for Bennies used</span><br />
 					</div>
+					
+					<div class='sheet-row'>
+					    <h4 class='sheet-subsectionHeader'>Release Notes</h4>
+					    <!-- Release Notes Info for New Buttons -->
+					    <!--<input type='checkbox' class='sheet-Dismiss' style='display: none;' name='attr_dismissRN' value='1' />
+            			<div class='sheet-row sheet-CSRelease' style='width: 100%; padding-top: 5px; padding-bottom: 5px;'>
+            		        <label style='width: 100%; display: inline-block;'>
+            		        <input type='checkbox' class='sheet-releasenotes' style='opacity: 100%;' name='attr_releasenotes' value='1' /><span class='sheet-releasenotes' style='color: red;'><h3 style='display: inline-block; color: red;'>!! Important Notice !!</h3></span></label>
+            		        <input type='checkbox' class='sheet-releasenotes' style='display: none;' name='attr_releasenotes' value='1' />
+            		        <div class='sheet-row sheet-releasenotes' style='width: 100%; padding: 0px; margin: 0px'>
+            		            <input type='checkbox' class='sheet-Dismiss' name='attr_dismissRN' value='1' /><span class='sheet-Dismiss'>&nbsp;&nbsp;Dismiss</span>
+            		            
+            		            <p>
+            		                In the near future a potentially character sheet breaking update will be rolled to production.  This change is necessary to make the maintenance of the sheet less time consuming, less resource intensive, and allow universal macros for Wild Cards and Mooks.  To minimize the potential for catastrophic impacts to games, I'm inviting anyone who is concerned to join my Test/QA game at: <br /><br />
+            		                https://tinyurl.com/SWTabbedQA<br /><br />
+            		                That game allows characters to be imported from the Character Vault. The characters potentially impacted by the upcoming changes will be Mooks; Wild Cards should be unaffected by these changes.<br /><br />
+            		                If you have other questions, feel free to drop by the above linked game and leave a message in the forum, or you can PM me. My profile is:<br /><br />
+            		                https://app.roll20.net/users/173448/finderski<br /><br />
+            		                To hide this message, simply click on the downward pointing triangle above this message.
+            		            </p>
+            		        </div>
+            			</div>-->
+            			<!-- End Release Notes Info for New Buttons -->
+					</div>
+        			
 					
 				</div> <!-- END CONFIGURATION -->
 				<!--                       -->
@@ -7829,6 +8520,14 @@
 								<button class="sheet-normalbutton" type='roll' name='roll_SpellcastingRoll' title="@{SpellcastingRoll}" value='/em @{character_name} attempts to throw and rolls @{rollSpellcasting}!' style="font-size: 1em;"> Spellcasting</button><button class="sheet-normalbutton sheet-GM-button" type='roll' name='roll_gmSpellcastingRoll' title="@{gmSpellcastingRoll}" value='/w gm @{character_name} attempts to throw and rolls @{rollSpellcasting}!' style="font-size: 1em;"></button>
 								&nbsp;&nbsp;
 							</div>
+							
+							<input class="sheet-StaticSkill" type="checkbox" name="attr_staticWeirdScience" style='display:none;' />
+							<div class="sheet-staticWeirdScience">
+								<input class="sheet-buttonbox" type="checkbox" name="attr_skillrt" value="0" style="display:none;" /> 
+								<button class="sheet-templatebutton" type='roll' name='roll_tWeirdScienceRoll' title="@{tWeirdScienceRoll}" value='@{skillrt} @{defsTemplate} @{rolltWeirdScience}' style="font-size: 1em;"> Weird Science</button><button class="sheet-templatebutton sheet-GM-button" type='roll' name='roll_tgmWeirdScienceRoll' title="@{tgmWeirdScienceRoll}" value='/w gm @{skillrt} @{defsTemplate} @{rolltWeirdScience}' style="font-size: 1em;"></button>
+								<button class="sheet-normalbutton" type='roll' name='roll_WeirdScienceRoll' title="@{WeirdScienceRoll}" value='/em @{character_name} attempts some weird science and rolls @{rollWeirdScience}!' style="font-size: 1em;"> Weird Science</button><button class="sheet-normalbutton sheet-GM-button" type='roll' name='roll_gmWeirdScienceRoll' title="@{gmWeirdScienceRoll}" value='/w gm @{character_name} attempts some weird science and rolls @{rollWeirdScience}!'  style="font-size: 1em;"></button>
+								&nbsp;&nbsp;
+							</div>
 						</div>
 						<!-- End Skill Roll Buttons -->
 						<!--<br />-->
@@ -8748,7 +9447,7 @@
 							<label style='width:145px;'>Iconic Framework:</label><input class="sheet-basicstandard" type="text" name="attr_mIF" title="@{mIF}" placeholder='Iconic Framework' />
 						</div><br />
 						<label style='width:145px;'>Trait Test Modifier:</label><input type="number" name="attr_mttmod" title="@{mttmod}" style='margin-left:4px;' value="0"/>&nbsp;&nbsp;&nbsp;&nbsp;
-						<label style='width:145px;'>Damage Modifier:</label><input type="number" name="attr_mdmgmod" title="@{mdmgmod}" style='margin-left:4px;' value="0"/><br />
+						<!--<label style='width:145px;'>Damage Modifier:</label><input type="number" name="attr_mdmgmod" title="@{mdmgmod}" style='margin-left:4px;' value="0"/><br />-->
 						<!-- Hidden modifier summary fields -->
 						<input type="number" style="display: none;" name="attr_mModSum" title="@{mModSum}" disabled value="@{mttmod}-@{mwoundsMod}-@{mfatigue}"/>
 						<input type="number" style="display: none;" name="attr_mModSumEnc" title="@{mModSumEnc}" disabled value="@{mttmod}-@{mwoundsMod}-@{mfatigue}+@{mModSumEnc}"/>
@@ -10883,14 +11582,35 @@
 	
 	<!-- Roll Template Section -->
 	<rolltemplate class="sheet-rolltemplate-statblock">
-	    <h2 class='sheet-caption'>{{name}} Statblock</h2>
-	    **Pace**: {{Pace}}; **Parry**: {{Parry}}; **Toughness**: {{Toughness}}
+	    <!---{{#^rollTotal() mook 0}}<img src='http://www.geeksville.us/roll20/WildCardIcon-black.png' style='height: auto; border:0; margin-bottom: -8px; position: relative; width: 35px;' alt='Dead Jester Logo by geno sulum' />{{/^rollTotal() mook 0}}<h2 class='sheet-caption' style='display: inline-block;'>{{name}} Statblock</h2><br />-->
+	    <h2 class='sheet-caption'>{{#^rollTotal() mook 0}}{{WCI}}{{/^rollTotal() mook 0}} {{name}} Statblock</h2>
+	    {{#Description}}{{Description}}<br />{{/Description}}
+	    **Pace**: {{Pace}}; **Parry**: {{Parry}}; **Toughness**: {{Toughness}}; **Charisma**: {{Charisma}}{{#^rollTotal() dsAcademics 0}}; **Academics**: {{Academics}}{{/^rollTotal() dsAcademics 0}}{{#^rollTotal() dsCorruption 0}}; **Corruption**: {{Corruption}}{{/^rollTotal() dsCorruption 0}}{{#^rollTotal() dsFame 0}}; **Fame**: {{Fame}}{{/^rollTotal() dsFame 0}}{{#^rollTotal() dsFirewall 0}}; **Firewall**: {{Firewall}}{{/^rollTotal() dsFirewall 0}}{{#^rollTotal() dsGlory 0}}; **Glory**: {{Glory}}{{/^rollTotal() dsGlory 0}}{{#^rollTotal() dsGrit 0}}; **Grit**: {{Grit}}{{/^rollTotal() dsGrit 0}}{{#^rollTotal() dsNToughness 0}}; **Neural Toughness**: {{NToughness}}{{/^rollTotal() dsNToughness 0}}{{#^rollTotal() dsReason 0}}; **Reason**: {{Reason}}{{/^rollTotal() dsReason 0}}{{#^rollTotal() dsSanity 0}}; **Sanity**: {{Sanity}}{{/^rollTotal() dsSanity 0}}{{#^rollTotal() dsStatus 0}}; **Status**: {{Status}}{{/^rollTotal() dsStatus 0}}{{#^rollTotal() dsStrain 0}}; **Strain (max={{StrainMax}})**: {{Strain}}{{/^rollTotal() dsStrain 0}}{{#^rollTotal() dsStreetCred 0}}; **Street Cred**: {{StreetCred}}{{/^rollTotal() dsStreetCred 0}}
 	    <h3 class='sheet-statheader'>Attributes</h3>
 	    **Agility**: {{Agility}}<span class='sheet-showDie' style='font-family: "dicefontd20";'>t</span>, **Smarts**: {{Smarts}}, **Spirit**: {{Spirit}}, **Strength**: {{Strength}}, **Vigor**: {{Vigor}}
 	    <h3 class='sheet-statheader'>Skills</h3>
 	    {{Skills}}
-	    <h3 class='sheet-statheader'>Gear</h3>
-	    <h3 class='sheet-statheader'>Special Abilities</h3>
+	    {{#^rollTotal() NumGear 0}}
+	        <h3 class='sheet-statheader'>Gear</h3>
+	        {{Gear}}
+	    {{/^rollTotal() NumGear 0}}
+	    {{#^rollTotal() NumTalismans 0}}
+	        <h3 class='sheet-statheader'>Talismans</h3>
+	        {{Talismans}}
+	    {{/^rollTotal() NumTalismans 0}}
+	    {{#^rollTotal() NumSpecAbilities 0}}
+	        <h3 class='sheet-statheader'>Special Abilities</h3>
+	        <ul style='text-indent: -.05em;'>
+	        {{SpecAbilities}}
+	        </ul>
+	    {{/^rollTotal() NumSpecAbilities 0}}
+	    {{#rollGreater() NumSpells 0}}
+	        <h3 class='sheet-statheader'>{{pType}}</h3>
+	        {{PPString}}
+	        <ul style='text-indent: -.05em;'>
+	        {{Spells}}
+	        </ul>
+	    {{/rollGreater() NumSpells 0}}
 	</rolltemplate>
 	
 	<rolltemplate class="sheet-rolltemplate-spadestrait2">

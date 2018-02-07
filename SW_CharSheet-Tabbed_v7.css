@@ -1753,6 +1753,16 @@ select.sheet-dtype {
 
 /*----------- Hiding/Unhiding Things -----------*/
 
+.sheet-sbButton,
+input.sheet-sbButtonCheck:checked + label.sheet-isbButton {
+    display: none;
+}
+
+input.sheet-sbButtonChecked:not(:checked) + label.sheet-isButton,
+input.sheet-sbButtonCheck:checked ~ button.sheet-sbButton {
+    display: inline-block;
+}
+
 /* Hiding */
 
 .sheet-normalbutton,
@@ -2945,6 +2955,16 @@ select.sheet-dtype {
     display:inline;
     padding:0;
 }
+
+.sheet-rolltemplate-statblock .inlinerollresult {
+    background-color: transparent;
+    border: inherit;
+    padding: 0px;
+    font-weight: normal;
+    font-size: 1.05em;
+}
+
+
 
 .sheet-rolltemplate-spadestrait2 div.sheet-rtcard,
 .sheet-rolltemplate-combined div.sheet-AceSpades {
