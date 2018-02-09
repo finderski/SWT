@@ -3128,7 +3128,7 @@
     					<input class='sheet-sbButtonCheck' type='checkbox' style='display: none;' name='attr_initializeStatblock' />
 						<label class='sheet-isbButton' style='cursor: pointer; width: 150px;'>Initilize Statblock<input type='checkbox' style='display: none;' name='attr_initializeStatblock' /></label>
 						<div class='sheet-row'>
-						    <span data-i18n="wild-card-icon">Wild Card Icon</span>: <select name='attr_WCI' size="1" style="font-size: 1.5em; width: 50px; border: none;">
+						    <span>Wild Card Icon</span>: <select name='attr_WCI' size="1" style="font-size: 1.5em; width: 50px; border: none;">
 						        <option value="⊛">⊛</option>
 						        <option value="✪">✪</option>
 						        <option value="♕">♕</option>
@@ -3284,10 +3284,10 @@
 								<label class='sheet-nameRankXp'><span data-i18n="pace">Pace:</span></label>
 									<input type="number" name="attr_pace" title="@{pace}" class="sheet-derivedStat" style="text-align: center;" value="6" />
 									<input type="number" name="attr_paceMod" title="@{paceMod}" class="sheet-standardNum" value="0" />
-									<span class="sheet-numSpan"><button type='roll' name='roll_Running' style='margin-left:-1px;' title="@{Running}" value='/em @{character_name} runs (@{runningDie}): [[@{runningDie}+@{paceCur}]] inches!'>Run</button></span>
+									<span class="sheet-numSpan"><button type='roll' name='roll_Running' style='margin-left:-1px;' title="@{Running}" value='/em @{character_name} runs (@{runningDie}): [[@{runningDie}+@{paceCur}]] inches!'><span data-i18n="run">Run</span></button></span>
 									<input type="number" name="attr_paceCur" title="@{paceCur}" class="sheet-derivedStat" value="@{pace}+@{paceMod}" disabled="true" /><br />
 					
-								<label class='sheet-nameRankXp'><span data-i18n="parry">Parry:</span></label>
+								<label class='sheet-nameRankXp'><span data-i18n="parry">Parry</span>:</label>
 									<!--<input type="number" name="attr_parry" title="@{parry}" class="sheet-derivedStat" style='color: black;' value="floor((@{Fighting}+@{FightingMod})/2)+2" disabled="true" />-->
 									<input type="number" name="attr_parry" title="@{parry}" class="sheet-derivedStat" style='color: black;' readonly />
 									<input type="number" name="attr_parryMod" title="@{parryMod}" class="sheet-standardNum" value="0" />
@@ -3297,13 +3297,13 @@
 					
 								<input type="checkbox" class="sheet-useSanity" name="attr_tdsanity" style="width: 15px; display: none;" />
 								<div class="sheet-Sanity">
-									<label class='sheet-nameRankXp'><span data-i18n="sanity">Sanity:</span></label>
+									<label class='sheet-nameRankXp'><span data-i18n="sanity">Sanity</span>:</label>
 									<input type="number" name="attr_sanity" title="@{sanity}" class="sheet-derivedStat" style='color: black;' value="floor((@{spirit}+@{spMod})/2)+2" disabled="true" />
 									<input type="number" name="attr_sanityMod" title="@{sanityMod}" class="sheet-standardNum" value="0" />
 									<span class="sheet-numSpan">&nbsp;</span>
 									<input type="number" name="attr_sanityCur" title="@{sanityCur}" class="sheet-derivedStat" value="@{sanity} + @{sanityMod}" disabled="true" /><br />
 								</div>
-								<label class='sheet-nameRankXp'><span data-i18n="charisma">Charisma:</span></label>
+								<label class='sheet-nameRankXp'><span data-i18n="charisma">Charisma</span>:</label>
 									<input type="number" name="attr_charisma" class="sheet-derivedStat" title="@{charisma}" value="0"/>
 									<input type="number" name="attr_charismaMod" title="@{charismaMod}" class="sheet-standardNum" value="0" />
 									<span class="sheet-numSpan">&nbsp;</span>
@@ -3311,7 +3311,7 @@
 								
 								<input type="checkbox" class="sheet-useFame" style="width: 15px; display: none;" name="attr_potsmFame" />								
 								<div class="sheet-Fame">
-									<label class='sheet-nameRankXp'><span data-i18n="fame">Fame:</span></label>
+									<label class='sheet-nameRankXp'><span data-i18n="fame">Fame</span>:</label>
 									<input class="sheet-derivedStat" type="number" name="attr_fame" title="@{fame}" value="0"/>
 									<input type="number" name="attr_fameMod" title="@{fameMod}" class="sheet-standardNum" value="0" />
 									<span class="sheet-numSpan">&nbsp;</span>
@@ -3320,7 +3320,7 @@
 								
 								<input type="checkbox" class="sheet-useReason" name="attr_ripReason" style="width: 15px; display: none;" />
 								<div class="sheet-Reason">
-									<label class='sheet-nameRankXp'><span data-i18n="reason">Reason:</span></label>
+									<label class='sheet-nameRankXp'><span data-i18n="reason">Reason</span>:</label>
 									<input class="sheet-derivedStat" type="number" name="attr_reason" title="@{reason}" value="0"/>
 									<input type="number" name="attr_reasonMod" title="@{reasonMod}" class="sheet-standardNum" value="0" />
 									<span class="sheet-numSpan">&nbsp;</span>
@@ -3329,7 +3329,7 @@
 								
 								<input type="checkbox" class="sheet-useStatus" name="attr_ripStatus" style="width: 15px; display: none;" />
 								<div class="sheet-Status">
-									<label class='sheet-nameRankXp'><span data-i18n="status">Status:</span></label>
+									<label class='sheet-nameRankXp'><span data-i18n="status">Status</span>:</label>
 									<input class="sheet-derivedStat" type="number" name="attr_status" title="@{status}" value="0"/>
 									<input type="number" name="attr_statusMod" title="@{statusMod}" class="sheet-standardNum" value="0" />
 									<span class="sheet-numSpan">&nbsp;</span>
@@ -3338,7 +3338,7 @@
 								
 								<input type="checkbox" class="sheet-useGlory" style="width: 15px; display: none;" name="attr_hfGlory" />
 								<div class="sheet-Glory">
-									<label class='sheet-nameRankXp'><span data-i18n="glory">Glory:</span></label>
+									<label class='sheet-nameRankXp'><span data-i18n="glory">Glory</span>:</label>
 									<input class="sheet-derivedStat" type="number" name="attr_glory" title="@{glory}" value="0" />
 									<input type="number" name="attr_gloryMod" title="@{gloryMod}" class="sheet-standardNum" value="0" />
 									<span class="sheet-numSpan">&nbsp;</span>
@@ -3589,7 +3589,7 @@
 										<button class="sheet-normalbutton" type='roll' name='roll_AgilityRoll' title="@{AgilityRoll}" value='/em @{character_name} attempts to be agile and rolls @{rollAgility}'></button><button type='roll' class="sheet-normalbutton sheet-GM-button" name='roll_gmAgilityRoll' title="@{gmAgilityRoll}" value='/w gm @{character_name} attempts to be agile and rolls @{rollAgility}'></button>
 										<button class="sheet-templatebutton" type='roll' name='roll_tAgilityRoll' title="@{tAgilityRoll}" value='@{skillrt} @{defsTemplate} @{rolltAgility}'></button><button class="sheet-templatebutton sheet-GM-button" type='roll' name='roll_tgmAgilityRoll' title="@{tgmAgilityRoll}" value='/w gm @{skillrt} @{defsTemplate} @{rolltAgility}'></button>
 										<input type='hidden' name='attr_rollAgility' value='[[{1d@{agility}![Agility],[[@{wdNum}]]d@{wilddie}![Wild Die]}kh1 +@{agMod}[Agility Rank Modifier] + @{agrollMod}[Agility Roll Modifier] + @{ttmod}[Trait Test Modifier] + @{encumbrance}[Encumbrance Penalty] - @{woundsMod}[Wounds] - @{fatigue}[Fatigue]]]' />
-										<input type='hidden' name='attr_rolltAgility' value='{{name=@{character_name}}} {{skill_name=Agility}} {{skill_rank=@{Agility}}} {{skill_rank_mod=@{agMod}}} {{att_mod=[[@{agrollMod}]]}} {{ttmod=[[@{ttmod}]]}} {{enc=[[@{encumbrance}]]}} {{wounds= [[@{woundsMod}*-1]]}} {{fatigue= [[@{fatigue}*-1]]}} {{skill_roll=[[1d@{agility}! + @{agMod} + @{agrollMod}[Skill Modifier] + @{ModSumEnc}[Other Modifiers]]]}} {{wild_die_rank=@{wilddie}}} {{mook=[[1d0+@{wdNum}]]}} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[[[@{wdNum}]]d@{wilddie}! + @{agMod} + @{agrollMod}[Skill Modifier] + @{ModSumEnc}[Other Modifiers]]]}}' />
+										<input type='hidden' name='attr_rolltAgility' value='{{name=@{character_name}}} {{skill_name=^{agility}}} {{skill_rank=@{Agility}}} {{skill_rank_mod=@{agMod}}} {{att_mod=[[@{agrollMod}]]}} {{ttmod=[[@{ttmod}]]}} {{enc=[[@{encumbrance}]]}} {{wounds= [[@{woundsMod}*-1]]}} {{fatigue= [[@{fatigue}*-1]]}} {{skill_roll=[[1d@{agility}! + @{agMod} + @{agrollMod}[Skill Modifier] + @{ModSumEnc}[Other Modifiers]]]}} {{wild_die_rank=@{wilddie}}} {{mook=[[1d0+@{wdNum}]]}} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[[[@{wdNum}]]d@{wilddie}! + @{agMod} + @{agrollMod}[Skill Modifier] + @{ModSumEnc}[Other Modifiers]]]}}' />
 									</div>
 									<div class="sheet-col" style="width: auto; margin: 0px; margin-bottom: 10px;"><label class="sheet-AttributeLabel"><span data-i18n="smarts">Smarts</span>:</label></div>
 									<div class="sheet-col sheet-AttBorder" style="margin-bottom: 10px;">
@@ -3827,7 +3827,7 @@
 									<input type="checkbox" class="sheet-useMaxLoad" name="attr_MaxLoad" style="font-size: 0; width: 15px; display: none;" />
 									<label class="sheet-nameRankXp sheet-loadlimit" style='width:140px;'><span data-i18n="max-load-modifier">Max Load Modifier</span></label>
 										<input type="number" class="sheet-modifier sheet-loadlimit" name="attr_loadlimitmod" title="@{loadlimitmod}" style='margin-left:4px;' value="0"/>
-									<label class="sheet-nameRankXp" style='width:145px;'>Load Limit</label>
+									<label class="sheet-nameRankXp" style='width:145px;'><span class="load-limit">Load Limit</span></label>
 										<!--<input type="number" class="sheet-derivedStat" name="attr_loadlimit" title="@{loadlimit}" value="((@{strength}+@{stMod}) * @{loadlimitmulitplier}) + @{loadlimitmod}" disabled="true" /><br />-->
 										<input type="number" class="sheet-derivedStat" name="attr_loadlimit" title="@{loadlimit}" readonly /><br />
 									<label class="sheet-nameRankXp" style='width:145px;'><span data-i18n="total-load-carried">Total Load Carried</label>
@@ -3881,7 +3881,7 @@
 								<h3 class="sheet-repeatingHeader"><span data-i18n="hindrance">Hindrance</span></h3>
 							</div>
 							<div class='sheet-col' style='width:80px;'>
-							    <h3 class='sheet-repeatingHeader'>Type</h3>
+							    <h3 class='sheet-repeatingHeader'><span data-i18n="type">Type</span></h3>
 							</div>
 							<div class='sheet-col' style='width:553px;'>
 								<h3 class="sheet-repeatingHeader"><span data-i18n="description">Description</span></h3>
@@ -3932,7 +3932,7 @@
 					</div><!-- End Hindrances & Edges Tab -->
 		
 					<div class="sheet-section-skills" style="width: 800px;"><!-- Begin Skills -->
-						<div class='sheet-row'><h2 class='sheet-sectionHeader'><span data-i18n="skills">SKILLS</span></h2></div>
+						<div class='sheet-row'><h2 class='sheet-sectionHeader'><span data-i18n="skills-u">SKILLS</span></h2></div>
 						<div class='sheet-row'>
 							<!-- Unskilled -->
 							<div class="sheet-row sheet-WCSkillsRow">
@@ -4065,7 +4065,7 @@
 									<button class="sheet-templatebutton" type='roll' name='roll_tFightingRoll' title="@{tFightingRoll}" value='@{skillrt} @{defsTemplate} @{rolltFighting}'></button><button class="sheet-templatebutton sheet-GM-button" type='roll' name='roll_tgmFightingRoll' title="@{tgmFightingRoll}" value='/w gm @{skillrt} @{defsTemplate} @{rolltFighting}'></button>
 									<button class="sheet-normalbutton" type='roll' name='roll_FightingRoll' title="@{FightingRoll}" value='/em @{character_name} attempts to hit something and rolls @{rollFighting}!'></button><button class="sheet-normalbutton sheet-GM-button" type='roll' name='roll_gmFightingRoll' title="@{gmFightingRoll}" value='/w gm @{character_name} attempts to hit something and rolls @{rollFighting}!'></button>
 									<input type='hidden' name='attr_rollFighting' value='[[{1d@{fighting}![Fighting], [[@{wdNum}]]d@{wilddie}![Wild Die]}kh1 + @{FightingMod}[Fighting Rank Modifier] + @{FightingskillMod} [Skill Modifier] + @{ttmod}[Situational Modifiers] + (@{FightingEncumbrance}*@{encumbrance}[Encumbrance Penalty]) - @{woundsMod}[Wounds] - @{fatigue}[Fatigue]]]' />
-									<input type='hidden' name='attr_rolltFighting' value='{{name=@{character_name}}} {{skill_name=Fighting}} {{skill_rank=@{fighting}}} {{skill_rank_mod=@{FightingMod}}} {{skill_mod=[[@{FightingskillMod}]]}} {{ttmod=[[@{ttmod}]]}} {{wounds= [[@{woundsMod}*-1]]}} {{fatigue= [[@{fatigue}*-1]]}} {{enc=[[@{FightingEncumbrance}*@{encumbrance}]]}} {{skill_roll=[[1d@{fighting}![Fighting] + @{FightingMod}[Fighting Rank Modifier] + @{FightingskillMod} [Skill Modifier] + @{ModSum}[Modifiers] +(@{FightingEncumbrance}*@{encumbrance})[Encumbrance Penalty]]]}} {{wild_die_rank=@{wilddie}}} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[[[@{wdNum}]]d@{wilddie}! + @{FightingMod}[Fighting Rank Modifier] + @{FightingskillMod} [Skill Modifier] + @{ModSum}[Modifiers] +(@{FightingEncumbrance}*@{encumbrance})[Encumbrance Penalty]]]}}' />
+									<input type='hidden' name='attr_rolltFighting' value='{{name=@{character_name}}} {{skill_name=^{fighting}}} {{skill_rank=@{fighting}}} {{skill_rank_mod=@{FightingMod}}} {{skill_mod=[[@{FightingskillMod}]]}} {{ttmod=[[@{ttmod}]]}} {{wounds= [[@{woundsMod}*-1]]}} {{fatigue= [[@{fatigue}*-1]]}} {{enc=[[@{FightingEncumbrance}*@{encumbrance}]]}} {{skill_roll=[[1d@{fighting}![Fighting] + @{FightingMod}[Fighting Rank Modifier] + @{FightingskillMod} [Skill Modifier] + @{ModSum}[Modifiers] +(@{FightingEncumbrance}*@{encumbrance})[Encumbrance Penalty]]]}} {{wild_die_rank=@{wilddie}}} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[[[@{wdNum}]]d@{wilddie}! + @{FightingMod}[Fighting Rank Modifier] + @{FightingskillMod} [Skill Modifier] + @{ModSum}[Modifiers] +(@{FightingEncumbrance}*@{encumbrance})[Encumbrance Penalty]]]}}' />
 								</div>
 								<!--Specializations-->
 								<input type="checkbox" class="sheet-useSkillSpec" name="attr_altRuleSkillSpec" style="display: none;" />
@@ -6639,8 +6639,8 @@
 								<input type='checkbox' name='attr_SkillFormula' class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 								<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 									<textarea style='width:775px; height:50px;'>&{template:solidtrait} {{name=@{character_name}}} {{skill_name=@{repeating_skills_$0_SkillName}}} {{skill_rank=@{repeating_skills_$0_SkillNameRank}}} {{skill_rank_mod=@{repeating_skills_$0_SkillNameMod}}} {{skill_mod=[[@{repeating_skills_$0_SkillMod}]]}} {{ttmod=[[@{ttmod}]]}} {{wounds= [[@{woundsMod}*-1]]}} {{fatigue= [[@{fatigue}*-1]]}} {{skill_roll=[[1d@{repeating_skills_$0_SkillNameRank}![@{repeating_skills_$0_SkillName}] + @{repeating_skills_$0_SkillNameMod}[@{repeating_skills_$0_SkillName} Rank Modifier] + @{repeating_skills_$0_SkillMod} [Skill Modifier] + @{ModSum}[Modifiers]]]}} {{wild_die_rank=@{wilddie}}} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[[[@{wdNum}]]d@{wilddie}! + @{repeating_skills_$0_SkillNameMod}[@{SkillName} Rank Modifier] + @{repeating_skills_$0_SkillMod} [Skill Modifier] + @{ModSum}[Modifiers]]]}}'</textarea><br />
-									<span style='color:red;' data-i18n="note-template-replace">
-										<strong>NOTE:</strong> &{template:solidtrait} can be replaced with &{template:spadestrait2}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
+									<span style='color:red;'>
+										<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-replace">&{template:solidtrait} can be replaced with &{template:spadestrait2}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
 									</span>
 								</div>
 								<span class="sheet-spacer"></span>
@@ -6649,8 +6649,8 @@
 								<input type='checkbox' name='attr_SkillFormula' class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 								<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 									<textarea style='width:775px; height:50px;'>/em @{character_name} attempts to do something with @{repeating_skills_$0_SkillName} and rolls: [[{1d@{repeating_skills_$0_SkillNameRank}![@{repeating_skills_$0_SkillName}], [[@{wdNum}]]d@{wilddie}![Wild Die]}kh1 + @{repeating_skills_$0_SkillNameMod}[Other Modifiers] + @{ttmod}[Trait Test Modifier] - @{woundsMod}[Wounds] - @{fatigue}[Fatigue]]]!'</textarea><br />
-									<span style='color:red;' data-i18n="note-template-formula-increment">
-										<strong>NOTE:</strong> the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
+									<span style='color:red;'>
+										<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-replace">the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
 									</span>
 								</div>
 								<span class="sheet-spacer"></span>
@@ -6668,7 +6668,7 @@
 					</div><!-- End Skills Tab -->
 		
 					<div class="sheet-section-gear" style="width: 800px;"><!-- Begin Equipment Tab -->
-						<div class='sheet-row'><h2 class='sheet-sectionHeader'><span data-i18n="equipment">EQUIPMENT</span></h2></div>
+						<div class='sheet-row'><h2 class='sheet-sectionHeader'><span data-i18n="equipment-u">EQUIPMENT</span></h2></div>
 						<!-- Begin Armor -->
 						<!--<input class="sheet-HideArmor" type="checkbox" name="attr_is_armor" /><span class="sheet-is-armor-tab" /> Armor</span>-->
 						<div class='sheet-row' style='width: 100%; margin:0px; padding: 0px;'>
@@ -6875,7 +6875,7 @@
 										&nbsp;
 									</div>
 									<div class='sheet-col' style='width:160px; text-align:right;'> <!-- Protection (100px)-->
-										<h4 class="sheet-weight"><span data-i18n="total-weight-carried">Total Weight Carried:</span></h4>
+										<h4 class="sheet-weight"><span data-i18n="total-weight-carried">Total Weight Carried</span>:</h4>
 									</div>
 									<div class='sheet-col' style='width:60px;'> <!-- Weight (60px)-->
 										<input type="number" name="attr_meleetotalweightcarried" title="@{meleetotalweightcarried}" class="sheet-standardNum" value="0" readonly />
@@ -6889,8 +6889,8 @@
 									<input type='checkbox' name='attr_MeleeFormula' class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 									<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 										<textarea style='width:775px; height:50px;'>&{template:soliddamage} {{name=@{character_name}}} {{weapon=@{repeating_meleeweapons_$0_WeaponType}}} {{damage_type=Str+@{repeating_meleeweapons_$0_MeleeDieNum}d@{repeating_meleeweapons_$0_DmgType}+@{repeating_meleeweapons_$0_MDmgMod}}} {{damage=[[1d@{Strength}![Strength] + @{repeating_meleeweapons_$0_MeleeDieNum}d@{repeating_meleeweapons_$0_DmgType} + @{repeating_meleeweapons_$0_MDmgMod}[Weapon Damage] + @{dmgmod}[Damage Modifier] + 1d@{repeating_meleeweapons_$0_DmgRaise}[Bonus Damage]]]}} {{raise=@{repeating_meleeweapons_$0_DmgRaise}}} {{dmgmod=@{dmgmod}}}</textarea><br />
-										<span style='color:red;' data-i18n="note-template-formula-replace-clubs" >
-											<strong>NOTE:</strong> &{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
+										<span style='color:red;'>
+											<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-formula-replace-clubs">&{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
 										</span>
 										<br />
 									</div>
@@ -6899,9 +6899,9 @@
 									<input type='checkbox' name='attr_MeleeFormula' class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 									<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 										<textarea style='width:775px; height:50px;'>/em @{character_name} attempts to do damage with a @{repeating_meleeweapons_$0_WeaponType} and rolls: [[1d@{Strength}![Strength]+1d@{repeating_meleeweapons_$0_DmgType}+@{repeating_meleeweapons_$0_MDmgMod}[Weapon Damage]+@{dmgmod}[Damage Modifier]+1d@{repeating_meleeweapons_$0_DmgRaise}[Bonus Damage]]]!</textarea><br />
-										<span style='color:red;' data-i18n="note-template-formula-increment">
-											<strong>NOTE:</strong> the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-										</span>
+										<span style='color:red;'>
+										<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-replace">the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+									</span>
 										<br />
 									</div>
 								</div>
@@ -7019,7 +7019,7 @@
 										&nbsp;
 									</div>
 									<div class='sheet-col' style='width:160px; text-align:right;'> <!-- Protection (100px)-->
-										<h4 class="sheet-weight">Total Weight Carried:</h4>
+										<h4 class="sheet-weight"><span data-i18n="total-weight-carried">Total Weight Carried</span>:</h4>
 									</div>
 									<div class='sheet-col' style='width:45px;'> <!-- Weight (60px)-->
 										<input type="number" name="attr_rangedtotalweightcarried" title="@{rangedtotalweightcarried}" class="sheet-standardNum" value="0" readonly />
@@ -7029,8 +7029,8 @@
 									<input type='checkbox' name='attr_RangeFormula' class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 									<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 										<textarea style='width:775px; height:50px;'>&{template:soliddamage} {{name=@{character_name}}} {{weapon=@{repeating_rangeweapons_$0_RWeaponType}}} {{damage_type=@{repeating_rangeweapons_$0_NoDmgDice}@{repeating_rangeweapons_$0_RDmgType}+@{repeating_rangeweapons_$0_RDmgMod}}} {{damage=[[@{repeating_rangeweapons_$0_NoDmgDice}@{repeating_rangeweapons_$0_RDmgType} + @{repeating_rangeweapons_$0_RDmgMod}[Weapon Damage] + @{dmgmod}[Damage Modifier] + 1d@{repeating_rangeweapons_$0_RDmgRaise}[Bonus Damage]]]}} {{raise=@{repeating_rangeweapons_$0_RDmgRaise}}} {{dmgmod=@{dmgmod}}}</textarea><br />
-										<span style='color:red;' data-i18n="note-template-formula-replace-clubs" >
-											<strong>NOTE:</strong> &{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
+										<span style='color:red;'>
+											<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-formula-replace-clubs">&{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
 										</span>
 										<br />
 									</div>
@@ -7039,9 +7039,9 @@
 									<input type='checkbox' name='attr_RangeFormula' class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 									<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 										<textarea style='width:775px; height:50px;'>/em @{character_name} attempts to do damage with a @{repeating_rangeweapons_$0_RWeaponType} and rolls: [[@{repeating_rangeweapons_$0_NoDmgDice}@{repeating_rangeweapons_$0_RDmgType}+@{repeating_rangeweapons_$0_RDmgMod}[Weapon Damage]+@{dmgmod}[Damage Modifier]+@{repeating_rangeweapons_$0_RDmgRaise}[Bonus Damage]]]!</textarea><br />
-										<span style='color:red;' data-i18n="note-template-formula-increment">
-											<strong>NOTE:</strong> the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-										</span>
+										<span style='color:red;'>
+										<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-replace">the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+									</span>
 										<br />
 									</div>
 								</div>
@@ -7051,11 +7051,11 @@
 						
 						<!-- Gear -->
 						<input class="sheet-HideSection" type="checkbox" name="attr_is_gear" /><span class='sheet-HidebuttonDark'></span>
-						<h3 class="sheet-subsectionHeader" style="margin: 0px;">Gear</h3><!-- Begin Gear -->
+						<h3 class="sheet-subsectionHeader" style="margin: 0px;"><span data-i18n="gear">Gear</span></h3><!-- Begin Gear -->
 						
 						<div class="sheet-2colrow sheet-gear" style="width: 800px; margin-top: 5px; padding: 0px;">
 							<div class="sheet-col sheet-gear" style="margin-right:.5px; width: 415px;">
-								<h4 class="sheet-subsectionHeader">Worn</h4>
+								<h4 class="sheet-subsectionHeader"><span data-i18n="worn">Worn</span></h4>
 								<fieldset class="repeating_gear">
 									<input class="sheet-standard" style='width:360px;' placeholder="Item" type="text" name="attr_item" title="@{repeating_gear_$#_item}" />
 									<input type="number" placeholder="weight" name="attr_itemWeight" title="@{repeating_gear_$#_itemWeight}" class="sheet-standardNum" />
@@ -7291,9 +7291,9 @@
 												<input type='checkbox' name='attr_sailFormula' class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 												<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 													<textarea style='width:775px; height:50px;'>/em @{character_name} attempts to do damage with a @{repeating_sailweapons_$0_SShipWeaponType} and rolls: [[@{repeating_sailweapons_$0_NoDmgDice}@{repeating_sailweapons_$0_RDmgType}+@{repeating_sailweapons_$0_RDmgMod}[Weapon Damage]+@{dmgmod}[Damage Modifier]+@{repeating_sailweapons_$0_RDmgRaise}[Bonus Damage]]]!</textarea><br />
-													<span style='color:red; display: inline-block;' data-i18n="note-template-formula-increment">
-														<strong>NOTE:</strong> the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-													</span>
+													<span style='color:red;display:inline-block'>
+										<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-replace">the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+									</span>
 													<br />
 												</div>
 											</div>
@@ -7464,9 +7464,9 @@
 												<input type='checkbox' name='attr_sailFormula' class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 												<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 													<textarea style='width:775px; height:50px;' maxlenght="300">&{template:soliddamage} {{name=@{character_name}}} {{weapon=@{repeating_flyingweapons_$0_FShipWeaponType}}} {{damage_type=@{repeating_flyingweapons_$0_NoDmgDice}@{repeating_flyingweapons_$0_RDmgType}+@{repeating_flyingweapons_$0_RDmgMod}}} {{damage=[[@{repeating_flyingweapons_$0_NoDmgDice}@{repeating_flyingweapons_$0_RDmgType} + @{repeating_flyingweapons_$0_RDmgMod}[Weapon Damage] + @{dmgmod}[Damage Modifier] + 1d@{repeating_flyingweapons_$0_RDmgRaise}[Bonus Damage]]]}} {{raise=@{repeating_flyingweapons_$0_RDmgRaise}}} {{dmgmod=@{dmgmod}}}</textarea><br />
-													<span style='color:red;' data-i18n="note-template-formula-replace-clubs" >
-														<strong>NOTE:</strong> &{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-													</span>
+													<span style='color:red;'>
+											<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-formula-replace-clubs">&{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+										</span>
 													<br />
 												</div>
 											</div>
@@ -7474,9 +7474,9 @@
 												<input type='checkbox' name='attr_sailFormula' class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 												<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 													<textarea style='width:775px; height:50px;'>/em @{character_name} attempts to do damage with a @{repeating_flyingweapons__$0_SShipWeaponType} and rolls: [[@{repeating_flyingweapons__$0_NoDmgDice}@{repeating_flyingweapons__$0_RDmgType}+@{repeating_flyingweapons__$0_RDmgMod}[Weapon Damage]+@{dmgmod}[Damage Modifier]+@{repeating_flyingweapons_$0_RDmgRaise}[Bonus Damage]]]!</textarea><br />
-													<span style='color:red;' data-i18n="note-template-formula-increment">
-														<strong>NOTE:</strong> the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-													</span>
+													<span style='color:red;'>
+										<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-replace">the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+									</span>
 													<br />
 												</div>
 											</div>
@@ -7643,9 +7643,9 @@
 												<input type='checkbox' name='attr_sailFormula'class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 												<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 													<textarea style='width:775px; height:50px;'>&{template:soliddamage} {{name=@{character_name}}} {{weapon=@{repeating_groundweapons_$0_GVWeaponType}}} {{damage_type=@{repeating_groundweapons_$0_NoDmgDice}@{repeating_groundweapons_$0_RDmgType}+@{repeating_groundweapons_$0_RDmgMod}}} {{damage=[[@{repeating_groundweapons_$0_NoDmgDice}@{repeating_groundweapons_$0_RDmgType} + @{repeating_groundweapons_$0_RDmgMod}[Weapon Damage] + @{dmgmod}[Damage Modifier] + 1d@{repeating_groundweapons_$0_RDmgRaise}[Bonus Damage]]]}} {{raise=@{repeating_groundweapons_$0_RDmgRaise}}} {{dmgmod=@{dmgmod}}}</textarea><br />
-													<span style='color:red;' data-i18n="note-template-formula-replace-clubs" >
-														<strong>NOTE:</strong> &{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-													</span>
+												<span style='color:red;'>
+											<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-formula-replace-clubs">&{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+										</span>
 													<br />
 												</div>
 											</div>
@@ -7653,9 +7653,9 @@
 												<input type='checkbox' name='attr_sailFormula'class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 												<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 													<textarea style='width:775px; height:50px;'>/em @{character_name} attempts to do damage with a @{repeating_groundweapons_$0_SShipWeaponType} and rolls: [[@{repeating_groundweapons_$0_NoDmgDice}@{repeating_groundweapons_$0_RDmgType}+@{repeating_groundweapons_$0_RDmgMod}[Weapon Damage]+@{dmgmod}[Damage Modifier]+@{repeating_groundweapons_$0_RDmgRaise}[Bonus Damage]]]!</textarea><br />
-													<span style='color:red;' data-i18n="note-template-formula-increment">
-														<strong>NOTE:</strong> the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-													</span>
+													<span style='color:red;'>
+										<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-replace">the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+									</span>
 													<br />
 												</div>
 											</div>
@@ -7823,9 +7823,9 @@
 												<input type='checkbox' name='attr_sailFormula'class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 												<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 													<textarea style='width:775px; height:50px;'>&{template:soliddamage} {{name=@{character_name}}} {{weapon=@{repeating_wsweapons_$0_WalkerWeaponType}}} {{damage_type=@{repeating_wsweapons_$0_NoDmgDice}@{repeating_wsweapons_$0_RDmgType}+@{repeating_wsweapons_$0_RDmgMod}}} {{damage=[[@{repeating_wsweapons_$0_NoDmgDice}@{repeating_wsweapons_$0_RDmgType} + @{repeating_wsweapons_$0_RDmgMod}[Weapon Damage] + @{dmgmod}[Damage Modifier] + 1d@{repeating_wsweapons_$0_RDmgRaise}[Bonus Damage]]]}} {{raise=@{repeating_wsweapons_$0_RDmgRaise}}} {{dmgmod=@{dmgmod}}}</textarea><br />
-													<span style='color:red;' data-i18n="note-template-formula-replace-clubs" >
-														<strong>NOTE:</strong> &{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-													</span>
+													<span style='color:red;'>
+											<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-formula-replace-clubs">&{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+										</span>
 													<br />
 												</div>
 											</div>
@@ -7833,9 +7833,9 @@
 												<input type='checkbox' name='attr_sailFormula'class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 												<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 													<textarea style='width:775px; height:50px;'>/em @{character_name} attempts to do damage with a @{repeating_wsweapons_$0_SShipWeaponType} and rolls: [[@{repeating_wsweapons_$0_NoDmgDice}@{repeating_wsweapons_$0_RDmgType}+@{repeating_wsweapons_$0_RDmgMod}[Weapon Damage]+@{dmgmod}[Damage Modifier]+@{repeating_wsweapons_$0_RDmgRaise}[Bonus Damage]]]!</textarea><br />
-													<span style='color:red;' data-i18n="note-template-formula-increment">
-														<strong>NOTE:</strong> the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-													</span>
+													<span style='color:red;'>
+										<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-replace">the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+									</span>
 													<br />
 												</div>
 											</div>
@@ -8067,9 +8067,9 @@
 											<input type='checkbox' name='attr_sailFormula'class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 											<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 												<textarea style='width:775px; height:50px;'>&{template:soliddamage} {{name=@{character_name}}} {{weapon=@{repeating_PAweapons_$0_PAWeaponType}}} {{damage_type=@{repeating_PAweapons_$0_PANoDmgDice}@{repeating_PAweapons_$0_PARDmgType}+@{repeating_PAweapons_$0_PARDmgMod}}} {{damage=[[@{repeating_PAweapons_$0_PANoDmgDice}@{repeating_PAweapons_$0_PARDmgType} + @{repeating_PAweapons_$0_PARDmgMod}[Weapon Damage] + @{dmgmod}[Damage Modifier] + 1d@{repeating_PAweapons_$0_PARDmgRaise}[Bonus Damage]]]}} {{raise=@{repeating_PAweapons_$0_PARDmgRaise}}} {{dmgmod=@{dmgmod}}}</textarea><br />
-												<span style='color:red;' data-i18n="note-template-formula-replace-clubs" >
-													<strong>NOTE:</strong> &{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-												</span>
+												<span style='color:red;'>
+											<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-formula-replace-clubs">&{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+										</span>
 											</div>
 										</div>
 										<div class="sheet-normalbutton">
@@ -8077,9 +8077,9 @@
 											<input type='checkbox' name='attr_sailFormula'class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 											<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 												<textarea style='width:775px; height:50px;'>/em @{character_name} attempts to do damage with a @{repeating_PAweapons_$0_PAWeaponType} and rolls: [[@{repeating_PAweapons_$0_PANoDmgDice}@{repeating_PAweapons_$0_PARDmgType}+@{repeating_PAweapons_$0_PARDmgMod}[Weapon Damage]+@{dmgmod}[Damage Modifier]+@{repeating_PAweapons_$0_PARDmgRaise}[Bonus Damage]]]!</textarea><br />
-												<span style='color:red;' data-i18n="note-template-formula-increment">
-													<strong>NOTE:</strong> the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-												</span>
+												<span style='color:red;'>
+										<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-replace">the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+									</span>
 											</div>
 										</div>
 									</div>
@@ -8150,9 +8150,9 @@
 											<input type='checkbox' name='attr_MeleeFormula'class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 											<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 												<textarea style='width:775px; height:50px;'>&{template:soliddamage} {{name=@{character_name}}} {{weapon=@{repeating_PAmeleeweapons_$0_PAMWeaponType}}} {{damage_type=Str+@{repeating_PAmeleeweapons_$0_PAMMeleeDieNum}d@{repeating_PAmeleeweapons_$0_PAMDmgType}+@{repeating_PAmeleeweapons_$0_PAMMDmgMod}}} {{damage=[[1d@{PAstrength}!+@{PAstMod}[Strength] + @{repeating_PAmeleeweapons_$0_PAMMeleeDieNum}d@{repeating_PAmeleeweapons_$0_PAMDmgType} + @{repeating_PAmeleeweapons_$0_PAMMDmgMod}[Weapon Damage] + @{dmgmod}[Damage Modifier] + 1d@{repeating_PAmeleeweapons_$0_PAMDmgRaise}[Bonus Damage]]]}} {{raise=@{repeating_PAmeleeweapons_$0_PAMDmgRaise}}} {{dmgmod=@{dmgmod}}}</textarea><br />
-												<span style='color:red;' data-i18n="note-template-formula-replace-clubs" >
-													<strong>NOTE:</strong> &{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-												</span>
+												<span style='color:red;'>
+											<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-formula-replace-clubs">&{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+										</span>
 												<br />
 											</div>
 										</div>
@@ -8161,8 +8161,8 @@
 											<input type='checkbox' name='attr_MeleeFormula'class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 											<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 												<textarea style='width:775px; height:50px;'>/em @{character_name} attempts to do damage with a @{repeating_PAmeleeweapons_$0_PAMWeaponType} and rolls: [[1d@{PAstrength}!+@{PAstMod}[Strength] + @{repeating_PAmeleeweapons_$0_PAMMeleeDieNum}d@{repeating_PAmeleeweapons_$0_PAMDmgType} + @{repeating_PAmeleeweapons_$0_PAMMDmgMod}[Weapon Damage] + @{dmgmod}[Damage Modifier] + 1d@{repeating_PAmeleeweapons_$0_PAMDmgRaise}[Bonus Damage]]]!</textarea><br />
-												<span style='color:red;' data-i18n="note-template-formula-increment">
-													<strong>NOTE:</strong> the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
+												<span style='color:red;'>
+													<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-formula-increment">the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
 												</span>
 												<br />
 											</div>
@@ -8358,9 +8358,9 @@
 											<input type='checkbox' name='attr_sailFormula'class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 											<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 												<textarea style='width:775px; height:50px;'>&{template:soliddamage} {{name=@{character_name}}} {{weapon=@{repeating_RAweapons_$0_RAWeaponType}}} {{damage_type=@{repeating_RAweapons_$0_RANoDmgDice}@{repeating_RAweapons_$0_RARDmgType}+@{repeating_RAweapons_$0_RARDmgMod}}} {{damage=[[@{repeating_RAweapons_$0_RANoDmgDice}@{repeating_RAweapons_$0_RARDmgType} + @{repeating_RAweapons_$0_RARDmgMod}[Weapon Damage] + @{dmgmod}[Damage Modifier] + 1d@{repeating_RAweapons_$0_RARDmgRaise}[Bonus Damage]]]}} {{raise=@{repeating_RAweapons_$0_RARDmgRaise}}} {{dmgmod=@{dmgmod}}}</textarea><br />
-												<span style='color:red;' data-i18n="note-template-formula-replace-clubs" >
-													<strong>NOTE:</strong> &{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-												</span>
+											<span style='color:red;'>
+											<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-formula-replace-clubs">&{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+										</span>
 											</div>
 										</div>
 										<div class="sheet-normalbutton">
@@ -8368,8 +8368,8 @@
 											<input type='checkbox' name='attr_sailFormula'class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 											<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 												<textarea style='width:775px; height:50px;'>/em @{character_name} attempts to do damage with a @{repeating_RAweapons_$0_RAWeaponType} and rolls: [[@{repeating_RAweapons_$0_RANoDmgDice}@{repeating_RAweapons_$0_RARDmgType}+@{repeating_RAweapons_$0_RARDmgMod}[Weapon Damage]+@{dmgmod}[Damage Modifier]+@{repeating_RAweapons_$0_RARDmgRaise}[Bonus Damage]]]!</textarea><br />
-												<span style='color:red;' data-i18n="note-template-formula-increment">
-													<strong>NOTE:</strong> the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
+												<span style='color:red;'>
+													<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-formula-increment">the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
 												</span>
 											</div>
 										</div>
@@ -8441,9 +8441,9 @@
 											<input type='checkbox' name='attr_MeleeFormula'class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 											<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 												<textarea style='width:775px; height:50px;'>&{template:soliddamage} {{name=@{character_name}}} {{weapon=@{repeating_RAmeleeweapons_$0_RAMWeaponType}}} {{damage_type=Str+@{repeating_RAmeleeweapons_$0_RAMMeleeDieNum}d@{repeating_RAmeleeweapons_$0_RAMDmgType}+@{repeating_RAmeleeweapons_$0_RAMMDmgMod}}} {{damage=[[1d@{RAstrength}!+@{RAstMod}[Strength] + @{repeating_RAmeleeweapons_$0_RAMMeleeDieNum}d@{repeating_RAmeleeweapons_$0_RAMDmgType} + @{repeating_RAmeleeweapons_$0_RAMMDmgMod}[Weapon Damage] + @{dmgmod}[Damage Modifier] + 1d@{repeating_RAmeleeweapons_$0_RAMDmgRaise}[Bonus Damage]]]}} {{raise=@{repeating_RAmeleeweapons_$0_RAMDmgRaise}}} {{dmgmod=@{dmgmod}}}</textarea><br />
-												<span style='color:red;' data-i18n="note-template-formula-replace-clubs">
-													<strong>NOTE:</strong> &{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-												</span>
+												<span style='color:red;'>
+											<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-formula-replace-clubs">&{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+										</span>
 												<br />
 											</div>
 										</div>
@@ -8452,8 +8452,8 @@
 											<input type='checkbox' name='attr_MeleeFormula'class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 											<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 												<textarea style='width:775px; height:50px;'>/em @{character_name} attempts to do damage with a @{repeating_RAmeleeweapons_$0_RAMWeaponType} and rolls: [[1d@{RAstrength}!+@{RAstMod}[Strength] + @{repeating_RAmeleeweapons_$0_RAMMeleeDieNum}d@{repeating_RAmeleeweapons_$0_RAMDmgType} + @{repeating_RAmeleeweapons_$0_RAMMDmgMod}[Weapon Damage] + @{dmgmod}[Damage Modifier] + 1d@{repeating_RAmeleeweapons_$0_RAMDmgRaise}[Bonus Damage]]]!</textarea><br />
-												<span style='color:red;' data-i18n="note-template-formula-increment">
-													<strong>NOTE:</strong> the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
+												<span style='color:red;'>
+													<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-formula-increment">the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
 												</span>
 												<br />
 											</div>
@@ -8471,14 +8471,14 @@
 					
 					<input type="checkbox" class="sheet-hideArcanum" name="attr_ArcanumTab" style="width: 15px; display: none;">
 					<div class="sheet-section-arcanum" style="width: 800px;"><!-- Begin Arcanum -->
-						<div class='sheet-row'><h2 class='sheet-sectionHeader'><span data-i18n="arcanum">ARCANUM</span></h2></div>
+						<div class='sheet-row'><h2 class='sheet-sectionHeader'><span data-i18n="arcanum-u">ARCANUM</span></h2></div>
 						<span class="sheet-spacer"></span>
 						<!-- Power Points -->
 						<input type="checkbox" class="sheet-NoPP" name="attr_NoPPRule" style="display: none; width: 15px;" />
 						<div class="sheet-PowerPoints" style='text-align: center;'>
 							<input type="checkbox" class="sheet-usePPE" name="attr_ppe" style="width: 15px; display: none;" />
 							<label class="sheet-nameRankXp sheet-PowerPoints" style='font-weight:bold; text-align: left;'>:</label>
-								<input type="number" name="attr_PowerPoints" title="@{PowerPoints}" class="sheet-standardNum" value="0" style='margin:0px;' /><span style="line-height: 35px; font-weight: bold; color: black; background-image: url('http://www.geeksville.us/roll20/semi-trans.png');"> of </span><input type="number" name="attr_PowerPoints_max" title="@{PowerPoints_max}" class="sheet-standardNum" value="0" style='margin:0px;' />
+								<input type="number" name="attr_PowerPoints" title="@{PowerPoints}" class="sheet-standardNum" value="0" style='margin:0px;' /><span style="line-height: 35px; font-weight: bold; color: black; background-image: url('http://www.geeksville.us/roll20/semi-trans.png');"> <span data-i18n="of">of</span> </span><input type="number" name="attr_PowerPoints_max" title="@{PowerPoints_max}" class="sheet-standardNum" value="0" style='margin:0px;' />
 							<br />
 							<input type="checkbox" class="sheet-useISP" name="attr_useISP" style="width: 15px; display: none;" />
 							<span class='sheet-ISP'>
@@ -8639,8 +8639,8 @@
 									<input type='checkbox' name='attr_RangeFormula' class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 									<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 										<textarea style='width:775px; height:50px;'>&{template:soliddamage} {{name=@{character_name}}} {{weapon=@{repeating_dmgspells_$0_Spell}}} {{damage_type=@{repeating_dmgspells_$0_NoSpllDmgDice}@{repeating_dmgspells_$0_SDmgType}+@{repeating_dmgspells_$0_SDmgMod}}} {{damage=[[@{repeating_dmgspells_$0_NoSpllDmgDice}@{repeating_dmgspells_$0_SDmgType} + @{repeating_dmgspells_$0_SDmgMod}[Spell Damage] + @{dmgmod}[Damage Modifier] + 1d@{repeating_dmgspells_$0_SDmgRaise}[Bonus Damage]]]}} {{raise=@{repeating_dmgspells_$0_SDmgRaise}}} {{dmgmod=@{dmgmod}}}</textarea><br />
-										<span style='color:red;' data-i18n="note-template-formula-replace-clubs">
-											<strong>NOTE:</strong> &{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
+										<span style='color:red;'>
+											<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-formula-replace-clubs">&{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
 										</span>
 										<br />
 									</div>
@@ -8649,9 +8649,9 @@
 									<input type='checkbox' name='attr_SpellFormula' class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 									<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 										<textarea style='width:775px; height:50px;'>/em @{character_name} attempts to do damage with a @{repeating_dmgspells_$0_Spell} and rolls: [[@{repeating_dmgspells_$0_NoSpllDice}@{repeating_dmgspells_$0_SDmgType}+@{repeating_dmgspells_$0_SDmgMod}[Spell Damage]+@{dmgmod}[Damage Modifier]+@{repeating_dmgspells_$0_SDmgRaise}[Bonus Damage]]]!</textarea><br />
-										<span style='color:red;' data-i18n="note-template-formula-increment">
-											<strong>NOTE:</strong> the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-										</span>
+										<span style='color:red;'>
+													<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-formula-increment">the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+												</span>
 										<br />
 									</div>
 								</div>
@@ -8670,7 +8670,7 @@
 									<input type="checkbox" class="sheet-useSpells" name="attr_magictype" style="display: none; width: 15px;" value="3" />
 									<input type="checkbox" class="sheet-useRituals" name="attr_magictype" style="display: none; width: 15px;" value="4" />
 									<input type="checkbox" class="sheet-useWeirdScience" name="attr_magictype" style="display: none; width: 15px;" value="5" />
-									<span class="sheet-MagicTypes"> (Non-Damaging)</span>
+									<span class="sheet-MagicTypes"> (<span data-i18n="non-damaging">Non-Damaging</span>)</span>
 								</h3>
 							</div>
 							<div class="sheet-spellsn">
@@ -8775,8 +8775,8 @@
 									<input type='checkbox' name='attr_RangeFormula' class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 									<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 										<textarea style='width:775px; height:50px;'>&{template:solidtrait} @{repeating_talismans_&lt;id&gt;_rolltActivation}</textarea><br />
-										<span style='color:red;' data-i18n="note-template-unique-repeating-item">
-											<strong>NOTE:</strong> &{template:solidtrait} can be replaced with &{template:spadestrait2}. &lt;id&gt; represents the unique of each repeating item; to find that value, make sure that your macro quick bar is enabled, and drag the roll button for the item to the macro quick bar—the &lt;id&gt; will be prefaced with a minus sign. Replace "&lt;id&gt;" with the unique value shown on the button in the quick macro bar. You can remove the button from the macro bar once you have the &lt;id&gt;.
+										<span style='color:red;'>
+											<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-unique-repeating-item">&{template:solidtrait} can be replaced with &{template:spadestrait2}. &lt;id&gt; represents the unique of each repeating item; to find that value, make sure that your macro quick bar is enabled, and drag the roll button for the item to the macro quick bar—the &lt;id&gt; will be prefaced with a minus sign. Replace "&lt;id&gt;" with the unique value shown on the button in the quick macro bar. You can remove the button from the macro bar once you have the &lt;id&gt;.</span><
 										</span>
 										<br />
 									</div>
@@ -8786,7 +8786,7 @@
 									<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
 										<textarea style='width:775px; height:50px;'>/em @{character_name} attempts to activate the @{repeating_talismans_&lt;id&gt;talisman} talisman and rolls: @{repeating_talismans_&lt;id&gt;rollActivation}!</textarea><br />
 										<span style='color:red;' data-i18n="note-template-unique-repeating-item-2">
-											<strong>NOTE:</strong> the <span style='border:solid, border-width:1px;'> &lt;id&gt; represents the unique of each repeating item; to find that value, make sure that your macro quick bar is enabled, and drag the roll button for the item to the macro quick bar—the &lt;id&gt; will be prefaced with a minus sign. Replace "&lt;id&gt;" with the unique value shown on the button in the quick macro bar. You can remove the button from the macro bar once you have the &lt;id&gt;.</span>
+											<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-unique-repeating-item-2">the <span style='border:solid, border-width:1px;'> &lt;id&gt; </span> represents the unique of each repeating item; to find that value, make sure that your macro quick bar is enabled, and drag the roll button for the item to the macro quick bar—the &lt;id&gt; will be prefaced with a minus sign. Replace "&lt;id&gt;" with the unique value shown on the button in the quick macro bar. You can remove the button from the macro bar once you have the &lt;id&gt;.</span>
 										</span>
 										<br />
 									</div>
@@ -8799,7 +8799,7 @@
 					<!-- End Arcanum -->
 		
 					<div class="sheet-section-journal" style="width: 800px;"><!-- Begin Journal -->
-						<div class='sheet-row'><h2 class='sheet-sectionHeader'><span data-i18n="journal">JOURNAL</span></h2></div>
+						<div class='sheet-row'><h2 class='sheet-sectionHeader'><span data-i18n="journal-u">JOURNAL</span></h2></div>
 						<!-- Quest Log -->
 							<!-- Quest Title, Boss, Goal, Notes -->
 						<h3 class="sheet-subsectionHeader" style="margin-bottom: 10px; margin-top: 5px;"><span data-i18n="quest-log">Quest Log</span></span></h3>
@@ -8872,10 +8872,10 @@
 							</div>
 						</div>
 						<!-- Notes -->
-						<h3 class="sheet-subsectionHeader">Notes</h3>
+						<h3 class="sheet-subsectionHeader"><span data-i18n="notes">Notes</span></h3>
 							<textarea name="attr_CharNotes" class="sheet-standardtext" title="@{CharNotes}" style='width:785px;'></textarea>
 						<!-- Party Bag -->
-						<h3 class="sheet-subsectionHeader">Party Bag</h3>
+						<h3 class="sheet-subsectionHeader"><span data-i18n="party-bag">Party Bag</span></h3>
 							<textarea name="attr_partybag" class="sheet-standardtext" title="@{partybag}" style='width:785px;'>Community property and money</textarea>
 						<!-- Advancements -->
 						<input class="sheet-showAdvancements" type="checkbox" name="attr_showAdvancements" style="display: none;" />
@@ -11094,9 +11094,9 @@
 										<input type='checkbox' name='attr_mSkillsFormula' class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
 										<div class='sheet-formula' style='width:440px; height:80px; border:solid; border-width:1px;'>
 											<textarea style='width:430px; height:70px;'>/em @{character_name} attempts to do something with @{repeating_mskills_$0_mSkillName} and rolls: [[1d@{repeating_mskills_$0_mSkillNameRank}![@{repeating_mskills_$0_mSkillName}]+ @{repeating_mskills_$0_mSkillNameMod}[Other Modifiers] + @{mttmod}[Modifiers] - @{mwoundsMod}[Wounds] - @{mfatigue}[Fatigue]]]!'</textarea><br />
-											<span style='color:red;' data-i18n="note-template-formula-increment">
-												<strong>NOTE:</strong> the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.
-											</span>
+											<span style='color:red;'>
+													<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-formula-increment">the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
+												</span>
 											<br />
 										</div>
 									</div>
@@ -11620,7 +11620,7 @@
 				<caption>{{skill_name}}{{#skill_nameHeader}}:<br />{{skill_nameHeader}}{{/skill_nameHeader}}</caption>
 				<tbody>
 					<tr class="sheet-rth">
-						<th colspan="2">Roll Results</th>
+						<th colspan="2"><span data-i18n="roll-results">Roll Results</span></th>
 					</tr>
 					<tr>
 						<td class="sheet-rresults">&nbsp;&nbsp; {{skill_name}}{{#skill_rank}}(d{{skill_rank}}{{#skill_rank_mod}}+{{skill_rank_mod}}{{/skill_rank_mod}}){{/skill_rank}}:</td>
@@ -11629,7 +11629,7 @@
 					{{#^rollTotal() mook 0}}
     					{{#wild_die}}
     						<tr>
-    							<td class="sheet-rresults">&nbsp;&nbsp; Wild Die {{#wild_die_rank}}(d{{wild_die_rank}}){{/wild_die_rank}}:</td>
+    							<td class="sheet-rresults">&nbsp;&nbsp; <span data-i18n="wild-die">Wild Die</span> {{#wild_die_rank}}(d{{wild_die_rank}}){{/wild_die_rank}}:</td>
     							<td class="sheet-rollresults">{{wild_die}}</td>
     						</tr>
     					{{/wild_die}}
@@ -11643,7 +11643,7 @@
 					{{#^rollTotal() mook 0}}
     					{{#wild_die2}}
     						<tr>
-    							<td class="sheet-rresults">&nbsp;&nbsp; Wild Die 2 {{#wild_die_rank2}}(d{{wild_die_rank2}}){{/wild_die_rank2}}:</td>
+    							<td class="sheet-rresults">&nbsp;&nbsp; <span data-i18n="wild-die">Wild Die</span> 2 {{#wild_die_rank2}}(d{{wild_die_rank2}}){{/wild_die_rank2}}:</td>
     							<td class="sheet-rollresults">{{wild_die2}}</td>
     						</tr>
     					{{/wild_die2}}
@@ -11657,7 +11657,7 @@
 					{{#^rollTotal() mook 0}}
     					{{#wild_die3}}
     						<tr>
-    							<td class="sheet-rresults">&nbsp;&nbsp; Wild Die 3 {{#wild_die_rank3}}(d{{wild_die_rank3}}){{/wild_die_rank3}}:</td>
+    							<td class="sheet-rresults">&nbsp;&nbsp; <span data-i18n="wild-die">Wild Die</span> 3 {{#wild_die_rank3}}(d{{wild_die_rank3}}){{/wild_die_rank3}}:</td>
     							<td class="sheet-rollresults">{{wild_die3}}</td>
     						</tr>
     					{{/wild_die3}}
@@ -11671,42 +11671,42 @@
 					{{#^rollTotal() mook 0}}
     					{{#wild_die4}}
     						<tr>
-    							<td class="sheet-rresults">&nbsp;&nbsp; Wild Die 4 {{#wild_die_rank4}}(d{{wild_die_rank4}}){{/wild_die_rank4}}:</td>
+    							<td class="sheet-rresults">&nbsp;&nbsp; <span data-i18n="wild-die">Wild Die</span> 4 {{#wild_die_rank4}}(d{{wild_die_rank4}}){{/wild_die_rank4}}:</td>
     							<td class="sheet-rollresults">{{wild_die4}}</td>
     						</tr>
     					{{/wild_die4}}
 					{{/^rollTotal() mook 0}}
 					<tr class="sheet-rth">
-						<th colspan="2">Modifiers Applied</th>
+						<th colspan="2"><span data-i18n="modifiers-applied">Modifiers Applied</span></th>
 					</tr>
 					{{#^rollTotal() enc 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Encumbrance:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="encumbrance">Encumbrance</span>:</td>
 							<td class="sheet-fakeroll" style="text-align: right;">{{enc}}</td>
 						</tr>
 					{{/^rollTotal() enc 0}}
 					{{#^rollTotal() wounds 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Wounds:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="wounds">Wounds</span>:</td>
 							<!--<td class="sheet-fakeroll">{{wounds}}</td>-->
 							<td class="sheet-roll">{{wounds}}</td>
 						</tr>
 					{{/^rollTotal() wounds 0}}
 					{{#^rollTotal() fatigue 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Fatigue:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="fatigue">Fatigue</span>:</td>
 							<td class="sheet-roll">{{fatigue}}</td>
 						</tr>
 					{{/^rollTotal() fatigue 0}}
 					{{#^rollTotal() att_mod 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Attribute:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="attribute">Attribute</span>:</td>
 							<td class="sheet-roll">{{att_mod}}</td>
 						</tr>
 					{{/^rollTotal() att_mod 0}}
 					{{#^rollTotal() skill_mod 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Skill:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="skill">Skill</span>:</td>
 							<td class="sheet-roll">{{skill_mod}}</td>
 						</tr>
 					{{/^rollTotal() skill_mod 0}}
@@ -11718,13 +11718,13 @@
 					{{/^rollTotal() other_mods 0}}				
 					{{#^rollTotal() ttmod 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Situational:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="situational">Situational</span>:</td>
 							<td class="sheet-roll">{{ttmod}}</td>
 						</tr>
 					{{/^rollTotal() ttmod 0}}
 					{{#sit_notes}}
 						<tr>
-							<td colspan="2">&nbsp;&nbsp; <strong>Situational Notes</strong>:{{sit_notes}}</td>
+							<td colspan="2">&nbsp;&nbsp; <strong><span data-i18n="situational-notes">Situational Notes</span></strong>:{{sit_notes}}</td>
 						</tr>
 					{{/sit_notes}}
 					{{#allprops() mook enc wounds fatigue att_mod skill_mod other_mods ttmod bonuses penalties notes sit_notes skill_roll skill_name skill_rank skill_nameHeader skill_rank_mod wild_die wild_die_rank skill_roll2 skill_name2 skill_rank2 skill_rank_mod2 wild_die2 wild_die_rank2 skill_roll3 skill_name3 skill_rank3 skill_rank_mod3 wild_die3 wild_die_rank3 skill_roll4 skill_name4 skill_rank4 skill_rank_mod4 wild_die4 wild_die_rank4}}
@@ -11737,19 +11737,19 @@
 					{{/allprops() mook enc wounds fatigue att_mod skill_mod other_mods ttmod bonuses penalties notes sit_notes skill_roll skill_name skill_rank skill_nameHeader skill_rank_mod wild_die wild_die_rank skill_roll2 skill_name2 skill_rank2 skill_rank_mod2 wild_die2 wild_die_rank2 skill_roll3 skill_name3 skill_rank3 skill_rank_mod3 wild_die3 wild_die_rank3 skill_roll4 skill_name4 skill_rank4 skill_rank_mod4 wild_die4 wild_die_rank4}}
 					{{#^rollTotal() bonuses 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Bonuses:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="bonuses">Bonuses</span>:</td>
 							<td class="sheet-roll">{{bonuses}}</td>
 						</tr>
 					{{/^rollTotal() bonuses 0}}
 					{{#^rollTotal() penalties 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Penalties:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="penalties">Penalties</span>:</td>
 							<td class="sheet-roll">{{penalties}}</td>
 						</tr>
 					{{/^rollTotal() penalties 0}}
 					{{#notes}}
 						<tr>
-							<td colspan="2">&nbsp;&nbsp; <strong>Notes</strong>:&nbsp;{{notes}}</td>
+							<td colspan="2">&nbsp;&nbsp; <strong><span data-i18n="notes">Notes</span></strong>:&nbsp;{{notes}}</td>
 						</tr>
 					{{/notes}}
 				</tbody>
@@ -11764,7 +11764,7 @@
 				<caption>{{skill_name}}{{#skill_nameHeader}}:<br />{{skill_nameHeader}}{{/skill_nameHeader}}</caption>
 				<tbody>
 					<tr class="sheet-rth">
-						<th colspan="2">Roll Results</th>
+						<th colspan="2"><span data-i18n="roll-results">Roll Results</span></th>
 					</tr>
 					<tr>
 						<td class="sheet-rresults">&nbsp;&nbsp; {{skill_name}}{{#skill_rank}}(d{{skill_rank}}{{#skill_rank_mod}}+{{skill_rank_mod}}{{/skill_rank_mod}}){{/skill_rank}}:</td>
@@ -11773,7 +11773,7 @@
 					{{#^rollTotal() mook 0}}
     					{{#wild_die}}
     						<tr>
-    							<td class="sheet-rresults">&nbsp;&nbsp; Wild Die {{#wild_die_rank}}(d{{wild_die_rank}}){{/wild_die_rank}}:</td>
+    							<td class="sheet-rresults">&nbsp;&nbsp; <span data-i18n="wild-die">Wild Die</span> {{#wild_die_rank}}(d{{wild_die_rank}}){{/wild_die_rank}}:</td>
     							<td class="sheet-rollresults">{{wild_die}}</td>
     						</tr>
     					{{/wild_die}}
@@ -11787,7 +11787,7 @@
 					{{#^rollTotal() mook 0}}
     					{{#wild_die2}}
     						<tr>
-    							<td class="sheet-rresults">&nbsp;&nbsp; Wild Die 2 {{#wild_die_rank2}}(d{{wild_die_rank2}}){{/wild_die_rank2}}:</td>
+    							<td class="sheet-rresults">&nbsp;&nbsp; <span data-i18n="wild-die">Wild Die</span> 2 {{#wild_die_rank2}}(d{{wild_die_rank2}}){{/wild_die_rank2}}:</td>
     							<td class="sheet-rollresults">{{wild_die2}}</td>
     						</tr>
     					{{/wild_die2}}
@@ -11801,7 +11801,7 @@
 					{{#^rollTotal() mook 0}}
     					{{#wild_die3}}
     						<tr>
-    							<td class="sheet-rresults">&nbsp;&nbsp; Wild Die 3 {{#wild_die_rank3}}(d{{wild_die_rank3}}){{/wild_die_rank3}}:</td>
+    							<td class="sheet-rresults">&nbsp;&nbsp; <span data-i18n="wild-die">Wild Die</span> 3 {{#wild_die_rank3}}(d{{wild_die_rank3}}){{/wild_die_rank3}}:</td>
     							<td class="sheet-rollresults">{{wild_die3}}</td>
     						</tr>
     					{{/wild_die3}}
@@ -11815,42 +11815,42 @@
 					{{#^rollTotal() mook 0}}
     					{{#wild_die4}}
     						<tr>
-    							<td class="sheet-rresults">&nbsp;&nbsp; Wild Die 4 {{#wild_die_rank4}}(d{{wild_die_rank4}}){{/wild_die_rank4}}:</td>
+    							<td class="sheet-rresults">&nbsp;&nbsp; <span data-i18n="wild-die">Wild Die</span> 4 {{#wild_die_rank4}}(d{{wild_die_rank4}}){{/wild_die_rank4}}:</td>
     							<td class="sheet-rollresults">{{wild_die4}}</td>
     						</tr>
     					{{/wild_die4}}
     				{{/^rollTotal() mook 0}}
 					<tr class="sheet-rth">
-						<th colspan="2">Modifiers Applied</th>
+						<th colspan="2"><span data-i18n="modifiers-applied">Modifiers Applied</span></th>
 					</tr>
 					{{#^rollTotal() enc 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Encumbrance:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="encumbrance">Encumbrance</span>:</td>
 							<td class="sheet-fakeroll" style="text-align: right;">{{enc}}</td>
 						</tr>
 					{{/^rollTotal() enc 0}}
 					{{#^rollTotal() wounds 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Wounds:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="wounds">Wounds</span>:</td>
 							<!--<td class="sheet-fakeroll">{{wounds}}</td>-->
 							<td class="sheet-roll">{{wounds}}</td>
 						</tr>
 					{{/^rollTotal() wounds 0}}
 					{{#^rollTotal() fatigue 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Fatigue:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="fatigue">Fatigue</span>:</td>
 							<td class="sheet-roll">{{fatigue}}</td>
 						</tr>
 					{{/^rollTotal() fatigue 0}}
 					{{#^rollTotal() att_mod 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Attribute:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="attribute">Attribute</span>:</td>
 							<td class="sheet-roll">{{att_mod}}</td>
 						</tr>
 					{{/^rollTotal() att_mod 0}}
 					{{#^rollTotal() skill_mod 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Skill:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="skill">Skill</span>:</td>
 							<td class="sheet-roll">{{skill_mod}}</td>
 						</tr>
 					{{/^rollTotal() skill_mod 0}}
@@ -11862,13 +11862,13 @@
 					{{/^rollTotal() other_mods 0}}				
 					{{#^rollTotal() ttmod 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Situational:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="situational">Situational</span>:</td>
 							<td class="sheet-roll">{{ttmod}}</td>
 						</tr>
 					{{/^rollTotal() ttmod 0}}
 					{{#sit_notes}}
 						<tr>
-							<td colspan="2">&nbsp;&nbsp; <strong>Situational Notes</strong>:{{sit_notes}}</td>
+							<td colspan="2">&nbsp;&nbsp; <strong><span data-i18n="situational-notes">Situational Notes</span></strong>:{{sit_notes}}</td>
 						</tr>
 					{{/sit_notes}}
 					{{#allprops() mook enc wounds fatigue att_mod skill_mod other_mods ttmod bonuses penalties notes sit_notes skill_roll skill_name skill_rank skill_nameHeader skill_rank_mod wild_die wild_die_rank skill_roll2 skill_name2 skill_rank2 skill_rank_mod2 wild_die2 wild_die_rank2 skill_roll3 skill_name3 skill_rank3 skill_rank_mod3 wild_die3 wild_die_rank3 skill_roll4 skill_name4 skill_rank4 skill_rank_mod4 wild_die4 wild_die_rank4}}
@@ -11879,19 +11879,19 @@
 					{{/allprops() mook enc wounds fatigue att_mod skill_mod other_mods ttmod bonuses penalties notes sit_notes skill_roll skill_name skill_rank skill_nameHeader skill_rank_mod wild_die wild_die_rank skill_roll2 skill_name2 skill_rank2 skill_rank_mod2 wild_die2 wild_die_rank2 skill_roll3 skill_name3 skill_rank3 skill_rank_mod3 wild_die3 wild_die_rank3 skill_roll4 skill_name4 skill_rank4 skill_rank_mod4 wild_die4 wild_die_rank4}}
 					{{#^rollTotal() bonuses 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Bonuses:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="bonuses">Bonuses</span>:</td>
 							<td class="sheet-roll">{{bonuses}}</td>
 						</tr>
 					{{/^rollTotal() bonuses 0}}
 					{{#^rollTotal() penalties 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Penalties:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="penalties">Penalties</span>:</td>
 							<td class="sheet-roll">{{penalties}}</td>
 						</tr>
 					{{/^rollTotal() penalties 0}}
 					{{#notes}}
 						<tr>
-							<td colspan="2">&nbsp;&nbsp; <strong>Notes</strong>:&nbsp;{{notes}}</td>
+							<td colspan="2">&nbsp;&nbsp; <strong><span data-i18n="notes">Notes</span></strong>:&nbsp;{{notes}}</td>
 						</tr>
 					{{/notes}}
 				</tbody>
@@ -11906,47 +11906,47 @@
 				{{#weapon}}<caption>{{weapon}}</caption>{{/weapon}}
 				<tbody>
 					<tr class="sheet-rth">
-						<th colspan="2">Roll Results</th>
+						<th colspan="2"><span data-i18n="roll-results">Roll Results</span></th>
 					</tr>
 					<tr>
-						<td class="sheet-rresults">&nbsp;&nbsp; Damage ({{damage_type}}):</td>
+						<td class="sheet-rresults">&nbsp;&nbsp; <span data-i18n="damage">Damage</span> ({{damage_type}}):</td>
 						<td class="sheet-rollresults">{{damage}}</td>
 					</tr>
 					<tr class="sheet-rth">
-						<th colspan="2">Modifiers Applied</th>
+						<th colspan="2"><span data-i18n="modifiers-applied">Modifiers Applied</span></th>
 					</tr>
 					{{#raise}}
 						<tr>
-							<td>&nbsp;&nbsp; Raise:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="raise">Raise</span>:</td>
 							<td class="sheet-roll"> d{{raise}}</td>
 						</tr>
 					{{/raise}}
 					{{#dmgmod}}
 						<tr>
-							<td>&nbsp;&nbsp; Miscellaneous:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="miscellaneous">Miscellaneous</span>:</td>
 							<td class="sheet-roll">{{dmgmod}}</td>
 						</tr>
 					{{/dmgmod}}
 					{{#misc_notes}}
 						<tr>
-							<td colspan="2">&nbsp;&nbsp; <strong>Miscellaneous Notes</strong>:{{misc_notes}}</td>
+							<td colspan="2">&nbsp;&nbsp; <strong><span data-i18n="miscellaneous-notes">Miscellaneous Notes</span></strong>:{{misc_notes}}</td>
 						</tr>
 					{{/misc_notes}}
 					{{#bonuses}}
 						<tr>
-							<td>&nbsp;&nbsp; Bonuses:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="bonuses">Bonuses</span>:</td>
 							<td class="sheet-roll">{{bonuses}}</td>
 						</tr>
 					{{/bonuses}}
 					{{#penalties}}
 						<tr>
-							<td>&nbsp;&nbsp; Penalties:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="penalties">Penalties</span>:</td>
 							<td class="sheet-roll">{{penalties}}</td>
 						</tr>
 					{{/penalties}}
 					{{#notes}}
 						<tr>
-							<td colspan="2">&nbsp;&nbsp; <strong>Notes</strong>:{{notes}}</td>
+							<td colspan="2">&nbsp;&nbsp; <strong><span data-i18n="notes">Notes</span></strong>:{{notes}}</td>
 						</tr>
 					{{/notes}}
 				</tbody>
@@ -11961,47 +11961,47 @@
 				{{#weapon}}<caption>{{weapon}}</caption>{{/weapon}}
 				<tbody>
 					<tr class="sheet-rth">
-						<th colspan="2">Roll Results</th>
+						<th colspan="2"><span data-i18n="roll-results">Roll Results</span></th>
 					</tr>
 					<tr>
-						<td class="sheet-rresults">&nbsp;&nbsp; Damage ({{damage_type}}):</td>
+						<td class="sheet-rresults">&nbsp;&nbsp; <span data-i18n="damage">Damage</span> ({{damage_type}}):</td>
 						<td class="sheet-rollresults">{{damage}}</td>
 					</tr>
 					<tr class="sheet-rth">
-						<th colspan="2">Modifiers Applied</th>
+						<th colspan="2"><span data-i18n="modifiers-applied">Modifiers Applied</span></th>
 					</tr>
 					{{#raise}}
 						<tr>
-							<td>&nbsp;&nbsp; Raise:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="raise">Raise</span>:</td>
 							<td class="sheet-roll"> d{{raise}}</td>
 						</tr>
 					{{/raise}}
 					{{#dmgmod}}
 						<tr>
-							<td>&nbsp;&nbsp; Miscellaneous:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="miscellaneous">Miscellaneous</span>:</td>
 							<td class="sheet-roll">{{dmgmod}}</td>
 						</tr>
 					{{/dmgmod}}
 					{{#misc_notes}}
 						<tr>
-							<td colspan="2">&nbsp;&nbsp; <strong>Miscellaneous Notes</strong>:{{misc_notes}}</td>
+							<td colspan="2">&nbsp;&nbsp; <strong><span data-i18n="miscellaneous-notes">Miscellaneous Notes</span></strong>:{{misc_notes}}</td>
 						</tr>
 					{{/misc_notes}}
 					{{#bonuses}}
 						<tr>
-							<td>&nbsp;&nbsp; Bonuses:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="bonuses">Bonuses</span>:</td>
 							<td class="sheet-roll">{{bonuses}}</td>
 						</tr>
 					{{/bonuses}}
 					{{#penalties}}
 						<tr>
-							<td>&nbsp;&nbsp; Penalties:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="penalties">Penalties</span>:</td>
 							<td class="sheet-roll">{{penalties}}</td>
 						</tr>
 					{{/penalties}}
 					{{#notes}}
 						<tr>
-							<td colspan="2">&nbsp;&nbsp; <strong>Notes</strong>:{{notes}}</td>
+							<td colspan="2">&nbsp;&nbsp; <strong><span data-i18n="notes">Notes</span></strong>:{{notes}}</td>
 						</tr>
 					{{/notes}}
 				</tbody>
@@ -12024,10 +12024,10 @@
 			<div class="sheet-AceClubs">
 		{{/rollGreater() background 1}}
 			<table>
-				<caption>Trait Roll{{#trait_name2}}s{{/trait_name2}}</caption>
+				<caption><span data-i18n="trait-roll">Trait Roll</span>{{#trait_name2}}s{{/trait_name2}}</caption>
 				<tbody>
 					<tr class="sheet-rth">
-						<th colspan="2">Roll Results</th>
+						<th colspan="2"><span data-i18n="roll-results">Roll Results</span></th>
 					</tr>
 					<tr>
 						<td class="sheet-rresults">&nbsp;&nbsp; {{trait_name}}{{#trait_rank}}(d{{trait_rank}}{{#rollGreater() trait_rank_modCheck 0}}+{{trait_rank_mod}}{{/rollGreater() trait_rank_modCheck 0}}){{/trait_rank}}:</td>
@@ -12036,7 +12036,7 @@
 					</tr>
 					{{#wild_die}}
 						<tr>
-							<td class="sheet-rresults">&nbsp;&nbsp; Wild Die {{#wild_die_rank}}(d{{wild_die_rank}}){{/wild_die_rank}}:</td>
+							<td class="sheet-rresults">&nbsp;&nbsp; <span data-i18n="wild-die">Wild Die</span> {{#wild_die_rank}}(d{{wild_die_rank}}){{/wild_die_rank}}:</td>
 							<td class="sheet-rollresults">{{wild_die}}</td>
 						</tr>
 					{{/wild_die}}
@@ -12051,7 +12051,7 @@
 					{{/trait_roll2}}
 					{{#wild_die2}}
 						<tr>
-							<td class="sheet-rresults">&nbsp;&nbsp; Wild Die 2 {{#wild_die_rank2}}(d{{wild_die_rank2}}){{/wild_die_rank2}}:</td>
+							<td class="sheet-rresults">&nbsp;&nbsp; <span data-i18n="wild-die">Wild Die</span> 2 {{#wild_die_rank2}}(d{{wild_die_rank2}}){{/wild_die_rank2}}:</td>
 							<td class="sheet-rollresults">{{wild_die2}}</td>
 						</tr>
 					{{/wild_die2}}
@@ -12066,7 +12066,7 @@
 					{{/trait_roll3}}
 					{{#wild_die3}}
 						<tr>
-							<td class="sheet-rresults">&nbsp;&nbsp; Wild Die 3 {{#wild_die_rank3}}(d{{wild_die_rank3}}){{/wild_die_rank3}}:</td>
+							<td class="sheet-rresults">&nbsp;&nbsp; <span data-i18n="wild-die">Wild Die</span> 3 {{#wild_die_rank3}}(d{{wild_die_rank3}}){{/wild_die_rank3}}:</td>
 							<td class="sheet-rollresults">{{wild_die3}}</td>
 						</tr>
 					{{/wild_die3}}
@@ -12081,7 +12081,7 @@
 					{{/trait_roll4}}
 					{{#wild_die4}}
 						<tr>
-							<td class="sheet-rresults">&nbsp;&nbsp; Wild Die 4 {{#wild_die_rank4}}(d{{wild_die_rank4}}){{/wild_die_rank4}}:</td>
+							<td class="sheet-rresults">&nbsp;&nbsp; <span data-i18n="wild-die">Wild Die</span> 4 {{#wild_die_rank4}}(d{{wild_die_rank4}}){{/wild_die_rank4}}:</td>
 							<td class="sheet-rollresults">{{wild_die4}}</td>
 						</tr>
 					{{/wild_die4}}
@@ -12089,10 +12089,10 @@
 			</table>
 			
 			<table> <!-- Damage Rolls -->
-				<caption>Damage Roll{{#weapon2}}s{{/weapon2}}</caption>
+				<caption><span data-i18n="damage-roll">Damage Roll</span>{{#weapon2}}s{{/weapon2}}</caption>
 				<tbody>
 					<tr class="sheet-rth">
-						<th colspan="2">Roll Results</th>
+						<th colspan="2"><span data-i18n="roll-results">Roll Results</span></th>
 					</tr>
 					<tr>
 						<td class="sheet-rresults">&nbsp;&nbsp; {{weapon}}{{#damage_type}} ({{damage_type}}){{/damage_type}}:</td>
@@ -12132,35 +12132,35 @@
 				<caption>Modifiers</caption>
 				<tbody>
 					<tr class="sheet-rth">
-						<th colspan="2">Trait Roll Modifiers</th>
+						<th colspan="2"><span data-i18n="trait-roll-modifiers">Trait Roll Modifiers</span></th>
 					</tr>
 					{{#enc}}
 						<tr>
-							<td>&nbsp;&nbsp; Encumbrance:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="encumbrance">Encumbrance</span>:</td>
 							<td class="sheet-roll">{{enc}}</td>
 						</tr>
 					{{/enc}}
 					{{#rollGreater() wounds 0}}
 						<tr>
-							<td class="sheet-fakeroll">&nbsp;&nbsp; Wounds ({{wounds}}):</td>
+							<td class="sheet-fakeroll">&nbsp;&nbsp; <span data-i18n="wounds">Wounds</span> ({{wounds}}):</td>
 							<td class="sheet-roll">{{woundsMod}}</td>
 						</tr>
 					{{/rollGreater() wounds 0}}
 					{{#rollGreater() fatigue 0}}
 						<tr>
-							<td class="sheet-fakeroll">&nbsp;&nbsp; Fatigue ({{fatigue}}):</td>
+							<td class="sheet-fakeroll">&nbsp;&nbsp; <span data-i18n="fatigue">Fatigue</span> ({{fatigue}}):</td>
 							<td class="sheet-roll">{{fatigueMod}}</td>
 						</tr>
 					{{/rollGreater() fatigue 0}}
 					{{#att_mod}}
 						<tr>
-							<td>&nbsp;&nbsp; Attribute:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="attribute">Attribute</span>:</td>
 							<td class="sheet-roll">{{att_mod}}</td>
 						</tr>
 					{{/att_mod}}
 					{{#skill_mod}}
 						<tr>
-							<td>&nbsp;&nbsp; Skill:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="skill">Skill</span>:</td>
 							<td class="sheet-roll">{{skill_mod}}</td>
 						</tr>
 					{{/skill_mod}}
@@ -12172,30 +12172,30 @@
 					{{/other_mods}}
 					{{#ttmod}}
 						<tr>
-							<td>&nbsp;&nbsp; Situational:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="situational">Situational</span>:</td>
 							<td class="sheet-roll">{{ttmod}}</td>
 						</tr>
 					{{/ttmod}}
 					{{#sit_notes}}
 						<tr>
-							<td colspan="2">&nbsp;&nbsp; <strong>Situational Notes</strong>:{{sit_notes}}</td>
+							<td colspan="2">&nbsp;&nbsp; <strong><span data-i18n="situational-notes">Situational Notes</span></strong>:{{sit_notes}}</td>
 						</tr>
 					{{/sit_notes}}
 					{{#tbonuses}}
 						<tr>
-							<td>&nbsp;&nbsp; Bonuses:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="bonuses">Bonuses</span>:</td>
 							<td class="sheet-roll">{{tbonuses}}</td>
 						</tr>
 					{{/tbonuses}}
 					{{#tpenalties}}
 						<tr>
-							<td>&nbsp;&nbsp; Penalties:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="penalties">Penalties</span>:</td>
 							<td class="sheet-roll">{{tpenalties}}</td>
 						</tr>
 					{{/tpenalties}}
 					{{#tnotes}}
 						<tr>
-							<td colspan="2">&nbsp;&nbsp; <strong>Notes</strong>:{{tnotes}}</td>
+							<td colspan="2">&nbsp;&nbsp; <strong><span data-i18n="notes">Notes</span></strong>:{{tnotes}}</td>
 						</tr>
 					{{/tnotes}}
 					<tr><td colspan="2" style="border: none;">&nbsp;</td></tr>
@@ -12204,81 +12204,81 @@
 					</tr>
 					{{#rollGreater() raise 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Raise:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="raise">Raise</span>:</td>
 							<td class="sheet-roll"> <span style="font-weight: bold; margin-right: -3px;">d</span>{{raise}}</td>
 						</tr>
 					{{/rollGreater() raise 0}}
 					{{#rollGreater() dmgmod 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Miscellaneous:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="miscellaneous">Miscellaneous</span>:</td>
 							<td class="sheet-roll"><span style="font-weight: bold; margin-right: -3px;">+</span>{{dmgmod}}</td>
 						</tr>
 					{{/rollGreater() dmgmod 0}}
 					{{#rollLess() dmgmod 0}}
 						<tr>
-							<td>&nbsp;&nbsp; Miscellaneous:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="miscellaneous">Miscellaneous</span>:</td>
 							<td class="sheet-roll">{{dmgmod}}</td>
 						</tr>
 					{{/rollLess() dmgmod 0}}
 					{{#misc_notes}}
 						<tr>
-							<td colspan="2">&nbsp;&nbsp; <strong>Miscellaneous Notes</strong>:{{misc_notes}}</td>
+							<td colspan="2">&nbsp;&nbsp; <strong><span data-i18n="miscellaneous-notes">Miscellaneous Notes</span></strong>:{{misc_notes}}</td>
 						</tr>
 					{{/misc_notes}}
 					{{#dbonuses}}
 						<tr>
-							<td>&nbsp;&nbsp; Bonuses:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="bonuses">Bonuses</span>:</td>
 							<td class="sheet-roll">{{dbonuses}}</td>
 						</tr>
 					{{/dbonuses}}
 					{{#dpenalties}}
 						<tr>
-							<td>&nbsp;&nbsp; Penalties:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="penalties">Penalties</span>:</td>
 							<td class="sheet-roll">{{dpenalties}}</td>
 						</tr>
 					{{/dpenalties}}
 					{{#dnotes}}
 						<tr>
-							<td colspan="2">&nbsp;&nbsp; <strong>Notes</strong>:{{dnotes}}</td>
+							<td colspan="2">&nbsp;&nbsp; <strong><span data-i18n="notes">Notes</span></strong>:{{dnotes}}</td>
 						</tr>
 					{{/dnotes}}
 					<tr><td colspan="2" style="border: none;">&nbsp;</td></tr>
 					<tr class="sheet-rth">
-						<th colspan="2">Trait & Damage Modifiers</th>
+						<th colspan="2"><span data-i18n="trait-and-damage-modifiers">Trait & Damage Modifiers</span></th>
 					</tr>
 					{{#TheDrop}}
 						<tr>
-							<td>&nbsp;&nbsp; The Drop:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="the-drop">The Drop</span>:</td>
 							<td class="sheet-roll">+4</td>
 						</tr>
 					{{/TheDrop}}
 					{{#Berserk}}
 						<tr>
-							<td>&nbsp;&nbsp; Berserk:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="berserk">Berserk</span>:</td>
 							<td class="sheet-roll">+2</td>
 						</tr>
 					{{/Berserk}}
 					{{#WildAttack}}
 						<tr>
-							<td>&nbsp;&nbsp; Wild Attack:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="wild-attack">Wild Attack</span>:</td>
 							<td class="sheet-roll">+2</td>
 						</tr>
 					{{/WildAttack}}
 					{{#sbonuses}}
 						<tr>
-							<td>&nbsp;&nbsp; Bonuses:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="bonuses">Bonuses</span>:</td>
 							<td class="sheet-roll">{{sbonuses}}</td>
 						</tr>
 					{{/sbonuses}}
 					{{#spenalties}}
 						<tr>
-							<td>&nbsp;&nbsp; Penalties:</td>
+							<td>&nbsp;&nbsp; <span data-i18n="penalties">Penalties</span>:</td>
 							<td class="sheet-roll">{{spenalties}}</td>
 						</tr>
 					{{/spenalties}}
 					{{#snotes}}
 						<tr>
-							<td colspan="2">&nbsp;&nbsp; <strong>Notes</strong>:{{snotes}}</td>
+							<td colspan="2">&nbsp;&nbsp; <strong><span data-i18n="notes">Notes</span></strong>:{{snotes}}</td>
 						</tr>
 					{{/snotes}}
 				</tbody>
