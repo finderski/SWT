@@ -2,7 +2,6 @@
 	"wild-card": "Wild Card",
 	"mook": "Mook",
 	"stat-block-button": "Stat Block",
-	"stat-block": "Stat Block",
 	"civilian-name": "Civilian Name",
 	"players-name": "Player Name",
 	"basic-info": "Basic Info",
@@ -619,6 +618,5 @@
 "notemplateruns":"runs",
 "notemplateinches":"inches",
 "community-property-money":"Community property and Money",
-"trappings-notes-components-preptime":"Trappings/Notes/Components/Prep Time/...",
-"bow":"Bow"
+"trappings-notes-components-preptime":"Trappings/Notes/Components/Prep Time/..."
 }

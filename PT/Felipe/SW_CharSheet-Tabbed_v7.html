@@ -2790,61 +2790,6 @@
 		<input type="radio" class="sheet-useBackground" style="display: none;" name="attr_background" value="12" />
 		<!-- Be sure to update the CSS with the file information) -->
 		<div class='sheet-background'>
-		    <!-- Release Notice -->
-			<input type='checkbox' class='sheet-Dismiss' style='display: none;' name='attr_dismissRN' value='1' />
-			<div class='sheet-row sheet-CSRelease' style='width: 100%; padding-top: 5px; padding-bottom: 5px;'>
-		        <label style='width: 100%; display: inline-block;'>
-		        <input type='checkbox' class='sheet-releasenotice' style='opacity: 100%;' name='attr_releasenotice' value='1' /><span class='sheet-releasenotice' style='color: red;'><h3 style='display: inline-block; color: red;'>!! Important Notice !!</h3></span></label>
-		        <input type='checkbox' class='sheet-releasenotice' style='display: none;' name='attr_releasenotice' value='1' />
-		        <div class='sheet-row sheet-releasenotice' style='width: 100%; padding: 0px; margin: 0px'>
-		            <input type='checkbox' class='sheet-Dismiss' name='attr_dismissRN' value='1' /><span class='sheet-Dismiss'>&nbsp;&nbsp;Dismiss</span>
-		            
-		            <p>Savage Worlds Tabbed Sheet: Version 2.0</p>
-		            <p>
-		                Changes this Release:
-		                <ul>
-		                    <li>Added Translation Support</li>
-		                    <li>Added a Banner for easy identification of character type (Mook vs. Wild Card)</li>
-		                    <li>Mook Fields have migrated to use the same fields as Wild Cards</li>
-		                        <ul>
-		                            <li>No data should be lost</li>
-		                            <li>You can get back to the old Mook View by:</li>
-		                                <ol>
-		                                    <li>Go to the Attribute & Abilities tab</li>
-		                                    <li>Click on the Attributes +Add button</li>
-		                                    <li>Name the new attribute: showMook</li>
-		                                    <li>set the value of showMook to 1</li>
-		                                    NOTE: this view will be going away in the near-ish future.
-		                                </ol>
-		                            <li>This is was done to simplify the code-base and allow for universal macros</li>
-		                        </ul> 
-		                    <li>Added Stat Block button</li>
-		                        <ul>
-		                            <li>Whispers the Stat Block to the GM</li>
-		                            <li>Allows rolling from the stat block</li>
-		                            <li>Better formatting may be coming in the future. :)</li>
-		                        </ul>
-		                    <li>Weight/Encumbrance now supports decimals (needed for some international translations)</li>
-		                    <li>Can Change Running Die (in Configuration)</li>
-		                    <li>Added a Running roll button to the Basic Info tab</li>
-		                    <li>Added checkbox for Shaken status</li>
-		                        <ul>
-		                            <li>The Character Type Banner will also display this</li>
-		                        </ul>
-		                    <li>Added a field to Hindrances to indicate Major/Minor hindrance type</li>
-		                    <li>Added a Release Notes section to the Configuration</li>
-		                </ul>
-		            </p> 
-		            <p>
-		                If you'd like to see what's happening with the sheet, join my Test/QA game at: <br /><br />
-		                https://tinyurl.com/SWTabbedQA
-		            </p>
-		            <p>
-		                That game allows characters to be imported from the Character Vault. The Test/QA game also has a forum where you can ask questions, provide feedback, or make requests for future enhancements.
-		            </p>
-		        </div>
-			</div>
-			<!-- End Release Notice -->
 			<!-- Mook or Wild Card Header -->
 			<div class='sheet-row' style='width: 100%;'>
 			    <input type='checkbox' class='sheet-Shaken' name='attr_isShaken' style='display: none;' />
@@ -2921,8 +2866,8 @@
 			
 			<input type="checkbox" class="sheet-usearchetype" name="attr_a41archetype" style="width: 15px; display: none;" />
 			<div class='sheet-cdiv'>
-				<input class="sheet-HideConfig" type="checkbox" checked name="attr_is_config" /><span class="sheet-is-config"><span style='font-family:"Pictos";'>y</span></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<span data-i18n="wild-card" style='display: inline-block;'>Wild Card&nbsp;&nbsp;</span><label class='sheet-switch'><input class="sheet-is-npc" type="checkbox" name="attr_is_npc" value="1" /><span class="sheet-slider sheet-round"></span></label><span data-i18n="mook">&nbsp;&nbsp;Mook</span><br /><br />
+				<input class="sheet-HideConfig" type="checkbox" checked name="attr_is_config" /><span class="sheet-is-config"><span style='font-family:"Pictos";'>y</span></span>
+				<span data-i18n="wild-card" style='display: inline-block;'>Wild Card&nbsp;&nbsp;</span><label class='sheet-switch'><input class="sheet-is-npc" type="checkbox" name="attr_is_npc" value="1" /><span class="sheet-slider sheet-round"></span></label><span data-i18n="mook">&nbsp;&nbsp;Mook</span><br />
 			    <!--<div class='sheet-col' style='margin: 0px; padding:0px; width: 700px;'>
 				    <input class="sheet-is-npc" type="checkbox" name="attr_is_npc" value="1" /><span class="sheet-is-npc-tab"></span>
 				    <span data-i18n="wild-card" style='display: inline-block; margin-top: -5px;'>Wild Card</span><label class='sheet-switch'><input class="sheet-is-npc" type="checkbox" name="attr_is_npc" value="1" /><span class="sheet-slider sheet-round"></span></label>Mook
@@ -3269,54 +3214,24 @@
 					<div class='sheet-row'>
 					    <h4 class='sheet-subsectionHeader'><span data-i18n="release-notes">Release Notes</span></h4>
 					    <!-- Release Notes Info for New Buttons -->
-					    <label style='width: 100%; display: inline-block;'>
-        		        <input type='checkbox' class='sheet-releasenotes' style='opacity: 100%;' name='attr_releasenotes' value='1' /><span class='sheet-releasenotes' style='color: red;'><h3 style='display: inline-block; color: red;'>Version 2.0</h3></span></label>
-        		        <input type='checkbox' class='sheet-releasenotes' style='display: none;' name='attr_releasenotes' value='1' />
-        		        <div class='sheet-row sheet-releasenotes' style='width: 100%; padding: 0px; margin: 0px'>
-        		            <p>Savage Worlds Tabbed Sheet: Version 2.0</p>
-        		            <p>
-        		                Changes this Release:
-        		                <ul>
-        		                    <li>Added Translation Support</li>
-        		                    <li>Added a Banner for easy identification of character type (Mook vs. Wild Card)</li>
-        		                    <li>Mook Fields have migrated to use the same fields as Wild Cards</li>
-        		                        <ul>
-        		                            <li>No data should be lost</li>
-        		                            <li>You can get back to the old Mook View by:</li>
-        		                                <ol>
-        		                                    <li>Go to the Attribute & Abilities tab</li>
-        		                                    <li>Click on the Attributes +Add button</li>
-        		                                    <li>Name the new attribute: showMook</li>
-        		                                    <li>set the value of showMook to 1</li>
-        		                                    NOTE: this view will be going away in the near-ish future.
-        		                                </ol>
-        		                            <li>This is was done to simplify the code-base and allow for universal macros</li>
-        		                        </ul> 
-        		                    <li>Added Stat Block button</li>
-        		                        <ul>
-        		                            <li>Whispers the Stat Block to the GM</li>
-        		                            <li>Allows rolling from the stat block</li>
-        		                            <li>Better formatting may be coming in the future. :)</li>
-        		                        </ul>
-        		                    <li>Weight/Encumbrance now supports decimals (needed for some international translations)</li>
-        		                    <li>Can Change Running Die (in Configuration)</li>
-        		                    <li>Added a Running roll button to the Basic Info tab</li>
-        		                    <li>Added checkbox for Shaken status</li>
-        		                        <ul>
-        		                            <li>The Character Type Banner will also display this</li>
-        		                        </ul>
-        		                    <li>Added a field to Hindrances to indicate Major/Minor hindrance type</li>
-        		                    <li>Added a Release Notes section to the Configuration</li>
-        		                </ul>
-        		            </p> 
-        		            <p>
-        		                If you'd like to see what's happening with the sheet, join my Test/QA game at: <br /><br />
-        		                https://tinyurl.com/SWTabbedQA
-        		            </p>
-        		            <p>
-        		                That game allows characters to be imported from the Character Vault. The Test/QA game also has a forum where you can ask questions, provide feedback, or make requests for future enhancements.
-        		            </p>
-        		        </div>
+					    <!--<input type='checkbox' class='sheet-Dismiss' style='display: none;' name='attr_dismissRN' value='1' />
+            			<div class='sheet-row sheet-CSRelease' style='width: 100%; padding-top: 5px; padding-bottom: 5px;'>
+            		        <label style='width: 100%; display: inline-block;'>
+            		        <input type='checkbox' class='sheet-releasenotes' style='opacity: 100%;' name='attr_releasenotes' value='1' /><span class='sheet-releasenotes' style='color: red;'><h3 style='display: inline-block; color: red;'>!! Important Notice !!</h3></span></label>
+            		        <input type='checkbox' class='sheet-releasenotes' style='display: none;' name='attr_releasenotes' value='1' />
+            		        <div class='sheet-row sheet-releasenotes' style='width: 100%; padding: 0px; margin: 0px'>
+            		            <input type='checkbox' class='sheet-Dismiss' name='attr_dismissRN' value='1' /><span class='sheet-Dismiss'>&nbsp;&nbsp;Dismiss</span>
+            		            
+            		            <p>
+            		                In the near future a potentially character sheet breaking update will be rolled to production.  This change is necessary to make the maintenance of the sheet less time consuming, less resource intensive, and allow universal macros for Wild Cards and Mooks.  To minimize the potential for catastrophic impacts to games, I'm inviting anyone who is concerned to join my Test/QA game at: <br /><br />
+            		                https://tinyurl.com/SWTabbedQA<br /><br />
+            		                That game allows characters to be imported from the Character Vault. The characters potentially impacted by the upcoming changes will be Mooks; Wild Cards should be unaffected by these changes.<br /><br />
+            		                If you have other questions, feel free to drop by the above linked game and leave a message in the forum, or you can PM me. My profile is:<br /><br />
+            		                https://app.roll20.net/users/173448/finderski<br /><br />
+            		                To hide this message, simply click on the downward pointing triangle above this message.
+            		            </p>
+            		        </div>
+            			</div>-->
             			<!-- End Release Notes Info for New Buttons -->
 					</div>
         			
@@ -7169,7 +7084,7 @@
 								<fieldset class="repeating_rangeweapons">
 									<div class='sheet-row sheet-WCSkillsRow' style="width: 790px;">
 										<div class='sheet-col' style='width:150px;'> <!-- Weapon Type (150px) -->
-											<input class="sheet-standard" style='width:145px;' data-i18n-placeholder="bow" placeholder="Bow" type="text" name="attr_RWeaponType" title="@{repeating_rangeweapons_$#_RWeaponType}" />
+											<input class="sheet-standard" style='width:145px;' placeholder="Bow" type="text" name="attr_RWeaponType" title="@{repeating_rangeweapons_$#_RWeaponType}" />
 										</div>
 										<div class='sheet-col' style='width:85px;'> <!-- Range (100px) -->
 											<input class="sheet-standard" style='width:80px; text-aling: center;' type="text" name="attr_WeaponRange" title="@{repeating_rangeweapons_$#_WeaponRange}" placeholder="12/24/48" />
@@ -7301,7 +7216,7 @@
 								<fieldset class="repeating_rippertech">
 									<div class='sheet-row sheet-WCSkillsRow' style="width: 800px; padding: 0px;">
 										<div class='sheet-col' style='width:200px;'> <!-- Weapon Type (150px) -->
-											<input class="sheet-standard" style='width:200px;' data-i18n-placeholder="bow" placeholder="Bow" type="text" name="attr_RTtype" title="@{repeating_rippertech_$#_RTtype}" />
+											<input class="sheet-standard" style='width:200px;' placeholder="Bow" type="text" name="attr_RTtype" title="@{repeating_rippertech_$#_RTtype}" />
 										</div>
 										<div class='sheet-col' style='width:348px;'> <!-- Range (100px) -->
 											<input class="sheet-standard" style='width:348px; font-weight: normal;' type="text" name="attr_RTinfo" title="@{repeating_rippertech_$#_RTinfo}" />
@@ -8702,7 +8617,7 @@
 							<div class="sheet-staticPsionics">
 								<input class="sheet-buttonbox" type="checkbox" name="attr_skillrt" value="0" style="display:none;" /> 
 								<button class="sheet-templatebutton" type='roll' name='roll_tPsionicsRoll' title="@{tPsionicsRoll}" value='@{skillrt} @{defsTemplate} @{rolltPsionics}' style="font-size: 1em;"> <span data-i18n="psionics">Psionics</span></button><button class="sheet-templatebutton sheet-GM-button" type='roll' name='roll_tgmPsionicsRoll' title="@{tgmPsionicsRoll}" value='/w gm @{skillrt} @{defsTemplate} @{rolltPsionics}' style="font-size: 1em;"></button>
-								<button class="sheet-normalbutton" type='roll' name='roll_PsionicsRoll' title="@{PsionicsRoll}" value='/em @{character_name} @{notemplatepsionics} @{rollPsionics}!' style="font-size: 1em;"> <span data-i18n="psionics">Psionics</span></button><button class="sheet-normalbutton sheet-GM-button" type='roll' name='roll_gmPsionicsRoll' title="@{gmPsionicsRoll}" value='/w gm @{character_name} @{notemplatepsionics} @{rollPsionics}!' style="font-size: 1em;"></button>
+								<button class="sheet-normalbutton" type='roll' name='roll_PsionicsRoll' title="@{PsionicsRoll}" value='/em @{character_name} @{notemplatethrowing} @{rollPsionics}!' style="font-size: 1em;"> <span data-i18n="psionics">Psionics</span></button><button class="sheet-normalbutton sheet-GM-button" type='roll' name='roll_gmPsionicsRoll' title="@{gmPsionicsRoll}" value='/w gm @{character_name} @{notemplatethrowing} @{rollPsionics}!' style="font-size: 1em;"></button>
 								&nbsp;&nbsp;
 							</div>
 						
