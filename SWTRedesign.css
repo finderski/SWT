@@ -1,0 +1,796 @@
+/*------ HTML Transformations ------->*/
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+/*------ End Transformations -------->*/
+.sheet-maindiv {
+	margin: 0px;
+	padding: 0px;
+	width: 863px;
+	border: 1px solid black;
+}
+
+.sheet-base {
+	display: inline-block;
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+}
+
+.sheet-atts,
+.sheet-skills {
+	display: inline-block;
+	margin-right: 2px;
+	padding: 0px;
+	width: 32.5%;
+	vertical-align: top;
+	border: 1px solid gray;
+}
+
+.sheet-left,
+.sheet-right {
+	display: inline-block;
+}
+
+.sheet-colHeader {
+    font-size: 1.25em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    background: rgba(255,255,255,0.75);
+}
+
+.sheet-subheader {
+    font-size: 1.15em;
+    text-align: center;
+}
+
+.sheet-visitoggle {
+    margin-top: -40px;
+}
+
+.sheet-hideAtts,
+.sheet-showhide {
+    width: 60px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.sheet-hideAtts {
+    opacity: 0;
+    z-index: 9999;
+    top: -40px;
+    left: 0px;
+    position: relative;
+}
+
+.sheet-showhide {
+    /*margin-left: -58px;*/
+    font-size: 1.5em;
+}
+
+.sheet-atts .sheet-hideAtts + .sheet-showhide,
+.sheet-skills .sheet-hideAtts + .sheet-showhide {
+    top: -40px;
+    left: -60px;
+    position: relative;
+}
+
+.sheet-hideAtts:not(:checked) + span.sheet-showhide::before {
+    font-family: "Pictos";
+    content: "J";
+}
+
+.sheet-hideAtts:checked + span.sheet-showhide::before {
+    font-family: "Pictos";
+    content: "E";
+}
+
+.sheet-attributes {
+    position: relative;
+    margin: -40px 0px 10px 0px;
+    background: rgba(255,255,255,0.75);
+    /* padding-left: 5px; */
+}
+
+button[type=roll].sheet-traitbutton {
+    border: none;
+    background-color: transparent;
+    background-image: none;
+    font-size: 1.05em;
+    font-weight: bold;
+    box-shadow: none;
+    text-shadow: none;
+    height: 28px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.sheet-basetrait {
+    display: flex;
+    flex-wrap: wrap;
+    border: none;
+    border-bottom: 1px dotted black;
+    margin: 0px;
+    padding: 0px;
+    padding-left: 5px;
+    position: relative;
+}
+
+.sheet-basetrait:hover {
+    border: 1px solid red;
+}
+
+.sheet-traitflexattbutton {
+    width: 202px;
+    text-align: left;
+}
+
+.sheet-skillflexattbutton {
+    width: 152px;
+    text-align: left;
+}
+.sheet-traitflexattinput {
+    width: 35px;
+}
+
+.sheet-traitdie {
+    border: none;
+    width: 35px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    text-align: center;
+    margin: 0px;
+}
+
+.sheet-traitmod,
+.sheet-otraitmod {
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    width: 28px !important;
+    height: 28px !important;
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.sheet-traitmod {
+    margin-left: -4px;
+}
+
+.sheet-moremods + span {
+    opacity: 0;
+}
+
+
+.sheet-traitmodplus {
+    display: none;
+}
+
+.sheet-moremods {
+    width: 35px;
+    position: absolute;
+    left: 265px;
+    top: 15px;
+    z-index: 9999;
+    opacity: 0;
+}
+
+.sheet-moremods + span {
+    font-family: "Pictos";
+    color: gray;
+    position: absolute;
+    top: 15px;
+    left: 267px;
+}
+
+.sheet-basetrait:hover ~ .sheet-moremods + span,
+.sheet-moremods:hover + span,
+.sheet-moremods:checked + span {
+    opacity: 1;
+}
+
+.sheet-basetrait:hover > .sheet-moremods + span {
+    opacity: 1;
+}
+
+.sheet-moremods:checked + span {
+    color: black;
+}
+
+.sheet-moremods:checked ~ .sheet-traitmodplus,
+.sheet-useSkillSpec:checked + .sheet-SkillSpec,
+.sheet-useFencingStyle:checked + .sheet-FencingStyle {
+    display: block;
+    width: 100%;
+    border: none;
+}
+
+.sheet-SkillSpec,
+.sheet-FencingStyle {
+    margin-left: 20px;
+}
+
+.sheet-ModDesc {
+    border: none;
+    width: 228px;
+    margin: 0px;
+    font-size: .85em;
+}
+
+.sheet-WD {
+    position: relative;
+    top: 0px;
+    left: 50%;
+}
+
+.sheet-linkedAtt {
+    width: 50px;
+    height: 28px;
+    line-height: 28px;
+    display: inline-flex;
+}
+
+.sheet-attrankselect {
+    margin: 0px 0px 0px -4px;
+}
+
+/*----------- Start Mook/Wild Card Toggle --------------------*/
+.sheet-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 20px;
+  margin-bottom: -5px !important;
+}
+.sheet-switch input {display:none;}
+.sheet-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #d6bf87;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.sheet-slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+input:checked + .sheet-slider {
+  background-color: #c0bba7;
+}
+input:focus + .sheet-slider {
+  box-shadow: 0 0 1px #c0bba7;
+}
+input:checked + .sheet-slider:before {
+  -webkit-transform: translateX(50px);
+  -ms-transform: translateX(50px);
+  transform: translateX(50px);
+}
+.sheet-slider.sheet-round {
+  border-radius: 50px;
+}
+.sheet-slider.sheet-round:before {
+  border-radius: 50%;
+}
+/*----------- End Mook/Wild Card Toggle --------------------*/
+
+/*----------- Tab Setup ------------------------------------*/
+
+.sheet-tab {
+	z-index: 9999;
+}
+
+.sheet-character,
+.sheet-config {
+	display: none;
+}
+
+.sheet-characterT:checked ~ div.sheet-character,
+.sheet-configT:checked ~ div.sheet-config {
+	display: block;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+/*----------- End Tab Setup --------------------------------*/
+
+/*----------- Start Skills Config Sections -----------*/
+
+.sheet-hideskillsconfig {
+    display: inline-block;
+    width: 35px;
+    height: 35px;
+    font-size: 1.25em;
+    position: relative;
+    left: 175px;
+    top: 28px;
+    opacity: 0;
+    z-index: 9999;
+}
+
+.charsheet span.sheet-skillList {
+    font-family: "Pictos";
+    margin-left: -35px;
+    font-size: 1.25em;
+    position: relative;
+    left: 176px;
+    top: 29px;
+}
+
+.sheet-skillz {
+    background: rgba(255,255,255,0.75);
+    position: relative;
+    top: -40px;
+}
+
+.sheet-hideskillsconfig:not(:checked) + span.sheet-skillList::before {
+    /*content: "y";*/
+    content:"x";
+}
+.sheet-hideskillsconfig:checked + span.sheet-skillList::before {
+    content: "2";
+    color: green;
+}
+
+.sheet-isSkillConfig {
+    display: none;
+    position: relative;
+    margin: 0px;
+    top:-40px;
+    background: rgba(255,255,255,0.75);
+}
+
+.sheet-hideskillsconfig:checked ~ .sheet-isSkillConfig {
+    display: inline-block;
+}
+
+.sheet-isSkillList {
+    display: inline-flex;
+    flex-flow: column wrap;
+    height: 280px;
+}
+
+.sheet-StaticSkill {
+    font-size: 1.25em;
+    z-index: 9999;
+    opacity: 0;
+}
+.sheet-StaticSkill + span {
+    font-family: "Pictos";
+    font-size: 1.25em;
+    margin-left: -13px;
+}
+
+.sheet-StaticSkill:not(:checked) + span::before {
+    content: "*";
+    color: red;
+}
+
+.sheet-StaticSkill:checked + span::before {
+    content: "3";
+    margin-left: -1.5px;
+    color: green;
+}
+
+.sheet-SkillListLabel {
+    font-size: 13px;
+    font-weight: normal;
+    margin: 0px;
+    padding: 0px;
+    cursor: pointer;
+}
+
+.sheet-speciality {
+    border: none;
+    border-bottom: 1px solid black;
+    width: 92%;
+}
+
+.sheet-otherskill {
+    border: none;
+    border-bottom: 1px solid black;
+    width: 52%;
+}
+
+.sheet-TAspeciality {
+    border: none;
+    resize: vertical;
+    width: 95%;
+    height: 25px;
+    margin-bottom: -10px;
+}
+
+.sheet-LinkedAttSelect {
+    width: 185px;
+}
+/*----------- End Skills Config  Sections -----------*/
+
+/*----------- Start Repeating Button Display -----------*/
+.repcontrol_add,
+.repcontrol_edit,
+.repcontrol_move,
+.repcontrol_del {
+    opacity: 0.6;
+}
+.repcontrol_add:hover,
+.repcontrol_edit:hover,
+.repcontrol_move:hover,
+.repcontrol_del:hover{
+    opacity: 1.0;
+    outline: none;
+}
+.repcontrol_add:focus,
+.repcontrol_edit:focus,
+.repcontrol_move:focus,
+.repcontrol_del:focus {
+    outline: none;
+}
+.repcontrol_move{
+    height: 11px;
+    line-height: 11px;
+    margin-top: 2px;
+}
+.repcontrol_del {
+    height: 22px;
+    line-height: 12px;
+    margin-top: 2px;
+    width: 30px;
+    background: none;
+    border: none;
+    color: black;
+}
+.repcontrol_add,
+.repcontrol_edit {
+    color: transparent;
+    box-shadow: none;
+    background: transparent;
+    border-color: transparent;
+    text-shadow:none;
+    width: 80px;
+}
+.repcontrol_add:before {
+    content: '+';
+    visibility: visible;
+    font-family: pictos;
+    border: none;
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+    padding: 2px 0px 0px 0px;
+    color: #555;
+}
+.repcontrol_edit:after {
+    content: 'y';
+    visibility: visible;
+    font-family: pictos;
+    border: none;
+    font-size: 18px;
+    height: 18px;
+    width: 18px;
+    padding: 2px 0px 0px 0px;
+    color: #555;
+}
+.editmode ~ .repcontrol .repcontrol_edit:after {
+    content: '2';
+}
+/*----------- End Repeating Button Display -----------*/
+
+/*----------- Start Show/Hide Sections -----------*/
+.sheet-SkillSpec,
+.sheet-FencingStyle,
+/*--- Begin Static Skills ---*/
+.sheet-staticBoating,
+.sheet-staticClimbing,
+.sheet-staticDriving,
+.sheet-staticFaith,
+.sheet-staticGambling,
+.sheet-staticGuts,
+.sheet-staticHealing,
+.sheet-staticIntimidation,
+.sheet-staticInvestigation,
+.sheet-staticLockpicking,
+.sheet-staticNotice,
+.sheet-staticPersuasion,
+.sheet-staticPiloting,
+.sheet-staticPsionics,
+.sheet-staticRepair,
+.sheet-staticRiding,
+.sheet-staticShooting,
+.sheet-staticSpellcasting,
+.sheet-staticStealth,
+.sheet-staticStreetwise,
+.sheet-staticSurvival,
+.sheet-staticSwimming,
+.sheet-staticTaunt,
+.sheet-staticThrowing,
+.sheet-staticTracking,
+.sheet-staticRitual,
+.sheet-staticWeirdScience,
+.sheet-staticOther,
+/*--- End Static Skills ---*/
+.sheet-LAAGI,
+.sheet-LASMA,
+.sheet-LASPI,
+.sheet-LASTR,
+.sheet-LAVIG,
+.sheet-hideAtts:checked ~ .sheet-attributes,
+.sheet-hideAtts:checked ~ .sheet-skillz,
+.sheet-hideSkills:checked ~ .sheet-skillz,
+.sheet-hideAtts:not(:checked) ~ .sheet-AttsSum {
+    display: none;
+}
+
+.sheet-moremods:checked + sheet-traimodplus {
+    display: block;
+}
+
+.sheet-StaticSkill:checked + .sheet-staticBoating,
+.sheet-StaticSkill:checked + .sheet-staticClimbing,
+.sheet-StaticSkill:checked + .sheet-staticDriving,
+.sheet-StaticSkill:checked + .sheet-staticFaith,
+.sheet-StaticSkill:checked + .sheet-staticGambling,
+.sheet-StaticSkill:checked + .sheet-staticGuts,
+.sheet-StaticSkill:checked + .sheet-staticHealing,
+.sheet-StaticSkill:checked + .sheet-staticIntimidation,
+.sheet-StaticSkill:checked + .sheet-staticInvestigation,
+.sheet-StaticSkill:checked + .sheet-staticLockpicking,
+.sheet-StaticSkill:checked + .sheet-staticNotice,
+.sheet-StaticSkill:checked + .sheet-staticPersuasion,
+.sheet-StaticSkill:checked + .sheet-staticPiloting,
+.sheet-StaticSkill:checked + .sheet-staticPsionics,
+.sheet-StaticSkill:checked + .sheet-staticRepair,
+.sheet-StaticSkill:checked + .sheet-staticRiding,
+.sheet-StaticSkill:checked + .sheet-staticShooting,
+.sheet-StaticSkill:checked + .sheet-staticShooting,
+.sheet-StaticSkill:checked + .sheet-staticSpellcasting,
+.sheet-StaticSkill:checked + .sheet-staticStealth,
+.sheet-StaticSkill:checked + .sheet-staticStreetwise,
+.sheet-StaticSkill:checked + .sheet-staticSurvival,
+.sheet-StaticSkill:checked + .sheet-staticSwimming,
+.sheet-StaticSkill:checked + .sheet-staticTaunt,
+.sheet-StaticSkill:checked + .sheet-staticThrowing,
+.sheet-StaticSkill:checked + .sheet-staticTracking,
+.sheet-StaticSkill:checked + .sheet-staticRitual,
+.sheet-StaticSkill:checked + .sheet-staticWeirdScience,
+.sheet-StaticSkill:checked + .sheet-staticOther {
+    display: block;
+}
+
+.sheet-staticOther {
+    margin: 0px;
+    padding: 0px;
+}
+
+.sheet-LAA:checked ~ .sheet-LAAGI,
+.sheet-LASm:checked ~ .sheet-LASMA,
+.sheet-LASp:checked ~ .sheet-LASPI,
+.sheet-LASt:checked ~ .sheet-LASTR,
+.sheet-LAV:checked ~ .sheet-LAVIG {
+    display: inline-block;
+}
+
+/*----------- End Show/Hide Sections -----------*/
+
+/*----------- Logo Configuration Info -----------*/
+
+.sheet-SWD,
+.sheet-PotSM,
+.sheet-TLP,
+.sheet-Zombie,
+.sheet-NecessaryEvil,
+.sheet-Deadlands,
+.sheet-DeadlandsNoir,
+.sheet-DeadlandsHoE,
+.sheet-InterfaceZero,
+.sheet-Hellfrost,
+.sheet-Hellfrost-LoF,
+.sheet-Lankhmar,
+.sheet-AllforOne,
+.sheet-ETU,
+.sheet-Rifts,
+.sheet-Rippers {
+	max-width: 250px;
+	/*max-height: 100px;*/
+	margin-left: auto;
+    margin-right: auto;
+	display: none;
+}
+
+.sheet-left input[value="1"]:checked ~ .sheet-SWD{
+	display: block;
+}
+
+.sheet-left input[value="2"]:checked ~ .sheet-PotSM{
+	display: block;
+}
+
+.sheet-left input[value="3"]:checked ~ .sheet-TLP{
+	display: block;
+}
+
+.sheet-left input[value="4"]:checked ~ .sheet-Zombie{
+	display: block;
+}
+
+.sheet-left input[value="5"]:checked ~ .sheet-NecessaryEvil{
+	display: block;
+}
+
+.sheet-left input[value="6"]:checked ~ .sheet-Deadlands{
+	display: block;
+}
+
+.sheet-left input[value="7"]:checked ~ .sheet-DeadlandsNoir{
+	display: block;
+}
+.sheet-left input[value="8"]:checked ~ .sheet-DeadlandsHoE{
+	display: block;
+}
+
+.sheet-left input[value="9"]:checked ~ .sheet-InterfaceZero{
+	display: block;
+}
+
+.sheet-left input[value="10"]:checked ~ .sheet-Hellfrost {
+	display: block;
+}
+
+.sheet-left input[value="11"]:checked ~ .sheet-Hellfrost-LoF {
+	display: block;
+}
+
+.sheet-left input[value="12"]:checked ~ .sheet-Lankhmar {
+	display: block;
+}
+
+.sheet-left input[value="13"]:checked ~ .sheet-AllforOne {
+	display: block;
+}
+
+.sheet-left input[value="14"]:checked ~ .sheet-ETU {
+	display: block;
+}
+
+.sheet-left input[value="15"]:checked ~ .sheet-Rifts {
+	display: block;
+}
+
+.sheet-left input[value="16"]:checked ~ .sheet-Rippers {
+	display: block;
+}
+
+/*----------- End Logo Configuration Info -----------*/
+
+.sheet-rolltemplate-traitroll table.sheet-templatetable,
+.sheet-rolltemplate-tr_dmg_roll table.sheet-templatetable,
+.sheet-rolltemplate-dmg_roll table.sheet-templatetable {
+	/*display: table*/
+	border: 1px solid black;
+	background-color: white;
+	width: 100%;
+	padding: 5px;
+}
+
+.sheet-rolltemplate-traitroll .sheet-theader,
+.sheet-rolltemplate-tr_dmg_roll .sheet-theader,
+.sheet-rolltemplate-dmg_roll .sheet-theader {
+	/*display: table-caption;*/
+	width: 100%;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	background-color: black;
+	margin: 0px;
+	padding: 5px;
+	color: white;
+	text-align: center;
+	font-family: 'Souvenir', 'Bookman', Georgia, serif;
+}
+
+.sheet-rolltemplate-traitroll td.sheet-wccontent {
+    text-align: center;
+    vertical-align: top;
+    border: 1px solid black;
+    width: 50%;
+    border-spacing: 0;
+    border-collapse: collapse;
+    margin: 0px;
+    padding: 0px;
+}
+
+.sheet-rolltemplate-traitroll .sheet-troll,
+.sheet-rolltemplate-tr_dmg_roll .sheet-troll,
+.sheet-rolltemplate-dmg_roll .sheet-troll {
+	display: table-cell;
+	border: 1px solid black;
+	background-color: white;
+	color: black;
+	margin: 0px;
+	padding: 5px;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+	text-align: center;
+}
+
+.sheet-rolltemplate-tr_dmg_roll td.sheet-rollresults,
+.sheet-rolltemplate-dmg_roll td.sheet-rollresults {
+	text-align: right;
+}
+
+.sheet-rolltemplate-traitroll .inlinerollresult,
+.sheet-rolltemplate-tr_dmg_roll .inlinerollresult,
+.sheet-rolltemplate-dmg_roll .inlinerollresult {
+    background-color: transparent;
+    border: none;
+    padding: 0px;
+    font-weight: normal;
+    font-size: 1em;
+}
+
+.sheet-rolltemplate-traitroll .inlinerollresult.fullcrit,
+.sheet-rolltemplate-tr_dmg_roll .inlinerollresult.fullcrit,
+.sheet-rolltemplate-dmg_roll .inlinerollresult.fullcrit {
+	color: #3FB315;
+    border: none;
+}
+
+.sheet-rolltemplate-traitroll .inlinerollresult.fullfail,
+.sheet-rolltemplate-tr_dmg_roll .inlinerollresult.fullfail,
+.sheet-rolltemplate-dmg_roll .inlinerollresult.fullfail {
+	color: maroon;
+    border: none;
+}
+
+.sheet-rolltemplate-traitroll .inlinerollresult.importantroll,
+.sheet-rolltemplate-tr_dmg_roll .inlinerollresult.importantroll,
+.sheet-rolltemplate-dmg_roll .inlinerollresult.importantroll {
+	color: #3FB315;
+    border: none;
+}
+
+.sheet-rolltemplate-statblock h2.sheet-caption {
+	width: 90%;
+	max-width: 200px;
+	text-align: center; 
+    color: white; 
+    background-color: black;
+	border-radius: 15px;
+	font-family: "cinzelregular";
+	font-size: 1.125em;
+	font-weight: bold;
+	margin: 5px;
+}
+
+.sheet-rolltemplate-statblock a[href^='~'] {
+    background-color:transparent;
+    border:0;
+    color:#ce0f69;
+    display:inline;
+    padding:0;
+}
+
+.sheet-rolltemplate-statblock .inlinerollresult {
+    background-color: transparent;
+    border: inherit;
+    padding: 0px;
+    font-weight: normal;
+    font-size: 1.05em;
+}
+
+/*----------- End Roll Template --------------------*/
