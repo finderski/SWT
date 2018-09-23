@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Untitled Document</title>
+<style type="text/css">
+
+.sheet-maindiv {
+	margin: 0px;
+	padding: 0px;
+	width: 863px;
+	border: 1px solid black;
+}
+
+.sheet-base {
+	display: inline-block;
+	margin: 0px;
+	padding: 0px;
+	width: 100%;
+}
+
+.sheet-atts {
+	display: inline-block;
+	margin-right: 2px;
+	padding: 0px;
+	width: 32.5%;
+}
+
+.sheet-left,
+.sheet-right {
+	display: inline-block;
+}
+
+/*----------- Start Mook/Wild Card Toggle --------------------*/
+.sheet-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 20px;
+  margin-bottom: -5px !important;
+}
+.sheet-switch input {display:none;}
+.sheet-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #d6bf87;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.sheet-slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+input:checked + .sheet-slider {
+  background-color: #c0bba7;
+}
+input:focus + .sheet-slider {
+  box-shadow: 0 0 1px #c0bba7;
+}
+input:checked + .sheet-slider:before {
+  -webkit-transform: translateX(40px);
+  -ms-transform: translateX(40px);
+  transform: translateX(40px);
+}
+.sheet-slider.sheet-round {
+  border-radius: 50px;
+}
+.sheet-slider.sheet-round:before {
+  border-radius: 50%;
+}
+/*----------- End Mook/Wild Card Toggle --------------------*/
+
+/*----------- Tab Setup ------------------------------------*/
+
+.sheet-tab {
+	z-index: 9999;
+}
+
+.sheet-character,
+.sheet-config {
+	display: none;
+}
+
+input.sheet-characterT:checked ~ div.sheet-character,
+input.sheet-configT:checked ~ div.sheet-config {
+	display: block;
+	width: 100%;
+	margin: 0px;
+	padding: 0px;
+}
+
+/*----------- End Tab Setup --------------------------------*/
+
+</style></head>
+
+<body>
+<div class='sheet-maindiv'>
+	<div class='sheet-base'>
+    	<input type='radio' class='sheet-tab sheet-characterT' name='attr_sheetTab' value='1' checked /><!--<span>Character Sheet</span>-->
+        <input type='radio' class='sheet-tab sheet-configT' name='attr_sheetTab' value='2' /><!--<span>Config</span>-->
+    	<div class='sheet-character'/> <!--Character Sheet Tab-->
+        	<div class='sheet-left' style='width: 250px;'>
+                <!--Logo-->
+                <img src="http://i.imgur.com/iwIoTlT.png" />
+            </div>
+            
+            <div class='sheet-right' style='width: 607px; vertical-align: top; padding: 0px; margin: 0px;'>
+                <div class='sheet-base'>
+                    <div>
+                        Wild Card&nbsp;&nbsp;<label class='sheet-switch'><input type="checkbox" name="attr_is_npc" value="1" /><span class="sheet-slider sheet-round"></span></label>&nbsp;&nbsp;Mook
+                    </div>
+                    <div style="display: inline-block; width: 48%; text-align: right; margin:0px; padding: 0px;">
+                        Settings
+                    </div>
+                </div>
+                <div class='sheet-base' style='margin-top: 10px;'>
+                    <div class='sheet-base' style='width:33%;'>
+                        <input type="text" title="@{character_name}" name="attr_character_name" style='width: 100%;text-align: center; border: none; border-bottom: solid black 1px;' /><label>Name</label>
+                    </div>
+                </div>
+            </div>
+            <div class='sheet-base' style='margin-top: 10px; text-align: center; vertical-align: top; border: 1px solid green;'>
+                <!--Tri-columns for Abilities and the such-->
+                <div class='sheet-atts' style='border: 1px solid gray;'>
+                    Skills
+                </div>
+                <div class='sheet-atts' style='border: 1px solid gray;'>
+                    Derived Stats
+                </div>
+                <div class='sheet-atts' style='border: 1px solid gray;'>
+                    Edges/Hindrances
+                </div>
+    
+            </div>
+            <div class='sheet-base' style='margin-top: 3px; text-align: text-top; border: 1px solid yellow;'>
+                &nbsp;
+            </div>
+        </div>
+        <div class='sheet-tab sheet-config'> <!--Configuration Tab-->
+        	Placeholder....
+        </div>
+    </div>
+</div>
+</body>
+</html>

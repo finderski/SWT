@@ -6,6 +6,15 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 /*------ End Transformations -------->*/
+textarea {
+    width: 94%;
+    resize: vertical;
+}
+
+.sheet-sectionHeading {
+    text-align: center;
+    margin-bottom: 10px;
+}
 .sheet-maindiv {
 	margin: 0px;
 	padding: 0px;
@@ -20,224 +29,9 @@ input[type=number]::-webkit-outer-spin-button {
 	width: 100%;
 }
 
-.sheet-atts,
-.sheet-skills {
-	display: inline-block;
-	margin-right: 2px;
-	padding: 0px;
-	width: 32.5%;
-	vertical-align: top;
-	border: 1px solid gray;
-}
-
-.sheet-left,
-.sheet-right {
-	display: inline-block;
-}
-
-.sheet-colHeader {
-    font-size: 1.25em;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 10px;
-    background: rgba(255,255,255,0.75);
-}
-
-.sheet-subheader {
-    font-size: 1.15em;
-    text-align: center;
-}
-
-.sheet-visitoggle {
-    margin-top: -40px;
-}
-
-.sheet-hideAtts,
-.sheet-showhide {
-    width: 60px;
-    margin: 0px;
-    padding: 0px;
-}
-
-.sheet-hideAtts {
-    opacity: 0;
-    z-index: 9999;
-    top: -40px;
-    left: 0px;
-    position: relative;
-}
-
-.sheet-showhide {
-    /*margin-left: -58px;*/
-    font-size: 1.5em;
-}
-
-.sheet-atts .sheet-hideAtts + .sheet-showhide,
-.sheet-skills .sheet-hideAtts + .sheet-showhide {
-    top: -40px;
-    left: -60px;
-    position: relative;
-}
-
-.sheet-hideAtts:not(:checked) + span.sheet-showhide::before {
-    font-family: "Pictos";
-    content: "J";
-}
-
-.sheet-hideAtts:checked + span.sheet-showhide::before {
-    font-family: "Pictos";
-    content: "E";
-}
-
-.sheet-attributes {
-    position: relative;
-    margin: -40px 0px 10px 0px;
-    background: rgba(255,255,255,0.75);
-    /* padding-left: 5px; */
-}
-
-button[type=roll].sheet-traitbutton {
-    border: none;
-    background-color: transparent;
-    background-image: none;
-    font-size: 1.05em;
-    font-weight: bold;
-    box-shadow: none;
-    text-shadow: none;
-    height: 28px;
-    margin: 0px;
-    padding: 0px;
-}
-
-.sheet-basetrait {
-    display: flex;
-    flex-wrap: wrap;
-    border: none;
-    border-bottom: 1px dotted black;
-    margin: 0px;
-    padding: 0px;
-    padding-left: 5px;
-    position: relative;
-}
-
-.sheet-basetrait:hover {
-    border: 1px solid red;
-}
-
-.sheet-traitflexattbutton {
-    width: 202px;
-    text-align: left;
-}
-
-.sheet-skillflexattbutton {
-    width: 152px;
-    text-align: left;
-}
-.sheet-traitflexattinput {
-    width: 35px;
-}
-
-.sheet-traitdie {
-    border: none;
-    width: 35px;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    text-align: center;
-    margin: 0px;
-}
-
-.sheet-traitmod,
-.sheet-otraitmod {
-    border: none;
-    margin: 0px;
-    padding: 0px;
-    text-align: center;
-    width: 28px !important;
-    height: 28px !important;
-    -webkit-appearance: textfield;
-    -moz-appearance: textfield;
-}
-
-.sheet-traitmod {
-    margin-left: -4px;
-}
-
-.sheet-moremods + span {
-    opacity: 0;
-}
-
-
-.sheet-traitmodplus {
-    display: none;
-}
-
-.sheet-moremods {
-    width: 35px;
-    position: absolute;
-    left: 265px;
-    top: 15px;
-    z-index: 9999;
-    opacity: 0;
-}
-
-.sheet-moremods + span {
-    font-family: "Pictos";
-    color: gray;
-    position: absolute;
-    top: 15px;
-    left: 267px;
-}
-
-.sheet-basetrait:hover ~ .sheet-moremods + span,
-.sheet-moremods:hover + span,
-.sheet-moremods:checked + span {
-    opacity: 1;
-}
-
-.sheet-basetrait:hover > .sheet-moremods + span {
-    opacity: 1;
-}
-
-.sheet-moremods:checked + span {
-    color: black;
-}
-
-.sheet-moremods:checked ~ .sheet-traitmodplus,
-.sheet-useSkillSpec:checked + .sheet-SkillSpec,
-.sheet-useFencingStyle:checked + .sheet-FencingStyle {
-    display: block;
-    width: 100%;
-    border: none;
-}
-
-.sheet-SkillSpec,
-.sheet-FencingStyle {
-    margin-left: 20px;
-}
-
-.sheet-ModDesc {
-    border: none;
-    width: 228px;
-    margin: 0px;
-    font-size: .85em;
-}
-
-.sheet-WD {
-    position: relative;
-    top: 0px;
-    left: 50%;
-}
-
-.sheet-linkedAtt {
-    width: 50px;
-    height: 28px;
-    line-height: 28px;
-    display: inline-flex;
-}
-
-.sheet-attrankselect {
-    margin: 0px 0px 0px -4px;
+.sheet-basicinfo {
+	display:flex;
+	flex-wrap: wrap;
 }
 
 /*----------- Start Mook/Wild Card Toggle --------------------*/
@@ -294,22 +88,586 @@ input:checked + .sheet-slider:before {
 
 .sheet-tab {
 	z-index: 9999;
+	font-size: 6em;
+	margin-top: -10px;
+	opacity: 0;
 }
 
 .sheet-character,
-.sheet-config {
+.sheet-config,
+.sheet-vehicles,
+.sheet-notes {
 	display: none;
 }
 
 .sheet-characterT:checked ~ div.sheet-character,
-.sheet-configT:checked ~ div.sheet-config {
+.sheet-configT:checked ~ div.sheet-config,
+.sheet-vehiclesT:checked ~ div.sheet-vehicles,
+.sheet-journalT:checked ~ div.sheet-notes {
 	display: block;
 	width: 100%;
 	margin: 0px;
 	padding: 0px;
 }
 
+.sheet-tab + span {
+    font-family: pictos;
+    font-size: 2em;
+    margin-left: -20px;
+}
+
+.sheet-tab + span.sheet-vehiclesT {
+    margin-left: -20px;
+}
 /*----------- End Tab Setup --------------------------------*/
+/*----- button Configuration start -----*/
+button[type=roll].sheet-traitbutton,
+button[type=roll].sheet-hindranceOutput,
+button[type=roll].sheet-edgeOutput {
+    border: none;
+    background-color: transparent;
+    background-image: none;
+    font-size: 1.05em;
+    font-weight: bold;
+    box-shadow: none;
+    text-shadow: none;
+    height: 28px;
+    margin: 0px;
+    padding: 0px;
+}
+
+button[type=roll].sheet-hindranceOutput::before,
+button[type=roll].sheet-edgeOutput::before {
+    content: '';
+}
+
+button[type=roll].sheet-hindranceOutput,
+button[type=roll].sheet-edgeOutput {
+    font-family: "Pictos";
+}
+/*----- button Configuration end -----*/
+
+.sheet-atts {
+    background: rgba(255,255,255,0.75);
+}
+.sheet-atts,
+.sheet-skills {
+	display: inline-block;
+	margin-right: 2px;
+	padding: 0px;
+	width: 32.5%;
+	vertical-align: top;
+	border: 1px solid gray;
+}
+
+.sheet-left,
+.sheet-right {
+	display: inline-block;
+}
+
+.sheet-vertRight {
+    transform: rotate(270deg);
+}
+
+.sheet-vertLeft {
+    transform: rotate(90deg);
+    float: right;
+    position: relative;
+    top: -43px;
+    left: 12px;
+}
+
+.sheet-colHeader {
+    font-size: 1.25em;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+    /*background: rgba(255,255,255,0.75);*/
+}
+
+.sheet-subheader {
+    font-size: 1.15em;
+    text-align: center;
+}
+
+.sheet-basicinfolableleft,
+.sheet-basicinfolableright,
+.sheet-basicinfolablecenter  {
+	font-size: .9em;
+	font-weight: bold;
+	width: 100%;
+	margin-bottom: 2px;
+}
+
+.sheet-basicinfolableleft {
+	text-align: left;
+}
+
+.sheet-basicinfolableright {
+	text-align: right;
+}
+
+.sheet-basicinfolablecenter {
+	text-align: center;
+}
+
+.sheet-basicinputext {
+	width: 100%;
+	border: none;
+	border-bottom: 1px solid black
+}
+
+.sheet-visitoggle {
+    margin-top: -40px;
+}
+
+.sheet-hideAtts,
+.sheet-hideHindrances,
+.sheet-hideEdges,
+.sheet-hideAdv,
+.sheet-showhide {
+    width: 60px;
+    margin: 0px;
+    padding: 0px;
+}
+
+.sheet-hideAtts,
+.sheet-hideHindrances,
+.sheet-hideEdges,
+.sheet-hideAdv {
+    opacity: 0;
+    z-index: 9999;
+    top: -40px;
+    left: 0px;
+    position: relative;
+}
+
+.sheet-showhide {
+    /*margin-left: -58px;*/
+    font-size: 1.5em;
+}
+
+.sheet-atts .sheet-hideAtts + .sheet-showhide,
+.sheet-skills .sheet-hideAtts + .sheet-showhide,
+.sheet-atts .sheet-hideHindrances + .sheet-showhide,
+.sheet-atts .sheet-hideEdges + .sheet-showhide,
+.sheet-atts .sheet-hideAdv + .sheet-showhide {
+    top: -40px;
+    left: -60px;
+    position: relative;
+}
+
+.sheet-hideAtts:not(:checked) + span.sheet-showhide::before,
+.sheet-hideHindrances:not(:checked) + span.sheet-showhide::before,
+.sheet-hideEdges:not(:checked) + span.sheet-showhide::before,
+.sheet-hideAdv:not(:checked) + span.sheet-showhide::before{
+    font-family: "Pictos";
+    content: "J";
+}
+
+.sheet-hideAtts:checked + span.sheet-showhide::before,
+.sheet-hideHindrances:checked + span.sheet-showhide::before,
+.sheet-hideEdges:checked + span.sheet-showhide::before, 
+.sheet-hideAdv:checked + span.sheet-showhide::before {
+    font-family: "Pictos";
+    content: "E";
+}
+
+.sheet-attributes,
+.sheet-hindrances,
+.sheet-edges,
+.sheet-advancements {
+    position: relative;
+    margin: 0px 0px 10px 0px;
+    /*background: rgba(255,255,255,0.75);*/
+    /* padding-left: 5px; */
+}
+
+.sheet-attributes {
+    margin-top: -40px;
+}
+
+.sheet-hindrances,
+.sheet-edges,
+.sheet-advancements {
+    top: -40px;
+}
+
+.sheet-basetrait {
+    display: flex;
+    flex-wrap: wrap;
+    border: none;
+    border-bottom: 1px dotted black;
+    margin: 0px;
+    padding: 0px;
+    padding-left: 5px;
+    position: relative;
+}
+
+.sheet-basetrait:hover {
+    border: 1px solid red;
+}
+
+.sheet-traitflexattbutton {
+    width: 202px;
+    text-align: left;
+}
+
+.sheet-skillflexattbutton {
+    width: 152px;
+    text-align: left;
+}
+.sheet-traitflexattinput {
+    width: 35px;
+}
+
+.sheet-traitdie {
+    border: none;
+    width: 35px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    text-align: center;
+    margin: 0px;
+}
+
+.sheet-traitmod,
+.sheet-otraitmod {
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    width: 28px !important;
+    height: 28px !important;
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.sheet-traitmod {
+    margin-left: -4px;
+}
+
+.sheet-taptable {
+    width: 100%; 
+    border: 1px thin silver; 
+    background-color: transparent;
+    table-layout: fixed;
+}
+
+.sheet-taptable tr.sheet-taprow:hover {
+    border: 1px solid red;
+}
+
+.sheet-moremods + span,
+.sheet-moreTAP + span {
+    opacity: 0;
+}
+
+.sheet-traitmodplus,
+.sheet-moreFirewall,
+.sheet-moreNT,
+.sheet-moreTRange,
+.sheet-fwplus,
+.sheet-ntplus,
+.sheet-trplus {
+    display: none;
+}
+
+.sheet-moremods {
+    width: 35px;
+    position: absolute;
+    left: 265px;
+    top: 15px;
+    z-index: 9999;
+    opacity: 0;
+}
+/*------Wounds & Fatigue------*/
+.sheet-woundBox,
+.sheet-fatigueBox {
+    display: inline-block;
+    padding: 0px;
+    height: auto;
+    width: 65px;
+    position: relative;
+    top: -20px;
+}
+
+.sheet-woundBox {
+    margin: 0px 5px 0px -5px;
+}
+
+.sheet-fatigueBox {
+    margin: 0px -10px 0px 10px;
+}
+
+.sheet-shakenbox,
+.sheet-incbox {
+    display: inline-block;
+    width: 35px;
+    height: auto;
+    margin: 0px 0px 0px 8px;
+    position: relative;
+    top: -10px;
+}
+
+.sheet-shaken,
+.sheet-inc {
+    opacity: 0;
+    z-index: 9999;
+}
+
+.sheet-shaken + span,
+.sheet-inc + span {
+    font-family: Pictos;
+    margin-left: -20px;
+    font-size: 2em;
+}
+
+.sheet-shaken:checked + span {
+    color: orange;
+}
+
+.sheet-inc:checked + span {
+    color: maroon;
+}
+
+.sheet-incinfo,
+.sheet-shakeninfo {
+    display: block; 
+    font-size: .5em; 
+    margin-top: -10px;
+}
+
+.sheet-shakeninfo {
+    margin-left: -6px;
+}
+
+.sheet-standardHealth {
+    width: 35px;
+    border: none;
+    border-bottom: 1px solid black;
+    text-align: center;
+}
+
+.sheet-expansionBox {
+    display: none;
+    position: relative;
+    left: -10px;
+    top: 13px;
+    width: auto;
+    height: auto;
+    margin: 0px;
+    padding: 0px;
+}
+
+.sheet-NoS {
+    width: auto;
+    text-align: center;
+    border: none;
+}
+
+.sheet-healthmods {
+    opacity: 0;
+    z-index: 9999;
+}
+
+.sheet-healthmods + span {
+    font-family: Pictos;
+    font-size: 1.25em;
+    margin-left: -12px;
+    color: gray;
+}
+
+.sheet-healthmods:checked + span {
+    color: black;
+}
+
+.sheet-woundBox:hover > .sheet-expansionBox,
+.sheet-fatigueBox:hover > .sheet-expansionBox,
+.sheet-showExpansion:checked + .sheet-expansionBox {
+    display: inline-block;
+}
+
+.sheet-woundmod,
+.sheet-fatiguedmod {
+    display: none;
+}
+
+.sheet-showWoundmod:checked + .sheet-woundmod,
+.sheet-showFatiguemod:checked + .sheet-fatiguedmod {
+    display: inline-block;
+    text-align: center;
+    width: 98%;
+    top: -15px;
+}
+
+/*------End Wounds & Fatigue------*/
+
+/*------ Derived Stats -------*/
+
+.sheet-basederived {
+    display: flex;
+    flex-wrap: wrap;
+    border: none;
+    margin: 0px;
+    padding: 0px;
+    padding-left: 5px;
+    position: relative;
+}
+
+.sheet-derivelabel,
+.sheet-derivebase,
+.sheet-derivemisc,
+.sheet-derivemod,
+.sheet-derivecurrent {
+    text-align: center;
+}
+
+.sheet-derivelabel {
+    display: inline-block;
+    width: 25%;
+}
+
+.sheet-derivebase {
+    display: inline-block;
+    width: 15%;
+}
+
+.sheet-derivemod {
+    display: inline-block;
+    width: 15%;
+}
+
+.sheet-derivemisc {
+    display: inline-block;
+    width: 15%;
+}
+
+.sheet-derivecurrent {
+    display: inline-block;
+    width: 15%;
+}
+
+.charsheet td.sheet-tapreadout {
+	text-align: center; 
+	font-size: .9em;
+	background-color: #919191;
+	color: white;
+}
+
+.sheet-moreTAP {
+    width: 15px;
+    position: relative;
+    margin-top: -15px;
+    z-index: 9999;
+    opacity: 0;
+    overflow: hidden;
+    float: right;
+}
+
+.sheet-corederived {
+    position: relative;
+    top: -20px;
+}
+/*------- Derived Stats End -------*/
+
+.sheet-moremods + span {
+    font-family: "Pictos";
+    color: gray;
+    position: absolute;
+}
+
+.sheet-moreTAP + span {
+    font-family: "Pictos";
+    color: gray;
+    position: relative;
+    margin-top: -15px;
+    overflow: hidden;
+    float: right;
+}
+
+.sheet-moremods + span {
+    top: 15px;
+    left: 267px;
+}
+
+.sheet-basetrait:hover ~ .sheet-moremods + span,
+.sheet-moremods:hover + span,
+.sheet-moremods:checked + span,
+.sheet-moreTAP:checked + span,
+.sheet-moreTAP:hover + span,
+.sheet-hindranceNedge:hover > .sheet-moremods + span {
+    opacity: 1;
+}
+
+.sheet-basetrait:hover > .sheet-moremods + span,
+tr.sheet-taprow:hover .sheet-moreTAP + span {
+    opacity: 1;
+}
+
+.sheet-moremods:checked + span,
+.sheet-moreTAP:checked + span {
+    color: black;
+}
+
+.sheet-moremods:checked ~ .sheet-traitmodplus,
+.sheet-moreFirewall:checked ~ .sheet-fwplus,
+.sheet-moreNT:checked ~ .sheet-ntplus,
+.sheet-moreTRange:checked ~ .sheet-trplus,
+.sheet-useSkillSpec:checked + .sheet-SkillSpec,
+.sheet-useFencingStyle:checked + .sheet-FencingStyle {
+    display: block;
+    width: 100%;
+    border: none;
+}
+
+.sheet-SkillSpec,
+.sheet-FencingStyle {
+    margin-left: 20px;
+}
+
+.sheet-ModDesc {
+    border: none;
+    width: 228px;
+    margin: 0px;
+    font-size: .85em;
+}
+
+.sheet-WD {
+    position: relative;
+    top: 0px;
+    left: 50%;
+}
+
+.sheet-linkedAtt {
+    width: 50px;
+    height: 28px;
+    line-height: 28px;
+    display: inline-flex;
+}
+
+.sheet-attrankselect {
+    margin: 0px 0px 0px -4px;
+}
+
+.sheet-xp,
+.sheet-advancement {
+    display: inline-block;
+    text-align: center;
+}
+
+.sheet-xp {
+    width: 33%;
+}
+
+.sheet-advancement {
+    width: 65%;
+}
+
+.sheet-advfield {
+    border: none;
+    border-bottom: 1px solid black;
+}
 
 /*----------- Start Skills Config Sections -----------*/
 
@@ -335,7 +693,7 @@ input:checked + .sheet-slider:before {
 }
 
 .sheet-skillz {
-    background: rgba(255,255,255,0.75);
+    /*background: rgba(255,255,255,0.75);*/
     position: relative;
     top: -40px;
 }
@@ -354,7 +712,7 @@ input:checked + .sheet-slider:before {
     position: relative;
     margin: 0px;
     top:-40px;
-    background: rgba(255,255,255,0.75);
+    /*background: rgba(255,255,255,0.75);*/
 }
 
 .sheet-hideskillsconfig:checked ~ .sheet-isSkillConfig {
@@ -408,6 +766,32 @@ input:checked + .sheet-slider:before {
     border-bottom: 1px solid black;
     width: 52%;
 }
+
+.sheet-hinfield,
+.sheet-hintype,
+.sheet-edgefield {
+    border: none;
+    border-bottom: 1px solid black;
+}
+
+.sheet-hinfield {
+    width: 65%;
+}
+.sheet-edgefield {
+    width: 95%;
+}
+
+.sheet-hintype {
+    width: 75px;
+    text-align: center;
+}
+
+.sheet-hindrancefield,
+.sheet-edgefield {
+    border: none;
+    border-bottom: 1px solid black;
+}
+
 
 .sheet-TAspeciality {
     border: none;
@@ -473,7 +857,7 @@ input:checked + .sheet-slider:before {
     font-size: 18px;
     height: 18px;
     width: 18px;
-    padding: 2px 0px 0px 0px;
+    padding: 2px 0 0 0;
     color: #555;
 }
 .repcontrol_edit:after {
@@ -484,15 +868,24 @@ input:checked + .sheet-slider:before {
     font-size: 18px;
     height: 18px;
     width: 18px;
-    padding: 2px 0px 0px 0px;
+    padding: 2px 0 0 0;
     color: #555;
 }
 .editmode ~ .repcontrol .repcontrol_edit:after {
     content: '2';
 }
 /*----------- End Repeating Button Display -----------*/
-
+span.sheet-vehiclesT {
+    margin: 0px;
+    padding: 0px;
+    display: inline-block;
+}
 /*----------- Start Show/Hide Sections -----------*/
+.sheet-civilian,
+.sheet-IF,
+.sheet-archetype,
+.sheet-Homeworld,
+.sheet-Languages,
 .sheet-SkillSpec,
 .sheet-FencingStyle,
 /*--- Begin Static Skills ---*/
@@ -531,13 +924,22 @@ input:checked + .sheet-slider:before {
 .sheet-LASTR,
 .sheet-LAVIG,
 .sheet-hideAtts:checked ~ .sheet-attributes,
+.sheet-hideHindrances:checked ~ .sheet-hindrances,
+.sheet-hideEdges:checked ~ .sheet-edges,
+.sheet-hideAdv:checked ~ .sheet-advancements,
 .sheet-hideAtts:checked ~ .sheet-skillz,
 .sheet-hideSkills:checked ~ .sheet-skillz,
-.sheet-hideAtts:not(:checked) ~ .sheet-AttsSum {
+.sheet-hideAtts:not(:checked) ~ .sheet-AttsSum,
+.sheet-tap,
+.sheet-showVehicles:not(:checked) ~ .sheet-vehiclesT,
+.sheet-showVehicles:not(:checked) + span.sheet-vehiclesT,
+.sheet-showVehicles:not(:checked) ~ span.sheet-vehiclesT,
+.sheet-hideAtts:checked ~ .sheet-corederived {
     display: none;
 }
 
-.sheet-moremods:checked + sheet-traimodplus {
+.sheet-moremods:checked + .sheet-traimodplus,
+.sheet-usetap:checked + .sheet-tap {
     display: block;
 }
 
@@ -578,6 +980,10 @@ input:checked + .sheet-slider:before {
     padding: 0px;
 }
 
+.sheet-useHomeworld:checked + .sheet-Homeworld,
+.sheet-usearchetype:checked + .sheet-archetype,
+.sheet-useIF:checked + .sheet-IF,
+.sheet-useLanguages:checked + .sheet-Languages,
 .sheet-LAA:checked ~ .sheet-LAAGI,
 .sheet-LASm:checked ~ .sheet-LASMA,
 .sheet-LASp:checked ~ .sheet-LASPI,
@@ -680,7 +1086,8 @@ input:checked + .sheet-slider:before {
 
 .sheet-rolltemplate-traitroll table.sheet-templatetable,
 .sheet-rolltemplate-tr_dmg_roll table.sheet-templatetable,
-.sheet-rolltemplate-dmg_roll table.sheet-templatetable {
+.sheet-rolltemplate-dmg_roll table.sheet-templatetable,
+.sheet-rolltemplate-description table.sheet-templatetable {
 	/*display: table*/
 	border: 1px solid black;
 	background-color: white;
@@ -690,7 +1097,8 @@ input:checked + .sheet-slider:before {
 
 .sheet-rolltemplate-traitroll .sheet-theader,
 .sheet-rolltemplate-tr_dmg_roll .sheet-theader,
-.sheet-rolltemplate-dmg_roll .sheet-theader {
+.sheet-rolltemplate-dmg_roll .sheet-theader,
+.sheet-rolltemplate-description .sheet-theader {
 	/*display: table-caption;*/
 	width: 100%;
 	border-top: 1px solid black;
