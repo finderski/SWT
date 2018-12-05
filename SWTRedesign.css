@@ -5,10 +5,165 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0; 
 }
 
-/*------ End Transformations -------->*/
+select.sheet-dtype {
+    width: 41.31px;
+    margin: 0px;
+    vertical-align: top;
+	 -webkit-appearance: none;
+	 -moz-appearance: none;
+	 appearance: none;
+	/*background-color: transparent;
+	background-image: url("http://i.imgur.com/e1Cfspj.png");*/
+	color: black;
+}
+
+input,
+select {
+    border: none;
+    border-bottom: 1px solid black;
+    /*background-color: transparent;*/
+    background: rgba(255,255,255,0.75);
+}
+
 textarea {
     width: 94%;
     resize: vertical;
+}
+
+/*------ End Transformations -------->*/
+
+/*----------- Background Info -----------*/
+
+.sheet-background {
+	margin: 0px;
+    padding: 0px;
+}
+
+input[value="1"]:checked ~ .sheet-background {
+	background-image: none;
+	background-color: white;
+	/*background-image: url("http://www.geeksville.us/roll20/oldMap_seamless_2.png");
+	background-size: 845px 900px;*/
+    /*background-repeat: no-repeat;*/
+    /*background-attachment: fixed;*/
+    /*background-position: center; 
+    background-origin: content-box;*/
+}
+
+input[value="2"]:checked ~ .sheet-background {
+	background-image: url("http://www.geeksville.us/roll20/oldMap_seamless_2.png");
+	/*background-size: 845px 900px;*/
+    /*background-repeat: no-repeat;*/
+    /*background-attachment: fixed;*/
+    background-position: center; 
+    background-origin: content-box;
+}
+
+input[value="3"]:checked ~ .sheet-background {
+	background-image: url("http://www.geeksville.us/roll20/Z-background.jpg");
+	/*background-size: 845px 564px;*/
+    /*background-repeat: no-repeat;*/
+    /*background-attachment: fixed;*/
+    background-position: center; 
+    background-origin: content-box;
+}
+
+input[value="4"]:checked ~ .sheet-background {
+	/*background-image: url("http://www.geeksville.us/roll20/NYC-Night_2.jpg");*/
+	/*background-image: url("http://www.geeksville.us/roll20/noir3.jpg");*/
+	background-image: url("http://www.geeksville.us/roll20/NewNoir2.jpg");
+	/*background-size: 850px 920px;*/
+    /*background-repeat: no-repeat;*/
+    /*background-attachment: fixed;*/
+    background-position: center; 
+    background-origin: content-box;
+}
+
+input[value="5"]:checked ~ .sheet-background {
+	background-image: url("http://www.geeksville.us/roll20/LastParsec-Background.jpg");
+	background-size: 863px 1060px;
+    /*background-repeat: no-repeat;*/
+    /*background-attachment: fixed;*/
+    background-position: center; 
+    background-origin: content-box;
+    -webkit-border-image:url("http://www.geeksville.us/roll20/LastParsec-Border.png"); /*  Safari 3.1-5 */
+    -o-border-image:url("http://www.geeksville.us/roll20/LastParsec-Border.png"); /*round; Opera 11-12.1 */
+    -moz-border-image:url("http://www.geeksville.us/roll20/LastParsec-Border.png");
+    border-image:url("http://www.geeksville.us/roll20/LastParsec-Border.png") 100 50;
+    border-image-width: 20px;
+}
+
+input[value="6"]:checked ~ .sheet-background {
+	background-image: url("http://www.geeksville.us/roll20/supers.jpg");
+	/*background-size: 840px 564px;*/
+    /*background-repeat: no-repeat;*/
+    /*background-attachment: fixed;*/
+    background-position: center; 
+    background-origin: content-box;
+}
+
+input[value="7"]:checked ~ .sheet-background {
+	/*background-image: url("http://www.geeksville.us/roll20/cyberpunk2.jpg");*/
+	background-image: url("http://www.geeksville.us/roll20/cyberpunk-2.5.jpg");
+	/*background-size: 840px 840px;*/
+    /*background-repeat: no-repeat;*/
+    /*background-attachment: fixed;*/
+    background-position: center; 
+    background-origin: content-box;
+}
+
+input[value="8"]:checked ~ .sheet-background { /*Hellfrost*/
+	/*background-image: url("http://www.geeksville.us/roll20/cyberpunk2.jpg");*/
+	background-image: url("http://www.geeksville.us/roll20/Hellfrost_4.jpg");
+	/*background-size: 840px 840px;*/
+    background-repeat: repeat;
+    /*background-attachment: fixed;*/
+    background-position: center; 
+    background-origin: content-box;
+}
+
+input[value="9"]:checked ~ .sheet-background { /*Hellfrost: Land of Fire*/
+	background-image: url("http://www.geeksville.us/roll20/Hellfrost_LoF.jpg");
+	/*background-size: 840px 840px;*/
+    background-repeat: repeat;
+    /*background-attachment: fixed;*/
+    background-position: center; 
+    background-origin: content-box;
+}
+
+input[value="10"]:checked ~ .sheet-background { /*Hellfrost: Land of Fire*/
+	background-image: url("http://www.geeksville.us/roll20/lankhmar-bg-1.jpg");
+	/*background-size: 840 840px;*/
+    background-repeat: repeat;
+    /*background-attachment: fixed;*/
+    background-position: center; 
+    background-origin: content-box;
+}
+
+input[value="11"]:checked ~ .sheet-background {
+	/*background: url(http://i.imgur.com/PCO6UbB.jpg) repeat-y center center;*/
+	background: url("http://www.geeksville.us/roll20/Rifts-CSBackground.jpg") repeat-y center center;
+	/*background-size: 863px 840px;*/
+	background-size: 890px 840px;
+}
+
+input[value="12"]:checked ~ .sheet-background {
+	/*background: url(http://i.imgur.com/PCO6UbB.jpg) repeat-y center center;*/
+	background: url("http://www.geeksville.us/roll20/RippersBG.jpg") repeat-y center center;
+	/*background-size: 863px 840px;*/
+	background-size: 890px 840px;
+}
+
+.sheet-useBackground:checked ~ .sheet-bg {
+    color: white;
+}
+/*----------- End Background Info -----------*/
+
+.sheet-toprow {
+    margin: 0px 0px 0px 5px;
+    padding: 0px;
+    border: 1px solid black;
+    display: inline-block;
 }
 
 .sheet-sectionHeading {
@@ -83,6 +238,66 @@ input:checked + .sheet-slider:before {
   border-radius: 50%;
 }
 /*----------- End Mook/Wild Card Toggle --------------------*/
+.sheet-xpRank {
+    position: relative;
+    top: 0px;
+    left: 8%;
+}
+.sheet-rank,
+.sheet-Class {
+    width: 100px;
+    margin-bottom:1px;
+    border: none; 
+    border-bottom: solid black 1px;
+}
+
+.sheet-Class {
+	display: none;
+}
+
+.sheet-useThreatRating:not(:checked) + label.sheet-Rank-n-XP::before,
+.sheet-useClass:not(:checked) ~ label.sheet-Rank-n-XP::before {
+	content: "XP/Rank";
+}
+
+.sheet-useClass:checked ~ label.sheet-Rank-n-XP::before {
+	content: "XP/Class";
+	/*font-size: 9px;*/
+}
+
+.sheet-useClass:checked ~ .sheet-rank {
+	display: none;
+}
+
+/* Show Class if ETU is being used */
+.sheet-useClass:checked ~ .sheet-Class {
+	display: inline-block;
+}
+
+.sheet-Rank-n-XP {
+    display: inline;
+    font-size: 1em;
+    font-weight: normal;
+}
+.sheet-useThreatRating:checked + label.sheet-Rank-n-XP::before {
+	content: "XP/Threat Rating";
+	font-size: 9px;
+}
+
+.sheet-useThreatRating:not(:checked) + label.sheet-Rank-n-XP::before,
+.sheet-useClass:not(:checked) ~ label.sheet-Rank-n-XP::before {
+	content: "XP/Rank";
+}
+
+.sheet-useThreatRating:checked + label.sheet-Rank-n-XP::before {
+	content: "XP/Threat Rating";
+	font-size: 9px;
+}
+
+.sheet-useClass:checked ~ label.sheet-Rank-n-XP::before {
+	content: "XP/Class";
+	/*font-size: 9px;*/
+}
 
 /*----------- Tab Setup ------------------------------------*/
 
@@ -157,7 +372,7 @@ button[type=roll].sheet-edgeOutput {
 	padding: 0px;
 	width: 32.5%;
 	vertical-align: top;
-	border: 1px solid gray;
+	/*border: 1px solid gray;*/
 }
 
 .sheet-left,
@@ -193,8 +408,8 @@ button[type=roll].sheet-edgeOutput {
 .sheet-basicinfolableleft,
 .sheet-basicinfolableright,
 .sheet-basicinfolablecenter  {
-	font-size: .9em;
-	font-weight: bold;
+	font-size: .8em;
+	font-weight: normal;
 	width: 100%;
 	margin-bottom: 2px;
 }
@@ -214,27 +429,41 @@ button[type=roll].sheet-edgeOutput {
 .sheet-basicinputext {
 	width: 100%;
 	border: none;
-	border-bottom: 1px solid black
+	border-bottom: 1px solid black;
+	font-weight: bold;
 }
 
 .sheet-visitoggle {
     margin-top: -40px;
 }
 
+.sheet-engramDeets {
+    position: relative;
+    top: -40px;
+}
+
 .sheet-hideAtts,
+.sheet-hideSkills,
+.sheet-hideTAP,
+.sheet-hideEngrams,
 .sheet-hideHindrances,
 .sheet-hideEdges,
 .sheet-hideAdv,
-.sheet-showhide {
+.sheet-showhide,
+.sheet-hideQS {
     width: 60px;
     margin: 0px;
     padding: 0px;
 }
 
 .sheet-hideAtts,
+.sheet-hideSkills,
+.sheet-hideTAP,
+.sheet-hideEngrams,
 .sheet-hideHindrances,
 .sheet-hideEdges,
-.sheet-hideAdv {
+.sheet-hideAdv,
+.sheet-hideQS{
     opacity: 0;
     z-index: 9999;
     top: -40px;
@@ -248,16 +477,22 @@ button[type=roll].sheet-edgeOutput {
 }
 
 .sheet-atts .sheet-hideAtts + .sheet-showhide,
-.sheet-skills .sheet-hideAtts + .sheet-showhide,
+.sheet-hideSkills + .sheet-showhide,
+.sheet-atts .sheet-hideEngrams + .sheet-showhide,
+.sheet-atts .sheet-hideTAP + .sheet-showhide,
 .sheet-atts .sheet-hideHindrances + .sheet-showhide,
 .sheet-atts .sheet-hideEdges + .sheet-showhide,
-.sheet-atts .sheet-hideAdv + .sheet-showhide {
+.sheet-atts .sheet-hideAdv + .sheet-showhide,
+.sheet-base .sheet-hideAtts + .sheet-showhide {
     top: -40px;
     left: -60px;
     position: relative;
 }
 
 .sheet-hideAtts:not(:checked) + span.sheet-showhide::before,
+.sheet-hideSkills:not(:checked) + span.sheet-showhide::before,
+.sheet-hideTAP:not(:checked) + span.sheet-showhide::before,
+.sheet-hideEngrams:not(:checked) + span.sheet-showhide::before,
 .sheet-hideHindrances:not(:checked) + span.sheet-showhide::before,
 .sheet-hideEdges:not(:checked) + span.sheet-showhide::before,
 .sheet-hideAdv:not(:checked) + span.sheet-showhide::before{
@@ -266,6 +501,9 @@ button[type=roll].sheet-edgeOutput {
 }
 
 .sheet-hideAtts:checked + span.sheet-showhide::before,
+.sheet-hideSkills:checked + span.sheet-showhide::before,
+.sheet-hideTAP:checked + span.sheet-showhide::before,
+.sheet-hideEngrams:checked + span.sheet-showhide::before,
 .sheet-hideHindrances:checked + span.sheet-showhide::before,
 .sheet-hideEdges:checked + span.sheet-showhide::before, 
 .sheet-hideAdv:checked + span.sheet-showhide::before {
@@ -489,12 +727,42 @@ button[type=roll].sheet-edgeOutput {
 }
 
 .sheet-woundmod,
-.sheet-fatiguedmod {
+.sheet-fatiguedmod,
+.sheet-loadconfig {
     display: none;
 }
 
+.sheet-loadmods {
+    width: 35px;
+    position: relative;
+    left: 185px;
+    top: -15px;
+    z-index: 9999;
+    opacity: 0;
+}
+
+.sheet-loadmods + span {
+    font-family: Pictos;
+    color: gray;
+    position: relative;
+    top: -15px;
+    left: 155px;
+    opacity: 0;
+}
+
+.sheet-loadstuff:hover + .sheet-loadmods + span,
+.sheet-loadmods:hover + span,
+.sheet-loadmods:checked + span {
+    opacity: 1;
+}
+
+.sheet-loadmods:checked + span {
+    color: black;
+}
+
 .sheet-showWoundmod:checked + .sheet-woundmod,
-.sheet-showFatiguemod:checked + .sheet-fatiguedmod {
+.sheet-showFatiguemod:checked + .sheet-fatiguedmod,
+.sheet-showLoadConfig:checked ~ .sheet-loadconfig {
     display: inline-block;
     text-align: center;
     width: 98%;
@@ -523,9 +791,19 @@ button[type=roll].sheet-edgeOutput {
     text-align: center;
 }
 
+.sheet-derivebase > input.sheet-derivedStat,
+.sheet-derivemisc > input.sheet-derivedStat,
+.sheet-derivemod > input.sheet-derivedStat,
+.sheet-derivecurrent >input.sheet-derivedStat {
+    width: 41.31px;
+}
+
 .sheet-derivelabel {
     display: inline-block;
-    width: 25%;
+    width: 40%;
+    text-align: left;
+    font-weight:bold;
+    line-height: 2em;
 }
 
 .sheet-derivebase {
@@ -546,6 +824,10 @@ button[type=roll].sheet-edgeOutput {
 .sheet-derivecurrent {
     display: inline-block;
     width: 15%;
+}
+
+.sheet-derivedStat {
+    text-align: center;
 }
 
 .charsheet td.sheet-tapreadout {
@@ -636,7 +918,7 @@ tr.sheet-taprow:hover .sheet-moreTAP + span {
 .sheet-WD {
     position: relative;
     top: 0px;
-    left: 50%;
+    left: 17%;
 }
 
 .sheet-linkedAtt {
@@ -692,7 +974,7 @@ tr.sheet-taprow:hover .sheet-moreTAP + span {
     top: 29px;
 }
 
-.sheet-skillz {
+.sheet-abilities {
     /*background: rgba(255,255,255,0.75);*/
     position: relative;
     top: -40px;
@@ -805,8 +1087,249 @@ tr.sheet-taprow:hover .sheet-moreTAP + span {
     width: 185px;
 }
 /*----------- End Skills Config  Sections -----------*/
+.sheet-repeatingHeader {
+    display: inline-block;
+    text-align: center;
+    margin-right: 5px;
+}
+/*----------- Start Armor Section -----------*/
+.sheet-armor {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: -35px;
+}
+
+.sheet-armorWorn,
+.sheet-armorProtected,
+.sheet-armorProtection,
+.sheet-armorProtectionType,
+.sheet-armorWeight,
+.sheet-armorCarried,
+.sheet-armorDesc,
+.sheet-armorTotalWeight {
+    margin-right: 5px;
+    display: inline-block;
+    text-align: center;
+}
+
+.sheet-armorWornContainer,
+.sheet-armorCarriedContainer {
+    display: inline-flex; 
+    margin: 0px; 
+    padding: 0px; 
+    width: 50px;
+}
+.sheet-armorWorn {
+    width: 50px;
+}
+
+.sheet-isWorn,
+.sheet-isCarried {
+    z-index: 9999;
+    opacity: 0;
+}
+
+.sheet-isWornIcon,
+.sheet-isCarriedIcon {
+    font-family: Pictos;
+    margin-left: -40px;
+    margin-top: -8px;
+    font-size: 1.5em;
+    padding: 0px;
+}
+
+.sheet-isCarriedIcon {
+    margin-left: -45px;
+}
+
+.sheet-isWorn:checked + .sheet-isWornIcon::before,
+.sheet-isCarried:checked + .sheet-isCarriedIcon::before {
+    content: "2";
+}
+
+.sheet-isWorn:not(:checked) + .sheet-isWornIcon::before,
+.sheet-isCarried:not(:checked) + .sheet-isCarriedIcon::before {
+    content: "D";
+}
+
+.sheet-armorType,
+input.sheet-armorType {
+    width: 375px;
+    margin-right: 5px;
+}
+
+.sheet-armorProtected,
+input.sheet-armorProtected {
+    width: 135px;
+}
+
+.sheet-armorProtection,
+input.sheet-armorProtection {
+    width: 75px;
+}
+
+.sheet-armorStacks,
+input.sheet-armorStacks {
+    width: 50px;
+}
+
+.sheet-armorWeight,
+input.sheet-armorWeight {
+    width: 50px;
+}
+
+.sheet-armorCarried,
+input.sheet-armorCarried {
+    width: 50px;
+}
+
+.sheet-armorDesc,
+.sheet-armorTotalWeight {
+    width: 98%;
+    text-align: left;
+    margin: 0px 0px 0px 3.5px;
+}
+/*----------- End Armor Section -----------*/
+
+/*----------- Start Melee Section -----------*/
+.sheet-weapons {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: -35px;
+}
+
+.sheet-button,
+.sheet-weapon,
+.sheet-range,
+.sheet-rof,
+.sheet-damage,
+.sheet-shots,
+.sheet-weaponweight,
+.sheet-weaponcarried,
+.sheet-weaponTotalWeight {
+    display: inline-block;
+    text-align: center;
+}
+
+.sheet-button {
+    width: 85px;
+    box-sizing: border-box;
+}
+
+.sheet-weapon {
+    width: 242px;
+    text-align: left;
+    box-sizing: border-box;
+}
+
+.sheet-range {
+    width: 113px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.sheet-rof {
+    width: 35px;
+    box-sizing: border-box;
+}
+
+.sheet-damage {
+    width: 85px;
+    box-sizing: border-box;
+}
+
+.sheet-shots {
+    width:85px;
+    box-sizing: border-box;
+}
+
+.sheet-weaponweight {
+    width: 50px;
+    box-sizing: border-box;
+}
+
+.sheet-weaponcarried {
+    width: 50px;
+    box-sizing: border-box;
+}
+
+.sheet-weaponnotes {
+    width: 98%;
+    height: 50px;
+    box-sizing: border-box;
+}
+
+.sheet-configlabels {
+    display: inline;
+    font-weight: bold;
+    font-size: 1em;
+    margin-left: 5px;
+    /*width: 55px;*/
+}
+
+.sheet-weaponbutton {
+    width: 100px;
+}
+
+.sheet-weaponskill {
+    display: none;
+}
+
+.sheet-weapondamage,
+.sheet-weaponbutton[value="0"] + .sheet-weaponskill {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.sheet-weaponatt {
+    width: 105px;
+}
+
+.sheet-weaponnum {
+    width: 35px;
+}
+
+.sheet-moreweapon {
+    z-index: 9999;
+    opacity: 0;
+}
+
+.sheet-moreweapon + span {
+    font-family: "Pictos";
+    margin-left: -12px;
+    color: gray;
+    opacity: 0;
+}
+
+.sheet-weaponitem:hover > .sheet-moreweapon + span,
+.sheet-moreweapon:hover + span,
+.sheet-moreweapon:checked + span {
+    opacity: 1;
+}
+
+.sheet-moreweapon:checked + span {
+    color: black;
+}
+
+.sheet-weaponconfig {
+    display: none;
+}
+
+.sheet-moreweapon:checked ~ .sheet-weaponconfig {
+    display: inline-block;
+}
+
+.sheet-moreweapon:not(:checked) ~ .sheet-weaponnotes {
+    height: 25px;
+}
+
+/*----------- End Melee Section -----------*/
 
 /*----------- Start Repeating Button Display -----------*/
+[data-groupname=repeating_armor],
+[data-groupname=repeating_weapons] {
+    width: 100%;
+}
 .repcontrol_add,
 .repcontrol_edit,
 .repcontrol_move,
@@ -861,7 +1384,7 @@ tr.sheet-taprow:hover .sheet-moreTAP + span {
     color: #555;
 }
 .repcontrol_edit:after {
-    content: 'y';
+    content: '(';
     visibility: visible;
     font-family: pictos;
     border: none;
@@ -872,7 +1395,7 @@ tr.sheet-taprow:hover .sheet-moreTAP + span {
     color: #555;
 }
 .editmode ~ .repcontrol .repcontrol_edit:after {
-    content: '2';
+    content: ')';
 }
 /*----------- End Repeating Button Display -----------*/
 span.sheet-vehiclesT {
@@ -885,9 +1408,34 @@ span.sheet-vehiclesT {
 .sheet-IF,
 .sheet-archetype,
 .sheet-Homeworld,
+.sheet-Occupation,
 .sheet-Languages,
 .sheet-SkillSpec,
 .sheet-FencingStyle,
+.sheet-engrams,
+/*--- Begin Derived Stats ---*/
+.sheet-derivedhr,
+.sheet-Fame,
+.sheet-Reason,
+.sheet-Status,
+.sheet-Glory,
+.sheet-Firewall,
+.sheet-Strain,
+.sheet-StreetCred,
+.sheet-Corruption,
+.sheet-Grit,
+.sheet-NT,
+.sheet-Academics,
+.sheet-Sanity,
+/*--- End Derived Stats ---*/
+.sheet-Burn,
+.sheet-IRSC,
+.sheet-lankhmar,
+.sheet-money,
+.sheet-PofE,
+.sheet-Clams,
+.sheet-Credits,
+.sheet-Livre,
 /*--- Begin Static Skills ---*/
 .sheet-staticBoating,
 .sheet-staticClimbing,
@@ -923,18 +1471,25 @@ span.sheet-vehiclesT {
 .sheet-LASPI,
 .sheet-LASTR,
 .sheet-LAVIG,
+/*.sheet-hideAtts:checked + .sheet-attributes,*/
 .sheet-hideAtts:checked ~ .sheet-attributes,
+.sheet-hideAtts:checked ~ .sheet-armor,
+.sheet-hideAtts:checked ~ .sheet-weapons,
 .sheet-hideHindrances:checked ~ .sheet-hindrances,
+.sheet-hideTAP:checked ~ .sheet-taptable,
+.sheet-hideEngrams:checked ~ .sheet-engramsDeets,
 .sheet-hideEdges:checked ~ .sheet-edges,
 .sheet-hideAdv:checked ~ .sheet-advancements,
-.sheet-hideAtts:checked ~ .sheet-skillz,
-.sheet-hideSkills:checked ~ .sheet-skillz,
+/*.sheet-hideAtts:checked ~ .sheet-skillz,*/
+/*.sheet-hideSkills:checked ~ .sheet-skillz,*/
+.sheet-hideSkills:checked ~ .sheet-abilities,
 .sheet-hideAtts:not(:checked) ~ .sheet-AttsSum,
 .sheet-tap,
 .sheet-showVehicles:not(:checked) ~ .sheet-vehiclesT,
 .sheet-showVehicles:not(:checked) + span.sheet-vehiclesT,
 .sheet-showVehicles:not(:checked) ~ span.sheet-vehiclesT,
-.sheet-hideAtts:checked ~ .sheet-corederived {
+.sheet-hideAtts:checked ~ .sheet-corederived,
+.sheet-xpmod {
     display: none;
 }
 
@@ -943,6 +1498,7 @@ span.sheet-vehiclesT {
     display: block;
 }
 
+.sheet-dstats:checked + .sheet-derivedhr,
 .sheet-StaticSkill:checked + .sheet-staticBoating,
 .sheet-StaticSkill:checked + .sheet-staticClimbing,
 .sheet-StaticSkill:checked + .sheet-staticDriving,
@@ -982,7 +1538,9 @@ span.sheet-vehiclesT {
 
 .sheet-useHomeworld:checked + .sheet-Homeworld,
 .sheet-usearchetype:checked + .sheet-archetype,
+.sheet-useOccupation:checked + .sheet-Occupation,
 .sheet-useIF:checked + .sheet-IF,
+.sheet-useEngrams:checked + .sheet-engrams,
 .sheet-useLanguages:checked + .sheet-Languages,
 .sheet-LAA:checked ~ .sheet-LAAGI,
 .sheet-LASm:checked ~ .sheet-LASMA,
@@ -992,9 +1550,42 @@ span.sheet-vehiclesT {
     display: inline-block;
 }
 
+/*--- Derived Stats ---*/
+.sheet-useFame:checked + .sheet-Fame,
+.sheet-useReason:checked + .sheet-Reason,
+.sheet-useStatus:checked + .sheet-Status,
+.sheet-useGlory:checked + .sheet-Glory,
+.sheet-useAcademics:checked + .sheet-Academics,
+.sheet-useSanity:checked + .sheet-Sanity,
+.sheet-useGrit:checked + .sheet-Grit,
+.sheet-useNT:checked + .sheet-NT,
+.sheet-useFirewall:checked + .sheet-Firewall,
+.sheet-useStrain:checked ~ .sheet-Strain,
+.sheet-useStreetCred:checked ~ .sheet-StreetCred,
+.sheet-useCorruption:checked + .sheet-Corruption,
+.sheet-useLankhmar:checked + .sheet-lankhmar,
+input[value="3"].sheet-usePieces ~ .sheet-lankhmar,
+input[value="3"].sheet-usePieces ~ .sheet-money,
+input[value="0"].sheet-usePieces ~ .sheet-money,
+input[value="1"].sheet-usePieces ~ .sheet-PofE,
+input[value="2"].sheet-usePieces ~ .sheet-Clams,
+input[value="4"].sheet-usePieces ~ .sheet-Credits,
+input[value="5"].sheet-usePieces ~ .sheet-Livre,
+.sheet-useBurn:checked ~ .sheet-Burn,
+.sheet-useIRSC:checked + .sheet-IRSC,
+.sheet-usexp:checked ~ .sheet-xpmod {
+    display: flex;
+}
+
 /*----------- End Show/Hide Sections -----------*/
 
 /*----------- Logo Configuration Info -----------*/
+
+.sheet-left {
+    width: 250px;
+    padding: 0px;
+    margin: auto;
+}
 
 .sheet-SWD,
 .sheet-PotSM,
@@ -1013,9 +1604,10 @@ span.sheet-vehiclesT {
 .sheet-Rifts,
 .sheet-Rippers {
 	max-width: 250px;
-	/*max-height: 100px;*/
+	/*max-height: 100px;
 	margin-left: auto;
-    margin-right: auto;
+    margin-right: auto;*/
+    margin: auto;
 	display: none;
 }
 
@@ -1084,6 +1676,161 @@ span.sheet-vehiclesT {
 
 /*----------- End Logo Configuration Info -----------*/
 
+/*----------- Disclaimer Info Setup -----------*/
+
+.sheet-disclaimer{
+	font-size: 10px;
+	text-align: center;
+	display: none;
+}
+
+.sheet-logo:checked + span.sheet-disclaimer {
+	display: inline-block;
+}
+
+.sheet-playDisclaimer input[value="1"]:checked + span.sheet-disclaimer::after,
+.sheet-playDisclaimer input[value="4"]:checked + span.sheet-disclaimer::after,
+.sheet-playDisclaimer input[value="3"]:checked + span.sheet-disclaimer::after,
+.sheet-playDisclaimer input[value="2"]:checked + span.sheet-disclaimer::after,
+.sheet-playDisclaimer input[value="5"]:checked + span.sheet-disclaimer::after,
+.sheet-playDisclaimer input[value="6"]:checked + span.sheet-disclaimer::after,
+.sheet-playDisclaimer input[value="7"]:checked + span.sheet-disclaimer::after,
+.sheet-playDisclaimer input[value="8"]:checked + span.sheet-disclaimer::after,
+.sheet-playDisclaimer input[value="12"]:checked + span.sheet-disclaimer::after,
+.sheet-playDisclaimer input[value="14"]:checked + span.sheet-disclaimer::after,
+.sheet-playDisclaimer input[value="16"]:checked + span.sheet-disclaimer::after  {
+	content: "logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
+	display: inline-block;
+}
+
+.sheet-playDisclaimer input[value="15"]:checked + span.sheet-disclaimer::after {
+	content: "and Megaverse are registered trademarks of PALLADIUM BOOKS, INC. All character names and likenesses are copyright and trademarks owned by Palladium Books, Inc. Savage Worlds logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
+	/*display: inline-block;*/
+}
+
+/*.sheet-playDisclaimer input[value="3"]:checked + span.sheet-disclaimer::before {
+	content: "The Last Parsec logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
+}*/
+
+/*.sheet-playDisclaimer input[value="2"]:checked + span.sheet-disclaimer::before {
+	content: "The Pirates of the Spanish Main logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
+}*/
+
+/*.sheet-playDisclaimer input[value="5"]:checked + span.sheet-disclaimer::before {
+	content: "The Necessary Evil logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
+}*/
+
+/*.sheet-playDisclaimer input[value="6"]:checked + span.sheet-disclaimer::before {
+	content: "The Deadlands logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
+}*/
+
+/*.sheet-playDisclaimer input[value="7"]:checked + span.sheet-disclaimer::before {
+	content: "The Deadlands: Noir logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
+}*/
+
+/*.sheet-playDisclaimer input[value="8"]:checked + span.sheet-disclaimer::before {
+	content: "The Deadlands: Hell on Earth logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
+}*/
+
+.sheet-playDisclaimer input[value="9"]:checked + span.sheet-disclaimer::after {
+	content: "logo is a trademark of Gun Metal Games. Used with permission.";
+}
+
+.sheet-playDisclaimer input[value="10"]:checked + span.sheet-disclaimer::after,
+.sheet-playDisclaimer input[value="11"]:checked + span.sheet-disclaimer::after {
+	content: "logo is a trademark of Triple Ace Games. Used with permission.";
+	display: inline-block;
+}
+
+.sheet-playDisplaimer input[value="13"]:checked +span.sheet-disclaimer::after {
+	content: "logo &copy; 2016 Triple Ace Games Ltd. All for One: R&eacute;gime Diabolique and all related marks and logos are trademarks of  Triple Ace Games Ltd. Ubiquity Roleplaying System, Exile Games Studio, and all associated logos and trademarks are copyright, Exile Games Studio, LLC. Used with permission.";
+}
+
+/*--- Web Site Info For Disclaimer ---*/
+
+.sheet-CoURL {
+	font-size: 10px;
+	text-align: center;
+}
+
+.sheet-playDisclaimer input[value="1"]:checked ~ span.sheet-CoURL::after,
+.sheet-playDisclaimer input[value="2"]:checked ~ span.sheet-CoURL::after,
+.sheet-playDisclaimer input[value="3"]:checked ~ span.sheet-CoURL::after,
+.sheet-playDisclaimer input[value="4"]:checked ~ span.sheet-CoURL::after,
+.sheet-playDisclaimer input[value="5"]:checked ~ span.sheet-CoURL::after,
+.sheet-playDisclaimer input[value="6"]:checked ~ span.sheet-CoURL::after,
+.sheet-playDisclaimer input[value="7"]:checked ~ span.sheet-CoURL::after,
+.sheet-playDisclaimer input[value="8"]:checked ~ span.sheet-CoURL::after,
+.sheet-playDisclaimer input[value="12"]:checked ~ span.sheet-CoURL::after,
+.sheet-playDisclaimer input[value="14"]:checked ~ span.sheet-CoURL::after,
+.sheet-playDisclaimer input[value="15"]:checked ~ span.sheet-CoURL::after,
+.sheet-playDisclaimer input[value="16"]:checked ~ span.sheet-CoURL::after {
+	content: "http://www.peginc.com/";
+}
+
+.sheet-playDisclaimer input[value="9"]:checked ~ span.sheet-CoURL::after {
+	content: "http://www.gunmetalgames.com/";
+}
+
+.sheet-playDisclaimer input[value="10"]:checked ~ span.sheet-CoURL::after,
+.sheet-playDisclaimer input[value="11"]:checked ~ span.sheet-CoURL::after,
+.sheet-playDisclaimer input[value="13"]:checked ~ span.sheet-CoURL::after {
+	content: "http://www.tripleacegames.com/";
+}
+
+/*----------- End Disclaimer Info Setup -----------*/
+/*----------- Start Configuration Window -----------*/
+.sheet-qs {
+    /*display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    height: 126px;
+    width: 32.5%;*/
+    display: inline-block;
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+}
+
+.sheet-hideQS:checked + .sheet-qs {
+    display: none;
+}
+
+.sheet-configlabel {
+    /*display: block;*/
+    font-weight: normal;
+    font-size: 1em;
+    /*margin: 2px;*/
+    cursor: pointer;
+    /*width: 24.5%;*/
+}
+
+.sheet-configbox {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.sheet-configitem {
+    width: 23%;
+    margin: auto;
+}
+
+/*.sheet-configlabel {
+    font-weight: normal;
+    font-size: 1em;
+}*/
+
+.sheet-configheader {
+    width: 100%;
+    text-align: center;
+}
+
+/*----------- End Configuration Window -----------*/
+
+/*----------- Start Roll Template Info -----------*/
 .sheet-rolltemplate-traitroll table.sheet-templatetable,
 .sheet-rolltemplate-tr_dmg_roll table.sheet-templatetable,
 .sheet-rolltemplate-dmg_roll table.sheet-templatetable,
@@ -1202,3 +1949,360 @@ span.sheet-vehiclesT {
 }
 
 /*----------- End Roll Template --------------------*/
+/*----------- Start Lang PT --------------------*/
+.lang-pt input.sheet-Shaken:checked ~ h2.sheet-charTypeMook::after {
+    content: ' **Abalado**';
+}
+.lang-pt .sheet-useCodeName:checked ~ label.sheet-characterName::before {
+	content: "Codenome:";
+}
+.lang-pt .sheet-useCodeName:checked ~ label.sheet-characterName::before {
+	content: "Codenome:";
+}
+
+.lang-pt .sheet-useCodeName:not(:checked) ~ label.sheet-characterName::before {
+	content: "Nome:";
+}
+
+.lang-pt .sheet-useThreatRating:not(:checked) + label.sheet-Rank-n-XP::before,
+.lang-pt .sheet-useClass:not(:checked) ~ label.sheet-Rank-n-XP::before {
+	content: "XP/Estagio";
+}
+
+.lang-pt .sheet-useThreatRating:checked + label.sheet-Rank-n-XP::before {
+	content: "XP/Nivel de Ameaca";
+	
+}
+
+.lang-pt .sheet-useClass:checked ~ label.sheet-Rank-n-XP::before {
+	content: "XP/Class";
+
+}
+
+.lang-pt .sheet-useParaHuman:not(:checked) + h4.sheet-CharacterHistory::before {
+	content: "Aparencia Fisica + Historia Pessoal";
+}
+
+.lang-pt .sheet-useParaHuman:checked + h4.sheet-CharacterHistory::before {
+	content: "Aparencia Fisica + Historia Pessoal + Origem de Habilidades Meta-humanas";
+}
+
+
+.lang-pt .sheet-usePieces input[value="0"]:checked ~ label.sheet-Money::before {
+	content: "Dinheiro:";
+}
+
+.lang-pt .sheet-usePieces input[value="1"]:checked ~ label.sheet-Money::before {
+	content: "Pieces of Eight:";
+	
+}
+
+.lang-pt .sheet-usePieces input[value="2"]:checked ~ label.sheet-Money::before {
+	content: "Clams:";
+}
+
+.lang-pt .sheet-usePieces input[value="4"]:checked ~ label.sheet-Money::before {
+	content: "Creditos:";
+}
+
+.lang-pt .sheet-usePieces input[value="3"]:checked ~ label.sheet-Money::before {
+	content: "Tiks de Ferro:";
+}
+.lang-pt .sheet-usePieces input[value="5"]:checked ~ label.sheet-Money::before {
+	content: "Livre:";
+}
+
+.lang-pt .sheet-useCybernetics:not(:checked) + h3::before {
+	content: "Aprimoramentos";
+}
+.lang-pt .sheet-useCybernetics:not(:checked) + h4::before {
+	content: "Aprimoramento";
+}
+
+.lang-pt .sheet-useCybernetics:checked + h3::before {
+	content: "Ciberneticos";
+}
+.lang-pt .sheet-useCybernetics:checked + h4::before {
+	content: "Cibernetico";
+}
+
+.lang-pt .sheet-usePPE:not(:checked) + .sheet-PowerPoints::before {
+	content: "Pts de Poder";
+}
+
+.lang-pt .sheet-usePPE:checked + .sheet-PowerPoints::before {
+	content: "PPE";
+}
+.lang-pt span.sheet-is-npc-tab::before {
+    content: "Trocar para Aliado/Extra";
+}
+.lang-pt input.sheet-is-npc:checked + span.sheet-is-npc-tab::before {
+	content: "Trocar para Carta Selvagem"
+}
+.lang-pt button[type=roll].sheet-GM-button::before { 
+    
+    content: "gm";
+}
+.lang-pt .sheet-Bennies[value='1']:checked ~ label.sheet-BenniesOption::after {
+	content: 'Usado'
+}
+
+.lang-pt .sheet-Bennies[value='2']:checked ~ label.sheet-BenniesOption::after {
+	content: 'Restante'
+}
+.lang-pt span.sheet-is-hindrance-tab::before,
+.lang-pt span.sheet-is-edge-tab::before,
+.lang-pt span.sheet-is-armor-tab::before,
+.lang-pt span.sheet-is-melee-tab::before,
+.lang-pt span.sheet-is-ranged-tab::before,
+
+.lang-pt span.sheet-is-vehicle-tab::before,
+.lang-pt span.sheet-is-sailing-tab::before,
+.lang-pt span.sheet-is-flying-tab::before,
+.lang-pt span.sheet-is-ground-tab::before,
+.lang-pt span.sheet-is-walker-tab::before,
+
+.lang-pt span.sheet-is-gear-tab::before,
+/*.charsheet span.sheet-is-spellsd-tab::before,*/
+.lang-pt span.sheet-is-spellsn-tab::before,
+.lang-pt span.sheet-is-atts-tab::before,
+.lang-pt span.sheet-is-skills-tab::before,
+.lang-pt span.sheet-is-mweapons-tab::before,
+.lang-pt span.sheet-is-rweapons-tab::before,
+.lang-pt span.sheet-is-arcanum-tab::before,
+.lang-pt span.sheet-is-notes-tab::before,
+
+.lang-pt span.sheet-HideSSEdges::before,
+.lang-pt span.sheet-HideSSWeapons::before,
+.lang-pt span.sheet-HideSSCrew::before,
+
+.lang-pt span.sheet-HideFSEdges::before,
+.lang-pt span.sheet-HideFSWeapons::before,
+.lang-pt span.sheet-HideFSCrew::before,
+
+.lang-pt span.sheet-HideGVEdges::before,
+.lang-pt span.sheet-HideGVWeapons::before,
+.lang-pt span.sheet-HideGVCrew::before,
+
+.lang-pt span.sheet-HideWalkerEdges::before,
+.lang-pt span.sheet-HideWalkerWeapons::before,
+.lang-pt span.sheet-HideWalkerCrew::before {
+    content: "Esconder";
+}
+.lang-pt span.sheet-is-wcSkills::before {
+	content: "Fechar Pericias Base de Carta Selvagem";
+}
+
+.lang-pt span.sheet-is-wcSkills2::before {
+	content: "Feito";
+}
+
+.lang-pt [data-groupname=repeating_skills] > button.btn.repcontrol_add::after {
+	content: " Pericias extras";
+}
+.lang-pt [data-groupname*="spec"] > button.btn.repcontrol_add::after {
+	content: " Especializacao";
+}
+
+.lang-pt [data-groupname*="fencing"] > button.btn.repcontrol_add::after {
+	content: " Fencing Style/School";
+}
+
+.lang-pt span.sheet-is-mSkills::before {
+	content: "Fechar Pericias Base de Extra";
+}
+
+.lang-pt span.sheet-is-mSkills2::before {
+	content: "Esconder ";
+}
+
+.lang-pt span.sheet-is-wcUI::before {
+	content: "Fechar Configuracoes de Ajuste de UI";
+}
+
+.lang-pt span.sheet-is-quickConfig::before {
+	content: "Fechar Configuracoes Rapidas";
+}
+
+.lang-pt span.sheet-is-gameSettings::before {
+	content: "Fechar Caract. Derivadas Adicionais";
+}
+
+.lang-pt span.sheet-is-fieldreplacements::before {
+	content: "Fechar Substituicao de Campos";
+}
+
+.lang-pt span.sheet-is-newfields::before {
+	content: "Fechar Campos Adicionais de Cenario";
+}
+
+.lang-pt .sheet-use528:not(:checked) + span.sheet-528::before,
+.lang-pt .sheet-use9212:not(:checked) + span.sheet-9212::before {
+	content: "Adic.";
+}
+
+.lang-pt .sheet-use528:checked + span.sheet-528::before,
+.lang-pt .sheet-hide528:checked + span.sheet-h528::before,
+.lang-pt .sheet-augEnd:checked + span.sheet-aEnd::before {
+	content: "Remover";
+}
+
+.lang-pt .sheet-HideArmor:checked + span.sheet-is-armor-tab::before,
+.lang-pt .sheet-HideMelee:checked + span.sheet-is-melee-tab::before,
+.lang-pt .sheet-HideRanged:checked + span.sheet-is-ranged-tab::before,
+
+
+.lang-pt .sheet-HideVehicles:checked + span.sheet-is-vehicle-tab::before,
+.lang-pt .sheet-HideSailing:checked + span.sheet-is-sailing-tab::before,
+.lang-pt .sheet-HideFlying:checked + span.sheet-is-flying-tab::before,
+.lang-pt .sheet-HideGround:checked + span.sheet-is-ground-tab::before,
+.lang-pt .sheet-HideWalker:checked + span.sheet-is-walker-tab::before,
+
+.lang-pt .sheet-HideGear:checked + span.sheet-is-gear-tab::before,
+/*.charsheet .sheet-HideSpellsd:checked + span.sheet-is-spellsd-tab::before,*/
+/*.charsheet .sheet-HideSpellsn:checked + span.sheet-is-spellsn-tab::before,*/
+.lang-pt .sheet-HideEdges:checked + span.sheet-is-edge-tab::before,
+.lang-pt .sheet-HideHindrance:checked + span.sheet-is-hindrance-tab::before,
+
+.lang-pt .sheet-HideSShipEdges:checked + span.sheet-HideSSEdges::before,
+.lang-pt .sheet-HideSShipWeapons:checked + span.sheet-HideSSWeapons::before,
+.lang-pt .sheet-HideSShipCrew:checked + span.sheet-HideSSCrew::before,
+
+.lang-pt .sheet-HideFShipEdges:checked + span.sheet-HideFSEdges::before,
+.lang-pt .sheet-HideFShipWeapons:checked + span.sheet-HideFSWeapons::before,
+.lang-pt .sheet-HideFShipCrew:checked + span.sheet-HideFSCrew::before,
+
+.lang-pt .sheet-HideGroundEdges:checked + span.sheet-HideGVEdges::before,
+.lang-pt .sheet-HideGVWeapons:checked + span.sheet-HideGVWeapons::before,
+.lang-pt .sheet-HideGVCrew:checked + span.sheet-HideGVCrew::before,
+
+.lang-pt .sheet-HideWalkerEdges:checked + span.sheet-HideWalkerEdges::before,
+.lang-pt .sheet-HideWalkerWeapons:checked + span.sheet-HideWalkerWeapons::before,
+.lang-pt .sheet-HideWalkerCrew:checked + span.sheet-HideWalkerCrew::before,
+
+.lang-pt .sheet-HideVehicles:checked + span.sheet-is-vehicle-tab::before {
+	content: "Mostrar";
+}
+
+.lang-pt .sheet-HideAtts:checked + span.sheet-is-atts-tab::before {
+	content: "Mostrar Atributos e Vantagens";
+}
+
+.lang-pt .sheet-HideSkills:checked + span.sheet-is-skills-tab::before {
+	content: "Mostrar Pericias e Armaduras";
+}
+
+.lang-pt .sheet-HideMWeapons:checked + span.sheet-is-mweapons-tab::before {
+	content: "Mostrar Armas Corpo-a-Corpo e Equipamento";
+}
+
+.lang-pt .sheet-HideRWeapons:checked + span.sheet-is-rweapons-tab::before {
+	content: "Mostrar Armas a Distancia";
+}
+
+.lang-pt .sheet-HideArcanum:checked + span.sheet-is-arcanum-tab::before {
+	content: "Mostrar Arcano";
+}
+
+.lang-pt .sheet-HideNotes:checked + span.sheet-is-notes-tab::before {
+	content: "Mostrar Notas";
+}
+
+.lang-pt .sheet-HideConfig:checked + span.sheet-is-config::after { /*Show Configuration: Black background with grayish text*/
+	content: "v";
+}
+
+.lang-pt .sheet-HideWCSkills:checked + span.sheet-is-wcSkills::before {
+	content: "Mostrar Pericias Base de Carta Selvagem";
+}
+
+.lang-pt .sheet-HideWCSkills2:checked + span.sheet-is-wcSkills2::before {
+	content: "+/- Pericias";
+}
+
+.lang-pt .sheet-HidemSkills:checked + span.sheet-is-mSkills::before {
+	content: "Mostrar Pericias Base de Extra";
+}
+
+.lang-pt .sheet-HidemSkills:checked + span.sheet-is-mSkills2::before {
+	content: "Mostrar ";
+}
+
+.lang-pt .sheet-HideUITweaks:checked + span.sheet-is-wcUI::before {
+	content: "Mostrar Configuracoes de Ajuste de UI";
+}
+
+.lang-pt .sheet-HideQuickConfig:checked + span.sheet-is-quickConfig::before {
+	content: "Mostrar Configuracoes Rapidas";
+}
+
+.lang-pt .sheet-HideGameSettings:checked + span.sheet-is-gameSettings::before {
+	content: "Mostrar Caracteristicas Derivadas Adicionais";
+}
+
+.lang-pt .sheet-HideReplacements:checked + span.sheet-is-fieldreplacements::before {
+	content: "Mostrar Substituicao de Campos";
+}
+
+.lang-pt .sheet-HideNewFields:checked + span.sheet-is-newfields::before {
+	content: "Mostrar Campos Adicionais de Cenario";
+}
+
+.lang-pt .sheet-NoPP:checked + span.sheet-SpellCost::before {
+	content: "Mod. Conjuracao";
+}
+
+.lang-pt .sheet-NoPP:not(:checked) + span.sheet-SpellCost::before {
+	content: "Custo";
+}
+
+/* Plural */
+.lang-pt .sheet-useMiracles:not(:checked) ~ span.sheet-MagicTypes::before {
+	content: "Poderes";
+}
+
+.lang-pt .sheet-useMiracles:checked ~ span.sheet-MagicTypes::before {
+	content: "Milagres";
+}
+
+.lang-pt .sheet-usePsionics:checked ~ span.sheet-MagicTypes::before {
+	content: "Psiquismo";
+}
+
+.lang-pt .sheet-useSpells:checked ~ span.sheet-MagicTypes::before {
+	content: "Feiticos";
+}
+
+.lang-pt .sheet-useRituals:checked ~ span.sheet-MagicTypes::before {
+	content: "Rituais";
+}
+
+.lang-pt .sheet-useWeirdScience:checked ~ span.sheet-MagicTypes::before {
+	content: "Aparelhos de Ciencia Estranha";
+}
+
+/* Singular */
+.lang-pt .sheet-useMiracles:not(:checked) ~ span.sheet-MagicType::before {
+	content: "Poder";
+}
+
+.lang-pt .sheet-useMiracles:checked ~ span.sheet-MagicType::before {
+	content: "Milagre";
+}
+
+.lang-pt .sheet-usePsionics:checked ~ span.sheet-MagicType::before {
+	content: "Habilidade Psionica";
+}
+
+.lang-pt .sheet-useSpells:checked ~ span.sheet-MagicType::before {
+	content: "Feitico";
+}
+
+.lang-pt .sheet-useRituals:checked ~ span.sheet-MagicType::before {
+	content: "Ritual";
+}
+
+.lang-pt .sheet-useWeirdScience:checked ~ span.sheet-MagicType::before {
+	content: "Aparelho de Ciencia Estranha";
+}
+/*----------- End Lang PT --------------------*/
