@@ -1,7 +1,6 @@
 <input type='hidden' name='attr_character_sheet' value='Savage Worlds Tabbed v3.0' />
 <script type="text/worker">
     /*----- Things I need to Care For -----
-    -- o Option to ignore encumbrance    --
     -- o Add a Strain config so the      --
     --   the config section houses the   -- 
     --   the rule (based on Vigor,       --
@@ -67,11 +66,13 @@
     }
     
     function rankNdisplay (field) {
+		//Create rank and display fields for all attributes...needed for pre-existing sheets
         //repeating  fields should be passed in the format: repating_<section>:attributes
         //example: repeating_skills:skillnamerank 
         console.log("**** Setting value(s) for " + field + " ****");
         let sattrs = {};
         if (field.indexOf(':') > -1) {
+			console.log("**** Repeating Field ****");
             let getfields = field.split(':');
             let repeatingSection = getfields[0];
             let repeatingField = getfields[1];
@@ -79,20 +80,54 @@
                 if (idArray.length > 0) {
                     console.log("IDs in Repeating Section: "+idArray);
                     let fieldArray = [];
+					let fieldModArray = [];
+					let fieldBothArray = [];
                     for (let a=0; a < idArray.length; a++) {
-                        console.log("+++ Added field: " + fieldArray[a]);
                         fieldArray[fieldArray.length] = repeatingSection + "_" + idArray[a] + "_" + repeatingField;
-                        console.log("+++ Added field: " + fieldArray[a]);
-                        sattrs[fieldArray[a]] = fieldValue
+						fieldBothArray[fieldBothArray.length] = repeatingSection + "_" + idArray[a] + "_" + repeatingField;
+						fieldModArray[fieldArray.length] = `repeatingSectin_${idArray[a]}_${repeatingField}mod`;
+						fieldBothArray[fieldBothArray.length] = `repeatingSectin_${idArray[a]}_${repeatingField}mod`;
+                        console.log("+++ Found field: " + fieldArray[a]);
+						console.log("+++ Added field: " + fieldArray[fieldArray.length -1]);
                     }
-                    setAttrs(sattrs);
+					getAttrs(fieldBothArray, v => {
+						for (let i=0; i < idArray.length; i++) {
+							let sAttrRank = v[`${fieldArray[i]}`]+"_rank";
+							let sAttrDisplay = v[`${fieldArray[i]}`]+"_display";
+							let tRank = '1d'+v[`${fieldArray[i]}`]+'!';
+							let tDisplay = 'd'+v[`${fieldArray[i]}`];
+							let intMod = v[`${fieldModArray[i]}`];
+							if (intMod !== "0") {
+								tRank += '+'+intMod+'['+getfields[1]+']';
+								tDisplay += '+' + intMod;
+							}
+							console.log("++++ Creating: "+sAttrRank+": "+tRank+" ++++");
+							console.log("++++ Creating: "+sAttrDisplay+": "+tDisplay+" ++++");
+							sattrs[sAttrRank]=tRank;
+							sattrs[sAttrDisplay]=tDisplay;
+						}
+						setAttrs(sattrs, {silent: true});
+					});
                 }
                 console.log("!! No fields to update !!");
             });
         }
         else {
-            sattrs[field] = fieldValue
-            setAttrs(sattrs);
+			console.log("**** Non-repeating Field ****");
+			getAttrs([field, `${field}mod`], v => {
+	            console.log("intMod will == "+v[`${field}mod`]);
+	            let tRank = '1d'+v[field]+'!';
+	            let tDisplay = 'd'+v[field];
+	            let intMod = v[`${field}mod`];
+	            if(intMod !== "0") {
+    				tRank += '+'+intMod+'['+field+']';
+    				tDisplay += '+' + intMod;
+    			}
+	            const sAttRank = field + '_rank', sAttDisplay = field + '_display';
+    			sattrs[sAttRank]=tRank;
+    			sattrs[sAttDisplay]=tDisplay;
+				setAttrs(sattrs, {silent: true});
+	        });
         }
     }
     
@@ -279,13 +314,13 @@
     	        //Need to create rank and display values for existing sheets
     	        const otraits = ['agility','smarts','spirit','strength','vigor','fighting','academicsskill','athletics','battle','boating','climbing','commonknowledge','driving','electronics','faith','focus','gambling','guts','hacking','healing','intimidation','investigation','language','lockpicking','notice','occult','performance','persuasion','piloting','psionics','repair','research','riding','ritual','science','shooting','spellcasting','stealth','streetwise','survival','swimming','taunt','throwing','thievery','tracking','weirdscience','repeating_skills:skillnamerank'];
     	        otraits.forEach(otraits => {
-    	           fauxChange(otraits, "1000");
+    	           rankNdisplay(otraits);
     	        });
 	        });
 	        //Need to update all derived stats to now use Sheetworkers
 	        const stats = ['wounds','is_npc','pace','charisma','tufnessMod','ntufnessMod','academicsMod','sanityMod','fameMod','reasonMod','statuMod','gloryMod','FirewallMod','gritMod','corruptionMod','StreetCredMod','StrainMod','armortotalweightcarried','showmods','promptmods','useXP'];
 	        stats.forEach(stats => {
-	            fauxChange(otraits, "1000");
+	            fauxChange(stats, "1000");
 	        });
 	        
 	        //migrate old repeating skills fields to new
