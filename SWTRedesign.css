@@ -238,17 +238,28 @@ input:checked + .sheet-slider:before {
   border-radius: 50%;
 }
 /*----------- End Mook/Wild Card Toggle --------------------*/
+.sheet-xplabel,
+.sheet-ranklabel {
+    display: inline;
+    font-size: 1em;
+    font-weight: normal;
+    padding: 0;
+}
+
 .sheet-xpRank {
     position: relative;
     top: 0px;
-    left: 8%;
+    left: 5%;
 }
 .sheet-rank,
 .sheet-Class {
-    width: 100px;
+    width: 90px;
     margin-bottom:1px;
     border: none; 
     border-bottom: solid black 1px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 .sheet-Class {
@@ -392,12 +403,17 @@ button[type=roll].sheet-edgeOutput {
     left: 12px;
 }
 
-.sheet-colHeader {
+.sheet-colHeader,
+.sheet-gearcolHeader {
     font-size: 1.25em;
     font-weight: bold;
     text-align: center;
     margin-bottom: 10px;
     /*background: rgba(255,255,255,0.75);*/
+}
+
+.sheet-gearcolHeader {
+    margin-top: -25px;
 }
 
 .sheet-subheader {
@@ -476,6 +492,23 @@ button[type=roll].sheet-edgeOutput {
     font-size: 1.5em;
 }
 
+.sheet-hideArmor,
+.sheet-hideWeapons,
+.sheet-hideGear,
+.sheet-hidePowers,
+.sheet-hideRipper,
+.sheet-hideAugments {
+    opacity: 0;
+    z-index: 9999;
+    width: 20px;
+    height: 20px !important;
+}
+
+.sheet-showNhide {
+    margin-left: -15px;
+    font-size: 1.5em;
+}
+
 .sheet-atts .sheet-hideAtts + .sheet-showhide,
 .sheet-hideSkills + .sheet-showhide,
 .sheet-atts .sheet-hideEngrams + .sheet-showhide,
@@ -495,7 +528,13 @@ button[type=roll].sheet-edgeOutput {
 .sheet-hideEngrams:not(:checked) + span.sheet-showhide::before,
 .sheet-hideHindrances:not(:checked) + span.sheet-showhide::before,
 .sheet-hideEdges:not(:checked) + span.sheet-showhide::before,
-.sheet-hideAdv:not(:checked) + span.sheet-showhide::before{
+.sheet-hideAdv:not(:checked) + span.sheet-showhide::before,
+.sheet-hideArmor:not(:checked) + span.sheet-showNhide::before,
+.sheet-hideWeapons:not(:checked) + span.sheet-showNhide::before,
+.sheet-hideGear:not(:checked) + span.sheet-showNhide::before,
+.sheet-hidePowers:not(:checked) + span.sheet-showNhide::before,
+.sheet-hideRipper:not(:checked) + span.sheet-showNhide::before,
+.sheet-hideAugments:not(:checked) + span.sheet-showNhide::before {
     font-family: "Pictos";
     content: "J";
 }
@@ -506,7 +545,13 @@ button[type=roll].sheet-edgeOutput {
 .sheet-hideEngrams:checked + span.sheet-showhide::before,
 .sheet-hideHindrances:checked + span.sheet-showhide::before,
 .sheet-hideEdges:checked + span.sheet-showhide::before, 
-.sheet-hideAdv:checked + span.sheet-showhide::before {
+.sheet-hideAdv:checked + span.sheet-showhide::before,
+.sheet-hideArmor:checked + span.sheet-showNhide::before,
+.sheet-hideWeapons:checked + span.sheet-showNhide::before,
+.sheet-hideGear:checked + span.sheet-showNhide::before,
+.sheet-hidePowers:checked + span.sheet-showNhide::before,
+.sheet-hideRipper:checked + span.sheet-showNhide::before,
+.sheet-hideAugments:checked + span.sheet-showNhide::before {
     font-family: "Pictos";
     content: "E";
 }
@@ -619,7 +664,96 @@ button[type=roll].sheet-edgeOutput {
     z-index: 9999;
     opacity: 0;
 }
+
+.sheet-sectionSeperator {
+    margin: 5px 0 5px 0;
+}
 /*------Wounds & Fatigue------*/
+.sheet-conditions {
+	text-align: center;
+	display:flex;
+	-ms-flex-pack: distribute;
+	    justify-content: space-around;
+	-ms-flex-wrap: wrap;
+	    flex-wrap: wrap;
+	width: 100%;
+	padding: 0px;
+	white-space: nowrap;
+	margin-bottom: 5px;
+	margin-top: -5px;
+}
+
+.sheet-distracted,
+.sheet-vulnerable,
+.sheet-stunned {
+    box-sizing: border-box;
+    /*border: 1px solid red;*/
+    margin: 0px 2px 2px 2px;
+    width: 31%;
+    -webkit-box-flex: 1;
+	    -ms-flex: 1 0 31%;
+	        flex: 1 0 31%%;
+}
+
+.sheet-conditionlabel {
+	text-align: center;
+    font-weight: normal;
+    font-size: .75em;
+}
+
+.sheet-conditionlabel:hover {
+	cursor: pointer;
+}
+
+.sheet-uhoh {
+	color: red;
+	font-size: 1.75em;
+	margin-left: -15px;
+}
+
+.sheet-conditionspan {
+	display: block;
+	/*font-size: .75em;*/
+	margin-top: -10px;
+	font-weight: bold;
+}
+
+.sheet-isdistracted,
+.sheet-isvulnerable,
+.sheet-isstunned {
+	opacity: 0;
+	z-index: 9999;
+}
+
+.sheet-isdistracted:not(:checked) + .sheet-uhoh::before {
+	content: "♢";
+	font-size: 1.5em;
+}
+.sheet-isdistracted:checked + .sheet-uhoh::before {
+	content: "♦";
+	font-size: 1.5em;
+}
+
+.sheet-isvulnerable:not(:checked) + .sheet-uhoh::before {
+	content: "♤";
+	font-size: 1.5em;
+}
+
+.sheet-isvulnerable:checked + .sheet-uhoh::before {
+	content: "♠";
+	font-size: 1.5em;
+}
+
+.sheet-isstunned:not(:checked) + .sheet-uhoh::before {
+	content: "♧";
+	font-size: 1.5em;
+}
+
+.sheet-isstunned:checked + .sheet-uhoh::before {
+	content: "♣";
+	font-size: 1.5em;
+}
+
 .sheet-woundBox,
 .sheet-fatigueBox {
     display: inline-block;
@@ -636,6 +770,13 @@ button[type=roll].sheet-edgeOutput {
 
 .sheet-fatigueBox {
     margin: 0px -10px 0px 10px;
+}
+
+.sheet-healthbox{
+	display: inline-flex;;
+	box-sizing: border-box;
+	border: 1px solid red;
+	width: 25px;
 }
 
 .sheet-shakenbox,
@@ -666,18 +807,20 @@ button[type=roll].sheet-edgeOutput {
 }
 
 .sheet-inc:checked + span {
-    color: maroon;
+    color: red;
+	font-weight: bold;
 }
 
 .sheet-incinfo,
 .sheet-shakeninfo {
     display: block; 
-    font-size: .5em; 
+    font-size: .75em; 
     margin-top: -10px;
+	font-weight: bold;
 }
 
 .sheet-shakeninfo {
-    margin-left: -6px;
+    margin-left: -11px;
 }
 
 .sheet-standardHealth {
@@ -773,6 +916,51 @@ button[type=roll].sheet-edgeOutput {
 
 /*------ Derived Stats -------*/
 
+.sheet-swadeenc,
+.sheet-swexenc {
+    display: none;
+}
+
+.sheet-encrules[value="1"] ~ .sheet-swadeenc,
+.sheet-encrules[value="2"] ~ .sheet-swexenc {
+    display: block;
+}
+
+.sheet-hideMods:checked ~ .sheet-useMods {
+    display: none;
+}
+
+.sheet-conviction {
+    display: none;
+}
+
+.sheet-useConviction:checked + .sheet-conviction {
+    display: inline-block;
+}
+.sheet-hasconviction {
+    z-index: 9999;
+    opacity: 0;
+    font-size: 1.5em;
+    width: 20px;
+    height: 20px;
+}
+
+.sheet-convictiontoken {
+    margin-left: -15px;
+}
+
+.sheet-hasconviction:not(:checked) + .sheet-convictiontoken::before {
+    content: "♥";
+    font-size: 2em;
+    color: silver;
+}
+
+.sheet-hasconviction:checked + .sheet-convictiontoken::before {
+    content: "♥";
+    font-size: 2em;
+    color: red;
+}
+
 .sheet-basederived {
     display: flex;
     flex-wrap: wrap;
@@ -781,6 +969,14 @@ button[type=roll].sheet-edgeOutput {
     padding: 0px;
     padding-left: 5px;
     position: relative;
+}
+
+.sheet-charisma {
+    display: none;
+}
+
+.sheet-useCharisma:checked + .sheet-charisma {
+    display: flex;
 }
 
 .sheet-derivelabel,
@@ -918,7 +1114,7 @@ tr.sheet-taprow:hover .sheet-moreTAP + span {
 .sheet-WD {
     position: relative;
     top: 0px;
-    left: 17%;
+    left: 12%;
 }
 
 .sheet-linkedAtt {
@@ -930,6 +1126,24 @@ tr.sheet-taprow:hover .sheet-moreTAP + span {
 
 .sheet-attrankselect {
     margin: 0px 0px 0px -4px;
+}
+
+.sheet-trackXP,
+.sheet-trackClass,
+.sheet-trackThreat {
+    display: none;
+}
+
+.sheet-useXP:checked ~ .sheet-trackXP,
+.sheet-useClass:checked ~ .sheet-trackClass,
+.sheet-useThreatRating:checked ~ .sheet-trackThreat {
+    display: inline;
+}
+
+.sheet-useXP:checked ~ .sheet-advances,
+.sheet-useClass:checked ~ .sheet-useRank,
+.sheet-useThreatRating:checked ~ .sheet-useRank {
+    display: none;
 }
 
 .sheet-xp,
@@ -1004,7 +1218,7 @@ tr.sheet-taprow:hover .sheet-moreTAP + span {
 .sheet-isSkillList {
     display: inline-flex;
     flex-flow: column wrap;
-    height: 280px;
+    height: 400px;
 }
 
 .sheet-StaticSkill {
@@ -1096,7 +1310,7 @@ tr.sheet-taprow:hover .sheet-moreTAP + span {
 .sheet-armor {
     display: flex;
     flex-wrap: wrap;
-    margin-top: -35px;
+    margin-top: -15px;
 }
 
 .sheet-armorWorn,
@@ -1171,6 +1385,9 @@ input.sheet-armorProtection {
 .sheet-armorStacks,
 input.sheet-armorStacks {
     width: 50px;
+    -webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
 }
 
 .sheet-armorWeight,
@@ -1195,7 +1412,7 @@ input.sheet-armorCarried {
 .sheet-weapons {
     display: flex;
     flex-wrap: wrap;
-    margin-top: -35px;
+    margin-top: -15px;
 }
 
 .sheet-button,
@@ -1204,6 +1421,7 @@ input.sheet-armorCarried {
 .sheet-rof,
 .sheet-damage,
 .sheet-shots,
+.sheet-weaponap,
 .sheet-weaponweight,
 .sheet-weaponcarried,
 .sheet-weaponTotalWeight {
@@ -1211,7 +1429,9 @@ input.sheet-armorCarried {
     text-align: center;
 }
 
-.sheet-button {
+.sheet-button,
+.sheet-damage,
+.sheet-shots {
     width: 85px;
     box-sizing: border-box;
 }
@@ -1233,24 +1453,11 @@ input.sheet-armorCarried {
     box-sizing: border-box;
 }
 
-.sheet-damage {
-    width: 85px;
-    box-sizing: border-box;
-}
-
-.sheet-shots {
-    width:85px;
-    box-sizing: border-box;
-}
-
-.sheet-weaponweight {
-    width: 50px;
-    box-sizing: border-box;
-}
-
+.sheet-weaponap,
+.sheet-weaponweight,
 .sheet-weaponcarried {
-    width: 50px;
-    box-sizing: border-box;
+	width: 50px;
+	box-sizing: border-box;
 }
 
 .sheet-weaponnotes {
@@ -1267,29 +1474,58 @@ input.sheet-armorCarried {
     /*width: 55px;*/
 }
 
-.sheet-weaponbutton {
+.sheet-weaponbutton,
+.sheet-spellbutton {
     width: 100px;
 }
 
-.sheet-weaponskill {
+.sheet-weaponskill,
+.sheet-spellskill{
     display: none;
 }
 
 .sheet-weapondamage,
-.sheet-weaponbutton[value="0"] + .sheet-weaponskill {
+.sheet-weaponbutton[value="0"] + .sheet-weaponskill,
+.sheet-spellbutton[value="1"] ~ .sheet-spelldamage,
+.sheet-spellbutton[value="0"] ~ .sheet-spelldamage,
+.sheet-spellbutton[value="0"] + .sheet-spellskill,
+.sheet-spellbutton[value="2"] + .sheet-spellskill {
     display: inline-block;
     margin-left: 10px;
 }
 
-.sheet-weaponatt {
+.sheet-buttonand,
+.sheet-buttondo,
+.sheet-buttonsk {
+    display: none;
+}
+
+.sheet-weaponbutton[value="0"] + .sheet-buttonand,
+.sheet-weaponbutton[value="1"] ~ .sheet-buttondo,
+.sheet-spellbutton[value="0"] + .sheet-buttonand,
+.sheet-spellbutton[value="1"] ~ .sheet-buttondo,
+.sheet-spellbutton[value="2"] ~ .sheet-buttonsk {
+    display: inline;
+    font-size: .7em;
+    margin-left: 5px;
+}
+
+.sheet-weaponbutton[value="1"] + .sheet-button::before {
+    content: "Damage";
+}
+
+.sheet-weaponatt,
+.sheet-speallatt {
     width: 105px;
 }
 
-.sheet-weaponnum {
+.sheet-weaponnum,
+.sheet-spellnum {
     width: 35px;
 }
 
-.sheet-moreweapon {
+.sheet-moreweapon,
+.sheet-morespell {
     z-index: 9999;
     opacity: 0;
 }
@@ -1301,33 +1537,282 @@ input.sheet-armorCarried {
     opacity: 0;
 }
 
+.sheet-morespell + span,
+.sheet-morespell {
+    font-family: "Pictos";
+    margin-left: -8px;
+    position: absolute;
+    top: 15px;
+    left: 90px;
+    color: gray;
+    opacity: 0;
+}
+
 .sheet-weaponitem:hover > .sheet-moreweapon + span,
 .sheet-moreweapon:hover + span,
-.sheet-moreweapon:checked + span {
+.sheet-moreweapon:checked + span,
+.sheet-powerrow:hover + .sheet-morespell + span,
+.sheet-morespell:hover + span,
+.sheet-morespell:checked + span {
     opacity: 1;
 }
 
-.sheet-moreweapon:checked + span {
+.sheet-moreweapon:checked + span,
+.sheet-morespell:checked + span {
     color: black;
 }
 
-.sheet-weaponconfig {
+.sheet-weaponconfig,
+.sheet-spellconfig {
     display: none;
 }
 
-.sheet-moreweapon:checked ~ .sheet-weaponconfig {
+.sheet-moreweapon:checked ~ .sheet-weaponconfig,
+.sheet-morespell:checked ~ .sheet-spellconfig {
     display: inline-block;
+    width: 100%;
+    margin: -5px 0px 30px 0px;
+    border-bottom: 1px solid silver;
 }
 
-.sheet-moreweapon:not(:checked) ~ .sheet-weaponnotes {
+.sheet-moreweapon:not(:checked) ~ .sheet-weaponnotes,
+.sheet-morespell:not(:checked) ~ .sheet-spellnotes {
     height: 25px;
 }
 
 /*----------- End Melee Section -----------*/
 
+/*----------- Start Gear Section -----------*/
+
+.sheet-gear {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    align-content: flex-start;
+}
+
+.sheet-worn,
+.sheet-stashed {
+    flex: 1 0 50%;
+}
+
+/*----------- End Gear Section -----------*/
+
+/*----------- Start Rippertech -----------*/
+
+.sheet-rippertech {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: -15px;
+}
+
+.sheet-rtbutton,
+.sheet-rtitem,
+.sheet-rtbenefit,
+.sheet-rtdamage {
+    display: inline-block;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.sheet-rtbutton {
+    width: 85px !important;
+}
+
+.sheet-rtitem {
+    width: 200px !important;
+    text-align: left !important;
+}
+
+.sheet-rtbenefit {
+    width: 350px !important;
+}
+
+.sheet-rtdamage {
+    width: 200px !important;
+}
+
+/*----------- End Rippertech -------------*/
+
+/*----------- Start Rippertech -----------*/
+
+.sheet-augmentations {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: -15px;
+}
+
+.sheet-augrow {
+    display: flex;
+    align-items: flex-start;
+}
+
+.sheet-augitem,
+.sheet-augstrain,
+.sheet-augdetails {
+    display: inline-block;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.sheet-augitem {
+    width: 200px !important;
+    text-align: left !important;
+}
+
+.sheet-augstrain {
+    width: 85px !important;
+}
+
+.sheet-augdetails {
+    width: 560px !important;
+    height: 27px;
+    border: none;
+    text-align: left;
+    min-height: 27px;
+}
+
+.sheet-augmentTotalWeight {
+    display: inline-block;
+    width: 315px;
+}
+
+/*----------- End Rippertech -------------*/
+
+/*----------- Start Powers Section -----------*/
+
+.sheet-powerpoints {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: flex-start;
+    margin: -15px 0 30px 0;
+}
+
+.sheet-pplabel {
+    font-size: 1.05em;
+    font-weight: bold;
+    margin: 0 10px 0 0;
+}
+
+.sheet-spacer {
+    margin: 0 5px 0 10px;
+    font-weight: bold;
+}
+
+.sheet-ISP {
+    display: none;
+}
+
+.sheet-useISP:checked + .sheet-ISP {
+    display: inline-block;
+}
+
+.sheet-arcane {
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    align-content: flex-start;
+}
+
+.sheet-powerrow {
+    flex: 1 0 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: flex-end;
+    align-content: flex-start;
+    margin-top: -15px;
+}
+
+.sheet-powerbutton,
+.sheet-powerdamage{
+    box-sizing: border-box;
+    flex: 0 0 85px;
+    width: 85px !important;
+    text-align: center;
+}
+
+.sheet-power {
+    box-sizing: border-box;
+    flex: 0 0 370px;
+    text-align: left;
+    width: 370px !important;
+}
+
+.sheet-pp,
+.sheet-duration {
+    box-sizing: border-box;
+    flex: 0 1 65px;
+    text-align: center;
+    width: 65px !important;
+}
+
+.sheet-powerrange {
+    box-sizing: border-box;
+    flex: 0 0 113px;
+    text-align: center;
+    width: 113px !important;
+}
+
+.sheet-invested {
+    box-sizing: border-box;
+    flex: 0 0 65px;
+    text-align: center;
+    width: 65px !important;
+}
+
+.sheet-trappings {
+    box-sizing: border-box;
+    flex: 1 0 100%;
+    border: 1px solid black;
+}
+
+.sheet-powerconfig {
+    box-sizing: border-box;
+    flex: 1 0 100%;
+    border: 1px solid silver;
+}
+
+.sheet-spellnotes {
+    width: 100%;
+    height: 50px;
+    box-sizing: border-box;
+    /*margin-top: -18px;*/
+}
+
+.sheet-spelldamage {
+    display: none;
+    width: 400px;
+}
+
+.sheet-spellatt {
+    width: 105px;
+}
+
+/*.sheet-useInvest:not(:checked) + .sheet-power {
+    width: 435px !important;
+}
+
+.sheet-useInvest:not(:checked) ~ .sheet-invested {
+    display: none;
+}*/
+
+/*----------- End Powers Section -----------*/
+
 /*----------- Start Repeating Button Display -----------*/
 [data-groupname=repeating_armor],
-[data-groupname=repeating_weapons] {
+[data-groupname=repeating_weapons],
+[data-groupname=repeating_spells],
+[data-groupname=repeating_rippertech],
+[data-groupname=repeating_augmentation] {
     width: 100%;
 }
 .repcontrol_add,
@@ -1437,22 +1922,34 @@ span.sheet-vehiclesT {
 .sheet-Credits,
 .sheet-Livre,
 /*--- Begin Static Skills ---*/
+.sheet-staticAcademics,
+.sheet-staticAthletics,
+.sheet-staticBattle,
 .sheet-staticBoating,
+.sheet-staticCommonKnowledge,
 .sheet-staticClimbing,
 .sheet-staticDriving,
+.sheet-staticElectronics,
 .sheet-staticFaith,
+.sheet-staticFocus,
 .sheet-staticGambling,
 .sheet-staticGuts,
+.sheet-staticHacking,
 .sheet-staticHealing,
 .sheet-staticIntimidation,
 .sheet-staticInvestigation,
+.sheet-staticLanguage,
 .sheet-staticLockpicking,
 .sheet-staticNotice,
+.sheet-staticOccult,
+.sheet-staticPerformance,
 .sheet-staticPersuasion,
 .sheet-staticPiloting,
 .sheet-staticPsionics,
 .sheet-staticRepair,
+.sheet-staticResearch,
 .sheet-staticRiding,
+.sheet-staticScience,
 .sheet-staticShooting,
 .sheet-staticSpellcasting,
 .sheet-staticStealth,
@@ -1460,6 +1957,7 @@ span.sheet-vehiclesT {
 .sheet-staticSurvival,
 .sheet-staticSwimming,
 .sheet-staticTaunt,
+.sheet-staticThievery,
 .sheet-staticThrowing,
 .sheet-staticTracking,
 .sheet-staticRitual,
@@ -1473,8 +1971,13 @@ span.sheet-vehiclesT {
 .sheet-LAVIG,
 /*.sheet-hideAtts:checked + .sheet-attributes,*/
 .sheet-hideAtts:checked ~ .sheet-attributes,
-.sheet-hideAtts:checked ~ .sheet-armor,
-.sheet-hideAtts:checked ~ .sheet-weapons,
+/*.sheet-hideAtts:checked + span + .sheet-armor,*/
+.sheet-hideArmor:checked + span + h1 + .sheet-armor,
+.sheet-hideWeapons:checked + span  + h1 + .sheet-weapons,
+.sheet-hideGear:checked + span  + h1 + .sheet-gear,
+.sheet-hidePowers:checked + span  + h1 + .sheet-arcane,
+.sheet-hideRipper:checked + span + h1 + .sheet-rippertech,
+.sheet-hideAugments:checked + span + h1 + .sheet-augmentations, 
 .sheet-hideHindrances:checked ~ .sheet-hindrances,
 .sheet-hideTAP:checked ~ .sheet-taptable,
 .sheet-hideEngrams:checked ~ .sheet-engramsDeets,
@@ -1489,7 +1992,10 @@ span.sheet-vehiclesT {
 .sheet-showVehicles:not(:checked) + span.sheet-vehiclesT,
 .sheet-showVehicles:not(:checked) ~ span.sheet-vehiclesT,
 .sheet-hideAtts:checked ~ .sheet-corederived,
-.sheet-xpmod {
+.sheet-xpmod,
+.sheet-showRippertech,
+.sheet-showAugments,
+.sheet-hideArcanum:checked + .sheet-arcanum {
     display: none;
 }
 
@@ -1499,22 +2005,34 @@ span.sheet-vehiclesT {
 }
 
 .sheet-dstats:checked + .sheet-derivedhr,
+.sheet-StaticSkill:checked + .sheet-staticAcademics,
+.sheet-StaticSkill:checked + .sheet-staticAthletics,
+.sheet-StaticSkill:checked + .sheet-staticBattle,
 .sheet-StaticSkill:checked + .sheet-staticBoating,
+.sheet-StaticSkill:checked + .sheet-staticCommonKnowledge,
 .sheet-StaticSkill:checked + .sheet-staticClimbing,
 .sheet-StaticSkill:checked + .sheet-staticDriving,
+.sheet-StaticSkill:checked + .sheet-staticElectronics,
 .sheet-StaticSkill:checked + .sheet-staticFaith,
+.sheet-StaticSkill:checked + .sheet-staticFocus,
 .sheet-StaticSkill:checked + .sheet-staticGambling,
 .sheet-StaticSkill:checked + .sheet-staticGuts,
+.sheet-StaticSkill:checked + .sheet-staticHacking,
 .sheet-StaticSkill:checked + .sheet-staticHealing,
 .sheet-StaticSkill:checked + .sheet-staticIntimidation,
 .sheet-StaticSkill:checked + .sheet-staticInvestigation,
+.sheet-StaticSkill:checked + .sheet-staticLanguage,
 .sheet-StaticSkill:checked + .sheet-staticLockpicking,
 .sheet-StaticSkill:checked + .sheet-staticNotice,
+.sheet-StaticSkill:checked + .sheet-staticOccult,
+.sheet-StaticSkill:checked + .sheet-staticPerformance,
 .sheet-StaticSkill:checked + .sheet-staticPersuasion,
 .sheet-StaticSkill:checked + .sheet-staticPiloting,
 .sheet-StaticSkill:checked + .sheet-staticPsionics,
 .sheet-StaticSkill:checked + .sheet-staticRepair,
+.sheet-StaticSkill:checked + .sheet-staticResearch,
 .sheet-StaticSkill:checked + .sheet-staticRiding,
+.sheet-StaticSkill:checked + .sheet-staticScience,
 .sheet-StaticSkill:checked + .sheet-staticShooting,
 .sheet-StaticSkill:checked + .sheet-staticShooting,
 .sheet-StaticSkill:checked + .sheet-staticSpellcasting,
@@ -1523,6 +2041,7 @@ span.sheet-vehiclesT {
 .sheet-StaticSkill:checked + .sheet-staticSurvival,
 .sheet-StaticSkill:checked + .sheet-staticSwimming,
 .sheet-StaticSkill:checked + .sheet-staticTaunt,
+.sheet-StaticSkill:checked + .sheet-staticThievery,
 .sheet-StaticSkill:checked + .sheet-staticThrowing,
 .sheet-StaticSkill:checked + .sheet-staticTracking,
 .sheet-StaticSkill:checked + .sheet-staticRitual,
@@ -1542,6 +2061,8 @@ span.sheet-vehiclesT {
 .sheet-useIF:checked + .sheet-IF,
 .sheet-useEngrams:checked + .sheet-engrams,
 .sheet-useLanguages:checked + .sheet-Languages,
+.sheet-useRippertech:checked + .sheet-showRippertech,
+.sheet-useAugmentations:checked + .sheet-showAugments,
 .sheet-LAA:checked ~ .sheet-LAAGI,
 .sheet-LASm:checked ~ .sheet-LASMA,
 .sheet-LASp:checked ~ .sheet-LASPI,
@@ -1549,6 +2070,30 @@ span.sheet-vehiclesT {
 .sheet-LAV:checked ~ .sheet-LAVIG {
     display: inline-block;
 }
+
+/*--- Strain ---*/
+
+.sheet-strain {
+    text-align: center;
+}
+
+.charsheet .sheet-danger,
+.charsheet .sheet-critical {
+	display: none;
+}
+
+.charsheet input.sheet-danger:checked ~ input.sheet-strain {
+	background: #e8a400;
+	font-weight: bold;
+}
+
+.charsheet input.sheet-critical:checked ~ input.sheet-strain {
+	background: #e93a41;
+	color: white;
+	font-weight: bold;
+}
+
+/*--- End Strain ---*/
 
 /*--- Derived Stats ---*/
 .sheet-useFame:checked + .sheet-Fame,
@@ -1831,6 +2376,165 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
 /*----------- End Configuration Window -----------*/
 
 /*----------- Start Roll Template Info -----------*/
+
+.sheet-rolltemplate-roll div,
+.sheet-rolltemplate-roll span,
+.sheet-rolltemplate-roll h1,
+.sheet-rolltemplate-roll h2,
+.sheet-rolltemplate-damage div,
+.sheet-rolltemplate-damage span,
+.sheet-rolltemplate-damage h1,
+.sheet-rolltemplate-damage h2 {
+	box-sizing: border-box;
+}
+
+.sheet-rolltemplate-roll .sheet-templateMain,
+.sheet-rolltemplate-damage .sheet-templateMain,
+.sheet-rolltemplate-info .sheet-templateMain {
+	display:-webkit-box;
+	display:-ms-flexbox;
+	display:flex;
+	-ms-flex-pack: distribute;
+	    justify-content: space-around;
+	-ms-flex-wrap: wrap;
+	    flex-wrap: wrap;
+	width: 100%;
+	/*background-color: white;*/
+	padding: 0px;
+	/*border: 1px solid black;*/
+	/*white-space: nowrap;*/
+}
+
+/*.sheet-rolltemplate-roll h2,
+.sheet-rolltemplate-roll h3,*/
+.sheet-rolltemplate-roll .sheet-templateBlack,
+.sheet-rolltemplate-roll .sheet-templateBlue,
+.sheet-rolltemplate-damage h2,
+.sheet-rolltemplate-damage h3 {
+	-webkit-box-flex: 1;
+	    -ms-flex: 1 0 100%;
+	        flex: 1 0 100%;
+	text-align: center;
+	color: white;
+	background-color: black;
+	width: 100%;
+	margin: 0px;
+}
+
+.sheet-rolltemplate-roll .sheet-templateBlue {
+    background-color: #035096;
+    /*color: #7DF9FF; --original color*/
+    color: #B3FBFF;
+}
+
+.sheet-rolltemplate-damage h2,
+.sheet-rolltemplate-damage h3 {
+    background-color: #900C3F;
+}
+
+.sheet-rolltemplate-roll h2,
+.sheet-rolltemplate-damage h2{
+	font-size: 1.25em;
+}
+
+.sheet-rolltemplate-roll h3,
+.sheet-rolltemplate-damage h3{
+	font-size: 1em;
+	margin-top: -10px;
+}
+
+.sheet-rolltemplate-roll .sheet-templateRoll,
+.sheet-rolltemplate-damage .sheet-templateRoll {
+	width: 50%;
+	background-color: white;
+	border: 1px solid black;
+	border-bottom: 1.5px solid black;
+	-webkit-box-flex: 1;
+	    -ms-flex: 1 0 50%;
+	        flex: 1 0 50%;
+}
+
+.sheet-rolltemplate-roll .sheet-trollLeft,
+.sheet-rolltemplate-damage .sheet-trollLeft {
+	border-left: 1.5px solid black;
+}
+
+.sheet-rolltemplate-roll .sheet-trollRight,
+.sheet-rolltemplate-damage .sheet-trollRight {
+	border-right: 1.5px solid black;
+}
+
+.sheet-rolltemplate-roll .sheet-rollLabel,
+.sheet-rolltemplate-damage .sheet-rollLabel {
+	display: block; 
+	font-size: .75em; 
+	margin: 5px;
+	width: 100%;
+	text-align: center;
+}
+
+.sheet-rolltemplate-roll .sheet-rollContainer,
+.sheet-rolltemplate-damage .sheet-rollContainer {
+	display: block; 
+	font-size: 1em;
+	text-align: center;
+	width: 100%;
+	margin: 5px;
+}
+
+.sheet-rolltemplate-roll .sheet-templateModifiers,
+.sheet-rolltemplate-damage .sheet-templateModifiers {
+    width: 100%;
+    font-size: .75em;
+    padding: 5px;
+    text-align: center;
+	background-color: white;
+	border: 1.5px solid black;
+	border-top: none;
+	-webkit-box-flex: 1;
+	    -ms-flex: 1 0 100%;
+	        flex: 1 0 100%;
+}
+
+.sheet-rolltemplate-roll .sheet-templateButton,
+.sheet-rolltemplate-damage .sheet-templateButton {
+    flex: 1 0 100%;
+    width: 100%;
+    background-color: white;
+    text-align: center;
+	border: 1.5px solid black;
+	border-top: none;
+	padding: 2.5px;
+}
+
+.sheet-rolltemplate-info .sheet-templateheader,
+.sheet-rolltemplate-info .sheet-templatesubheader {
+    width: 100%;
+    margin: 0 0 0 0;
+    padding: 2px 2px 2px 2px;
+    background-color: #e8d394;
+    color: #770912;
+    text-align: center;
+    border: 1px solid #A48623;
+    border-bottom: none;
+}
+
+.sheet-rolltemplate-info .sheet-templatesubheader {
+    color: black;
+    border-left: 1px solid #A48623;
+    border-right: 1px solid #A48623;
+    border-top: none;
+}
+
+.sheet-rolltemplate-info .sheet-templatedescription {
+    background-color: white;
+    color: black;
+    font-size: .8em;
+    padding: 5px;
+    width: 100%;
+    border: 1px solid #A48623;
+}
+
 .sheet-rolltemplate-traitroll table.sheet-templatetable,
 .sheet-rolltemplate-tr_dmg_roll table.sheet-templatetable,
 .sheet-rolltemplate-dmg_roll table.sheet-templatetable,
@@ -1888,6 +2592,8 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
 	text-align: right;
 }
 
+.sheet-rolltemplate-roll .inlinerollresult,
+.sheet-rolltemplate-damage .inlinerollresult,
 .sheet-rolltemplate-traitroll .inlinerollresult,
 .sheet-rolltemplate-tr_dmg_roll .inlinerollresult,
 .sheet-rolltemplate-dmg_roll .inlinerollresult {
@@ -1898,25 +2604,40 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
     font-size: 1em;
 }
 
+.sheet-rolltemplate-roll .inlinerollresult.fullcrit,
+.sheet-rolltemplate-damage .inlinerollresult.fullcrit,
 .sheet-rolltemplate-traitroll .inlinerollresult.fullcrit,
 .sheet-rolltemplate-tr_dmg_roll .inlinerollresult.fullcrit,
 .sheet-rolltemplate-dmg_roll .inlinerollresult.fullcrit {
 	color: #3FB315;
     border: none;
+    font-weight: bold;
 }
 
+.sheet-rolltemplate-roll .inlinerollresult.fullfail,
+.sheet-rolltemplate-damage .inlinerollresult.fullfail,
 .sheet-rolltemplate-traitroll .inlinerollresult.fullfail,
 .sheet-rolltemplate-tr_dmg_roll .inlinerollresult.fullfail,
 .sheet-rolltemplate-dmg_roll .inlinerollresult.fullfail {
 	color: maroon;
     border: none;
+    font-weight: bold;
 }
 
+.sheet-rolltemplate-roll .inlinerollresult.importantroll,
+.sheet-rolltemplate-damage .inlinerollresult.importantroll,
 .sheet-rolltemplate-traitroll .inlinerollresult.importantroll,
 .sheet-rolltemplate-tr_dmg_roll .inlinerollresult.importantroll,
 .sheet-rolltemplate-dmg_roll .inlinerollresult.importantroll {
 	color: #3FB315;
     border: none;
+    font-weight: bold;
+}
+
+.sheet-rolltemplate-roll .sheet-templateButton > a[href^="~"],
+.sheet-rolltemplate-damage .sheet-templateButton > a[href^="~"] {
+    background-color: #900C3F;
+    font-weight: bold;
 }
 
 .sheet-rolltemplate-statblock h2.sheet-caption {
