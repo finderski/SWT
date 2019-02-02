@@ -1,6 +1,7 @@
 <input type='hidden' name='attr_character_sheet' value='Savage Worlds Tabbed v3.0' />
 <script type="text/worker">
     /*----- Things I need to Care For -----
+    -- o Option to ignore encumbrance    --
     -- o Add a Strain config so the      --
     --   the config section houses the   -- 
     --   the rule (based on Vigor,       --
@@ -69,35 +70,44 @@
 		//Create rank and display fields for all attributes...needed for pre-existing sheets
         //repeating  fields should be passed in the format: repating_<section>:attributes
         //example: repeating_skills:skillnamerank 
-        console.log("**** Setting value(s) for " + field + " ****");
         let sattrs = {};
         if (field.indexOf(':') > -1) {
-			console.log("**** Repeating Field ****");
             let getfields = field.split(':');
-            let repeatingSection = getfields[0];
-            let repeatingField = getfields[1];
+            let repeatingSection = getfields[0]; //repeating_skills
+            let repeatingField = getfields[1]; //skillnamerank
+            
+			console.log(`**** Repeating Section: ${repeatingSection} ****`);
+			console.log(`**** Repeating Section: ${repeatingField} ****`);
             getSectionIDs(repeatingSection, function(idArray) {
                 if (idArray.length > 0) {
                     console.log("IDs in Repeating Section: "+idArray);
-                    let fieldArray = [];
-					let fieldModArray = [];
+                    let fieldArray = []; //skillnamerank
+					let fieldModArray = []; //skillnamerankmod
 					let fieldBothArray = [];
                     for (let a=0; a < idArray.length; a++) {
                         fieldArray[fieldArray.length] = repeatingSection + "_" + idArray[a] + "_" + repeatingField;
 						fieldBothArray[fieldBothArray.length] = repeatingSection + "_" + idArray[a] + "_" + repeatingField;
-						fieldModArray[fieldArray.length] = `repeatingSectin_${idArray[a]}_${repeatingField}mod`;
-						fieldBothArray[fieldBothArray.length] = `repeatingSectin_${idArray[a]}_${repeatingField}mod`;
+						fieldModArray[fieldModArray.length] = `${repeatingSection}_${idArray[a]}_${repeatingField}mod`;
+						fieldBothArray[fieldBothArray.length] = `${repeatingSection}_${idArray[a]}_${repeatingField}mod`;
                         console.log("+++ Found field: " + fieldArray[a]);
 						console.log("+++ Added field: " + fieldArray[fieldArray.length -1]);
                     }
+                    console.log("||| fieldModArray: "+fieldModArray+" |||");
+                    let iAcount = idArray.length;
+                    let fAcount = fieldArray.length;
+                    let fMAcount = fieldModArray.length;
+                    let fBAcount = fieldBothArray.length;
+                    console.log("#### idArray: "+iAcount.toString()+", fieldArray: "+fAcount.toString()+", fieldModArray: "+fMAcount.toString()+", fieldBothArray: "+fBAcount.toString()+" ####");
+                    console.log("fieldModArray: "+fieldModArray);
 					getAttrs(fieldBothArray, v => {
 						for (let i=0; i < idArray.length; i++) {
-							let sAttrRank = v[`${fieldArray[i]}`]+"_rank";
-							let sAttrDisplay = v[`${fieldArray[i]}`]+"_display";
+							let sAttrRank = fieldArray[i]+"_rank";
+							let sAttrDisplay = fieldArray[i]+"_display";
 							let tRank = '1d'+v[`${fieldArray[i]}`]+'!';
 							let tDisplay = 'd'+v[`${fieldArray[i]}`];
 							let intMod = v[`${fieldModArray[i]}`];
 							if (intMod !== "0") {
+							    console.log(`==== ${repeatingField} intMod (should not be 0): ${intMod} ====`);
 								tRank += '+'+intMod+'['+getfields[1]+']';
 								tDisplay += '+' + intMod;
 							}
@@ -113,9 +123,10 @@
             });
         }
         else {
-			console.log("**** Non-repeating Field ****");
 			getAttrs([field, `${field}mod`], v => {
-	            console.log("intMod will == "+v[`${field}mod`]);
+    			console.log("**** Non-repeating Field ****");
+    			console.log("**** Setting value(s) for " + field + " ****");
+	            console.log(v[field]+" intMod will == "+v[`${field}mod`]);
 	            let tRank = '1d'+v[field]+'!';
 	            let tDisplay = 'd'+v[field];
 	            let intMod = v[`${field}mod`];
@@ -214,9 +225,27 @@
         }
     }
     
-    /* ---- Begin Sheet Version Validation & Update ---- */
-	const sheetVersion = "3.0";
-	const sheetVersionPrefix = "Savage Worlds Tabbed v";
+    const stepwiseFaux = function(section,field) {
+        //only for repeating Sections
+        //section = the repeating section
+        //field = the field within the section to fauxily change
+        //example call: stepwiseFaux("weapons","dmgbonusnum");
+        //will do a faux change during each for loop
+        
+        let repeatingSection = `repeating_${section}`;
+        getSectionIDs(repeatingSection, function(idArray) {
+            if (idArray.length > 0) {
+                for (let a=0; a < idArray.length; a++) {
+                    let fullField = `repeating_${section}_${idArray[a]}_${field}`;
+                    console.log("Stepwise Faux for: "+fullField);
+                    fauxChange(fullField,"1000");
+                }
+            }
+            else {
+                console.log("Nothing to see here...move along.");
+            }
+        });
+    }
     
     function convertRS (originSection, destinationSection, ofieldArray, dfieldArray, daddlfieldArray, defaultValues) {
         /*------ example of call ------
@@ -251,7 +280,7 @@
 	            }
 	            
 	            getAttrs(oldAttrs, function(v) {
-	                const sattrs = {};
+	                let sattrs = {};
 	                for(let i=0; i < idArray.length; i++) {
                         let newrowid = generateRowID();
                         console.log("~~~~ ConvertRS Iteration " + i + ":: for Section: "+ originSection + ":: id generated: " + newrowid +" ~~~~");
@@ -265,7 +294,7 @@
                             console.log("** destinationRF: "+destinationRF+dfieldArray[r]);
                             console.log("********************");
                             getORF = originRF+ofieldArray[r];
-                            console.log(i+"-"+r+") Current value of getMRF: "+getORF);
+                            console.log(i+"-"+r+") Current value of getORF: "+getORF+": "+v[getORF]);
                             putdestinationRF = destinationRF+dfieldArray[r];
                             sattrs[putdestinationRF]=v[getORF];
                         }
@@ -285,10 +314,9 @@
                         else {
                             console.log("!! No additional fields to set OR the number of fields doesn't match the number of values !!");
                         }
-                        
                     }
                     console.log("##### sattrs: " + JSON.stringify(sattrs) + " #####");
-                    setAttrs(sattrs);
+                    setAttrs(sattrs, {silent: true});
 	            });
 	        }
 	        else {
@@ -297,6 +325,10 @@
 	    });
 	    
 	}
+	
+	/* ---- Begin Sheet Version Validation & Update ---- */
+	const sheetVersion = "3.0";
+	const sheetVersionPrefix = "Savage Worlds Tabbed v";
     
     const upgradeSheet = function(version) {
 	    if (version < 3.0) {
@@ -317,8 +349,32 @@
     	           rankNdisplay(otraits);
     	        });
 	        });
+	        //Update the Power Label
+	        powerLabel();
+	        
 	        //Need to update all derived stats to now use Sheetworkers
-	        const stats = ['wounds','is_npc','pace','charisma','tufnessMod','ntufnessMod','academicsMod','sanityMod','fameMod','reasonMod','statuMod','gloryMod','FirewallMod','gritMod','corruptionMod','StreetCredMod','StrainMod','armortotalweightcarried','showmods','promptmods','useXP'];
+	        setWildDie(); //set wdNum
+	        console.log("!!!! Setting WoundsMod !!!!");
+	        setWoundsMod("silent"); //set wounds
+	        setModSums(); //various mods variables used in sheet rolls, etc
+	        baseToughness();
+	        setToughness();
+	        setNToughness();
+	        setPace(); //set pace 
+	        setCharisma(); //set charisma 
+	        setAcademics();
+	        setSanity();
+	        setFame();
+	        setReason();
+	        setStatus();
+	        setGlory();
+	        setFirewall();
+	        setGrit();
+	        setCorruption();
+	        setStreetCred();
+	        setStrain();
+	        
+	        const stats = ['armortotalweightcarried','showmods','promptmods','useXP'];
 	        stats.forEach(stats => {
 	            fauxChange(stats, "1000");
 	        });
@@ -369,6 +425,8 @@
             let rangedweaponDefaultValues = ["na","on"];
             convertRS ("rangeweapons", "weapons", rangedFields, weaponFieldsII,morerangedweaponFields,rangedweaponDefaultValues);
             
+            //stepwiseFaux("weapons","dmgbonusnum");
+            
             //Migrate Damaging Spells to powers
             let dmgSpells = ["Spell","SpellCost","SpellRange","SpellDuration","NoSpllDmgDice","SDmgType","SDmgMod","DmgSpellNotes"];
             let powerFields =["power","pp","powerrange","powerduration","spelldmgnumdice","spelldmgdietype","spelldmgbonusnum","spellnotes"];
@@ -382,21 +440,38 @@
             let morespellFields = ["spelldamageatt","spellbutton","spelldmgnumdice"];
             let morespellDefaultValues = ["na","2","0"];
             convertRS ("ndspells", "spells", nondmgSpells, powerFieldsII, morespellFields, morespellDefaultValues);
+            
+            //stepwiseFaux("spells","spelldmgbonusnum");
 	    
-	        //Update Sheet Version Number
-            console.log("**** Updating Sheet Version ****");
-            setAttrs({
-                character_sheet: sheetVersionPrefix + sheetVersion
-            });
+	        //Configure Variable Damage Option
+	        getAttrs(["RaiseHBRule"], function(v) {
+	            if (v.RaiseHBRule === "on") {
+        	        //Using Variable Bonus Damage 
+        	        console.log("Using variable bonus damage: set up query...");
+        	        let qString = getTranslationByKey('bonus-damage-die-type');
+        	        setAttrs({vbonusdamage: `?{${qString}|d6,1d6!|d8,1d8!|d10,1d10!|d12,1d12!|d4,1d4!}`});
+        	    }
+        	    else {
+        	        console.log("Not using using Variable Bonus Damage...");
+        	        setAttrs({vbonusdamage: '1d6!'});
+        	    }
+	        });
             
             //Close Config Fields 
-            updateField("repeating_hindraces:showHindraceDesc","0");
+            updateField("repeating_hindrances:showHindraceDesc","0");
             updateField("repeating_edges:showEdgeDesc","0");
             updateField("repeating_skills:showOtherRollMod","0");
 	    }
 	    else {
 	        console.log("!!! Sheet Already Upgraded !!!");
 	    }
+	    
+	    //Update Sheet Version Number
+        console.log("**** Updating Sheet Version ****");
+        setAttrs({
+            character_sheet: sheetVersionPrefix + sheetVersion
+        });
+        console.log("<===== End Sheet Upgrade Conversion Process =====>");
     };
     
     on('sheet:opened', function() {
@@ -410,14 +485,11 @@
         const version = parseFloat(v.character_sheet.slice(22)) || 0;
         upgradeSheet(version);
       });
-      console.log("<===== End Sheet Upgrade Conversion Process =====>");
     });
 	/* ---- End Sheet Version Validation & Update ---- */
     
-    /*Determine if Wild Die is rolled*/
-	on("change:is_npc",function(){
-		//'use strict';
-		getAttrs(["is_npc"], function(lvalue) {
+    const setWildDie = function() {
+        getAttrs(["is_npc"], function(lvalue) {
 		    console.log("<==== Updating whether to Roll the Wild Die ====>")
 			console.log("is_npc value: " + lvalue.is_npc);
 			if (lvalue.is_npc === "0") {
@@ -429,6 +501,229 @@
 			    setAttrs({ wdNum: 0 });
 			}
       	   console.log("<==== Finished Updating vigor_rank ====>");
+   		});
+    }
+    
+    /*Determine if Wild Die is rolled*/
+	on("change:is_npc",function(){
+		//'use strict';
+		setWildDie();
+	});
+	
+	//Quick Setting Configuration
+	on("change:settingconfig", function() {
+		getAttrs(["settingconfig"], function(setting) {
+			console.log("Setting selected: " + setting.settingconfig);
+      		if (setting.settingconfig === '1') {
+      			console.log("<==Setting configuration for 50 Fathoms==>");
+      			setAttrs({logo: 1,
+						  background: 2,
+						  '50fPo8Clams': 1,
+						  vehicle: 'on',
+						  sailingShip: 'on'});
+ 				console.log("<==Configuration complete==>");
+      		}
+      		else if (setting.settingconfig === "2") {
+      			console.log("<==Setting configuration for All For One==>");
+      			setAttrs({logo: 13,
+						  background: 10,
+						  '50fPo8Clams': 5,
+						  a41archetype: 'on',
+						  a41motivation: 'on',
+						  fencinginfo: 'on'});
+ 				console.log("<==Configuration complete==>");
+      		}
+      		else if (setting.settingconfig === "3") {
+      			console.log("<==Setting configuration for Deadlands: Reloaded==>");
+      			setAttrs({logo: 6,
+						  background: 10,
+						  DLGrit: 'on',
+						  permInjuries: 'on',
+						  worstNightmare: 'on'});
+ 				console.log("<==Configuration complete==>");
+      		}
+      		else if (setting.settingconfig === "4") {
+      			console.log("<==Setting configuration for ETU==>");
+      			setAttrs({logo: 14,
+						  background: 1,
+						  useacademics: 1,
+						  ETUClass: 1,
+						  activitiesexams: 1,
+						  majorminor: 'on',
+						  magictype: 'on',
+						  talismans: 1,
+ 						  NoPPRule: 'on'});
+ 				console.log("<==Configuration complete==>");
+      		}
+      		else if (setting.settingconfig === "5") {
+      			console.log("<==Setting configuration for Hellfrost==>");
+      			setAttrs({logo: 10,
+						  background: 8,
+						  hfGlory: 'on',
+ 						  NoPPRule: 'on'});
+ 				console.log("<==Configuration complete==>");
+      		}
+      		else if (setting.settingconfig === "6") {
+      			console.log("<==Setting configuration for Interface Zero 2.0==>");
+      			setAttrs({logo: 9,
+						  background: 7,
+						  izStrain: 'on',
+						  izFirewall: 'on',
+						  neuraltoughness: 'on',
+						  izStreetCred: 'on',
+						  '50fPo8Clams': 4,
+						  increasedfatigue: 1,
+						  augment: 'on',
+						  izengrams: 'on',
+						  Lang: 'on',
+						  tlpOccupation: 'on',
+						  iztap: 'on',
+						  vehicle: 'on',
+						  flyingShip: 'on',
+						  groundVehicle: 'on',
+						  Walker: 'on'});
+ 				console.log("<==Configuration complete==>");
+      		}
+      		else if (setting.settingconfig === "7") {
+      			console.log("<==Setting configuration for Lankhmar==>");
+      			setAttrs({logo: 12,
+						  background: 10,
+						  '50fPo8Clams': 3,
+						  Corruption: 'on'});
+ 				console.log("<==Configuration complete==>");
+      		}
+      		else if (setting.settingconfig === "8") {
+      			console.log("<==Setting configuration for The Last Parsec==>");
+      			setAttrs({logo: 3,
+						  background: 5,
+						  izStrain: 'on',
+						  tlpSpecies: 'on',
+						  tlpHW: 'on',
+						  '50fPo8Clams': 4,
+						  augment: 'on',
+						  Lang: 'on',
+						  tlpOccupation: 'on',
+						  vehicle: 'on',
+						  flyingShip: 'on',
+						  groundVehicle: 'on',
+						  Walker: 'on'});
+ 				console.log("<==Configuration complete==>");
+      		}
+      		else if (setting.settingconfig === "9") {
+      			console.log("<==Setting configuration for Low Life==>");
+      			setAttrs({logo: 1,
+						  background: 1,
+						  '50fPo8Clams': 2});
+ 				console.log("<==Configuration complete==>");
+      		}
+      		else if (setting.settingconfig === "10") {
+      			console.log("<==Setting configuration for Necessary Evil==>");
+      			setAttrs({logo: 5,
+						  background: 6,
+						  codename: 'on',
+						  ThreatRating: 'on',
+						  powerOrigins: 'on',
+						  NoPPRule: 'on'});
+ 				console.log("<==Configuration complete==>");
+      		}
+      		else if (setting.settingconfig === "11") {
+      			console.log("<==Setting configuration for Pirates of the Spanish Main==>");
+      			setAttrs({logo: 2,
+						  background: 2,
+						  '50fPo8Clams': 1,
+						  potsmFame: 'on',
+						  vehicle: 'on',
+						  sailingShip: 'on'});
+ 				console.log("<==Configuration complete==>");
+      		}
+      		else if (setting.settingconfig === "12") {
+      			console.log("<==Setting configuration for Tour of Darkness==>");
+      			setAttrs({logo: 1,
+						  background: 1,
+						  tdsanity: 'on',
+						  permInjuries: 'on'});
+ 				console.log("<==Configuration complete==>");
+      		}
+      		else if (setting.settingconfig === "13") {
+      			console.log("<==Setting configuration for Rifts==>");
+      			setAttrs({logo: 15,
+      			          background: 11,
+      			          augment: 'on',
+      			          'Cybernetics': 1,
+      			          'IconicFramwork': 'on',
+      			          heroicpath: 'on',
+      			          ppe: 'on'/*,
+      			          useISP: 'on'*/});
+      			console.log("<==Configuration complete==>");
+      		}
+      		else if (setting.settingconfig === "14") {
+      			console.log("<==Setting configuration for Rippers==>");
+      			setAttrs({logo: 16,
+      			          background: 12,
+      			          ripReason: 'on',
+      			          ripStatus: 'on',
+      			          useRippertech: 'on'});
+      			console.log("<==Configuration complete==>");
+      		}
+      		else if (setting.settingconfig === "0") {
+      			console.log("<==Setting configuration resetting to defaults==>");
+      			setAttrs({logo: 1,
+      			          background: 1,
+      			          '50fPo8Clams': 0,
+      			          vehicle: 0,
+      			          sailingShip: 0,
+      			          a41archetype: 0,
+      			          a41motivation: 0,
+      			          fencinginfo: 0,
+      			          DLGrit: 0,
+      			          permInjuries: 0,
+      			          worstNightmare: 0,
+      			          useacademics: 0,
+      			          ETUClass: 0,
+      			          activitiesexams: 0,
+      			          majorminor: 0,
+      			          magictype: 0,
+      			          talismans: 0,
+      			          NoPPRule: 0,
+      			          hfGlory: 0,
+      			          izStrain: 0,
+      			          izFirewall: 0,
+      			          neuraltoughness: 0,
+      			          izStreetCred: 0,
+      			          increasedfatigue: 0,
+      			          augment: 0,
+      			          izengrams: 0,
+      			          Lang: 0,
+      			          tlpOccupation: 0,
+      			          iztap: 0,
+      			          flyingShip: 0,
+      			          groundVehicle: 0,
+      			          Walker: 0,
+      			          Corruption: 0,
+      			          tlpSpecies: 0,
+      			          tlpHW: 0,
+      			          codename: 0,
+      			          ThreatRating: 0,
+      			          powerOrigins: 0,
+      			          potsmFame: 0,
+      			          tdsanity: 0,
+      			          'Cybernetics': 0,
+      			          'IconicFramwork': 0,
+      			          heroicpath: 0,
+      			          ppe: 0,
+      			          /*useISP: 0,*/
+      			          ripReason: 0,
+      			          ripStatus: 0,
+      			          useRippertech: 0});
+      			console.log("<==Configuration complete==>");
+      		}
+      		else {
+      			console.log("<==Nothing to see here...move along==>");
+      			/*setAttrs({logo: 1,
+      					  background: 1,
+      					  useacademics: 0, 
+      					  majorminor: 0});*/
+      		}
    		});
 	});
 	
@@ -552,9 +847,8 @@
 	    });
 	});
 	
-	//Set Base Toughness (Regular and Neural)
-	on("sheet:opened change:vigor change:vigormod change:toughness change:ntoughness", function() {
-		getAttrs(["vigor", "vigormod"], function(vvalue) {
+	const baseToughness = function() {
+	    getAttrs(["vigor", "vigormod"], function(vvalue) {
 			console.log("vigor value: " + vvalue.vigor);
 			console.log("vimod value: " + vvalue.vigormod);
 			var Vigor = parseInt(vvalue.vigor)||0;
@@ -563,27 +857,40 @@
       		setAttrs({ toughness: Math.floor(totVigor/2) + 2 });
       		setAttrs({ ntoughness: Math.floor(totVigor/2) + 2 });
    		});
+	}
+	
+	//Set Base Toughness (Regular and Neural)
+	on("sheet:opened change:vigor change:vigormod change:toughness change:ntoughness", function() {
+		baseToughness();
 	});
+	
+	const setToughness = function() {
+	    getAttrs(["toughness","tufnessMod","toughnessArmor"], function(value) {
+            let tness = parseInt(value.toughness)||0;
+            let tnessmod = parseInt(value.tufnessMod)||0;
+            let tnessarmor = parseInt(value.toughnessArmor)||0;
+            setAttrs({toughnesscur: tness+tnessmod+tnessarmor});
+        });
+	}
+	
+	const setNToughness = function() {
+	    getAttrs(["ntoughness","ntufnessMod","ntoughnessArmor"], function(value) {
+            let tness = parseInt(value.ntoughness)||0;
+            let tnessmod = parseInt(value.ntufnessMod)||0;
+            let tnessarmor = parseInt(value.ntoughnessArmor)||0;
+            setAttrs({ntoughnesscur: tness+tnessmod+tnessarmor});
+        });
+	}
 	
 	//Set Current Toughness (Regular and Neural)
 	on("sheet:opened change:toughness change:ntoughness change:tufnessmod change:ntufnessmod change:toughnessarmor change:ntoughnessarmor", function(eventInfo) {
 	    if(eventInfo.sourceAttribute === "toughness" || eventInfo.sourceAttribute === "tufnessmod" || eventInfo.sourceAttribute === "toughnessarmor") {
 	        //Physical Toughness changed
-	        getAttrs(["toughness","tufnessMod","toughnessArmor"], function(value) {
-	            let tness = parseInt(value.toughness)||0;
-	            let tnessmod = parseInt(value.tufnessMod)||0;
-	            let tnessarmor = parseInt(value.toughnessArmor)||0;
-	            setAttrs({toughnesscur: tness+tnessmod+tnessarmor});
-	        });
+	        setToughness();
 	    }
 	    else {
 	        //Neural Toughness changed
-	        getAttrs(["ntoughness","ntufnessMod","ntoughnessArmor"], function(value) {
-	            let tness = parseInt(value.ntoughness)||0;
-	            let tnessmod = parseInt(value.ntufnessMod)||0;
-	            let tnessarmor = parseInt(value.ntoughnessArmor)||0;
-	            setAttrs({ntoughnesscur: tness+tnessmod+tnessarmor});
-	        });
+	        setNToughness();
 	    }
 	});
 	
@@ -603,9 +910,8 @@
    		});
 	});
 	
-	//Set Pace
-	on("change:pace change:pacemod", function() {
-		getAttrs(["pace", "paceMod"], function(pvalue) {
+	const setPace = function() {
+	    getAttrs(["pace", "paceMod"], function(pvalue) {
 			console.log("pace value: " + pvalue.pace);
 			console.log("mod value: " + pvalue.paceMod);
 			let pace_base = parseInt(pvalue.pace) || 0;
@@ -613,11 +919,15 @@
             let totPace = pace_base + pace_mod;
       		setAttrs({ paceCur: totPace  });
    		});
+	}
+	
+	//Set Pace
+	on("change:pace change:pacemod", function() {
+		setPace();
 	});
 	
-	//Set charisma
-	on("change:charisma change:charismamod", function() {
-		getAttrs(["charisma", "charismaMod"], function(pvalue) {
+	const setCharisma = function() {
+	    getAttrs(["charisma", "charismaMod"], function(pvalue) {
 			console.log("charisma value: " + pvalue.charisma);
 			console.log("mod value: " + pvalue.charismaMod);
 			let charisma = parseInt(pvalue.charisma) || 0;
@@ -625,11 +935,15 @@
             let totcharisma = charisma + charisma_mod;
       		setAttrs({ charismaCur: totcharisma  });
    		});
+	}
+	
+	//Set charisma
+	on("change:charisma change:charismamod", function() {
+		setCharisma();
 	});
 	
-	//Set Fame
-	on("change:fame change:famemod", function() {
-		getAttrs(["fame", "fameMod"], function(pvalue) {
+	const setFame = function() {
+	    getAttrs(["fame", "fameMod"], function(pvalue) {
 			console.log("fame value: " + pvalue.fame);
 			console.log("mod value: " + pvalue.fameMod);
 			let fame = parseInt(pvalue.fame) || 0;
@@ -637,11 +951,15 @@
             let totFame = fame + fame_mod;
       		setAttrs({ fameCur: totFame  });
    		});
+	}
+	
+	//Set Fame
+	on("change:fame change:famemod", function() {
+		setFame();
 	});
 	
-	//Set Academics
-	on("change:academics change:academicsmod", function() {
-		getAttrs(["academics", "academicsMod"], function(pvalue) {
+	const setAcademics = function() {
+	    getAttrs(["academics", "academicsMod"], function(pvalue) {
 			console.log("academics value: " + pvalue.academics);
 			console.log("mod value: " + pvalue.academicsMod);
 			let academics_base = parseInt(pvalue.academics) || 0;
@@ -649,11 +967,15 @@
             let totAcademics = academics_base + academics_mod;
       		setAttrs({ academicsCur: totAcademics  });
    		});
+	}
+	
+	//Set Academics
+	on("change:academics change:academicsmod", function() {
+		setAcademics();
 	});
 	
-	//Set Sanity
-	on("change:spirit change:spiritmod change:sanitymod", function() {
-		getAttrs(["spirit", "spiritmod","sanityMod"], function(pvalue) {
+	const setSanity = function() {
+	    getAttrs(["spirit", "spiritmod","sanityMod"], function(pvalue) {
 			console.log("spirit value: " + pvalue.spirit);
 			console.log("spirit mod value: " + pvalue.spiritmod);
 			console.log("Sanity mod value: " + pvalue.sanityMod);
@@ -664,11 +986,15 @@
             let sanity_value = Math.floor(totSpirit/2) + 2;
       		setAttrs({ sanityCur: sanity_value + sanity_mod  });
    		});
+	}
+	
+	//Set Sanity
+	on("change:spirit change:spiritmod change:sanitymod", function() {
+		setSanity();
 	});
 	
-	//Set Reason
-	on("change:reason change:reasonmod", function() {
-		getAttrs(["reason", "reasonMod"], function(pvalue) {
+	const setReason = function() {
+	    getAttrs(["reason", "reasonMod"], function(pvalue) {
 			console.log("reason value: " + pvalue.reason);
 			console.log("mod value: " + pvalue.reasonMod);
 			let reason = parseInt(pvalue.reason) || 0;
@@ -676,11 +1002,15 @@
             let totreason = reason + reason_mod;
       		setAttrs({ reasonCur: totreason  });
    		});
+	}
+	
+	//Set Reason
+	on("change:reason change:reasonmod", function() {
+		setReason();
 	});
 	
-	//Set Status
-	on("change:status change:statusmod", function() {
-		getAttrs(["status", "statusMod"], function(pvalue) {
+	const setStatus = function() {
+	    getAttrs(["status", "statusMod"], function(pvalue) {
 			console.log("status value: " + pvalue.status);
 			console.log("mod value: " + pvalue.statusMod);
 			let status = parseInt(pvalue.reason) || 0;
@@ -688,11 +1018,15 @@
             let totstatus = status + status_mod;
       		setAttrs({ statusCur: totstatus  });
    		});
+	}
+	
+	//Set Status
+	on("change:status change:statusmod", function() {
+		setStatus();
 	});
 	
-	//Set Glory
-	on("change:glory change:glorymod", function() {
-		getAttrs(["glory", "gloryMod"], function(pvalue) {
+	const setGlory = function() {
+	    getAttrs(["glory", "gloryMod"], function(pvalue) {
 			console.log("glory value: " + pvalue.glory);
 			console.log("mod value: " + pvalue.gloryMod);
 			let glory = parseInt(pvalue.glory) || 0;
@@ -700,11 +1034,15 @@
             let totglory = glory + glory_mod;
       		setAttrs({ gloryCur: totglory  });
    		});
+	}
+	
+	//Set Glory
+	on("change:glory change:glorymod", function() {
+		setGlory();
 	});
 	
-	//Set Firewall
-	on("change:firewall change:firewallmod", function() {
-		getAttrs(["Firewall", "FirewallMod"], function(pvalue) {
+	const setFirewall = function() {
+	    getAttrs(["Firewall", "FirewallMod"], function(pvalue) {
 			console.log("Firewall value: " + pvalue.Firewall);
 			console.log("mod value: " + pvalue.FirewallMod);
 			let Firewall = parseInt(pvalue.Firewall) || 0;
@@ -712,11 +1050,15 @@
             let totfirewall = Firewall + firewall_mod;
       		setAttrs({ FirewallCur: totfirewall  });
    		});
+	}
+	
+	//Set Firewall
+	on("change:firewall change:firewallmod", function() {
+		setFirewall();
 	});
 	
-	//Set grit
-	on("change:rank change:gritmod", function() {
-		getAttrs(["rank", "gritMod"], function(pvalue) {
+	const setGrit = function() {
+	    getAttrs(["rank", "gritMod"], function(pvalue) {
 			console.log("rank value: " + pvalue.rank);
 			console.log("mod value: " + pvalue.gritMod);
 			let rank = parseInt(pvalue.rank) || 0;
@@ -725,11 +1067,15 @@
       		setAttrs({ grit: rank,
       		           gritCur: totgrit });
    		});
+	}
+	
+	//Set grit
+	on("change:rank change:gritmod", function() {
+		setGrit();
 	});
 	
-	//Set Corruption
-	on("change:corruptionstat change:corruptionmod", function() {
-		getAttrs(["corruptionStat", "corruptionMod"], function(pvalue) {
+	const setCorruption = function() {
+	    getAttrs(["corruptionStat", "corruptionMod"], function(pvalue) {
 			console.log("corruption value: " + pvalue.corruptionStat);
 			console.log("mod value: " + pvalue.corruptionMod);
 			let corruptionStat = parseInt(pvalue.corruptionStat) || 0;
@@ -737,38 +1083,54 @@
             let totcorruption = corruptionStat + corruptiont_mod;
       		setAttrs({ corruptionCur: totcorruption });
    		});
+	}
+	
+	//Set Corruption
+	on("change:corruptionstat change:corruptionmod", function() {
+		setCorruption();
 	});
 	
-	//Set street cred
-	on("change:rank change:streetcredmod", function() {
-		getAttrs(["rank", "StreetCredMod"], function(pvalue) {
+	const setStreetCred = function() {
+	    getAttrs(["rank", "StreetCredMod"], function(pvalue) {
 			console.log("rank value: " + pvalue.rank);
 			console.log("mod value: " + pvalue.StreetCredMod);
 			let rank = parseInt(pvalue.rank) || 0;
 			let sc_mod = parseInt(pvalue.StreetCredMod) || 0;
 			let street_cred = rank * 2;
-            let totsc = street_cred + grit_mod;
+            let totsc = street_cred + sc_mod;
       		setAttrs({ StreetCred: street_cred,
       		           StreetCredCur: totsc });
    		});
+	}
+	
+	//Set street cred
+	on("change:rank change:streetcredmod", function() {
+		setStreetCred();
 	});
+	
+	const calcStrain = function() {
+	    repeatingSimpleSum('augmentation','augStrain','totalStrain');
+	}
 	
 	// Calculate Strain
 	on('change:repeating_augmentation remove:repeating_augmentation',function(){
-		repeatingSimpleSum('augmentation','augStrain','totalStrain');
+		calcStrain();
 	});
 	
-	//Set Current Strain
-	on('change:totalstrain', function() {
-		getAttrs(["totalStrain"], function(svalue) {
+	const setStrain = function() {
+	    getAttrs(["totalStrain"], function(svalue) {
 			let strain = parseInt(svalue.totalStrain)||0;
       		setAttrs({ StrainCur: strain  });
    		});
+	}
+	
+	//Set Current Strain
+	on('change:totalstrain', function() {
+		setStrain();
 	});
 	
-	//Calculate Max Strain
-	on("change:strain change:strainmod", function() {
-		getAttrs(["strain", "StrainMod"], function(svalue) {
+	const setMaxStrain = function() {
+	    getAttrs(["strain", "StrainMod"], function(svalue) {
 			console.log("strain value: " + svalue.strain);
 			console.log("mod value: " + svalue.StrainMod);
 			var base = parseInt(svalue.strain)||0;
@@ -776,6 +1138,11 @@
             var maxStrain = base + sMod;
       		setAttrs({ strain_max: maxStrain });
    		});
+	}
+	
+	//Calculate Max Strain
+	on("change:strain change:strainmod", function() {
+		setMaxStrain();
 	});
 	
 	//Visual Cue of Strain(ger) Danger (Wild Card)
@@ -808,9 +1175,8 @@
 		});
 	});
 	
-	//Set TAP Range
-	on("change:smarts change:smartsmod", function() {
-		getAttrs(["smarts", "smartsmod", "taprange"], function(vvalue) {
+	const setTAPRange = function() {
+	    getAttrs(["smarts", "smartsmod", "taprange"], function(vvalue) {
 			console.log("Smarts value: " + vvalue.smarts);
 			console.log("Smarts Mod value: " + vvalue.smartsmod);
 			var smartsval = parseInt(vvalue.smarts)||0;
@@ -819,24 +1185,11 @@
 			
 			setAttrs({taprange: totrange});
    		});
-	});
+	}
 	
-	//Set Current Charisma
-	on("change:charisma change:charismamod", function() {
-	    getAttrs(["charisma","charismaMod"], function(cvalue) {
-	        let cha = parseInt(cvalue.charisma) || 0;
-	        let chmod = parseInt(cvalue.charismaMod) || 0;
-	        setAttrs({charismaCur: cha+chmod});
-	    });
-	});
-	
-	//Set Current pace
-	on("change:pace change:pacemod", function() {
-	    getAttrs(["pace","paceMod"], function(pvalue) {
-	        let pace = parseInt(pvalue.pace) || 0;
-	        let pmod = parseInt(pvalue.paceMod) || 0;
-	        setAttrs({paceCur: pace+pmod});
-	    });
+	//Set TAP Range
+	on("change:smarts change:smartsmod", function() {
+		setTAPRange();
 	});
 	
 	//Calculate Total Armor Weight
@@ -1358,9 +1711,8 @@
 	    });
 	});
 	
-	//Calculate Encumbrance Penalty
-	on("change:totalloadcarried change:loadlimit change:strength change:encumbrancerules change:loadlimitdietypedelta change:loadlimitmulitplier change:loadlimitmod",function(){
-		getAttrs(["loadlimit", "totalloadcarried", "strength", "encumbrancerules", "loadlimitdietypedelta", "loadlimitmulitplier", "loadlimitmod"], function(lvalue) {
+	const setEncPenalty = function() {
+	    getAttrs(["loadlimit", "totalloadcarried", "strength", "encumbrancerules", "loadlimitdietypedelta", "loadlimitmulitplier", "loadlimitmod"], function(lvalue) {
 			let load = parseFloat(lvalue.totalloadcarried)||0;
 			let strength = parseInt(lvalue.strength)||0;
 			let limit = 0;
@@ -1406,21 +1758,38 @@
       		    loadlimit: limit 
       		});
    		});
+	}
+	
+	//Calculate Encumbrance Penalty
+	on("change:totalloadcarried change:loadlimit change:strength change:encumbrancerules change:loadlimitdietypedelta change:loadlimitmulitplier change:loadlimitmod",function(){
+		setEncPenalty();
 	});
 	
-	on("change:wounds change:NoS",function(){
-		getAttrs(["wounds","NoS"], function(lvalue) {
+	const setWoundsMod = function(flag) {
+	    console.log("<==== Updating woundsMod ====>");
+	    getAttrs(["wounds","NoS"], function(lvalue) {
 		    var wound = parseInt(lvalue.wounds)||0;
 		    var nerves = parseInt(lvalue.NoS)||0;
 		    
 		    console.log("<==== Wounds:"+wound+"||Nerves of Steel:"+nerves+" ====>");
-		    var wMs = wound+nerves;
-      		setAttrs({ woundsMod: wMs});
+		    var wMS = wound+nerves;
+		    if (flag === "silent") {
+		        console.log("Setting woundsMod silently");
+		        setAttrs({woundsMod: wMS},{silent:true});
+		    }
+		    else {
+		        setAttrs({woundsMod: wMS});
+		    }
+		    console.log("<==== Finished updating woundsMod ====>");
    		});
+	}
+	
+	on("change:wounds change:NoS",function(){
+		setWoundsMod();
 	});
 	
-	on("change:woundsMod change:fatigue change:encumbrance change:distracted",function(){
-		getAttrs(["woundsMod","fatigue","encumbrance","distracted"], function(lvalue) {
+	const setModSums = function() {
+	    getAttrs(["woundsMod","fatigue","encumbrance","distracted"], function(lvalue) {
 		    //let tMod = parseInt(lvalue.ttmod)||0;
 		    let wMod = parseInt(lvalue.woundsMod)||0;
 		    let fMod = parseInt(lvalue.fatigue)||0;
@@ -1442,16 +1811,23 @@
       		    absmodenc: modABSEnc
       		});
    		});
+	}
+	
+	on("change:woundsMod change:fatigue change:encumbrance change:distracted",function(){
+		setModSums();
 	});
 	
 	on("change:promptmods", function(eventInfo) {
 	    if (eventInfo.newValue === "on") {
 	        //prompt for mods 
-	        queryPop = getTranslationByKey('misc-modifier-plural-singular');
+	        let setVal, setDmgVal;
+	        queryPop = getTranslationByKey('miscellaneous-abbr-trait-modifier-plural-singular');
+	        queryDmgPop = getTranslationByKey('miscellaneous-abbr-damage-modifier-plural-singular');
 	        setVal = `?{${queryPop}|0}`;
+	        setDmgVal = `?{${queryDmgPop}|0}`;
 	        setAttrs({
 	            traitmods: setVal,
-	            damagemods: setVal
+	            damagemods: setDmgVal
 	        });
 	    }
 	    else {
@@ -1485,8 +1861,92 @@
 	    });
 	});
 	
+	on("change:majorminor change:activitiesexams", function() {
+		getAttrs(["majorminor","activitiesexams"], function(v) {
+			let showETU = "0";
+			if(v.majorminor === 'on' || v.activitiesexams === '1') {
+				showETU = "on";
+			}
+			setAttrs({useETU: showETU});
+		});
+	});
+	
+	function powerLabel() {
+        getAttrs(["magictype","custompowerlabel"], function(v) {
+	        let slabel = '';
+	        let plabel = '';
+	        switch(v.magictype) {
+	            case '1': //Miracles
+	                console.log("+x+ Setting Power Label to Miracles +x+");
+	                slabel = getTranslationByKey('miracle');
+	                plabel = getTranslationByKey('miracles');
+	                break;
+	            case '2': //Psionics
+	                console.log("+x+ Setting Power Label to Psionics +x+");
+	                slabel = getTranslationByKey('psionic-ability');
+	                plabel = getTranslationByKey('psionics');
+	                break;
+	            case '3': //Spells
+	                console.log("+x+ Setting Power Label to Spells +x+");
+	                slabel = getTranslationByKey('spell');
+	                plabel = getTranslationByKey('spells');
+	                break;
+	            case '4': //Rituals
+	                console.log("+x+ Setting Power Label to Rituals +x+");
+	                slabel = getTranslationByKey('ritual');
+	                plabel = getTranslationByKey('rituals');
+	                break;
+	            case '5': //Weird Science Gadgets
+	                console.log("+x+ Setting Power Label to Weird Science Gadgets +x+");
+	                slabel = getTranslationByKey('weird-science-gadget');
+	                plabel = getTranslationByKey('weird-science-gadgets');
+	                break;
+	            case '6':
+	                console.log("+x+ Setting Power Label to Custom +x+");
+	                if (v.custompowerlabel === '') {
+	                    slabel = getTranslationByKey('power');
+	                    plabel = getTranslationByKey('powers');
+	                }
+	                else {
+	                    slabel = v.custompowerlabel;
+	                    plabel = v.custompowerlabel;
+	                }
+	                break;
+	            default: //Powers
+	                console.log("+x+ Setting Power Label to Powers +x+");
+	                slabel = getTranslationByKey('power');
+	                plabel = getTranslationByKey('powers');
+	                break;
+	        }
+	        console.log(`*** Singular Label: ${slabel} ***`);
+	        console.log(`*** Plural Label: ${plabel} ***`);
+	        setAttrs({
+	            powerlabelsingular: slabel,
+	            powerlabelplural: plabel
+	        });
+	    });
+    }
+	
+	on("change:magictype change:custompowerlabel", function() {
+	    powerLabel();
+	});
+	
+	on("change:raisehbrule", function(eventInfo) {
+	    if (eventInfo.newValue === "on") {
+	        //Using Variable Bonus Damage 
+	        console.log("Using variable bonus damage: set up query...");
+	        let qString = getTranslationByKey('bonus-damage-die-type');
+	        setAttrs({vbonusdamage: `?{${qString}|d6,1d6!|d8,1d8!|d10,1d10!|d12,1d12!|d4,1d4!}`});
+	    }
+	    else {
+	        console.log("Not using using Variable Bonus Damage...");
+	        setAttrs({vbonusdamage: '1d6!'});
+	    }
+	});
+	
 </script>
 <input type='text' style='display: none;' name='attr_character_sheet' value='Savage Worlds Tabbed v2.0' />
+<input type='text' style='display: none;' name='attr_wdNum' value='1' />
 <div class='sheet-maindiv'>
     <input type="checkbox" class="sheet-useBackground" style="display: none;" name="attr_background" value="1" checked />
     <input type="checkbox" class="sheet-useBackground" style="display: none;" name="attr_background" value="2" />
@@ -1635,8 +2095,9 @@
                 <div class='sheet-base' style='margin-top: 10px; vertical-align: top;'>
                     <!--Tri-columns for Abilities and the such-->
                     <div class='sheet-atts'>
-                        <h1 class='sheet-colHeader' data-i18n="attributes">Attributes</h1>
-                        <input type="checkbox" class="sheet-hideAtts" name="attr_hideAtts" /><span class="sheet-showhide"></span>
+                        <input type="checkbox" class="sheet-hideCoreAtts" name="attr_hideAtts" /><span class="sheet-showCoreAtts"></span>
+                        <h1 class='sheet-attSectionTitle' data-i18n="attributes">Attributes</h1>
+                        <!--<input type="checkbox" class="sheet-hideAtts" name="attr_hideAtts" /><span class="sheet-showhide"></span>-->
                         <div class='sheet-base sheet-attributes'>
                             <div class='sheet-basetrait'>
                                 <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tAgilityRoll' title="@{tAgilityRoll}" value='&{template:roll} @{rolltAgility} @{setmodsenc} @{showtraitmodsenc}' data-i18n="agility"> Agility</button>
@@ -1735,7 +2196,7 @@
                             </div>
                         </div>
                         <div class="sheet-base sheet-AttsSum">
-                            <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tAgilityRoll' title="@{tAgilityRoll}" value='&{template:roll} @{rolltAgility}' data-i18n="ag"> Ag: <span name='attr_agility_display'></span></button>
+                            <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_AgilitySumRoll' title="@{tAgilityRoll}" value="~tAgilityRoll"><span data-i18n="agility-abbr">Agl</span>: <span name='attr_agility_display'></span></button>
                         </div>
                         <input type="checkbox" class="sheet-hideskillsconfig" /><span class="sheet-skillList"></span>
                         <h1 class='sheet-colHeader'>Skills</h1>
@@ -2346,7 +2807,7 @@
                             <!-- Lockpicking SKill -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticLockpicking" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticLockpicking'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tLockpickingRoll' title="@{tLockpickingRoll}" value='&{template:roll} {{trait=^{lockpicking}}} @{rolltLockpicking} @{setmodsenc} @{showtraitmodsenc}' data-i18n="lockpicking"> Lockpicking</button><span class='sheet-linkedAtt' data-i18n="agi-u">(AGI)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tLockpickingRoll' title="@{tLockpickingRoll}" value='&{template:roll} {{trait=^{lockpicking}}} @{rolltLockpicking} @{setmodsenc} @{showtraitmodsenc}' data-i18n="lockpicking"> Lockpicking</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGI)</span>
                                 <span class="sheet-attrankselect"><select name="attr_lockpicking" title="@{Lockpicking}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -2486,7 +2947,7 @@
                             <!-- Piloting Skill -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticPiloting" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticPiloting'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tPilotingRoll' title="@{tPilotingRoll}" value='&{template:roll} {{trait=^{piloting}}} @{rolltPiloting} @{setmodsenc} @{showtraitmodsenc}' data-i18n="piloting"> Piloting</button><span class='sheet-linkedAtt' data-i18n="agi-u">(AGI)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tPilotingRoll' title="@{tPilotingRoll}" value='&{template:roll} {{trait=^{piloting}}} @{rolltPiloting} @{setmodsenc} @{showtraitmodsenc}' data-i18n="piloting"> Piloting</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGI)</span>
                                 <span class="sheet-attrankselect"><select name="attr_piloting" title="@{Piloting}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -2617,7 +3078,7 @@
                             <!-- Riding (Agility) -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticRiding" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticRiding'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tRidingRoll' title="@{tRidingRoll}" value='&{template:roll} {{trait=^{riding}}} @{rolltRiding} @{setmodsenc} @{showtraitmodsenc}' data-i18n="riding"> Riding</button><span class='sheet-linkedAtt' data-i18n="agi-u">(AGI)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tRidingRoll' title="@{tRidingRoll}" value='&{template:roll} {{trait=^{riding}}} @{rolltRiding} @{setmodsenc} @{showtraitmodsenc}' data-i18n="riding"> Riding</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGI)</span>
                                 <span class="sheet-attrankselect"><select name="attr_riding" title="@{Riding}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -3138,7 +3599,7 @@
 								</label>
     					    </div>
     					</div>
-    					<div class='sheet-vertRight' style="float: left; margin-left: -15px;"><span data-i18n="wounds">Wounds</span></div>
+    					<div class='sheet-vertRight'><span class="sheet-bigger" data-i18n="wounds">Wounds</span></div>
     					<div class='sheet-woundBox'>
     					    <input class="sheet-standardHealth" type="number" name="attr_wounds" title="@{wounds}" value="0"/>
     					    <input type='checkbox' class="sheet-showExpansion" name='attr_showWoundmods' style="display: none;" />
@@ -3157,7 +3618,7 @@
     					    <input type='checkbox' class="sheet-showExpansion" name='attr_showFatiguemods' style="display: none;" />
     					    <div class='sheet-expansionBox'><input class='sheet-healthmods' type='checkbox' name='attr_showFatiguemods' /><span>y</span></div>
     					</div>
-    					<div class='sheet-vertLeft' style="float: right;"><span data-i18n="fatigue">Fatigue</span></div>
+    					<div class='sheet-vertLeft'><span class="sheet-bigger" data-i18n="fatigue">Fatigue</span></div>
     					<input type='checkbox' class="sheet-showWoundmod" name='attr_showWoundmods' style="display: none;" />
     					<div class='sheet-basetrait sheet-woundmod'>
     					    <span data-i18n="max-wounds">Max Wounds</span>: <input class="sheet-standardHealth" type="number" name="attr_wounds_max" title="@{wounds_max}" value="3" />
@@ -3358,7 +3819,7 @@
     					    </div>
     					    <div class="sheet-basederived sheet-StreetCred">
     					        <div class="sheet-derivelabel" data-i18n="street-cred">Street Cred</div>
-    					        <div class="sheet-derivebase"><input class="sheet-derivedStat" type="number" name="attr_StreetCred" title="@{StreetCred}" value="@{Rank}*2" disabled="true"/></div>
+    					        <div class="sheet-derivebase"><input class="sheet-derivedStat" type="number" name="attr_StreetCred" title="@{StreetCred}" value="@{Rank}*2" readonly /></div>
     							<div class="sheet-derivemod"><input type="number" name="attr_StreetCredMod" title="@{StreetCredMod}" class="sheet-derivedStat" value="0" /></div>
     							<div class="sheet-derivecurrent"><input type="number" name="attr_StreetCredCur" title="@{StreetCredCur}" class="sheet-derivedStat" value="@{StreetCred} + @{StreetCredMod}" disabled="true" /></div>
     							<div class="sheet-derivemisc"><input type="number" name="attr_maxStreetCredCur" title="@{maxStreetCredCur}" class="sheet-derivedStat" value="10" /></div>
@@ -3387,8 +3848,8 @@
     					<hr class="sheet-mischr" style="border: .45px dashed silver; margin: -4px 0px 8px 0px;"  />
     					<!-- Miscellaneous -->
     					<h4 class='sheet-sectionHeading' data-i18n="miscellaneous">Miscellaneous</h4>
-    					<input type="checkbox" class="sheet-hideAtts" name="attr_hideCoreMisc" /><span class="sheet-showhide"></span>
-    					<div class='sheet-base sheet-corederived'>
+    					<input type="checkbox" class="sheet-hideMisc" name="attr_hideCoreMisc" /><span class="sheet-showhide"></span>
+    					<div class='sheet-base sheet-miscderived'>
     					    <input type="checkbox" class="sheet-hideMods" name="attr_promptmods" style="display: none;" />
     					    <div class="sheet-basederived sheet-useMods" style='font-weight: bold; font-size: .75em;'>
     					        <div class="sheet-derivelabel">&nbsp;</div>
@@ -3402,6 +3863,8 @@
     					        <div class="sheet-derivelabel">Modifiers</div>
     					        <div class="sheet-derivebase"><input type="number" name="attr_ttmod" title="@{ttmod}" class="sheet-derivedStat" value="0" /></div>
     							<div class="sheet-derivemod"><input type="number" name="attr_dmgmod" title="@{dmgmod}" class="sheet-derivedStat" value="0" /></div>
+    							<input type='hidden' name='attr_traitmods' value='@ttmod' />
+    							<input type='hidden' name='attr_damagemods' value='@dmgmod' />
     							<div class="sheet-derivecurrent">&nbsp;</div>
     							<div class="sheet-derivemisc">&nbsp;</div>
     					    </div>
@@ -3565,7 +4028,9 @@
                         <input type="checkbox" class="sheet-hideAdv" name="attr_hideAdv" /><span class="sheet-showhide"></span>
                         <div class='sheet-base sheet-advancements'>
                             <div class="sheet-xp">
-                                <h4>XP</h4>
+                                <input type="checkbox" class="sheet-useXP" name="attr_useXP" style="display: none;" value="1" />
+                                <h4 class='sheet-trackXP'>XP</h4>
+                                <h4 class='sheet-advances'>Advance</h4>
                             </div>
                             <div class="sheet-advancement">
                                 <h4 data-i18n="advancement">Advancement</h4>
@@ -3592,6 +4057,7 @@
 						<h4 class="sheet-repeatingHeader sheet-weaponweight" data-i18n="weight-abbr">Wt</h4>
 						<h4 class="sheet-repeatingHeader sheet-weaponcarried" data-i18n="carried">Carried</h4>
 						<hr />
+						<input type='hidden' name='attr_vbonusdamage' value='1d6!' />
 						<fieldset class="repeating_weapons" style="width: 100%;">
 						    <div class='sheet-weaponitem'>
     						    <button type='roll' class="sheet-button" name='roll_tWeapon' value="@{weaponroll}"><input type="hidden" name="attr_weaponbutton" class="sheet-weaponbutton" value="1" /><span class="sheet-buttonand" data-i18n="attack-and-damage-abbr">Atk+Dmg</span><span class="sheet-buttondo" data-i18n="damage">Damage</span></button>
@@ -3654,7 +4120,7 @@
 								<!-- Build the Damage Roll Template Info -->
 								<input type='hidden' name='attr_weapondmg' value="@{strength_rank}+1d4!" /> <!-- the damage formula -->
 								<input type='hidden' name='attr_bonusdmg' value='1d6!' />
-								<input type='text' style='display: none;' name='attr_dmgTemplate' value='&{template:damage} {{name=@{character_name}}} {{source=@{weapon} }} {{dmg_rank=@{weapondamage}}} {{dmg_roll=[[@{weapondmg} + @{dmgmod}]]}} {{bonus_die=[[@{bonusdmg} + @{dmgmod}]]}} {{notes=@{weaponnotes}}} {{button=y}} {{DmgRoll=[Re-Roll Damage](~repeating_weapons_dmg) }}' />
+								<input type='text' style='display: none;' name='attr_dmgTemplate' value='&{template:damage} {{name=@{character_name}}} {{source=@{weapon} }} {{dmg_rank=@{weapondamage}}} {{dmg_roll=[[@{weapondmg} + @{damagemods}]]}} {{bonus_die=[[@{vbonusdamage}]]}} {{showap=[[1d0+@{weaponap}]]}} {{ap=@{weaponap}}} {{notes=@{weaponnotes}}} {{button=y}} {{DmgRoll=[Re-Roll Damage](~repeating_weapons_dmg) }}' />
     				        </div>
 						</fieldset>
 						<div class='sheet-weaponTotalWeight' style="margin-left: 504px;"><!-- Set up the Total Weight Carried box -->
@@ -3670,7 +4136,7 @@
 					<input type="checkbox" class="sheet-hideArcanum" name="attr_ArcanumTab" style="display: none;">
 					<div class="sheet-arcanum">
 					    <input type="checkbox" class="sheet-hidePowers" name="attr_hidepowers" /><span class="sheet-showNhide"></span>
-    					<h1 class="sheet-gearcolHeader" data-i18n="powers">Powers</h1>
+    					<h1 class="sheet-gearcolHeader"><span name="attr_powerlabelplural"></span></h1>
     					<div class="sheet-arcane">
     					    <input type="checkbox" class="sheet-NoPP" name="attr_NoPPRule" style="display: none;" />
     					    <div class="sheet-powerpoints">
@@ -3690,9 +4156,9 @@
     								<input type="number" style="margin-left: 5px;" name="attr_InnerStrPts_max" title="@{InnerStrPts_max}" value="0" />
     							</span>
     					    </div>
-    					    <div class='sheet-powerrow' style="align-items: flex-end; margin-bottom: 10px; border-bottom: 1px solid silver; overflow: hidden;">
+    					    <div class='sheet-powerrow' style="align-items: flex-end; margin-bottom: 20px; border-bottom: 1px solid silver; overflow: hidden;">
         					    <h4 class="sheet-repeatingHeader sheet-powerbutton">&nbsp;</h4>
-        					    <h4 class="sheet-repeatingHeader sheet-power" data-i18n="power" style='margin-left:'>Power</h4>
+        					    <h4 class="sheet-repeatingHeader sheet-power" style='margin-left:'><span name="attr_powerlabelsingular"></span></h4>
         					    <h4 class="sheet-repeatingHeader sheet-pp" data-i18n="power-point-abbr-u">PP</h4>
         					    <h4 class="sheet-repeatingHeader sheet-powerrange" data-i18n="range">Range</h4>
         					    <h4 class="sheet-repeatingHeader sheet-powerdamage" data-i18n="damage">Damage</h4>
@@ -3778,7 +4244,7 @@
     								<!-- Build the Damage Roll Template Info -->
     								<input type='hidden' name='attr_spelldmg' /> <!-- the damage formula -->
     								<input type='hidden' name='attr_spellbonusdmg' value='1d6!' />
-    								<input type='text' style='display: none;' name='attr_spelldmgTemplate' value='&{template:damage} {{name=@{character_name}}} {{source=@{power} }} {{dmg_rank=@{powerdamage}}} {{dmg_roll=[[@{spelldmg} + @{dmgmod}]]}} {{bonus_die=[[@{spellbonusdmg} + @{dmgmod}]]}} {{notes=@{spellnotes}}} {{button=y}} {{DmgRoll=[Re-Roll Damage](~repeating_spells_spelldmg) }}' />
+    								<input type='text' style='display: none;' name='attr_spelldmgTemplate' value='&{template:damage} {{name=@{character_name}}} {{source=@{power} }} {{dmg_rank=@{powerdamage}}} {{dmg_roll=[[@{spelldmg} + @{damagemods}]]}} {{bonus_die=[[@{vbonusdamage}]]}} {{notes=@{spellnotes}}} {{button=y}} {{DmgRoll=[Re-Roll Damage](~repeating_spells_spelldmg) }}' />
     								<input type='hidden' name='attr_skTemplate' value='1d6!' />
     						    </div>
     					    </fieldset>
@@ -3908,87 +4374,107 @@
             <div class='sheet-notes'>
                 <!-- Permanent Injuries -->
                 <input type="checkbox" class="sheet-useInjuries" name="attr_permInjuries" style="width: 15px; display: none;" />
-				<div class="sheet-Injuries" style="padding: 10px; width: 90%;">
-					<h4 class="sheet-subsectionHeader"><span data-i18n="permanent-injuries">Permanent Injuries</span></h4>
-					<textarea class="sheet-standardtext" name='attr_injuries' style="height: 40px; width: 95%;"></textarea>
+				<div class="sheet-Injuries sheet-standardDiv">
+					<h4 class="sheet-subsectionHeader" data-i18n="permanent-injuries">Permanent Injuries</h4>
+					<textarea class="sheet-standardTextArea" name='attr_injuries'></textarea>
 				</div>
 				<!-- End Permanent Injuries -->
 				
-				<!-- ETU Major/Minor -->
-    			<input class='sheet-useMajor' type='checkbox' name='attr_majorminor' style='width: 15px; display: none;' />
-    			<div class='sheet-Major'>
-    				<label class='sheet-nameRankXp'>Major:</label>
-    				<textarea class="sheet-standardtext" name='attr_mmajor' style="height: 15px; max-width: 133px; border-bottom: solid 1px black;"></textarea>
-    				<label class='sheet-nameRankXp'>Minor:</label>
-    				<textarea class="sheet-standardtext" name='attr_mminor' style="height: 15px; max-width: 133px; border-bottom: solid 1px black;"></textarea>
-    			</div>
-    			<!-- End ETU Major/Minor -->
-    			
-    			<!-- Worst Nightmare -->
+				<!-- Worst Nightmare -->
     			<input type="checkbox" class="sheet-useWorstNightmare" name="attr_worstNightmare" style="width: 15px; display: none;" />
-				<div class="sheet-WorstNightmare">
-					<h4 class="sheet-subsectionHeader"><span data-i18n="worst-nightmare">Worst Nightmare</span></h4>
-					<textarea class="sheet-standardtext" name='attr_nightmare' style='width:790px;'></textarea><br />
+				<div class="sheet-WorstNightmare sheet-standardDiv">
+					<h4 class="sheet-subsectionHeader" data-i18n="worst-nightmare">Worst Nightmare</h4>
+					<textarea class="sheet-standardTextArea" name='attr_nightmare'></textarea>
 				</div>
 				<!-- End Worst Nightmare -->
 				
-				<!-- Motivation -->
+				<!-- ETU Major/Minor/Activities/Exams -->
+				<input type="checkbox" class="sheet-useETU" name="attr_useETU" style="display:none;" />
+				<div class="sheet-etuSection">
+					<input class='sheet-useMajor' type='checkbox' name='attr_majorminor' style='width: 15px; display: none;' />
+					<div class="sheet-Major sheet-etuItem">
+						<h4 class="sheet-subsectionHeader" data-i18n="major">Major:</h4>
+						<textarea class="sheet-mmItem" name='attr_mmajor'></textarea>
+					</div>
+					<div class="sheet-Major sheet-etuItem">
+						<h4 class="sheet-subsectionHeader" data-i18n="minor">Minor:</h4>
+						<textarea class="sheet-mmItem" name='attr_mminor'></textarea>
+					</div>
+					<input type='checkbox' class='sheet-useActExams' name='attr_activitiesexams' value='1' style=' width: 15px; display: none;' />
+					<div class="sheet-ActExams sheet-etuItem">
+						<h4 class="sheet-subsectionHeader" data-i18n="activities">Activities</h4>
+						<fieldset class='repeating_activities'>
+							<textarea name="attr_activities" class="sheet-mmItem" title="@{activities}"></textarea>
+						</fieldset>
+					</div>
+					<div class="sheet-ActExams sheet-etuItem">
+						<h4 class="sheet-subsectionHeader" data-i18n="exams">Exams</h4>
+						<fieldset class='repeating_exams'>
+							<textarea name="attr_exams" class="sheet-mmItem" title="@{exams}"></textarea>
+						</fieldset>
+					</div>
+				</div>
+    			<!-- End ETU Major/Minor/Activities/Exams -->
+    			
+    			<!-- Motivation -->
 				<input type="checkbox" class="sheet-useMotivation" name="attr_a41motivation" style="width: 15px; display: none;" />
-				<div class="sheet-Motivation">
-					<h4 class="sheet-subsectionHeader"><span data-i18n="motivation">Motivation</span></h4>
-					<textarea class="sheet-standardtext" name='attr_motivation' style='width:790px; height:75px;'></textarea><br />
+				<div class="sheet-Motivation sheet-standardDiv">
+					<h4 class="sheet-subsectionHeader" data-i18n="motivation">Motivation</h4>
+					<textarea class="sheet-standardTextArea" name='attr_motivation'></textarea>
 				</div>
 				<!-- End Motivation -->
 				
 				<!-- Physical Appearance/History/Orgin of Powers -->
-				<input type="checkbox" class="sheet-useParaHuman" name="attr_powerOrigins" style="width: 15px; display: none;" />
-				<h4 class="sheet-CharacterHistory sheet-subsectionHeader"></h4>
-				<textarea class="sheet-standardtext" name='attr_physdescription' style='width:790px;'></textarea>
-				<!-- end Phyisical Appearance, etc. -->
+				<input type="checkbox" class="sheet-useBGDesc" name="attr_useBGPhysicalDesc" style="display:none;" checked />
+				<div class="sheet-BGDesc sheet-standardDiv">
+					<input type="checkbox" class="sheet-useParaHuman" name="attr_powerOrigins" style="width: 15px; display: none;" />
+					<h4 class="sheet-CharacterHistory sheet-subsectionHeader" data-i18n="physical-appearance-personal-history">Physical Appearance + Personal History</h4>
+					<h4 class="sheet-CharacterOrigin sheet-subsectionHeader" data-i18n="physical-appearance-personal-history-parahuman-origin">Physical Appearance + Personal History + Origins of Parahuman Abilities</h4>
+					<textarea class="sheet-standardTextArea" name='attr_physdescription'></textarea>
+				</div>
+				<!-- End Physical Appearance, etc. -->
 				
-    			<!-- Exams & Activities -->
-    			<input type='checkbox' class='sheet-useActExams' name='attr_activitiesexams' value='1' style=' width: 15px; display: none;' />
-    			<div class='sheet-ActExams' style='width: 100%;'>
-    				<div class='sheet-2colrow' style='width: 100%;'>
-    					<div class='sheet-col'>
-    						<!-- Activities -->
-    						<h3 class="sheet-subsectionHeader"><span data-i18n="activities">Activities</span></h3>
-    						<fieldset class='repeating_activities'>
-    							<textarea name="attr_activities" class="sheet-standardtext" title="@{activities}" style='height: 30px; width: 97%;'></textarea>
-    						</fieldset>
-    					</div>
-    					<div class='sheet-col'>
-    						<!-- Exams -->
-    						<h3 class="sheet-subsectionHeader"><span data-i18n="exams">Exams</span></h3>
-    						<fieldset class='repeating_exams'>
-    							<textarea name="attr_exams" class="sheet-standardtext" title="@{exams}" style='height: 30px; width: 97%;'></textarea>
-    						</fieldset>
-    					</div>
-    				</div>
-    			</div>
     			<!-- Quest Log -->
-    				<!-- Quest Title, Boss, Goal, Notes -->
+    			<input type='checkbox' class='useQuestLog' name="attr_questlog" style="display:none;" checked />
+    			<div class="sheet-QuestLog sheet-standardDiv">
+    			    <div class="sheet-showhidebox">
+					    <input type="checkbox" class="sheet-hideQL" name="attr_hideQL" /><span class="sheet-showQL"></span>
+					</div>
+					<h1 class="sheet-sectionTitle" data-i18n="quest-log">Quest Log</h1>
+					<input type="checkbox" class="sheet-hideQL" name="attr_hideQL" style="display:none;" />
+					<div class="sheet-QL">
+					    <h3 class="sheet-qlItem sheet-title">Title</h3>
+					    <h3 class="sheet-qlItem sheet-boss">Boss</h3>
+					    <h3 class="sheet-qlItem sheet-goal">Goal</h3>
+					    <h3 class="sheet-qlItem sheet-qlComplete" style="text-align:center;">Done</h3>
+					    <fieldset class="repeating_quests">
+					        <div class="sheet-QL">
+					            <input class="sheet-qlItem sheet-title" type="text" data-i18n-placeholder="quest-title" placeholder="Quest Title" name="attr_Quest" />
+        						<input class="sheet-qlItem sheet-boss" data-i18n-placeholder="who-hired-you" placeholder="Who Hired You?" type="text" name="attr_QuestBoss" />
+        						<input class="sheet-qlItem sheet-goal" type="text" data-i18n-placeholder="whats-the-goal-of-the-quest" placeholder="What's the goal of the quest?" name="attr_QuestGoal" />
+        						<div class="sheet-qlItem sheet-qlComplete">
+        						    <input type="checkbox" class='sheet-goalDone' name="attr_QuestComplete" /><span class="sheet-goalCheck"></span>
+        						</div>
+        						<textarea class="sheet-qlItem sheet-qlNotes" data-i18n-placeholder="notes-about-the-quest" placeholder="Notes about the quest..." name="attr_questLog"></textarea>
+					        </div>
+					    </fieldset>
+					</div>
+    			</div>
+    			
+    			
+    			<!-- Get rid of all this stuff 
     			<h3 class="sheet-subsectionHeader" style="margin-bottom: 10px; margin-top: 5px;"><span data-i18n="quest-log">Quest Log</span></h3>
     			<div class='sheet-row'>
-    				<div class='sheet-col' style='width:245px;'> <!-- Quest Title (150px) -->
+    				<div class='sheet-col' style='width:245px;'> 
     					<h4 class="sheet-repeatingHeader"><span data-i18n="quest-title">Quest Title</span></h4>
     				</div>
-    				<div class='sheet-col' style='width:193px;'> <!-- Boss (100px)-->
+    				<div class='sheet-col' style='width:193px;'> 
     					<h4 class="sheet-repeatingHeader"><span data-i18n="boss">Boss</span></h4>
     				</div>
-    				<div class='sheet-col' style='width:320px;'> <!-- Goal (100px)-->
+    				<div class='sheet-col' style='width:320px;'> 
     					<h4 class="sheet-repeatingHeader"><span data-i18n="goal">Goal</span></h4>
     				</div>
     			</div>
-    			<span class="sheet-spacer"></span>
-    			<input type="checkbox" class="sheet-useFont2" name="attr_font" value="2" style="width: 15px; display: none;" />
-    			<input type="checkbox" class="sheet-useFont3" name="attr_font" value="3" style="width: 15px; display: none;" />
-    			<input type="checkbox" class="sheet-useFont4" name="attr_font" value="4" style="width: 15px; display: none;" />
-    			<input type="checkbox" class="sheet-useFont5" name="attr_font" value="5" style="width: 15px; display: none;" />
-    			<input type="checkbox" class="sheet-useFont6" name="attr_font" value="6" style="width: 15px; display: none;" />
-    			<input type="checkbox" class="sheet-useFont7" name="attr_font" value="7" style="width: 15px; display: none;" />
-    			<input type="checkbox" class="sheet-useFont8" name="attr_font" value="8" style="width: 15px; display: none;" />
-    			<!--<input type="checkbox" class="sheet-useFont9" name="attr_font" value="9" style="width: 15px; display: none;" />-->
     			<input type="checkbox" class="sheet-useFont10" name="attr_font" value="10" style="width: 15px; display: none;" />
     			<fieldset class="repeating_quests">
     						<input class="sheet-standardQuest" style='width:245px;' type="text" data-i18n-placeholder="quest-title" placeholder="Quest Title" name="attr_Quest" title="@{repeating_quests_$#_Quest}" />
@@ -3996,33 +4482,40 @@
     						<input class="sheet-standardQuest" style='width:300px;' type="text" data-i18n-placeholder="whats-the-goal-of-the-quest" placeholder="What's the goal of the quest?" name="attr_QuestGoal" title="@{repeating_quests_$#_QuestGoal}" /><input type="checkbox" style="width: 15px;" name="attr_QuestComplete" />
     						<br />
     						<textarea class="sheet-Questtextarea" style='height:50px; width:780px;' data-i18n-placeholder="notes-about-the-quest" placeholder="Notes about the quest..." name="attr_questLog" title="@{repeating_quests_$#_questLog}"></textarea>
-    			</fieldset>
+    			</fieldset>-->
+    			
     			<!-- Hero's Journey -->
     			<input type="checkbox" class="sheet-useHeroicPath" name="attr_heroicpath" style="width: 15px; display: none;" />
-    			<div class='sheet-HeroicPath' style='width: 100%;'>
-    				<h3 class="sheet-subsectionHeader"><span data-i18n="heros-journey">Hero's Journey</span></h3>
-    				<div class='sheet-col' style='width: 10%; margin: 0px; margin-right: 5px;'>
-    					<h3 class="sheet-repeatingHeader" style='text-align: center;'><span data-i18n="result">Result</span></h3>
-    				</div>
-    				<div class='sheet-col' style='width: 88%; margin: 0px;'>
-    					<h3 class="sheet-repeatingHeader"><span data-i18n="table-event">Table/Event</span></h3>
-    				</div>
-    				<fieldset class='repeating_HeroicPath'>
-    					<div class='sheet-col' style='width: 10%; margin: 0px; margin-right: 5px;'>
-    						<input type="text" name="attr_hpResult" class="sheet-standard" style="width: 100%; text-align: center; font-size: .75em;" />
-    					</div>
-    					<div class='sheet-col' style='width: 88%; margin: 0px;'>
-    						<textarea name="attr_hptableevent" class="sheet-standardtext" style="width: 98% ; max-width: 99% ; height: 19px; border-bottom: 1px solid black;"></textarea>
-    					</div>
-    				</fieldset>
-    			</div>
+				<div class="sheet-HeroicPath sheet-standardDiv">
+					<div class="sheet-showhidebox">
+					    <input type="checkbox" class="sheet-hideHJ" name="attr_hideHJ" /><span class="sheet-showHJ"></span>
+					</div>
+					<h1 class="sheet-sectionTitle" data-i18n="heros-journey">Hero's Journey</h1>
+					<input type="checkbox" class="sheet-hideHJ" name="attr_hideHJ" style="display: none;" />
+					<div class="sheet-HJ">
+						<h3 class="sheet-hjItem sheet-result" style="text-align: center;" data-i18n="result">Result</h3>
+						<h3 class="sheet-hjItem sheet-event" data-i18n="table-event">Table/Event</h3>
+						<fieldset class='repeating_HeroicPath'>
+						    <div class="sheet-HJ">
+    							<input type="text" class="sheet-hjItem sheet-result" name="attr_hpResult" />
+    							<textarea class="sheet-hjItem sheet-event" name="attr_hptableevent"></textarea>
+						    </div>
+						</fieldset>
+					</div>
+					
+				</div>
     			<!-- End Hero's Journey -->
     			<!-- Notes -->
-    			<h3 class="sheet-subsectionHeader"><span data-i18n="notes">Notes</span></h3>
-    				<textarea name="attr_CharNotes" class="sheet-standardtext" title="@{CharNotes}" style='width:785px;'></textarea>
+				<div class="sheet-standardDiv">
+					<h4 class="sheet-subsectionHeader" data-i18n="notes">Notes</h4>
+					<textarea name="attr_CharNotes" class="sheet-standardTextArea" title="@{CharNotes}"></textarea>
+				</div>
     			<!-- Party Bag -->
-    			<h3 class="sheet-subsectionHeader"><span data-i18n="party-bag">Party Bag</span></h3>
-    				<textarea name="attr_partybag" class="sheet-standardtext" title="@{partybag}" style='width:785px;' data-i18n-placeholder="community-property-money" placeholder="Community property and money"></textarea>
+				<input type="checkbox" class="sheet-usePartyBag" style="display:none;" name="attr_usePG" checked />
+				<div class="sheet-PartyBag sheet-standardDiv">
+					<h4 class="sheet-subsectionHeader" data-i18n="party-bag">Party Bag</h4>
+					<textarea name="attr_partybag" class="sheet-standardTextArea" title="@{partybag}" data-i18n-placeholder="community-property-money" placeholder="Community property and money"></textarea>
+				</div>
             </div>
             <!-- Start Vehicles -->
             <div class='sheet-vehicles'>
@@ -5340,226 +5833,209 @@
         		<!--                           -->
     			<!-- BEGIN CONFIGURATION STUFF -->
     			<!--                           -->
-        		<div class="sheet-atts">
-    				<h3 class='sheet-sectionHeading' data-i18n="backgrounds">Backgrounds</h3>
-						<label class='sheet-configlabel'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="1"  data-i18n-title="no-background-image" title="No Background Image" checked /> <span data-i18n="no-background-image">No Background Image</span></label>
-						<label class='sheet-configlabel'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="7"  data-i18n-title="cyberpunk" title="Cyberpunk" /> <span data-i18n="cyberpunk">Cyberpunk</span></label>
-						<label class='sheet-configlabel'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="8"  data-i18n-title="hellfrost" title="Hellfrost" /> <span data-i18n="hellfrost">Hellfrost</span></label>
-						<label class='sheet-configlabel'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="9"  data-i18n-title="hellfrost-land-of-fire" title="Hellfrost: Land of Fire" /> <span data-i18n="hellfrost-land-of-fire">Hellfrost: Land of Fire</span></label>
-						<label class='sheet-configlabel'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="5"  data-i18n-title="last-parsec" title="Last Parsec" /> <span data-i18n="last-parsec">Last Parsec</span></label>
-						<label class='sheet-configlabel'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="4"  data-i18n-title="noir" title="Noir" /> <span data-i18n="noir">Noir</span></label>
-						<label class='sheet-configlabel'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="2"  data-i18n-title="old-map-postsm" title="Old Map (PotSM)" /> <span data-i18n="old-map">Old Map</span></label>
-						<label class='sheet-configlabel'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="10"  data-i18n-title="parchment"  title="Parchment" /> <span data-i18n="parchment">Parchment</span></label>
-						<label class='sheet-configlabel'><input type='radio' class='sheet-useBackground' style='width: 15px;' name='attr_background' value='12' data-i18n-title="rippers"  title='Rippers' /> <span data-i18n="rippers">Rippers</span> </label>
-						<label class='sheet-configlabel'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="11" data-i18n-title="rifts"  title="Rifts" /> <span data-i18n="rifts-scifi">Rifts/Sci Fi</span></label>
-						<label class='sheet-configlabel'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="6" data-i18n-title="supers"  title="Supers" /> <span data-i18n="superhero">Superhero</span></label>
-						<label class='sheet-configlabel'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="3" data-i18n-title="zombiepocalypse"  title="Zombiepocalypse" /> <span data-i18n="zombie-esque">Zombie-esque</span></label>
+    			<div class="sheet-configSection">
+        			<input type="checkbox" class="sheet-hideQS" name="attr_hideQS" /><span class="sheet-showQS"></span>
+    			    <h3 class="sheet-configSectionTitle" data-i18n="quick-setting-configuration">Quick Setting Configuration</h3>
+        			<div class="sheet-quickconfig">
+        			    <div class='sheet-quickItem'>
+        			        <input type='checkbox' class='sheet-configReset' name='attr_settingconfig' value='0' /><span class='sheet-reset'><span data-i18n="reset-to-default">Reset to Default</span>&nbsp;<span style='font-family: "Pictos";'>0</span></span>
+        			    </div>
+        			    <label class='sheet-quickItem'><input type='checkbox' name='attr_settingconfig' value='1' /> <span data-i18n="50-fathoms">50 Fathoms</span></label>
+    					<label class='sheet-quickItem'><input type='checkbox' name='attr_settingconfig' value='2' /> <span data-i18n="all-for-one">All For One</span></label>
+    					<label class='sheet-quickItem'><input type='checkbox' name='attr_settingconfig' value='3' /> <span data-i18n="deadlands-reloaded">Deadlands Reloaded</span></label>
+    					<label class='sheet-quickItem'><input type='checkbox' name='attr_settingconfig' value='4' /> <span data-i18n="east-texas-university">East Texas University</span></label>
+    					<label class='sheet-quickItem'><input type='checkbox' name='attr_settingconfig' value='5' /> <span data-i18n="hellfrost">Hellfrost</span></label>
+    					<label class="sheet-quickItem"><input type='checkbox' name='attr_settingconfig' value='6' /> <span data-i18n="interface-zero">Interface Zero 2.0</span></label>
+    					<label class="sheet-quickItem"><input type='checkbox' name='attr_settingconfig' value='7' /> <span data-i18n="lankhmar">Lankhmar</span></label>
+    					<label class="sheet-quickItem"><input type='checkbox' name='attr_settingconfig' value='8' /> <span data-i18n="last-parsec">Last Parsec</span></label>
+    					<label class="sheet-quickItem"><input type='checkbox' name='attr_settingconfig' value='9' /> <span data-i18n="low-life">Low Life</span></label>
+    					<label class="sheet-quickItem"><input type='checkbox' name='attr_settingconfig' value='10' /> <span data-i18n="necessary-evil">Necessary Evil</span></label>
+    					<label class="sheet-quickItem"><input type='checkbox' name='attr_settingconfig' value='11' /> <span data-i18n="pirates-of-the-spanish-main">Pirates of the Spanish Main</span></label>
+    					<label class="sheet-quickItem"><input type='checkbox' name='attr_settingconfig' value='13' /> <span data-i18n="rifts">Rifts</span></label>
+    					<label class="sheet-quickItem"><input type='checkbox' name='attr_settingconfig' value='14' /> <span data-i18n="rippers">Rippers</span></label>
+    					<label class="sheet-quickItem"><input type='checkbox' name='attr_settingconfig' value='12' /> <span data-i18n="tour-of-darkness">Tour of Darkness</span></label>
+        			</div>
     			</div>
-    			<div class="sheet-atts">
-    				<h3 class='sheet-sectionHeading'><span data-i18n="logos">Logos</span></h3>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="1"  data-i18n-title="savage-worlds-deluxe" title="Savage Worlds Deluxe" checked /> <span data-i18n="savage-worlds-deluxe">Savage Worlds Deluxe</span></label>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="4"  data-i18n-title="zombie-swd" title="Zombie SWD" /> <span data-i18n="savage-worlds-deluxe-bloodied">Savage Worlds Deluxe (Bloodied)</span></label>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="13"  data-i18n-title="all-for-one" title="All For One" /> <span data-i18n="all-for-one">All For One</span></label>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="6"  data-i18n-title="deadlands" title="Deadlands" /> <span data-i18n="deadlands">Deadlands</span></label>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="7"  data-i18n-title="deadlands-noir" title="Deadlands: Noir" /> <span data-i18n="deadlands-noir">Deadlands: Noir</span></label>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="8"  data-i18n-title="deadlands-hell-on-earth" title="Deadlands: Hell on Earth" /> <span data-i18n="deadlands-hell-on-earth">Deadlands: Hell on Earth</span></label>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="14" data-i18n-title="east-texas-university"  title="East Texas University" /> <span data-i18n="east-texas-university">East Texas University</span></label>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="10" data-i18n-title="hellfrost"  title="Hellfrost" style="width: 15px;" /> <span data-i18n="hellfrost">Hellfrost</span></label>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="11" data-i18n-title="hellfrost-land-of-fire"  title="Hellfrost: Land of Fire" style="width: 15px;" /> <span data-i18n="hellfrost-land-of-fire">Hellfrost: Land of Fire</span></label>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="9"  data-i18n-title="interface-zero" title="Interface Zero 2.0" style="width: 15px;" /> <span data-i18n="inteface-zero-20">Interface Zero 2.0</span></label>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="12"  data-i18n-title="lankhmar" title="Lankhmar" style="width: 15px;" /> <span data-i18n="lankhmar">Lankhmar</span></label>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="3"  data-i18n-title="the-last-parsec" title="The Last Parsec" /> <span data-i18n="the-last-parsec">The Last Parsec</span></label>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="5" data-i18n-title="necessary-evil"  title="Necessary Evil" /> <span data-i18n="necessary-evil">Necessary Evil</span></label>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="2"  data-i18n-title="pirates-of-the-spanish-main" title="Pirates of the Spanish Main" /> <span data-i18n="pirates-of-the-spanish-main">Pirates of the Spanish Main</span></label>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="15"  data-i18n-title="rifts" title="Rifts" /> <span data-i18n="rifts">Rifts</span></label>
-    					<label class='sheet-configlabel'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="16"  data-i18n-title="rippers" title="Rippers" /> <span data-i18n="rippers">Rippers</span></label>
+    			<div class="sheet-configSection">
+    			    <input type="checkbox" class="sheet-hideBG" name="attr_hideBG" /><span class="sheet-showBG"></span>
+    			    <h3 class='sheet-configSectionTitle' data-i18n="backgrounds">Backgrounds</h3>
+    			    <div class="sheet-bgconfig">
+    			        <label class='sheet-bgItem'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="1"  data-i18n-title="no-background-image" title="No Background Image" checked /> <span data-i18n="no-background-image">No Background Image</span></label>
+						<label class='sheet-bgItem'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="7"  data-i18n-title="cyberpunk" title="Cyberpunk" /> <span data-i18n="cyberpunk">Cyberpunk</span></label>
+						<label class='sheet-bgItem'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="8"  data-i18n-title="hellfrost" title="Hellfrost" /> <span data-i18n="hellfrost">Hellfrost</span></label>
+						<label class='sheet-bgItem'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="9"  data-i18n-title="hellfrost-land-of-fire" title="Hellfrost: Land of Fire" /> <span data-i18n="hellfrost-land-of-fire">Hellfrost: Land of Fire</span></label>
+						<label class='sheet-bgItem'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="5"  data-i18n-title="last-parsec" title="Last Parsec" /> <span data-i18n="last-parsec">Last Parsec</span></label>
+						<label class='sheet-bgItem'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="4"  data-i18n-title="noir" title="Noir" /> <span data-i18n="noir">Noir</span></label>
+						<label class='sheet-bgItem'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="2"  data-i18n-title="old-map-postsm" title="Old Map (PotSM)" /> <span data-i18n="old-map">Old Map</span></label>
+						<label class='sheet-bgItem'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="10"  data-i18n-title="parchment"  title="Parchment" /> <span data-i18n="parchment">Parchment</span></label>
+						<label class='sheet-bgItem'><input type='radio' class='sheet-useBackground' style='width: 15px;' name='attr_background' value='12' data-i18n-title="rippers"  title='Rippers' /> <span data-i18n="rippers">Rippers</span> </label>
+						<label class='sheet-bgItem'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="11" data-i18n-title="rifts"  title="Rifts" /> <span data-i18n="rifts-scifi">Rifts/Sci Fi</span></label>
+						<label class='sheet-bgItem'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="6" data-i18n-title="supers"  title="Supers" /> <span data-i18n="superhero">Superhero</span></label>
+						<label class='sheet-bgItem'><input type="radio" class="sheet-useBackground" style="width: 15px;" name="attr_background" value="3" data-i18n-title="zombiepocalypse"  title="Zombiepocalypse" /> <span data-i18n="zombie-esque">Zombie-esque</span></label>
+    			    </div>
+    			</div>
+    			<div class="sheet-configSection">
+    			    <input type="checkbox" class="sheet-hideLogo" name="attr_hideLogo" /><span class="sheet-showLogo"></span>
+    			    <h3 class='sheet-configSectionTitle' data-i18n="logos">Logos</h3>
+    			    <div class="sheet-logoconfig">
+    			        <label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="1"  data-i18n-title="savage-worlds-deluxe" title="Savage Worlds Deluxe" checked /> <span data-i18n="savage-worlds-deluxe">Savage Worlds Deluxe</span></label>
+    					<label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="4"  data-i18n-title="zombie-swd" title="Zombie SWD" /> <span data-i18n="savage-worlds-deluxe-bloodied">Savage Worlds Deluxe (Bloodied)</span></label>
+    					<label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="13"  data-i18n-title="all-for-one" title="All For One" /> <span data-i18n="all-for-one">All For One</span></label>
+    					<label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="6"  data-i18n-title="deadlands" title="Deadlands" /> <span data-i18n="deadlands">Deadlands</span></label>
+    					<label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="7"  data-i18n-title="deadlands-noir" title="Deadlands: Noir" /> <span data-i18n="deadlands-noir">Deadlands: Noir</span></label>
+    					<label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="8"  data-i18n-title="deadlands-hell-on-earth" title="Deadlands: Hell on Earth" /> <span data-i18n="deadlands-hell-on-earth">Deadlands: Hell on Earth</span></label>
+    					<label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="14" data-i18n-title="east-texas-university"  title="East Texas University" /> <span data-i18n="east-texas-university">East Texas University</span></label>
+    					<label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="10" data-i18n-title="hellfrost"  title="Hellfrost" style="width: 15px;" /> <span data-i18n="hellfrost">Hellfrost</span></label>
+    					<label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="11" data-i18n-title="hellfrost-land-of-fire"  title="Hellfrost: Land of Fire" style="width: 15px;" /> <span data-i18n="hellfrost-land-of-fire">Hellfrost: Land of Fire</span></label>
+    					<label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="9"  data-i18n-title="interface-zero" title="Interface Zero 2.0" style="width: 15px;" /> <span data-i18n="inteface-zero-20">Interface Zero 2.0</span></label>
+    					<label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="12"  data-i18n-title="lankhmar" title="Lankhmar" style="width: 15px;" /> <span data-i18n="lankhmar">Lankhmar</span></label>
+    					<label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="3"  data-i18n-title="the-last-parsec" title="The Last Parsec" /> <span data-i18n="the-last-parsec">The Last Parsec</span></label>
+    					<label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="5" data-i18n-title="necessary-evil"  title="Necessary Evil" /> <span data-i18n="necessary-evil">Necessary Evil</span></label>
+    					<label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="2"  data-i18n-title="pirates-of-the-spanish-main" title="Pirates of the Spanish Main" /> <span data-i18n="pirates-of-the-spanish-main">Pirates of the Spanish Main</span></label>
+    					<label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="15"  data-i18n-title="rifts" title="Rifts" /> <span data-i18n="rifts">Rifts</span></label>
+    					<label class='sheet-logoItem'><input type="checkbox" class="sheet-ShowLogo" name="attr_logo" value="16"  data-i18n-title="rippers" title="Rippers" /> <span data-i18n="rippers">Rippers</span></label>
     					<!-- Need to update the Disclaimer Information section of the CSS File with the appropriate information
     						 Also need to update the bottom of this html page; be sure to use the checkbox input and not the radio input-->
+    			    </div>
     			</div>
-    			<div class="sheet-atts">
-    				<h3 class='sheet-sectionHeading' data-i18n="other-miscellaneous-tweaks">Other Miscellaneous Tweaks</h3>
-					<input type="checkbox" class="sheet-hideArcanum" name="attr_ArcanumTab" style="width: 15px;"> <span data-i18n="hide-arcanum-tab">Hide the Arcanum Tab</span><br />
-					<input type="checkbox" class="sheet-showVehicles sheet-useVehicles" name="attr_vehicle" style="width: 15px;"> <span data-i18n="show-the-vehicles-tab">Show the Vehicles Tab</span><br />
-					<!--<input class="sheet-useVehicles" type="checkbox" name="attr_vehicle" /> Show Vehicles (on Equipment Tab)<br />-->
-					<div class="sheet-vehicleTypes">
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-useSailingShips" type="checkbox" name="attr_sailingShip" /> <span data-i18n="show-sailing-ship">Show Sailing Ship</span><br />
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-useFlyingShips" type="checkbox" name="attr_flyingShip" /> <span data-i18n="show-flying-ship">Show Flying Ship</span><br />
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-useGroundVehicle" type="checkbox" name="attr_groundVehicle" /> <span data-i18n="show-ground-vehicle">Show Ground Vehicle</span><br />
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-usePowerArmor" type="checkbox" name="attr_PowerArmor" /> <span data-i18n="show-power-armor">Show Power Armor</span><br />
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-useRobotArmor" type="checkbox" name="attr_RobotArmor" /> <span data-i18n="show-robot-armor">Show Robot Armor</span><br />
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input class="sheet-useWalker" type="checkbox" name="attr_Walker" /> <span data-i18n="show-walker">Show Walker</span><br />
-						<input type="checkbox" name="attr_showmods" checked /> <span data-i18n="show-modifiers">Show Modifiers For Trait Rolls</span><br />
-						<input type="checkbox" name="attr_promptmods" /> <span data-i18n="prompt-modifiers-text">Prompt for Misc. Modifiers (wounds, fatigue, Distracted, and Encumbrance are included automatically)</span>
-						<!-- Hidden Fields to set whether to show mods in the Roll Template or not -->
-						<input type="hidden" name="attr_setmods" value="{{mods=[[1d0+@{absmod}+abs(@traitmods)]] }}" />
-						<input type="hidden" name="attr_setmodsenc" value="{{mods=[[1d0+@{absmodenc}+abs(@traitmods)+abs(@{encumbrance}) ]] }}" />
-						<input type="hidden" name="attr_setdmgmods" value="{{mods=[[1d0+abs(@traitmods)]] }}" />
-						<!-- Hidden Fields to set the rest of the Roll Template Information -->
-						<input type="hidden" name="attr_showtraitmods" value="{{showtt=[[1d0+@{traitmods}]]}} {{ttmod=@{traitmods}}} {{showwounds=[[1d0+@{woundsMod}]]}} {{wounds=-@{woundsMod} }} {{showfatigue=[[1d0+@{fatigue}]]}} {{fatigue=-@{fatigue}}} {{showdistracted=[[1d0+@{distracted}]]}} {{distracted=@{distracted}}}" />
-						<input type="hidden" name="attr_showtraitmodsenc" value="{{showtt=[[1d0+@{traitmods}]]}} {{ttmod=@{traitmods}}} {{showwounds=[[1d0+@{woundsMod}]]}} {{wounds=-@{woundsMod} }} {{showfatigue=[[1d0+@{fatigue}]]}} {{fatigue=-@{fatigue}}} {{showdistracted=[[1d0+@{distracted}]]}} {{distracted=@{distracted}}} {{showenc=[[1d0+@{encumbrance}]]}} {{encumbrance=@{encumbrance}}}" />
-						<input type="hidden" name="attr_showdmgmods" value="{{showdmg=[[1d0+@{damagemods}]]}} {{ttmod=@{traitmods}}}" />
-						<!-- Hidden Fields to make Dice Rolling easier -->
-						<input type="hidden" name="attr_traitmods" value="@{ttmod}" />
-						<input type="hidden" name="attr_damagemods" value="@{dmgmod}" />
-						<!-- Absolute Values of all the different Modifier fields -->
-						<input type="hidden" name="attr_absmod" value="0" />
-						<input type="hidden" name="attr_absmodenc" value="0" />
-					</div>
-    			</div><!--End 2colrow-->
-    			<div class='sheet-QuickSettings' style="padding: 10px;">
-					<h3 style="text-align: center;" data-i18n="quick-setting-configuration">Quick Setting Configuration</h3>
-					<input type="checkbox" class="sheet-hideQS" name="attr_hideQS" /><span class="sheet-showhide"></span>
-					<div class='sheet-base sheet-qs'>
-					    <p><span data-i18n="select-a-setting-text">Select a setting to preset the configuration for the Setting</span>. <span data-i18n="you-can-also">You can also</span> <input type='checkbox' class='sheet-ConfigReset' name='attr_settingconfig' value='0' /><span class='sheet-reset' style='width:120px; margin-left: -120px; text-align: center; background-color: black; color: white; border-radius: 4px;'><span data-i18n="reset-to-default">Reset to Default</span> <span style='font-family: "Pictos";'>0</span></span></p>
-					    <div class="sheet-configbox">
-    					    <label class='sheet-configlabel'><input type='checkbox' name='attr_settingconfig' value='1' /> <span data-i18n="50-fathoms">50 Fathoms</span></label>
-    						<label class='sheet-configlabel'><input type='checkbox' name='attr_settingconfig' value='2' /> <span data-i18n="all-for-one">All For One</span></label>
-    						<label class='sheet-configlabel'><input type='checkbox' name='attr_settingconfig' value='3' /> <span data-i18n="deadlands-reloaded">Deadlands Reloaded</span></label>
-    						<label class='sheet-configlabel'><input type='checkbox' name='attr_settingconfig' value='4' /> <span data-i18n="east-texas-university">East Texas University</span></label>
-    						<label class='sheet-configlabel'><input type='checkbox' name='attr_settingconfig' value='5' /> <span data-i18n="hellfrost">Hellfrost</span></label>
-    						<label class="sheet-configlabel"><input type='checkbox' name='attr_settingconfig' value='6' /> <span data-i18n="interface-zero">Interface Zero 2.0</span></label>
-    						<label class="sheet-configlabel"><input type='checkbox' name='attr_settingconfig' value='7' /> <span data-i18n="lankhmar">Lankhmar</span></label>
-    						<label class="sheet-configlabel"><input type='checkbox' name='attr_settingconfig' value='8' /> <span data-i18n="last-parsec">Last Parsec</span></label>
-    						<label class="sheet-configlabel"><input type='checkbox' name='attr_settingconfig' value='9' /> <span data-i18n="low-life">Low Life</span></label>
-    						<label class="sheet-configlabel"><input type='checkbox' name='attr_settingconfig' value='10' /> <span data-i18n="necessary-evil">Necessary Evil</span></label>
-    						<label class="sheet-configlabel"><input type='checkbox' name='attr_settingconfig' value='11' /> <span data-i18n="pirates-of-the-spanish-main">Pirates of the Spanish Main</span></label>
-    						<label class="sheet-configlabel"><input type='checkbox' name='attr_settingconfig' value='13' /> <span data-i18n="rifts">Rifts</span></label>
-    						<label class="sheet-configlabel"><input type='checkbox' name='attr_settingconfig' value='14' /> <span data-i18n="rippers">Rippers</span></label>
-    						<label class="sheet-configlabel"><input type='checkbox' name='attr_settingconfig' value='12' /> <span data-i18n="tour-of-darkness">Tour of Darkness</span></label>
-					    </div>
-					</div>
+    			<div class='sheet-configSection'>
+    			    <input type="checkbox" class="sheet-hideOST" name="attr_hideOST" /><span class="sheet-showOST"></span>
+    			    <h3 class='sheet-configSectionTitle' data-i18n="other-sheet-tweaks">Other Sheet Tweaks</h3>
+    			    <div class="sheet-miscconfig">
+    			        <label class='sheet-miscItem'><input type="checkbox" class="sheet-hideArcanum" name="attr_ArcanumTab" style="width: 15px;"> <span data-i18n="hide-arcanum-tab">Hide the Arcanum Tab</span></label>
+    			        <label class='sheet-miscItem'><input type="checkbox" name="attr_promptmods" title="Wounds, Fatigue, Distracted, and Encumbrance are not part of Misc. Modifiers and are accounted for automatically" /> <span data-i18n="prompt-modifiers-text">Prompt for Misc. Modifiers</span></label>
+						<label class='sheet-miscItem'><input type="checkbox" name="attr_useBGPhysicalDesc" checked /> <span data-i18n="show-background-description">Show Background and Description</span></label>
+        			    <label class='sheet-miscItem'><input type="checkbox" name="attr_showmods" checked /> <span data-i18n="show-modifiers">Show Modifiers For Trait Rolls</span></label>
+        			    <!-- Hidden Fields to set whether to show mods in the Roll Template or not -->
+    					<input type="hidden" name="attr_setmods" value="{{mods=[[1d0+@{absmod}+abs(@traitmods)]] }}" />
+    					<input type="hidden" name="attr_setmodsenc" value="{{mods=[[1d0+@{absmodenc}+abs(@traitmods)+abs(@{encumbrance}) ]] }}" />
+    					<input type="hidden" name="attr_setdmgmods" value="{{mods=[[1d0+abs(@traitmods)]] }}" />
+    					<!-- Hidden Fields to set the rest of the Roll Template Information -->
+    					<input type="hidden" name="attr_showtraitmods" value="{{showtt=[[1d0+@{traitmods}]]}} {{ttmod=@{traitmods}}} {{showwounds=[[1d0+@{woundsMod}]]}} {{wounds=-@{woundsMod} }} {{showfatigue=[[1d0+@{fatigue}]]}} {{fatigue=-@{fatigue}}} {{showdistracted=[[1d0+@{distracted}]]}} {{distracted=@{distracted}}}" />
+    					<input type="hidden" name="attr_showtraitmodsenc" value="{{showtt=[[1d0+@{traitmods}]]}} {{ttmod=@{traitmods}}} {{showwounds=[[1d0+@{woundsMod}]]}} {{wounds=-@{woundsMod} }} {{showfatigue=[[1d0+@{fatigue}]]}} {{fatigue=-@{fatigue}}} {{showdistracted=[[1d0+@{distracted}]]}} {{distracted=@{distracted}}} {{showenc=[[1d0+@{encumbrance}]]}} {{encumbrance=@{encumbrance}}}" />
+    					<input type="hidden" name="attr_showdmgmods" value="{{showdmg=[[1d0+@{damagemods}]]}} {{ttmod=@{traitmods}}}" />
+    					<!-- Hidden Fields to make Dice Rolling easier -->
+    					<input type="hidden" name="attr_traitmods" value="@{ttmod}" />
+    					<input type="hidden" name="attr_damagemods" value="@{dmgmod}" />
+    					<!-- Absolute Values of all the different Modifier fields -->
+    					<input type="hidden" name="attr_absmod" value="0" />
+    					<input type="hidden" name="attr_absmodenc" value="0" />
+    					<!-- End Hidden Fields -->
+						<label class="sheet-miscItem"><input type="checkbox" class="sheet-usePartyBag" name="attr_usePG" checked /> <span data-i18n="show-party-bag">Show Party Bag</span></label>
+						<label class="sheet-miscItem"><input type='checkbox' class='sheet-useQuestLog' name="attr_questlog" checked /> <span data-i18n="show-quest-log">Show Quest Log</span></label>
+        			    <label class="sheet-miscItem"><input type="checkbox" class="sheet-showVehicles sheet-useVehicles" name="attr_vehicle" style="width: 15px;"> <span data-i18n="show-the-vehicles-tab">Show the Vehicles Tab</span></label>
+        			    <input type="checkbox" class="sheet-showVehicles" name="attr_vehicle" style="display: none;" />
+        			    <label class="sheet-miscItem sheet-vehicleTypes"><input class="sheet-useSailingShips" type="checkbox" name="attr_sailingShip" /> <span data-i18n="show-sailing-ship">Show Sailing Ship</span></label>
+        			    <label class="sheet-miscItem sheet-vehicleTypes"><input class="sheet-useFlyingShips" type="checkbox" name="attr_flyingShip" /> <span data-i18n="show-flying-ship">Show Flying Ship</span></label>
+        			    <label class="sheet-miscItem sheet-vehicleTypes"><input class="sheet-useGroundVehicle" type="checkbox" name="attr_groundVehicle" /> <span data-i18n="show-ground-vehicle">Show Ground Vehicle</span></label>
+        			    <label class="sheet-miscItem sheet-vehicleTypes"><input class="sheet-usePowerArmor" type="checkbox" name="attr_PowerArmor" /> <span data-i18n="show-power-armor">Show Power Armor</span></label>
+        			    <label class="sheet-miscItem sheet-vehicleTypes"><input class="sheet-useRobotArmor" type="checkbox" name="attr_RobotArmor" /> <span data-i18n="show-robot-armor">Show Robot Armor</span></label>
+        			    <label class="sheet-miscItem sheet-vehicleTypes"><input class="sheet-useWalker" type="checkbox" name="attr_Walker" /> <span data-i18n="show-walker">Show Walker</span></label>
+        			    <label class='sheet-miscItem'>
+            			    <span data-i18n="wild-card-icon">Wild Card Icon</span>: <select name='attr_WCI' class="sheet-wcIcon">
+            			        <option value="⊛">⊛</option>
+            			        <option value="✪">✪</option>
+            			        <option value="♕">♕</option>
+            			        <option value="†">†</option>
+            			        <option value="༒">༒</option>
+            			    </select>
+            			</label>
+            			<label class="sheet-miscItem"><button type="roll" class="sheet-APIOutput" name="roll_apifield" value="!deal-init --help">i</button><span data-i18n="api-initiative-edge">API Iniative Edges</span> <input class="sheet-standard" type="text" title="@{InitEdges}" name="attr_InitEdges"/></label>
+    			    </div>
     			</div>
-    			<div class='sheet-GameSettings' style="padding: 10px;">
-    				<div class="sheet-row">
-    					<h3 style="text-align: center;"><span data-i18n="additional-derived-stats">Additional Derived Stats</span></h3>
-    					<div class="sheet-3colrow">	
-    						<div class="sheet-col">
-    							<!--Academics--><span data-i18n-title="academic-text"  title="Used to track a character's academic score. ETU uses this field."><input class='sheet-useAcademics' type='checkbox' name='attr_useacademics' value='1' style='width: 15px;' /><span data-i18n="academics">Academics</span></span><br />
-    							<!--Corruption--><span  data-i18n-title="corruption-text" title="Used to track a character's corruption. Settings like Lankhmar use this field."><input type="checkbox" class="sheet-useCorruption" name="attr_Corruption" style="width: 15px;" /><span data-i18n="corruption">Corruption</span></span><br />
-    							<!--Fame--><span  data-i18n-title="fame-text" title="Used to track how famous a character is. Settings like Pirates of the Spanish Main use this field."><input type="checkbox" class="sheet-useFame" name="attr_potsmFame" style="width: 15px;" /><span data-i18n="fame">Fame</span></span><br />
-    							<!--Firewall--><span  data-i18n-title="firewall-text" title="Protects a character from being hacked. Starts at 4 and can be modified. This field is useful for settings like Interface Zero 2.0 or other Cyberpunk settings."><input type="checkbox" class="sheet-useFirewall" style="width: 15px;" name="attr_izFirewall" /><span data-i18n="firewall">Firewall</span></span><br />
-    						</div>
-    						<div class="sheet-col">
-    							<!--Fame--><span  data-i18n-title="glory-text" title="Used to track how glorious a character is. Settings like Hellfrost use this field."><input type="checkbox" class="sheet-useGlory" name="attr_hfGlory" style="width: 15px;" /><span data-i18n="glory">Glory</span></span><br />
-    							<!--Grit--><span  data-i18n-title="grit-text" title="A measure of one's resistance against horrors. Useful in Horror-esque settings such as Deadlands. This is a derived stat based on the character's Rank."><input type="checkbox" class="sheet-useGrit" name="attr_DLGrit" style="width: 15px;" /><span data-i18n="grit">Grit</span></span><br />
-    							<!--Neural Toughness--><span  data-i18n-title="neural-toughness-text" title="A measure of one's resistance against hacking attacks. Useful in cyberpunk settings such as Interface Zero 2.0. This is a derived stat based on the character's Toughness."><input type="checkbox" class="sheet-useNT" name="attr_neuraltoughness" style="width: 15px;" /><span data-i18n="neural-toughness">Neural Toughness</span></span><br />
-    							<!--Reason--><span  data-i18n-title="reason-text" title="Used in Rippers to measure one's sanity."><input type="checkbox" class="sheet-useReason" name="attr_ripReason" style="width: 15px;" /><span data-i18n="reason">Reason</span></span><br />	
-    						</div>
-    						<div class="sheet-col">
-    							<!--Sanity--><span  data-i18n-title="sanity-text" title="Used to track a character's sanity. Useful for most Horroresque settings. This is a derived stat based on (Spirit/2)+2."><input type="checkbox" class="sheet-useSanity" name="attr_tdsanity" style="width: 15px;" /><span data-i18n="sanity">Sanity</span><br /></span>
-    							<!--Status--><span  data-i18n-title="status-text" title="A reflection of ones position in society, and the esteem with which others regard the hero. This is used in Rippers."><input type="checkbox" class="sheet-useStatus" name="attr_ripStatus" style="width: 15px;" /><span data-i18n="status">Status</span></span><br />	
-    							<!--Strain--><span  data-i18n-title="strain-text" title="Used to measure how much strain a character is under due to augmentation from bioware. This field is useful for settings like Interface Zero 2.0 or other Cyberpunk settings."><input type="checkbox" class="sheet-useStrain" style="width: 15px;" name="attr_izStrain" /><span data-i18n="strain">Strain</span></span><br />
-    							<!--Street Cred--><span  data-i18n-title="street-cred-text" title="Used to measure a character's reputation on the streets. Base = 2 per Character Rank. This field is useful for settings like Interface Zero 2.0 or other Cyberpunk settings."><input type="checkbox" class="sheet-useStreetCred" style="width: 15px;" name="attr_izStreetCred" /><span data-i18n="street-cred">Street Cred</span></span><br />
-    						</div>
-    					</div>
-    				</div>
+    			<div class='sheet-configSection'>
+    			    <input type="checkbox" class="sheet-hideDS" name="attr_hideDS" /><span class="sheet-showDS"></span>
+    			    <h3 class='sheet-configSectionTitle' data-i18n="additional-derived-stats">Additional Derived Stats</h3>
+    			    <div class="sheet-dsconfig">
+    			        <!--Academics--><label class="sheet-dsItem" data-i18n-title="academic-text"  title="Used to track a character's academic score. ETU uses this field."><input class='sheet-useAcademics' type='checkbox' name='attr_useacademics' value='1' style='width: 15px;' /><span data-i18n="academics">Academics</span></label>
+    			        <!--Corruption--><label class="sheet-dsItem" data-i18n-title="corruption-text" title="Used to track a character's corruption. Settings like Lankhmar use this field."><input type="checkbox" class="sheet-useCorruption" name="attr_Corruption" style="width: 15px;" /><span data-i18n="corruption">Corruption</span></label>
+    			        <!--Fame--><label class="sheet-dsItem" data-i18n-title="fame-text" title="Used to track how famous a character is. Settings like Pirates of the Spanish Main use this field."><input type="checkbox" class="sheet-useFame" name="attr_potsmFame" style="width: 15px;" /><span data-i18n="fame">Fame</span></label>
+    			        <!--Firewall--><label class="sheet-dsItem" data-i18n-title="firewall-text" title="Protects a character from being hacked. Starts at 4 and can be modified. This field is useful for settings like Interface Zero 2.0 or other Cyberpunk settings."><input type="checkbox" class="sheet-useFirewall" style="width: 15px;" name="attr_izFirewall" /><span data-i18n="firewall">Firewall</span></label>
+    			        <!--Glory--><label class="sheet-dsItem" data-i18n-title="glory-text" title="Used to track how glorious a character is. Settings like Hellfrost use this field."><input type="checkbox" class="sheet-useGlory" name="attr_hfGlory" style="width: 15px;" /><span data-i18n="glory">Glory</span></label>
+    			        <!--Grit--><label class="sheet-dsItem" data-i18n-title="grit-text" title="A measure of one's resistance against horrors. Useful in Horror-esque settings such as Deadlands. This is a derived stat based on the character's Rank."><input type="checkbox" class="sheet-useGrit" name="attr_DLGrit" style="width: 15px;" /><span data-i18n="grit">Grit</span></label>
+    			        <!--Neural Toughness--><label class="sheet-dsItem" data-i18n-title="neural-toughness-text" title="A measure of one's resistance against hacking attacks. Useful in cyberpunk settings such as Interface Zero 2.0. This is a derived stat based on the character's Toughness."><input type="checkbox" class="sheet-useNT" name="attr_neuraltoughness" style="width: 15px;" /><span data-i18n="neural-toughness">Neural Toughness</span></label>
+    			        <!--Reason--><label class="sheet-dsItem" data-i18n-title="reason-text" title="Used in Rippers to measure one's sanity."><input type="checkbox" class="sheet-useReason" name="attr_ripReason" style="width: 15px;" /><span data-i18n="reason">Reason</span></label>
+    			        <!--Sanity--><label class="sheet-dsItem" data-i18n-title="sanity-text" title="Used to track a character's sanity. Useful for most Horroresque settings. This is a derived stat based on (Spirit/2)+2."><input type="checkbox" class="sheet-useSanity" name="attr_tdsanity" style="width: 15px;" /><span data-i18n="sanity">Sanity</span></label>
+    			        <!--Status--><label class="sheet-dsItem" data-i18n-title="status-text" title="A reflection of ones position in society, and the esteem with which others regard the hero. This is used in Rippers."><input type="checkbox" class="sheet-useStatus" name="attr_ripStatus" style="width: 15px;" /><span data-i18n="status">Status</span></label>
+    			        <!--Strain--><label class="sheet-dsItem" data-i18n-title="strain-text" title="Used to measure how much strain a character is under due to augmentation from bioware. This field is useful for settings like Interface Zero 2.0 or other Cyberpunk settings."><input type="checkbox" class="sheet-useStrain" style="width: 15px;" name="attr_izStrain" /><span data-i18n="strain">Strain</span></label>
+    			        <!--Street Cred--><label class="sheet-dsItem" data-i18n-title="street-cred-text" title="Used to measure a character's reputation on the streets. Base = 2 per Character Rank. This field is useful for settings like Interface Zero 2.0 or other Cyberpunk settings."><input type="checkbox" class="sheet-useStreetCred" style="width: 15px;" name="attr_izStreetCred" /><span data-i18n="street-cred">Street Cred</span></label>
+    			    </div>
     			</div>
-    			<div class='sheet-fields' style="padding: 10px;">
-    				<div class="sheet-row">
-    					<h3 style="text-align: center;"><span data-i18n="field-name-replacements">Field Name Replacements</span></h3>
-    					<div class="sheet-3colrow">
-    						<div class='sheet-col'>
-    							<!--Class--><span  data-i18n-title="class-rank-text" title="Replaces 'Rank' with 'Class'. Appropriate for ETU."><input type="checkbox" class="sheet-useClass" name="attr_ThreatRatingClass" value="1" style="width: 15px;" value="1" /><span data-i18n="class-rank">Class (Rank)</span></span><br />
-    							<!--Clams--><span  data-i18n-title="clams-money-text" title="Replaces 'Money' with 'Clams'. Appropriate for Low Life or any other setting where Clams may be an appropriate replacement for money."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="2" /><span data-i18n="clams-money">Clams (Money)</span></span><br />
-    							<!--Code Name--><span  data-i18n-title="code-name-character-text" title="Useful for games where the character is known by a code- or superhero name such as Necessary Evil or spy themed games. This will add an additional field for Civilian Name."><input type="checkbox" class="sheet-useCodeName" name="attr_codename" style="width: 15px;" /><span data-i18n="code-name-character">Code Name (Character Name)</span></span><br />
-    							<!--Credits--><span  data-i18n-title="credits-money-text" title="Replaces 'Money' with 'Credits'. Appropriate for Interface Zero or any other setting where Credits may be an appropriate replacement for money."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="4" /><span data-i18n="credits-money">Credits (Money)</span></span><br />
-    							<!--Cybernetics--><span  data-i18n-title="cybernetics-augmentations-text" title="Replaces 'Augmentations' with 'Cybernetics'. Appropriate for Rifts and any othe setting where Cybernetics is the vernacular."><input type="checkbox" class="sheet-useCybernetics" name="attr_Cybernetics" style="width: 15px;" value="1" /><span data-i18n="cybernetics-augmentations">Cybernetics (Augmentations)</span></span><br />
-    						</div>
-    						<div class='sheet-col'>
-    							<!--Increased Max Fatigue--><span  data-i18n-title="increased-max-fatigue-text" title="Modify the Max Fatigue value to three (3). Useful for Interface Zero and other settings with a higher max fatigue value."><input type="checkbox" class="sheet-useParaHuman" name="attr_increasedfatigue" style="width: 15px;" value="1" /><span data-i18n="increased-max-fatigue">Increased Max Fatigue</span> (3)</span><br />
-    							<!--Lankhmar Money--><span data-i18n-title="lankhmar-currency-money-text"  title="Replaces 'Money' with: Iron Tiks, Bronze Agols, Silver Smerduks, and Gold Rilks. Appropriate for the Lankhmar: City of Thieves setting."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="3" /><span data-i18n="lankhmar-currency-money">Lankhmar Currency (Money)</span></span><br />
-    							<!--All for One Money--><span data-i18n-title="livre-money-text"  title="Replaces 'Money' with 'Livre. Appropriate for the All for One setting."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="5" /><span data-i18n="livre-money">Livre (Money)</span></span><br />
-    							<!--Pieces of Eight--><span data-i18n-title="pieces-of-eight-money-text"  title="Replaces 'Money' with 'Pieces of Eight'. Appropriate for 50 Fathoms or any other Pirate themed setting."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="1" /><span data-i18n="pieces-of-eight-money">Pieces of Eight (Money)</span></span><br />
-    							<!--Origin of Parahuman Abilities--><span data-i18n-title="origin-of-parahuman-abilities-text"  title="Modify the Physical Appearance Text Area to include the Origins of Parahuman Abilties. Useful for Necessary Evil and other Superhero-esque settings."><input type="checkbox" class="sheet-useParaHuman" name="attr_powerOrigins" style="width: 15px;" /><span data-i18n="origin-of-parahuman-abilities">Origin of Parahuman Abilities</span></span><br />
-    						</div>
-    						<div class='sheet-col'>	
-    						        <input type="checkbox" name="attr_ppe" value="Power Points" style="display: none;" checked />
-    							<!--PPE for Rifts--><span data-i18n-title="ppe-power-points-text" title="Change Power Points to PPE (Potential Psychic Energy) for Rifts"><input type="checkbox" class="sheet-usePPE" value="PPE" name="attr_ppe" style="width: 15px;" /><span data-i18n="ppe-power-points">PPE (Power Points)</span></span><br />
-    							<input type="checkbox" class="sheet-showPowerTypes" name="attr_usePowerTypes" style="width: 15px;"> <span data-i18n="power-type">Power Type</span><br />
-    							<div class="sheet-PowerTypes" style='padding: 0px; margin: 0px;'>
-    								<!--Miracles--><span  data-i18n-title="miracles-text" title="Replaces Powers with Miracles. Can be used for characters with Faith-based magic.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='1' /><span data-i18n="miracles">Miracles</span></span></span><br />
-    								<!--Psionics--><span  data-i18n-title="psionics-text" title="Replaces Powers with Psionics. Can be used for characters with Psionics.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='2' /><span data-i18n="psionics">Psionics</span></span><br />
-    								<!--Spells--><span  data-i18n-title="spells-text" title="Replaces Powers with Spells. Can be used for characters with traditional-type magic.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='3' /><span data-i18n="spells">Spells</span></span><br />
-    								<!--Rituals--><span  data-i18n-title="rituals-text" title="Replaces Powers with Rituals. Can be used for characters or settings (like ETU) where all powers are Ritualistic in nature.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='4' /><span data-i18n="rituals">Rituals</span></span><br />
-    								<!--Weird Science--><span  data-i18n-title="weird-science-gadgets-text" title="Replaces Powers with Weird Science. Can be used for characters who create magic through gadgets, such as Mad Scientists in Deadlands.">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='5' /><span data-i18n="weird-science-gadgets">Weird Science Gadgets</span></span><br />
-    							</div>									
-    							<!--Species--><span  data-i18n-title="species-race-text" title="Can be used for Sci-Fi settings like The Last Parsec, or any setting where Species is used instead of Race."><input type="checkbox" class="sheet-useSpecies" name="attr_tlpSpecies" style="width: 15px;" /><span data-i18n="species-race">Species (Race)</span></span><br />
-    							<!--Threat Rating--><span  data-i18n-title="threat-rating-rank-text" title="Change the Rank designation to Threat Rating ala Necessary Evil."><input type="checkbox" class="sheet-useThreatRating" name="attr_ThreatRatingClass" value="2" style="width: 15px;" /><span data-i18n="threat-rating-rank">Threat Rating (Rank)</span></span><br />
-    							<!--XP--><span  data-i18n-title="experience-points-text" title="Change the Advances designation used to determine rank to XP."><input type="checkbox" class="sheet-useXP" name="attr_useXP" value="1" checked /><span data-i18n="experience-points-abbr-u-advances">XP (Advances)</span></span><br />
-    						</div>
-    					</div>
-    				</div>
+    			<div class='sheet-configSection'>
+    			    <input type="checkbox" class="sheet-hideFN" name="attr_hideFN" /><span class="sheet-showFN"></span>
+    			    <h3 class='sheet-configSectionTitle' data-i18n="field-name-replacements">Field Name Replacements</h3>
+    			    <div class="sheet-fnconfig">
+    			        <!--Class--><label class="sheet-fnItem" data-i18n-title="class-rank-text" title="Replaces 'Rank' with 'Class'. Appropriate for ETU."><input type="checkbox" class="sheet-useClass" name="attr_ThreatRatingClass" value="1" style="width: 15px;" /><span data-i18n="class-rank">Class (Rank)</span></label>
+						<!--Clams--><label class="sheet-fnItem" data-i18n-title="clams-money-text" title="Replaces 'Money' with 'Clams'. Appropriate for Low Life or any other setting where Clams may be an appropriate replacement for money."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="2" /><span data-i18n="clams-money">Clams (Money)</span></label>
+						<!--Code Name--><label class="sheet-fnItem" data-i18n-title="code-name-character-text" title="Useful for games where the character is known by a code- or superhero name such as Necessary Evil or spy themed games. This will add an additional field for Civilian Name."><input type="checkbox" class="sheet-useCodeName" name="attr_codename" style="width: 15px;" /><span data-i18n="code-name-character">Code Name (Character Name)</span></label>
+						<!--Credits--><label class="sheet-fnItem" data-i18n-title="credits-money-text" title="Replaces 'Money' with 'Credits'. Appropriate for Interface Zero or any other setting where Credits may be an appropriate replacement for money."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="4" /><span data-i18n="credits-money">Credits (Money)</span></label>
+						<!--Cybernetics--><label class="sheet-fnItem" data-i18n-title="cybernetics-augmentations-text" title="Replaces 'Augmentations' with 'Cybernetics'. Appropriate for Rifts and any othe setting where Cybernetics is the vernacular."><input type="checkbox" class="sheet-useCybernetics" name="attr_Cybernetics" style="width: 15px;" value="1" /><span data-i18n="cybernetics-augmentations">Cybernetics (Augmentations)</span></label>
+						<!--Lankhmar Money--><label class="sheet-fnItem" data-i18n-title="lankhmar-currency-money-text"  title="Replaces 'Money' with: Iron Tiks, Bronze Agols, Silver Smerduks, and Gold Rilks. Appropriate for the Lankhmar: City of Thieves setting."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="3" /><span data-i18n="lankhmar-currency-money">Lankhmar Currency (Money)</span></label>
+						<!--All for One Money--><label class="sheet-fnItem" data-i18n-title="livre-money-text"  title="Replaces 'Money' with 'Livre. Appropriate for the All for One setting."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="5" /><span data-i18n="livre-money">Livre (Money)</span></label>
+						<!--Pieces of Eight--><label class="sheet-fnItem" data-i18n-title="pieces-of-eight-money-text"  title="Replaces 'Money' with 'Pieces of Eight'. Appropriate for 50 Fathoms or any other Pirate themed setting."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="1" /><span data-i18n="pieces-of-eight-money">Pieces of Eight (Money)</span></label>
+						<!--Origin of Parahuman Abilities--><label class="sheet-fnItem" data-i18n-title="origin-of-parahuman-abilities-text"  title="Modify the Physical Appearance Text Area to include the Origins of Parahuman Abilties. Useful for Necessary Evil and other Superhero-esque settings."><input type="checkbox" class="sheet-useParaHuman" name="attr_powerOrigins" style="width: 15px;" /><span data-i18n="origin-of-parahuman-abilities">Origin of Parahuman Abilities</span></label>
+    			        <!--PPE for Rifts--><label class="sheet-fnItem" data-i18n-title="ppe-power-points-text" title="Change Power Points to PPE (Potential Psychic Energy) for Rifts"><input type="checkbox" class="sheet-usePPE" value="PPE" name="attr_ppe" style="width: 15px;" /><span data-i18n="ppe-power-points">PPE (Power Points)</span></label>
+    			        <!--Power Type"--><label class="sheet-fnItem" data-i18n-title="power-type-desc" title="Check this box to show other options for Power Lables, such as Miracles, Spells, etc"><input type="checkbox" class="sheet-showPowerTypes" name="attr_usePowerTypes"> <span data-i18n="power-type">Power Type</span></label>
+    			        <input type="checkbox" class="sheet-showPowerTypes" name="attr_usePowerTypes" style="display:none;" />
+    			        <!--Miracles--><label class="sheet-fnItem sheet-PowerTypes" data-i18n-title="miracles-text" title="Replaces Powers with Miracles. Can be used for characters with Faith-based magic."><input type="checkbox" class="sheet-useMagicType" name="attr_magictype" value='1' /><span data-i18n="miracles">Miracles</span></label>
+						<!--Psionics--><label class="sheet-fnItem sheet-PowerTypes" data-i18n-title="psionics-text" title="Replaces Powers with Psionics. Can be used for characters with Psionics."><input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='2' /><span data-i18n="psionics">Psionics</span></label>
+						<!--Spells--><label class="sheet-fnItem sheet-PowerTypes" data-i18n-title="spells-text" title="Replaces Powers with Spells. Can be used for characters with traditional-type magic."><input type="checkbox" class="sheet-useMagicType" name="attr_magictype" value='3' /><span data-i18n="spells">Spells</span></label>
+						<!--Rituals--><label class="sheet-fnItem sheet-PowerTypes" data-i18n-title="rituals-text" title="Replaces Powers with Rituals. Can be used for characters or settings (like ETU) where all powers are Ritualistic in nature."><input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='4' /><span data-i18n="rituals">Rituals</span></label>
+						<!--Weird Science--><label class="sheet-fnItem sheet-PowerTypes" data-i18n-title="weird-science-gadgets-text" title="Replaces Powers with Weird Science. Can be used for characters who create magic through gadgets, such as Mad Scientists in Deadlands."><input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='5' /><span data-i18n="weird-science-gadgets">Weird Science Gadgets</span></label>
+    			        <!--Custom Power Label--><label class="sheet-fnItem sheet-PowerTypes" data-i18n-title="custom-power-label-text" title="Replaces the generic Powers lable with one you write in"><input type="checkbox" class="sheet-useMagicType" name="attr_magictype" value='6' /><input class="sheet-customLabel" type="text" name="attr_custompowerlabel" data-i18n-placeholder="enter-custom-power-label" placeholder="Enter custom Power Label" /></label>
+    			        <!-- Hidden Fields for Power Labels -->
+    			            <input type='hidden' name='attr_powerlabelsingular' value="Power" />
+    			            <input type='hidden' name='attr_powerlabelplural' value="Powers" />
+    			        <!-- End of Hiddent Fields for Power Labels -->
+    			        <!--Species--><label class="sheet-fnItem" data-i18n-title="species-race-text" title="Can be used for Sci-Fi settings like The Last Parsec, or any setting where Species is used instead of Race."><input type="checkbox" class="sheet-useSpecies" name="attr_tlpSpecies" style="width: 15px;" /><span data-i18n="species-race">Species (Race)</span></label>
+    					<!--Threat Rating--><label class="sheet-fnItem" data-i18n-title="threat-rating-rank-text" title="Change the Rank designation to Threat Rating ala Necessary Evil."><input type="checkbox" class="sheet-useThreatRating" name="attr_ThreatRatingClass" value="2" style="width: 15px;" /><span data-i18n="threat-rating-rank">Threat Rating (Rank)</span></label>
+    					<!--XP--><label class="sheet-fnItem" data-i18n-title="experience-points-text" title="Change the Advances designation used to determine rank to XP."><input type="checkbox" class="sheet-useXP" name="attr_useXP" value="1" checked /><span data-i18n="experience-points-abbr-u-advances">XP (Advances)</span></label>
+    			    </div>
     			</div>
-    			<div class='sheet-newfields' style="padding: 10px;">
-    				<div class="sheet-row">
-    					<h3 style="text-align: center;"><span data-i18n="additional-setting-fields">Additional Setting Fields</span></h3>
-    					<div class="sheet-3colrow">
-    						<div class='sheet-col'>
-    							<!--Activities/Exams--><span  data-i18n-title="activities-and-exams-text" title="Show fields to record Activities and Exams. Used in ETU."><input type='checkbox' class='sheet-useActExams' name='attr_activitiesexams' value='1' style=' width: 15px;' /><span data-i18n="activities-and-exams">Activities & Exams</span></span><br />
-    							<!--Archetype--><span  data-i18n-title="archetype-text" title="The character's archetype. Used in settings like All for One."><input type="checkbox" class="sheet-useHomeworld" name="attr_a41archetype" style="width: 15px;" /><span data-i18n="archetype">Archetype</span></span><br />
-    							<!--Augmentation--><span data-i18n-title="augmentations-text"  title="Record the Character's Augmentations. Appropriate for Interface Zero 2.0 or any other cyberpunk/sci-fi setting where people can implant augmentation devices."><input type="checkbox" class="sheet-useAugmentations" name="attr_augment" style="width: 15px;" /><span data-i18n="augmentations">Augmentations</span></span><br />
-    							<!--Burn        --><span  data-i18n-title="burn-text" title="Track the character's Burn. Appropriate for the Juicer Iconic Framework in Rifts."><input type='checkbox' class='sheet-useBurn' name='attr_useBurn' /><span data-i18n="burn">Burn</span></span><br />
-    							<!--Conviction--><span  data-i18n-title="conviction-text" title="If using the Setting Rule for Conviction, this provides a visual checkbox above the Derived Stats to track Convction."><input class='sheet-useConviction' type='checkbox' name='attr_useConviction' /><span data-i18n="conviction">Conviction</span></span><br />
-    							<!--Engrams--><span  data-i18n-title="engrams-text" title="Record the Character's Engrams s/he has. Appropriate for Interface Zero 2.0"><input type="checkbox" class="sheet-useEngrams" name="attr_izengrams" style="width: 15px;" /><span data-i18n="engrams">Engrams</span></span><br />
-    							<!--Fencing Styles and School--><span  data-i18n-title="fencing-styles-schools-text" title="Fencing Style and Fencing Schools provide characters bonuses when fencing in certain styles. This rule is used in All For One"><input type="checkbox" class="sheet-useFencingStyle" name="attr_fencinginfo" /> <span data-i18n="fencing-styles-n-schools">Fencing Styles & Schools</span></span><br />
-    							<!--Homeworld--><span  data-i18n-title="home-world-text" title="Can be used for Sci-Fi settings like The Last Parsec, etc."><input type="checkbox" class="sheet-useHomeworld" name="attr_tlpHW" style="padding-left: 10px; width: 15px;" /><span data-i18n="home-world">Home World</span></span><br />
-    							<!--Hero's Journey--><span data-i18n-title="heros-journey-text"  title="Hero's Journey as found in Rifts."><input type="checkbox" class="sheet-useHeroicPath" name="attr_heroicpath" style="width: 15px;" /><span data-i18n="heros-journey">Hero's Journey</span></span><br />
-    						</div>
-    						<div class='sheet-col'>
-    							<!--Iconic Frameworks--><span  data-i18n-title="iconic-framework-text" title="Used for Rifts to capture a character's iconic framework, if one exists."><input type="checkbox" class="sheet-useIF" name="attr_IconicFramwork" style="padding-left: 10px; width: 15px;" /><span data-i18n="iconic-framework">Iconic Framework</span></span><br />
-    							<!--Inner Strength Points--><span data-i18n-title="inner-strength-points-text"  title="Adds ISP (Inner Strength Points) as found in Rifts. This is part of the Arcanum section of the sheet."><input type="checkbox" class="sheet-useISP" name="attr_useISP" style="width: 15px;" /><span data-i18n="inner-strength-points">Inner Strength Points (ISP)</span></span><br />
-    							<!--Internal Repair System Charges--><span  data-i18n-title="internal-repair-system-charges-text" title="Used for Rifts to record the character's Internal Repair System Charges (IRSC or IRS Charges) for the Juicer Iconic Framework."><input type='checkbox' class='sheet-useIRSC' name='attr_useIRSC' /><span data-i18n="internal-repair-system-charges">Internal Repair System Charges</span></span><br />
-    							<!--Languages--><span  data-i18n-title="languages-text" title="Can be used for any setting where Languages are known and no Knowledge skills is required"><input type="checkbox" class="sheet-useLanguages" name="attr_Lang" style="padding-left: 10px; width: 15px;" /><span data-i18n="languages">Languages</span></span><br />
-    							<!--Max Load--><span data-i18n-title="max-load-modifier-text"  title="Enable the Max Load to be modified by a flat bonus/penalty"><input type="checkbox" class="sheet-useMaxLoad" name="attr_MaxLoad" style="width: 15px;" /><span data-i18n="max-load-modifier">Max Load Modifier</span></span><br />									
-    							<!--Minor/Major--><span  data-i18n-title="minor-major-text" title="Used to declare a Minor and Major. Used in ETU. Each field is a textarea so carriage returns and resizing are allowed."><input class='sheet-useMajor' type='checkbox' name='attr_majorminor' style='width: 15px;' /><span data-i18n="minor-major">Minor/Major</span></span><br />
-    							<!--Motivation--><span  data-i18n-title="motivation-text" title="Motivation can be used in settings where the character's motivation is important, such All for One."><input type="checkbox" class="sheet-useMotivation" name="attr_a41motivation" style="width: 15px;" /><span data-i18n="motivation">Motivation</span></span><br />
-    						</div>
-    						<div class='sheet-col'>
-    							<!--Occupation--><span data-i18n-title="occupation-text"  title="Can be used for any setting where a character's occupation is important."><input type="checkbox" class="sheet-useOccupation" name="attr_tlpOccupation" style="width: 15px;" /><span data-i18n="occupation">Occupation</span></span><br />
-    							<!--Permanent Injuries--><span data-i18n-title="permanent-injuries-text"  title="Record the Character's Permanent Injuries."><input type="checkbox" class="sheet-useInjuries" name="attr_permInjuries" style="width: 15px;" /><span data-i18n="permanent-injuries">Permanent Injuries</span></span><br />
-    							<!--Rippertech--><span data-i18n-title="rippertech-text"  title='Add Rippertech to the equipment section. Appropriate for Rippers'><input type='checkbox' class='sheet-useRippertech' name='attr_useRippertech' style='width: 15px;' /><span data-i18n="rippertech">Rippertech</span></span><br />
-    							<!--Ship Name--><span data-i18n-title="ship-name-text"  title="Can be used for any setting where the characters may have a ship of some sort."><input type="checkbox" class="sheet-useShipName" name="attr_tlpShipName" style="width: 15px;" /><span data-i18n="ship-name">Ship Name</span></span><br />	
-    							<!--Talismans--><span data-i18n-title="talismans-text"  title="Shows Talismans repeating section on the Arcanum tab."><input class='sheet-useTalismans' type='checkbox' name='attr_talismans' value='1' style='width: 15px;' /><span data-i18n="talismans">Talismans</span></span><br />
-    							<!--TAP Readout--><span data-i18n-title="tap-readout-text"  title="Displays the TAP Readout Information in one location. Used in the setting: Interface Zero 2.0"><input type="checkbox" class="sheet-usetap" name="attr_iztap" style="width: 15px;" /><span data-i18n="tap-readout">TAP Readout</span></span><br />									
-    							<!--Worst Nightmare--><span data-i18n-title="worst-nightmare-text"  title="Record the Character's Worst Nightmare. This is important for Deadlands, but may be useful for other settings where a character's worst dreams can come true."><input type="checkbox" class="sheet-useWorstNightmare" name="attr_worstNightmare" style="width: 15px;" /><span data-i18n="worst-nightmare">Worst Nightmare</span></span><br />
-    						</div>
-    					</div>
-    				</div>
+    			<div class='sheet-configSection'>
+    			    <input type="checkbox" class="sheet-hideASF" name="attr_hideASF" /><span class="sheet-showASF"></span>
+    			    <h3 class='sheet-configSectionTitle' data-i18n="additional-setting-fields">Additional Setting Fields</h3>
+    			    <div class="sheet-asfconfig">
+    			        <!--Activities/Exams--><label class="sheet-asfItem" data-i18n-title="activities-and-exams-text" title="Show fields to record Activities and Exams. Used in ETU."><input type='checkbox' class='sheet-useActExams' name='attr_activitiesexams' value='1' style=' width: 15px;' /><span data-i18n="activities-and-exams">Activities & Exams</span></label>
+						<!--Archetype--><label class="sheet-asfItem" data-i18n-title="archetype-text" title="The character's archetype. Used in settings like All for One."><input type="checkbox" class="sheet-useHomeworld" name="attr_a41archetype" style="width: 15px;" /><span data-i18n="archetype">Archetype</span></label>
+						<!--Augmentation--><label class="sheet-asfItem" data-i18n-title="augmentations-text"  title="Record the Character's Augmentations. Appropriate for Interface Zero 2.0 or any other cyberpunk/sci-fi setting where people can implant augmentation devices."><input type="checkbox" class="sheet-useAugmentations" name="attr_augment" style="width: 15px;" /><span data-i18n="augmentations">Augmentations</span></label>
+						<!--Burn        --><label class="sheet-asfItem" data-i18n-title="burn-text" title="Track the character's Burn. Appropriate for the Juicer Iconic Framework in Rifts."><input type='checkbox' class='sheet-useBurn' name='attr_useBurn' /><span data-i18n="burn">Burn</span></label>
+						<!--Conviction--><label class="sheet-asfItem" data-i18n-title="conviction-text" title="If using the Setting Rule for Conviction, this provides a visual checkbox above the Derived Stats to track Convction."><input class='sheet-useConviction' type='checkbox' name='attr_useConviction' /><span data-i18n="conviction">Conviction</span></label>
+						<!--Engrams--><label class="sheet-asfItem" data-i18n-title="engrams-text" title="Record the Character's Engrams s/he has. Appropriate for Interface Zero 2.0"><input type="checkbox" class="sheet-useEngrams" name="attr_izengrams" style="width: 15px;" /><span data-i18n="engrams">Engrams</span></label>
+						<!--Fencing Styles and School--><label class="sheet-asfItem" data-i18n-title="fencing-styles-schools-text" title="Fencing Style and Fencing Schools provide characters bonuses when fencing in certain styles. This rule is used in All For One"><input type="checkbox" class="sheet-useFencingStyle" name="attr_fencinginfo" /> <span data-i18n="fencing-styles-n-schools">Fencing Styles & Schools</span></label>
+						<!--Homeworld--><label class="sheet-asfItem" data-i18n-title="home-world-text" title="Can be used for Sci-Fi settings like The Last Parsec, etc."><input type="checkbox" class="sheet-useHomeworld" name="attr_tlpHW" style="padding-left: 10px; width: 15px;" /><span data-i18n="home-world">Home World</span></label>
+						<!--Hero's Journey--><label class="sheet-asfItem" data-i18n-title="heros-journey-text"  title="Hero's Journey as found in Rifts."><input type="checkbox" class="sheet-useHeroicPath" name="attr_heroicpath" style="width: 15px;" /><span data-i18n="heros-journey">Hero's Journey</span></label>
+						<!--Iconic Frameworks--><label class="sheet-asfItem" data-i18n-title="iconic-framework-text" title="Used for Rifts to capture a character's iconic framework, if one exists."><input type="checkbox" class="sheet-useIF" name="attr_IconicFramwork" style="padding-left: 10px; width: 15px;" /><span data-i18n="iconic-framework">Iconic Framework</span></label>
+  						<!--Inner Strength Points--><label class="sheet-asfItem" data-i18n-title="inner-strength-points-text" title="Adds ISP (Inner Strength Points) as found in Rifts. This is part of the Arcanum section of the sheet."><input type="checkbox" class="sheet-useISP" name="attr_useISP" style="width: 15px;" /><span data-i18n="inner-strength-points">Inner Strength Points (ISP)</span></label>
+  						<!--Internal Repair System Charges--><label class="sheet-asfItem" data-i18n-title="internal-repair-system-charges-text" title="Used for Rifts to record the character's Internal Repair System Charges (IRSC or IRS Charges) for the Juicer Iconic Framework."><input type='checkbox' class='sheet-useIRSC' name='attr_useIRSC' /><span data-i18n="internal-repair-system-charges">Internal Repair System Charges</span></label>
+  						<!--Languages--><label class="sheet-asfItem" data-i18n-title="languages-text" title="Can be used for any setting where Languages are known and no Knowledge skills is required"><input type="checkbox" class="sheet-useLanguages" name="attr_Lang" style="padding-left: 10px; width: 15px;" /><span data-i18n="languages">Languages</span></label>
+  						<!--Max Load--><label class="sheet-asfItem" data-i18n-title="max-load-modifier-text" title="Enable the Max Load to be modified by a flat bonus/penalty"><input type="checkbox" class="sheet-useMaxLoad" name="attr_MaxLoad" style="width: 15px;" /><span data-i18n="max-load-modifier">Max Load Modifier</span></label>									
+  						<!--Minor/Major--><label class="sheet-asfItem" data-i18n-title="minor-major-text" title="Used to declare a Minor and Major. Used in ETU. Each field is a textarea so carriage returns and resizing are allowed."><input class='sheet-useMajor' type='checkbox' name='attr_majorminor' style='width: 15px;' /><span data-i18n="minor-major">Minor/Major</span></label>
+  						<!--Motivation--><label class="sheet-asfItem" data-i18n-title="motivation-text" title="Motivation can be used in settings where the character's motivation is important, such All for One."><input type="checkbox" class="sheet-useMotivation" name="attr_a41motivation" style="width: 15px;" /><span data-i18n="motivation">Motivation</span></label>
+  						<!--Occupation--><label class="sheet-asfItem" data-i18n-title="occupation-text"  title="Can be used for any setting where a character's occupation is important."><input type="checkbox" class="sheet-useOccupation" name="attr_tlpOccupation" style="width: 15px;" /><span data-i18n="occupation">Occupation</span></label>
+						<!--Permanent Injuries--><label class="sheet-asfItem" data-i18n-title="permanent-injuries-text"  title="Record the Character's Permanent Injuries."><input type="checkbox" class="sheet-useInjuries" name="attr_permInjuries" style="width: 15px;" /><span data-i18n="permanent-injuries">Permanent Injuries</span></label>
+						<!--Rippertech--><label class="sheet-asfItem" data-i18n-title="rippertech-text"  title='Add Rippertech to the equipment section. Appropriate for Rippers'><input type='checkbox' class='sheet-useRippertech' name='attr_useRippertech' style='width: 15px;' /><span data-i18n="rippertech">Rippertech</span></label>
+						<!--Ship Name--><label class="sheet-asfItem" data-i18n-title="ship-name-text"  title="Can be used for any setting where the characters may have a ship of some sort."><input type="checkbox" class="sheet-useShipName" name="attr_tlpShipName" style="width: 15px;" /><span data-i18n="ship-name">Ship Name</span></label>	
+						<!--Talismans--><label class="sheet-asfItem" data-i18n-title="talismans-text"  title="Shows Talismans repeating section on the Arcanum tab."><input class='sheet-useTalismans' type='checkbox' name='attr_talismans' value='1' style='width: 15px;' /><span data-i18n="talismans">Talismans</span></label>
+						<!--TAP Readout--><label class="sheet-asfItem" data-i18n-title="tap-readout-text"  title="Displays the TAP Readout Information in one location. Used in the setting: Interface Zero 2.0"><input type="checkbox" class="sheet-usetap" name="attr_iztap" style="width: 15px;" /><span data-i18n="tap-readout">TAP Readout</span></label>									
+						<!--Worst Nightmare--><label class="sheet-asfItem" data-i18n-title="worst-nightmare-text"  title="Record the Character's Worst Nightmare. This is important for Deadlands, but may be useful for other settings where a character's worst dreams can come true."><input type="checkbox" class="sheet-useWorstNightmare" name="attr_worstNightmare" style="width: 15px;" /><span data-i18n="worst-nightmare">Worst Nightmare</span></label>
+    			    </div>
     			</div>
-    			<input class='sheet-sbButtonCheck' type='checkbox' style='display: none;' name='attr_initializeStatblock' />
-    			<label class='sheet-isbButton' style='cursor: pointer; width: 150px;'><span data-i18n="initialize-statblock">Initialize Statblock</span><input type='checkbox' style='display: none;' name='attr_initializeStatblock' /></label>
-    			<div class='sheet-row'>
-    			    <span data-i18n="wild-card-icon">Wild Card Icon</span>: <select name='attr_WCI' size="1" style="font-size: 1.5em; width: 50px; border: none;">
-    			        <option value="⊛">⊛</option>
-    			        <option value="✪">✪</option>
-    			        <option value="♕">♕</option>
-    			        <option value="†">†</option>
-    			        <option value="༒">༒</option>
-    			    </select>
-    			</div>
-    			<!-- Was start of sheet-row div -->
-    				<h3 class="sheet-configheader" data-i18n="rules-modifications">Rules Modifications</h3>
-    				<div class="sheet-configbox" style="height: 100px;">
-    				    <label class="sheet-configlabel" data-i18n-title="use-charisma"><input type="checkbox" class="sheet-useCharisma" name="attr_usecharisma" style="width: 15px;" checked />
-    				        <span data-i18n="use-charisma">Use Charisma</span></label>
-    				    <label class="sheet-configlabel" data-i18n-title="use-xp"><input type="checkbox" class="sheet-usexp" name="attr_usexp" style="width: 15px;" checked />
-    				        <span data-i18n="use-xp">Use Experience Points</span></label>
-    				    <label class="sheet-configlabel" data-i18n-title="power-pointless"><input type="checkbox" class="sheet-NoPP" name="attr_NoPPRule" style="width: 15px;" />
-    				        <span data-i18n="no-power-points">No Power Points</span></label>
+    			<div class='sheet-configSection'>
+    			    <input type="checkbox" class="sheet-hideSRM" name="attr_hideSRM" /><span class="sheet-showSRM"></span>
+    			    <h3 class='sheet-configSectionTitle' data-i18n="rules-modifications">Rules Modifications</h3>
+    			    <div class="sheet-srmconfig">
+    			        <label class="sheet-srmItem" data-i18n-title="use-charisma"><input type="checkbox" class="sheet-useCharisma" name="attr_usecharisma" checked /><span data-i18n="use-charisma">Use Charisma</span></label>
+    				    <label class="sheet-srmItem" data-i18n-title="power-pointless"><input type="checkbox" class="sheet-NoPP" name="attr_NoPPRule" /><span data-i18n="no-power-points">No Power Points</span></label>
+    				    <label class="sheet-srmItem" data-i18n-title="use-xp"><input type="checkbox" class="sheet-usexp" name="attr_usexp" checked /><span data-i18n="use-xp">Use Experience Points</span></label>
     				    <input type="checkbox" class="sheet-usexp" name="attr_usexp" style="display: none;" checked />
-				        <label class="sheet-configlabel sheet-xpmod" data-i18n-title="roll-for-extra-xp-remaining-text"><input type='checkbox' name='attr_bennies' class='sheet-Bennies' value='2' />
-				            <span data-i18n="roll-extra-xp-unspent-text">Roll XP on unspent Bennies</span></label>
-				        <label class="sheet-configlabel sheet-xpmod" data-i18n-title="roll-for-extra-xp-left-text"><input type='checkbox' name='attr_bennies' class='sheet-Bennies' value='1' />
-    				        <span data-i18n="roll-extra-xp-left-text">Roll XP on spent Bennies</span></label>
-				        <label class="sheet-configlabel" data-i18n-title="skill-specialization"><input type="checkbox" class="sheet-useSkillSpec" name="attr_altRuleSkillSpec" style="width: 15px;" />
-    				        <span data-i18n="skill-specialization">Skill Specialization</span></label>
-				        <label class="sheet-configlabel" data-i18n-title="variable-bonus-damage-die"><input type="checkbox" class="sheet-useRaiseHB" name="attr_RaiseHBRule" style="width: 15px;" />
-    				        <span data-i18n="variable-bonus-damage">Variable Bonus Damage</span></label>
-    				</div>
-    			<!-- Was start of sheet-row div -->
-    		</div>
-    		<div class='sheet-tab sheet-vehicles'>
-    		    
+    				    <label class="sheet-srmItem sheet-xpmod" data-i18n-title="roll-for-extra-xp-remaining-text"><input type='checkbox' name='attr_bennies' class='sheet-Bennies' value='2' /><span data-i18n="roll-extra-xp-unspent-text">Roll XP on unspent Bennies</span></label>
+    				    <label class="sheet-srmItem sheet-xpmod" data-i18n-title="roll-for-extra-xp-left-text"><input type='checkbox' name='attr_bennies' class='sheet-Bennies' value='1' /><span data-i18n="roll-extra-xp-left-text">Roll XP on spent Bennies</span></label>
+    				    <label class="sheet-srmItem" data-i18n-title="variable-bonus-damage-die"><input type="checkbox" class="sheet-useRaiseHB" name="attr_RaiseHBRule" /><span data-i18n="variable-bonus-damage">Variable Bonus Damage</span></label>
+    			    </div>
+    			</div>
+    			<!--<input class='sheet-sbButtonCheck' type='checkbox' style='display: none;' name='attr_initializeStatblock' />
+    			<label class='sheet-isbButton' style='cursor: pointer; width: 150px;'><span data-i18n="initialize-statblock">Initialize Statblock</span><input type='checkbox' style='display: none;' name='attr_initializeStatblock' /></label>-->
     		</div>
     	</div>
     </div>
@@ -5616,7 +6092,7 @@
 <rolltemplate class="sheet-rolltemplate-damage">
 	<div class="sheet-templateMain">
 		<h2>{{name}}</h2>
-		<h3>({{source}})</h3>
+		<h3>{{source}}{{#rollGreater() showap 0}} (<span data-i18n="armor-piercing-abbr-u">AP</span>: {{ap}}){{/rollGreater() showap 0}}</h3>
 		<div class="sheet-templateRoll sheet-trollLeft">
 			<span class="sheet-rollLabel">{{dmg_rank}}</span>
 			<span class="sheet-rollContainer">{{dmg_roll}} </span>
