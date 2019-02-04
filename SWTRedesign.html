@@ -296,7 +296,22 @@
                             getORF = originRF+ofieldArray[r];
                             console.log(i+"-"+r+") Current value of getORF: "+getORF+": "+v[getORF]);
                             putdestinationRF = destinationRF+dfieldArray[r];
-                            sattrs[putdestinationRF]=v[getORF];
+                            if (ofieldArray[r] === "DmgType") {
+                                if (typeof v[getORF] === 'undefined') {
+                                    sattrs[putdestinationRF]="d4!"
+                                }
+                                else {
+                                    sattrs[putdestinationRF]="d"+v[getORF];
+                                }
+                            }
+                            else {
+                                if (typeof v[getORF] === 'undefined') {
+                                    sattrs[putdestinationRF]='';
+                                }
+                                else {
+                                    sattrs[putdestinationRF]=v[getORF];
+                                }
+                            }
                         }
                         //Check to see if we need to set any default values
                         if (daddlfieldArray.length > 0 && daddlfieldArray.length === defaultValues.length) {
@@ -314,9 +329,10 @@
                         else {
                             console.log("!! No additional fields to set OR the number of fields doesn't match the number of values !!");
                         }
+                        console.log("##### sattrs: " + JSON.stringify(sattrs) + " #####");
+                        setAttrs(sattrs);
+                        sattrs = {};
                     }
-                    console.log("##### sattrs: " + JSON.stringify(sattrs) + " #####");
-                    setAttrs(sattrs, {silent: true});
 	            });
 	        }
 	        else {
@@ -4067,7 +4083,7 @@
     						    <input type='number' style="width: 35px;" class='sheet-rof' name='attr_rof' data-i18n-placeholder="rate-of-fire-abbr" placeholder="ROF" />
     						    <input type='text' class='sheet-damage' name='attr_weapondamage' value="Str+d4" readonly />
 								<input type="number" style="width:50px;" class='sheet-weaponap' name='attr_weaponap' />
-    						    <input type='text' class='sheet-shots' name='attr_shots' data-i18n-placeholder="number-of-shots-shortened" placeholder="Shots" />
+    						    <input type='number' class='sheet-shots' name='attr_shots' data-i18n-placeholder="number-of-shots-shortened" placeholder="Shots" />
     						    <input type='number' style="width:65px;" class='sheet-weaponweight' name='attr_weaponweight' data-i18n-placeholder="weight-abbr" placeholder="Wt" />
     						    <div class='sheet-weaponcarried'><input type='checkbox' name='attr_weaponcarried' /></div>
     						    <input class='sheet-moreweapon' type='checkbox' name='attr_showweaponconfig' checked /><span>y</span>
