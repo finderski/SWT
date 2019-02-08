@@ -349,8 +349,8 @@
     const upgradeSheet = function(version) {
 	    if (version < 3.0) {
 	        //migrate old fields to new
-	        const oldAtts = ["agMod","smMod","spMod","stMod","viMod","FightingMod","Academicsskill","AcademicsskillMod","Athletics","AthleticsMod","Battle","BattleMod","BoatingMod","Climbing","ClimbingMod","Commonknowledge","CommonknowledgeMod","Driving","DrivingMod","Electronics","ElectronicsMod","Faith","FaithMod","Focus","FocusMod","Gambling","GamblingMod","Guts","GutsMod","Hacking","HackingMod","Healing","HealingMod","Intimidation","IntimidationMod","Investigation","InvestigationMod","Language","LanguageMod","Lockpicking","LockpickingMod","Notice","NoticeMod","Occult","OccultMod","Performance","PerformanceMod","Persuasion","PersuasionMod","Piloting","PilotingMod","Psionics","PsionicsMod","Repair","RepairMod","Research","ResearchMod","Riding","RidingMod","Ritual","RitualMod","Science","ScienceMod","Shooting","ShootingMod","Spellcasting","SpellcastingMod","Stealth","StealthMod","Streetwise","StreetwiseMod","Survival","SurvivalMod","Swimming","SwimmingMod","Taunt","TauntMod","Thievery","ThieveryMod","Throwing","ThrowingMod","Tracking","TrackingMod","WeirdScience","WeirdScienceMod"];
-	        const newAtts = ["agilitymod","smartsmod","spiritmod","strengthmod","vigormod","fightingmod","academicsskill","academicsskillmod","athletics","athleticsmod","battle","battlemod","boatingmod","climbing","climbingmod","commonknowledge","commonknowledgemod","driving","drivingmod","electronics","electronicsmod","faith","faithmod","focus","focusmod","gambling","gamblingmod","guts","gutsmod","hacking","hackingmod","healing","healingmod","intimidation","intimidationmod","investigation","investigationmod","language","languagemod","lockpicking","lockpickingmod","notice","noticemod","occult","occultmod","performance","performancemod","persuasion","persuasionmod","piloting","pilotingmod","psionics","psionicsmod","repair","repairmod","research","researchmod","riding","ridingmod","ritual","ritualmod","science","sciencemod","shooting","shootingmod","spellcasting","spellcastingmod","stealth","stealthmod","streetwise","streetwisemod","survival","survivalmod","swimming","swimmingmod","taunt","tauntmod","thievery","thieverymod","throwing","throwingmod","tracking","trackingmod","weirdscience","weirdsciencemod"];
+	        const oldAtts = ["agMod","smMod","spMod","stMod","viMod","UnskilledEncumbrance","FightingMod","Academicsskill","AcademicsskillMod","Athletics","AthleticsMod","Battle","BattleMod","BoatingMod","Climbing","ClimbingMod","Commonknowledge","CommonknowledgeMod","Driving","DrivingMod","Electronics","ElectronicsMod","Faith","FaithMod","Focus","FocusMod","Gambling","GamblingMod","Guts","GutsMod","Hacking","HackingMod","Healing","HealingMod","Intimidation","IntimidationMod","Investigation","InvestigationMod","Language","LanguageMod","Lockpicking","LockpickingMod","Notice","NoticeMod","Occult","OccultMod","Performance","PerformanceMod","Persuasion","PersuasionMod","Piloting","PilotingMod","Psionics","PsionicsMod","Repair","RepairMod","Research","ResearchMod","Riding","RidingMod","Ritual","RitualMod","Science","ScienceMod","Shooting","ShootingMod","Spellcasting","SpellcastingMod","Stealth","StealthMod","Streetwise","StreetwiseMod","Survival","SurvivalMod","Swimming","SwimmingMod","Taunt","TauntMod","Thievery","ThieveryMod","Throwing","ThrowingMod","Tracking","TrackingMod","WeirdScience","WeirdScienceMod","LinkedPsionicsAtt","LinkedRitualAttScore","LinkedSpellcastingAttScore","LinkedWeirdScienceAttScore"];
+	        const newAtts = ["agilitymod","smartsmod","spiritmod","strengthmod","vigormod","unskilledencumbrance","fightingmod","academicsskill","academicsskillmod","athletics","athleticsmod","battle","battlemod","boatingmod","climbing","climbingmod","commonknowledge","commonknowledgemod","driving","drivingmod","electronics","electronicsmod","faith","faithmod","focus","focusmod","gambling","gamblingmod","guts","gutsmod","hacking","hackingmod","healing","healingmod","intimidation","intimidationmod","investigation","investigationmod","language","languagemod","lockpicking","lockpickingmod","notice","noticemod","occult","occultmod","performance","performancemod","persuasion","persuasionmod","piloting","pilotingmod","psionics","psionicsmod","repair","repairmod","research","researchmod","riding","ridingmod","ritual","ritualmod","science","sciencemod","shooting","shootingmod","spellcasting","spellcastingmod","stealth","stealthmod","streetwise","streetwisemod","survival","survivalmod","swimming","swimmingmod","taunt","tauntmod","thievery","thieverymod","throwing","throwingmod","tracking","trackingmod","weirdscience","weirdsciencemod","linkedpsionicsatt","linkedritualattscore","linkedspellcastingattscore","linkedweirdscienceattscore"];
 	        let sAttrs = {};
 	        getAttrs(oldAtts, function(v) {
 	            //Convert from Old Trait Mod Format (e.g. agMod) to the new format (e.g. agilitymod)
@@ -1776,6 +1776,34 @@
    		});
 	}
 	
+	const setDynamicEnc = function(field) {
+	    getAttrs([field], function(v) {
+	        let button = `${field}button`;
+	        let formula = `${field}formula`;
+	        let sattrs = {};
+	        if(v[field] === "(AGL)" || v[field] === "(STR)" || v[field] === "1") {
+	            console.log(`Need to set trait (${field}) to use Encumbrance`);
+	            sattrs[button] = `@{setmodsenc}`;
+	            sattrs[formula] = `@{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance]`;
+	        }
+	        else {
+	            console.log(`Need to set trait (${field}) to NOT use Encumbrance`);
+	            sattrs[button] = `@{setmods}`;
+	            sattrs[formula] = `@{ModSum}[Distracted, Wounds, Fatigue]`;
+	        }
+	        console.log("Setting the following Values: " + JSON.stringify(sattrs));
+	        setAttrs(sattrs);
+	    });
+	}
+	
+	const dynoTraits = ['unskilledencumbrance','linkedathleticsatt','linkedpsionicsatt','linkedritualattscore','linkedspellcastingattscore','linkedweirdscienceattscore','repeating_skills:linkedotherattscore'];
+	dynoTraits.forEach(dynoTraits => {
+	    on(`change:${dynoTraits}`, function(eventInfo) {
+	        console.log(`###### Changed Attribute: ${eventInfo.sourceAttribute} ######`);
+	        setDynamicEnc(eventInfo.sourceAttribute);
+	    });
+	});
+	
 	//Calculate Encumbrance Penalty
 	on("change:totalloadcarried change:loadlimit change:strength change:encumbrancerules change:loadlimitdietypedelta change:loadlimitmulitplier change:loadlimitmod",function(){
 		setEncPenalty();
@@ -1860,7 +1888,7 @@
 	    console.log("newValue: "+eventInfo.newValue);
 	    if (eventInfo.newValue === "on") {
 	        setTraitMod = "{{mods=[[1d0+@{absmod}+abs(@{traitmods}) ]] }}";
-	        setTraitModEnc = "{{mods=[[1d0+@{absmodenc}+abs(@{traitmods}) ]] }}";
+	        setTraitModEnc = "{{mods=[[1d0+@{absmodenc}+abs(@{traitmods}) ]] }} {{showenc=[[1d0+@{encumbrance}]]}} {{encumbrance=@{encumbrance}}}";
 	        setDamageMod = "{{mods=[[1d0+[[abs(@{traitmods})]] ]] }}";
 	    }
 	    else {
@@ -2116,7 +2144,7 @@
                         <!--<input type="checkbox" class="sheet-hideAtts" name="attr_hideAtts" /><span class="sheet-showhide"></span>-->
                         <div class='sheet-base sheet-attributes'>
                             <div class='sheet-basetrait'>
-                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tAgilityRoll' title="@{tAgilityRoll}" value='&{template:roll} @{rolltAgility} @{setmodsenc} @{showtraitmodsenc}' data-i18n="agility"> Agility</button>
+                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tAgilityRoll' title="@{tAgilityRoll}" value='&{template:roll} @{rolltAgility} @{setmodsenc} @{showtraitmods}' data-i18n="agility"> Agility</button>
                                 <span><select name="attr_agility" title="@{agility}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -2173,7 +2201,7 @@
         						<input type='hidden' name='attr_rolltSpirit' value='{{name=@{character_name} }} {{trait=Spirit}} {{skill_rank=@{spirit_display} }} {{skill_roll=[[@{spirit_rank} + @{sprollMod}+ @{ModSum}[Wounds, Fatigue, Distracted] + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{spiritmod} + @{sprollMod} + @{ModSum}[Wounds, Fatigue, Distracted] + @{traitmods} ]]}}' />
                             </div>
                             <div class='sheet-basetrait'>
-                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tStrengthRoll' title="@{tStrengthRoll}" value='&{template:roll} @{rolltStrength} @{setmodsenc} @{showtraitmodsenc}' data-i18n="strength"> Strength</button>
+                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tStrengthRoll' title="@{tStrengthRoll}" value='&{template:roll} @{rolltStrength} @{setmodsenc} @{showtraitmods}' data-i18n="strength"> Strength</button>
                                 <span><select name="attr_strength" title="@{strength}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -2270,7 +2298,7 @@
                         </div>
                         <div class='sheet-base sheet-abilities'>
                             <div class='sheet-basetrait'>
-                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tUnskilledRoll' title="@{tUnskilledRoll}" value='&{template:roll} @{rolltUnskilled} @{setmodsunskilled} @{showtraitmods}' data-i18n="unskilled"> Unskilled</button>
+                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tUnskilledRoll' title="@{tUnskilledRoll}" value='&{template:roll} @{rolltUnskilled} @{unskilledencumbrancebutton} @{showtraitmods}' data-i18n="unskilled"> Unskilled</button>
                                 <span style='width:31px; line-height: 28px; padding-left:4px;'>d4</span><span style='width:7.81px; line-height: 28px;'>-</span>
     							<!--<input class="sheet-traitmod" type="number" name="attr_agMod" title="@{unSMod}" value="2" />-->
     							<span style="width:28px; height: 28px; line-height:28px; text-align: center;">2</span>
@@ -2278,19 +2306,17 @@
         						<div class='sheet-basetrait sheet-traitmodplus'>
         						    <input type="checkbox" name="attr_JackOfAllTrades" value="2" /> 
         						    <span class='sheet-ModDesc' data-i18n-placeholder="jack-of-all-trades">Jack of All Trades</span><br/>
-        						    <input type="checkbox" name="attr_UnskilledEncumbrance" title="@{UnskilledEncumbrance}" value="1" /> 
+        						    <input type="checkbox" name="attr_unskilledencumbrance" title="@{unskilledencumbrance}" value="1" /> 
         						    <span class='sheet-ModDesc' data-i18n="apply-encumbrance">Apply Encumbrance</span>
         						</div>
         						<input type='hidden' name='attr_unskilled_rank' value='1d4!-2+@{JackOfAllTrades}[Jack of All Trades Mod]' />
         						<input type='hidden' name='attr_unskilled_display' value='1d4-2' />
         						<input type='hidden' name='attr_rolltUnskilled' value='{{name=@{character_name} }} {{trait=^{unskilled}}} {{skill_rank=@{unskilled_display} }} {{skill_roll=[[@{unskilled_rank} + @{ModSum}[Wounds, Fatigue, Distracted] + @{traitmods} + (@{UnskilledEncumbrance}*@{encumbrance})[Encumbrance Penalty]]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! -2[Unskilled Penalty] + {0,@{JackOfAllTrades}}kh1[Jack of All Trades Modifier] + @{ModSum}[Modifiers] +(@{UnskilledEncumbrance}*@{encumbrance})[Encumbrance Penalty] ]] }}' />
-        						<input type="hidden" name="attr_unskilledRollEnc" value="" />
-        						<input type="hidden" name="attr_unskilledRollNoEnc" value="" />
-        						<input type="hidden" name="attr_setmodsunskilled" value="" />
+        						<input type="hidden" name="attr_unskilledencumbrancebutton" value="@{setmods}" />
                             </div>
                             <!-- Fighting -->
                             <div class='sheet-basetrait'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tFightingRoll' title="@{tFightingRoll}" value='&{template:roll} {{trait=^{fighting}}} @{rolltFighting} @{setmodsenc} @{showtraitmodsenc}' data-i18n="fighting"> Fighting</button><span class='sheet-linkedAtt' data--i18n="agl-u">(AGL)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tFightingRoll' title="@{tFightingRoll}" value='&{template:roll} {{trait=^{fighting}}} @{rolltFighting} @{setmodsenc} @{showtraitmods}' data-i18n="fighting"> Fighting</button><span class='sheet-linkedAtt' data--i18n="agl-u">(AGL)</span>
                                 <span><select name="attr_fighting" title="@{fighting}" class="sheet-traitdie" value="4">
                                     <option value="4" selected>d4</option>
     								<option value="6">d6</option>
@@ -2356,17 +2382,17 @@
 							<!-- Athletics Skill -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticAthletics" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticAthletics'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tAthleticsRoll' title="@{tAthleticsRoll}" value='&{template:roll} {{trait=^{athletics}}} @{rolltAthletics} @{setmods} @{showtraitmods}' data-i18n="athletics"> Athletics</button>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tAthleticsRoll' title="@{tAthleticsRoll}" value='&{template:roll} {{trait=^{athletics}}} @{rolltAthletics} @{linkedathleticsattbutton} @{showtraitmods}' data-i18n="athletics"> Athletics</button>
                                 <div class='sheet-linkedAtt' style="display: inline-block; margin-left: -4px;">
-                                    <input class="sheet-LAA" type='checkbox' name='attr_LinkedAthleticsAtt' style="display:none;" value="(AGL)" />
-                                    <input class="sheet-LASm" type='checkbox' name='attr_LinkedAthleticsAtt' style="display:none;" value="(SMA)" checked />
-                                    <input class="sheet-LASp" type='checkbox' name='attr_LinkedAthleticsAtt' style="display:none;" value="(SPI)" /><input class="sheet-LASt" type='checkbox' name='attr_LinkedAthleticsAtt' style="display:none;" value="(STR)" />
-                                    <input class="sheet-LAV" type='checkbox' name='attr_LinkedAthleticsAtt' style="display:none;" value="(VIG)" />
-                                    <span class="sheet-LAAGI" name='attr_LinkedAthleticsAtt' data--i18n="agl-u">(AGL)</span>
-                                    <span class="sheet-LASMA" name='attr_LinkedAthleticsAtt' data--i18n="sma-u">(SMA)</span>
-                                    <span class="sheet-LASPI" name='attr_LinkedAthleticsAtt' data--i18n="spi-u">(SPI)</span>
-                                    <span class="sheet-LASTR" name='attr_LinkedAthleticsAtt' data--i18n="str-u">(STR)</span>
-                                    <span class="sheet-LAVIG" name='attr_LinkedAthleticsAtt' data-i18n="vig-u">(VIG)</span>&nbsp;
+                                    <input class="sheet-LAA" type='checkbox' name='attr_linkedathleticsatt' style="display:none;" value="(AGL)" />
+                                    <input class="sheet-LASm" type='checkbox' name='attr_linkedathleticsatt' style="display:none;" value="(SMA)" checked />
+                                    <input class="sheet-LASp" type='checkbox' name='attr_linkedathleticsatt' style="display:none;" value="(SPI)" /><input class="sheet-LASt" type='checkbox' name='attr_linkedathleticsatt' style="display:none;" value="(STR)" />
+                                    <input class="sheet-LAV" type='checkbox' name='attr_linkedathleticsatt' style="display:none;" value="(VIG)" />
+                                    <span class="sheet-LAAGI" name='attr_linkedathleticsatt' data--i18n="agl-u">(AGL)</span>
+                                    <span class="sheet-LASMA" name='attr_linkedathleticsatt' data--i18n="sma-u">(SMA)</span>
+                                    <span class="sheet-LASPI" name='attr_linkedathleticsatt' data--i18n="spi-u">(SPI)</span>
+                                    <span class="sheet-LASTR" name='attr_linkedathleticsatt' data--i18n="str-u">(STR)</span>
+                                    <span class="sheet-LAVIG" name='attr_linkedathleticsatt' data-i18n="vig-u">(VIG)</span>&nbsp;
                                 </div> 
                                 <span class="sheet-attrankselect"><select name="attr_athletics" title="@{athletics}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
@@ -2379,19 +2405,21 @@
                                 <input class='sheet-moremods' type='checkbox' name='attr_showAthleticsRollMod' /><span>y</span>
         						<div class='sheet-basetrait sheet-traitmodplus'>
         						    <span class="sheet-ModDesc" data-i18n="linked-attribute">Linked Attribute</span>
-        						    <select class="sheet-LinkedAttSelect" name="attr_LinkedAthleticsAtt">
-        						        <option value="(AGL)" data-i18n="agility">Agility</option>
+        						    <select class="sheet-LinkedAttSelect" name="attr_linkedathleticsatt">
+        						        <option value="(AGL)" data-i18n="agility" selected >Agility</option>
     									<option value="(SMA)" selected data-i18n="smarts">Smarts</option>
     									<option value="(SPI)" data-i18n="spirit">Spirit</option>
     									<option value="(STR)" data-i18n="strength">Strength</option>
     									<option value="(VIG)" data-i18n="vigor">Vigor</option>
         						    </select>
+        						    <input type='hidden' name='attr_linkedathleticsattbutton' value="@{setmodsenc}" />
+        						    <input type='hidden' name='attr_linkedathleticsattformula' value="@{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance]" />
         						    <input type='text' class='sheet-ModDesc' name='attr_athleticsModType' placeholder='Modifier due to edges, hindrances, etc' data-i18n-placeholder="att-mod-description" />
         						    +<input class="sheet-otraitmod" type="number" name="attr_AthleticsskillMod" title="@{AthleticsskillMod}" value="0" />
         						</div>
         						<input type='hidden' name='attr_athletics_rank' value='1d4!' />
         						<input type='hidden' name='attr_athletics_display' value='1d4' />
-        						<input type='hidden' name='attr_rolltAthletics' value='{{name=@{character_name} }} {{skill_rank=@{athletics_display} }} {{skill_roll=[[@{athletics_rank} + @{AthleticsskillMod}+ @{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance] + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{AthleticsMod} + @{AthleticsskillMod} + @{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance] + @{traitmods} ]]}}' />
+        						<input type='hidden' name='attr_rolltAthletics' value='{{name=@{character_name} }} {{skill_rank=@{athletics_display} }} {{skill_roll=[[@{athletics_rank} + @{AthleticsskillMod}+ @{linkedathleticsattformula} + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{AthleticsMod} + @{AthleticsskillMod} + @{linkedathleticsattformula} + @{traitmods} ]]}}' />
         						<input type="checkbox" class="sheet-useSkillSpec" name="attr_altRuleSkillSpec" style="display: none;" />
         						<div class='sheet-SkillSpec'>
         						    <fieldset class="repeating_athleticsspec">
@@ -2431,7 +2459,7 @@
                             <!-- Boating -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticBoating" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticBoating'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tBoatingRoll' title="@{tBoatingRoll}" value='&{template:roll} {{trait=^{boating}}} @{rolltBoating} @{setmodsenc} @{showtraitmodsenc}' data-i18n="boating"> Boating</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tBoatingRoll' title="@{tBoatingRoll}" value='&{template:roll} {{trait=^{boating}}} @{rolltBoating} @{setmodsenc} @{showtraitmods}' data-i18n="boating"> Boating</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
                                 <span class="sheet-attrankselect"><select name="attr_boating" title="@{boating}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -2459,7 +2487,7 @@
                             <!-- Climbing Skill -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticClimbing" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticClimbing'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tClimbingRoll' title="@{tClimbingRoll}" value='&{template:roll} {{trait=^{climbing}}} @{rolltClimbing} @{setmodsenc} @{showtraitmodsenc}' data-i18n="climbing"> Climbing</button><span class='sheet-linkedAtt' data-i18n="str-u">(STR)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tClimbingRoll' title="@{tClimbingRoll}" value='&{template:roll} {{trait=^{climbing}}} @{rolltClimbing} @{setmodsenc} @{showtraitmods}' data-i18n="climbing"> Climbing</button><span class='sheet-linkedAtt' data-i18n="str-u">(STR)</span>
                                 <span class="sheet-attrankselect"><select name="attr_climbing" title="@{Climbing}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -2515,7 +2543,7 @@
                             <!-- Driving Skill -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticDriving" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticDriving'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tDrivingRoll' title="@{tDrivingRoll}" value='&{template:roll} {{trait=^{driving}}} @{rolltDriving} @{setmodsenc} @{showtraitmodsenc}' data-i18n="driving"> Driving</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tDrivingRoll' title="@{tDrivingRoll}" value='&{template:roll} {{trait=^{driving}}} @{rolltDriving} @{setmodsenc} @{showtraitmods}' data-i18n="driving"> Driving</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
                                 <span class="sheet-attrankselect"><select name="attr_driving" title="@{Driving}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -2823,7 +2851,7 @@
                             <!-- Lockpicking SKill -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticLockpicking" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticLockpicking'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tLockpickingRoll' title="@{tLockpickingRoll}" value='&{template:roll} {{trait=^{lockpicking}}} @{rolltLockpicking} @{setmodsenc} @{showtraitmodsenc}' data-i18n="lockpicking"> Lockpicking</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGI)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tLockpickingRoll' title="@{tLockpickingRoll}" value='&{template:roll} {{trait=^{lockpicking}}} @{rolltLockpicking} @{setmodsenc} @{showtraitmods}' data-i18n="lockpicking"> Lockpicking</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
                                 <span class="sheet-attrankselect"><select name="attr_lockpicking" title="@{Lockpicking}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -2963,7 +2991,7 @@
                             <!-- Piloting Skill -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticPiloting" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticPiloting'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tPilotingRoll' title="@{tPilotingRoll}" value='&{template:roll} {{trait=^{piloting}}} @{rolltPiloting} @{setmodsenc} @{showtraitmodsenc}' data-i18n="piloting"> Piloting</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGI)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tPilotingRoll' title="@{tPilotingRoll}" value='&{template:roll} {{trait=^{piloting}}} @{rolltPiloting} @{setmodsenc} @{showtraitmods}' data-i18n="piloting"> Piloting</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
                                 <span class="sheet-attrankselect"><select name="attr_piloting" title="@{Piloting}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -2991,17 +3019,17 @@
                             <!-- Psionics Skill -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticPsionics" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticPsionics'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tPsionicsRoll' title="@{tPsionicsRoll}" value='&{template:roll} {{trait=^{psionics}}} @{rolltPsionics} @{setmods} @{showtraitmods}' data-i18n="psionics"> Psionics</button>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tPsionicsRoll' title="@{tPsionicsRoll}" value='&{template:roll} {{trait=^{psionics}}} @{rolltPsionics} @{linkedpsionicsattbutton} @{showtraitmods}' data-i18n="psionics"> Psionics</button>
                                 <div class='sheet-linkedAtt' style="display: inline-block; margin-left: -4px;">
-                                    <input class="sheet-LAA" type='checkbox' name='attr_LinkedPsionicsAtt' style="display:none;" value="(AGL)" />
-                                    <input class="sheet-LASm" type='checkbox' name='attr_LinkedPsionicsAtt' style="display:none;" value="(SMA)" checked />
-                                    <input class="sheet-LASp" type='checkbox' name='attr_LinkedPsionicsAtt' style="display:none;" value="(SPI)" /><input class="sheet-LASt" type='checkbox' name='attr_LinkedPsionicsAtt' style="display:none;" value="(STR)" />
-                                    <input class="sheet-LAV" type='checkbox' name='attr_LinkedPsionicsAtt' style="display:none;" value="(VIG)" />
-                                    <span class="sheet-LAAGI" name='attr_LinkedPsionicsAtt' data--i18n="agl-u">(AGL)</span>
-                                    <span class="sheet-LASMA" name='attr_LinkedPsionicsAtt' data--i18n="sma-u">(SMA)</span>
-                                    <span class="sheet-LASPI" name='attr_LinkedPsionicsAtt' data--i18n="spi-u">(SPI)</span>
-                                    <span class="sheet-LASTR" name='attr_LinkedPsionicsAtt' data--i18n="str-u">(STR)</span>
-                                    <span class="sheet-LAVIG" name='attr_LinkedPsionicsAtt' data-i18n="vig-u">(VIG)</span>&nbsp;
+                                    <input class="sheet-LAA" type='checkbox' name='attr_linkedpsionicsatt' style="display:none;" value="(AGL)" />
+                                    <input class="sheet-LASm" type='checkbox' name='attr_linkedpsionicsatt' style="display:none;" value="(SMA)" checked />
+                                    <input class="sheet-LASp" type='checkbox' name='attr_linkedpsionicsatt' style="display:none;" value="(SPI)" /><input class="sheet-LASt" type='checkbox' name='attr_linkedpsionicsatt' style="display:none;" value="(STR)" />
+                                    <input class="sheet-LAV" type='checkbox' name='attr_linkedpsionicsatt' style="display:none;" value="(VIG)" />
+                                    <span class="sheet-LAAGI" name='attr_linkedpsionicsatt' data--i18n="agl-u">(AGL)</span>
+                                    <span class="sheet-LASMA" name='attr_linkedpsionicsatt' data--i18n="sma-u">(SMA)</span>
+                                    <span class="sheet-LASPI" name='attr_linkedpsionicsatt' data--i18n="spi-u">(SPI)</span>
+                                    <span class="sheet-LASTR" name='attr_linkedpsionicsatt' data--i18n="str-u">(STR)</span>
+                                    <span class="sheet-LAVIG" name='attr_linkedpsionicsatt' data-i18n="vig-u">(VIG)</span>&nbsp;
                                 </div> 
                                 <span class="sheet-attrankselect"><select name="attr_psionics" title="@{Psionics}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
@@ -3014,19 +3042,21 @@
                                 <input class='sheet-moremods' type='checkbox' name='attr_showPsionicsRollMod' /><span>y</span>
         						<div class='sheet-basetrait sheet-traitmodplus'>
         						    <span class="sheet-ModDesc" data-i18n="linked-attribute">Linked Attribute</span>
-        						    <select class="sheet-LinkedAttSelect" name="attr_LinkedPsionicsAtt">
+        						    <select class="sheet-LinkedAttSelect" name="attr_linkedpsionicsatt">
         						        <option value="(AGL)" data-i18n="agility">Agility</option>
-    									<option value="(SMA)" selected data-i18n="smarts">Smarts</option>
+    									<option value="(SMA)" selected data-i18n="smarts" selected >Smarts</option>
     									<option value="(SPI)" data-i18n="spirit">Spirit</option>
     									<option value="(STR)" data-i18n="strength">Strength</option>
     									<option value="(VIG)" data-i18n="vigor">Vigor</option>
         						    </select>
+        						    <input type='hidden' name='attr_linkedpsionicsattbutton' value="@{setmods}" />
+        						    <input type='hidden' name='attr_linkedpsionicsattformula' value="@{ModSum}[Distracted, Wounds, Fatigue]" />
         						    <input type='text' class='sheet-ModDesc' name='attr_psionicsModType' placeholder='Modifier due to edges, hindrances, etc' data-i18n-placeholder="att-mod-description" />
         						    +<input class="sheet-otraitmod" type="number" name="attr_PsionicsskillMod" title="@{PsionicsskillMod}" value="0" />
         						</div>
         						<input type='hidden' name='attr_psionics_rank' value='1d4!' />
         						<input type='hidden' name='attr_psionics_display' value='1d4' />
-        						<input type='hidden' name='attr_rolltPsionics' value='{{name=@{character_name} }} {{skill_rank=@{psionics_display} }} {{skill_roll=[[@{psionics_rank} + @{PsionicsskillMod}+ @{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance] + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{PsionicsMod} + @{PsionicsskillMod} + @{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance] + @{traitmods} ]]}}' />
+        						<input type='hidden' name='attr_rolltPsionics' value='{{name=@{character_name} }} {{skill_rank=@{psionics_display} }} {{skill_roll=[[@{psionics_rank} + @{PsionicsskillMod}+ @{linkedpsionicsattformula} + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{PsionicsMod} + @{PsionicsskillMod} + @{linkedpsionicsattformula} + @{traitmods} ]]}}' />
         						<input type="checkbox" class="sheet-useSkillSpec" name="attr_altRuleSkillSpec" style="display: none;" />
         						<div class='sheet-SkillSpec'>
         						    <fieldset class="repeating_psionicsspec">
@@ -3094,7 +3124,7 @@
                             <!-- Riding (Agility) -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticRiding" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticRiding'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tRidingRoll' title="@{tRidingRoll}" value='&{template:roll} {{trait=^{riding}}} @{rolltRiding} @{setmodsenc} @{showtraitmodsenc}' data-i18n="riding"> Riding</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGI)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tRidingRoll' title="@{tRidingRoll}" value='&{template:roll} {{trait=^{riding}}} @{rolltRiding} @{setmodsenc} @{showtraitmods}' data-i18n="riding"> Riding</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
                                 <span class="sheet-attrankselect"><select name="attr_riding" title="@{Riding}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -3122,18 +3152,18 @@
                             <!-- Ritual Skill (TBD) -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticRitual" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticRitual'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tRitualRoll' title="@{tRitualRoll}" value='&{template:roll} {{trait=^{ritual}}} @{rolltRitual} @{setmods} @{showtraitmods}' data-i18n="ritual"> Ritual</button>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tRitualRoll' title="@{tRitualRoll}" value='&{template:roll} {{trait=^{ritual}}} @{rolltRitual} @{linkedritualattscorebutton} @{showtraitmods}' data-i18n="ritual"> Ritual</button>
                                 <div class='sheet-linkedAtt' style="display: inline-block; margin-left: -4px;">
-                                    <input class="sheet-LAA" type='checkbox' name='attr_LinkedRitualAttScore' style="display:none;" value="(AGL)" />
-                                    <input class="sheet-LASm" type='checkbox' name='attr_LinkedRitualAttScore' style="display:none;" value="(SMA)" checked />
-                                    <input class="sheet-LASp" type='checkbox' name='attr_LinkedRitualAttScore' style="display:none;" value="(SPI)" />
-                                    <input class="sheet-LASt" type='checkbox' name='attr_LinkedRitualAttScore' style="display:none;" value="(STR)" />
-                                    <input class="sheet-LAV" type='checkbox' name='attr_LinkedRitualAttScore' style="display:none;" value="(VIG)" />
-                                    <span class="sheet-LAAGI" name='attr_LinkedRitualAttScore' data--i18n="agl-u">(AGL)</span>
-                                    <span class="sheet-LASMA" name='attr_LinkedRitualAttScore' data--i18n="sma-u">(SMA)</span>
-                                    <span class="sheet-LASPI" name='attr_LinkedRitualAttScore' data--i18n="spi-u">(SPI)</span>
-                                    <span class="sheet-LASTR" name='attr_LinkedRitualAttScore' data--i18n="str-u">(STR)</span>
-                                    <span class="sheet-LAVIG" name='attr_LinkedRitualAttScore' data-i18n="vig-u">(VIG)</span>&nbsp;
+                                    <input class="sheet-LAA" type='checkbox' name='attr_linkedritualattscore' style="display:none;" value="(AGL)" />
+                                    <input class="sheet-LASm" type='checkbox' name='attr_linkedritualattscore' style="display:none;" value="(SMA)" checked />
+                                    <input class="sheet-LASp" type='checkbox' name='attr_linkedritualattscore' style="display:none;" value="(SPI)" />
+                                    <input class="sheet-LASt" type='checkbox' name='attr_linkedritualattscore' style="display:none;" value="(STR)" />
+                                    <input class="sheet-LAV" type='checkbox' name='attr_linkedritualattscore' style="display:none;" value="(VIG)" />
+                                    <span class="sheet-LAAGI" name='attr_linkedritualattscore' data--i18n="agl-u">(AGL)</span>
+                                    <span class="sheet-LASMA" name='attr_linkedritualattscore' data--i18n="sma-u">(SMA)</span>
+                                    <span class="sheet-LASPI" name='attr_linkedritualattscore' data--i18n="spi-u">(SPI)</span>
+                                    <span class="sheet-LASTR" name='attr_linkedritualattscore' data--i18n="str-u">(STR)</span>
+                                    <span class="sheet-LAVIG" name='attr_linkedritualattscore' data-i18n="vig-u">(VIG)</span>&nbsp;
                                 </div>
                                 <span class="sheet-attrankselect"><select name="attr_ritual" title="@{Ritual}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
@@ -3146,19 +3176,21 @@
                                 <input class='sheet-moremods' type='checkbox' name='attr_showRitualRollMod' /><span>y</span>
         						<div class='sheet-basetrait sheet-traitmodplus'>
         						    <span class="sheet-ModDesc" data-i18n="linked-attribute">Linked Attribute</span>
-        						    <select class="sheet-LinkedAttSelect" name="attr_LinkedRitualAttScore">
-        						        <option value="(AGI)" data-i18n="agility">Agility</option>
-    									<option value="(SMA)" selected data-i18n="smarts">Smarts</option>
+        						    <select class="sheet-LinkedAttSelect" name="attr_linkedritualattscore">
+        						        <option value="(AGL)" data-i18n="agility">Agility</option>
+    									<option value="(SMA)" selected data-i18n="smarts" >Smarts</option>
     									<option value="(SPI)" data-i18n="spirit">Spirit</option>
     									<option value="(STR)" data-i18n="strength">Strength</option>
     									<option value="(VIG)" data-i18n="vigor">Vigor</option>
         						    </select>
+        						    <input type="hidden" name="attr_linkedritualattscorebutton" value="@{setmods}" />
+        						    <input type="hidden" name="attr_linkedritualattscoreformula" value="@{ModSum}[Distracted, Wounds, Fatigue]" />
         						    <input type='text' class='sheet-ModDesc' name='attr_ritualModType' placeholder='Modifier due to edges, hindrances, etc' data-i18n-placeholder="att-mod-description" />
         						    +<input class="sheet-otraitmod" type="number" name="attr_RitualskillMod" title="@{RitualskillMod}" value="0" />
         						</div>
         						<input type='hidden' name='attr_ritual_rank' value='1d4!' />
         						<input type='hidden' name='attr_ritual_display' value='1d4' />
-        						<input type='hidden' name='attr_rolltRitual' value='{{name=@{character_name} }} {{skill_rank=@{ritual_display} }} {{skill_roll=[[@{ritual_rank} + @{RitualskillMod}+ @{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance] + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{RitualMod} + @{RitualskillMod} + @{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance] + @{traitmods} ]]}}' />
+        						<input type='hidden' name='attr_rolltRitual' value='{{name=@{character_name} }} {{skill_rank=@{ritual_display} }} {{skill_roll=[[@{ritual_rank} + @{RitualskillMod}+ @{linkedritualattscoreformula} + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{RitualMod} + @{RitualskillMod} + @{linkedritualattscoreformula} + @{traitmods} ]]}}' />
         						<input type="checkbox" class="sheet-useSkillSpec" name="attr_altRuleSkillSpec" style="display: none;" />
         						<div class='sheet-SkillSpec'>
         						    <fieldset class="repeating_ritualspec">
@@ -3198,7 +3230,7 @@
                             <!-- Shooting SKill (Agility) -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticShooting" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticShooting'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tShootingRoll' title="@{tShootingRoll}" value='&{template:roll} {{trait=^{shooting}}} @{rolltShooting} @{setmodsenc} @{showtraitmodsenc}' data-i18n="shooting"> Shooting</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tShootingRoll' title="@{tShootingRoll}" value='&{template:roll} {{trait=^{shooting}}} @{rolltShooting} @{setmodsenc} @{showtraitmods}' data-i18n="shooting"> Shooting</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
                                 <span class="sheet-attrankselect"><select name="attr_shooting" title="@{Shooting}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -3226,18 +3258,18 @@
                             <!-- Spellcasting (TBD) -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticSpellcasting" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticSpellcasting'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tSpellcastingRoll' title="@{tSpellcastingRoll}" value='&{template:roll} {{trait=^{spellcasting}}} @{rolltSpellcasting} @{setmods} @{showtraitmods}' data-i18n="spellcasting"> Spellcasting</button>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tSpellcastingRoll' title="@{tSpellcastingRoll}" value='&{template:roll} {{trait=^{spellcasting}}} @{rolltSpellcasting} @{linkedspellcastingattscorebutton} @{showtraitmods}' data-i18n="spellcasting"> Spellcasting</button>
                                 <div class='sheet-linkedAtt' style="display: inline-block; margin-left: -4px;">
-                                    <input class="sheet-LAA" type='checkbox' name='attr_LinkedSpellcastingAttScore' style="display:none;" value="(AGL)" />
-                                    <input class="sheet-LASm" type='checkbox' name='attr_LinkedSpellcastingAttScore' style="display:none;" value="(SMA)" checked />
-                                    <input class="sheet-LASp" type='checkbox' name='attr_LinkedSpellcastingAttScore' style="display:none;" value="(SPI)" />
-                                    <input class="sheet-LASt" type='checkbox' name='attr_LinkedSpellcastingAttScore' style="display:none;" value="(STR)" />
-                                    <input class="sheet-LAV" type='checkbox' name='attr_LinkedSpellcastingAttScore' style="display:none;" value="(VIG)" />
-                                    <span class="sheet-LAAGI" name='attr_LinkedSpellcastingAttScore' data--i18n="agl-u">(AGL)</span>
-                                    <span class="sheet-LASMA" name='attr_LinkedSpellcastingAttScore' data--i18n="sma-u">(SMA)</span>
-                                    <span class="sheet-LASPI" name='attr_LinkedSpellcastingAttScore' data--i18n="spi-u">(SPI)</span>
-                                    <span class="sheet-LASTR" name='attr_LinkedSpellcastingAttScore' data--i18n="str-u">(STR)</span>
-                                    <span class="sheet-LAVIG" name='attr_LinkedSpellcastingAttScore' data-i18n="vig-u">(VIG)</span>&nbsp;
+                                    <input class="sheet-LAA" type='checkbox' name='attr_linkedspellcastingattscore' style="display:none;" value="(AGL)" />
+                                    <input class="sheet-LASm" type='checkbox' name='attr_linkedspellcastingattscore' style="display:none;" value="(SMA)" checked />
+                                    <input class="sheet-LASp" type='checkbox' name='attr_linkedspellcastingattscore' style="display:none;" value="(SPI)" />
+                                    <input class="sheet-LASt" type='checkbox' name='attr_linkedspellcastingattscore' style="display:none;" value="(STR)" />
+                                    <input class="sheet-LAV" type='checkbox' name='attr_linkedspellcastingattscore' style="display:none;" value="(VIG)" />
+                                    <span class="sheet-LAAGI" name='attr_linkedspellcastingattscore' data--i18n="agl-u">(AGL)</span>
+                                    <span class="sheet-LASMA" name='attr_linkedspellcastingattscore' data--i18n="sma-u">(SMA)</span>
+                                    <span class="sheet-LASPI" name='attr_linkedspellcastingattscore' data--i18n="spi-u">(SPI)</span>
+                                    <span class="sheet-LASTR" name='attr_linkedspellcastingattscore' data--i18n="str-u">(STR)</span>
+                                    <span class="sheet-LAVIG" name='attr_linkedspellcastingattscore' data-i18n="vig-u">(VIG)</span>&nbsp;
                                 </div>
                                 <span class="sheet-attrankselect"><select name="attr_spellcasting" title="@{Spellcasting}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
@@ -3250,19 +3282,21 @@
                                 <input class='sheet-moremods' type='checkbox' name='attr_showSpellcastingRollMod' /><span>y</span>
         						<div class='sheet-basetrait sheet-traitmodplus'>
         						    <span class="sheet-ModDesc" data-i18n="linked-attribute">Linked Attribute</span>
-        						    <select class="sheet-LinkedAttSelect" name="attr_LinkedSpellcastingAttScore">
-        						        <option value="(AGI)" data-i18n="agility">Agility</option>
+        						    <select class="sheet-LinkedAttSelect" name="attr_linkedspellcastingattscore">
+        						        <option value="(AGL)" data-i18n="agility">Agility</option>
     									<option value="(SMA)" selected data-i18n="smarts">Smarts</option>
     									<option value="(SPI)" data-i18n="spirit">Spirit</option>
     									<option value="(STR)" data-i18n="strength">Strength</option>
     									<option value="(VIG)" data-i18n="vigor">Vigor</option>
         						    </select>
+        						    <input type='hidden' name='attr_linkedspellcastingattscorebutton' value="@{setmods}" />
+        						    <input type='hidden' name='attr_linkedspellcastingattscoreformula' value="@{ModSum}[Distracted, Wounds, Fatigue]" />
         						    <input type='text' class='sheet-ModDesc' name='attr_spellcastingModType' placeholder='Modifier due to edges, hindrances, etc' data-i18n-placeholder="att-mod-description" />
         						    +<input class="sheet-otraitmod" type="number" name="attr_SpellcastingskillMod" title="@{SpellcastingskillMod}" value="0" />
         						</div>
         						<input type='hidden' name='attr_spellcasting_rank' value='1d4!' />
         						<input type='hidden' name='attr_spellcasting_display' value='1d4' />
-        						<input type='hidden' name='attr_rolltSpellcasting' value='{{name=@{character_name} }} {{skill_rank=@{spellcasting_display} }} {{skill_roll=[[@{spellcasting_rank} + @{SpellcastingskillMod}+ @{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance] + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{SpellcastingMod} + @{SpellcastingskillMod} + @{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance] + @{traitmods} ]]}}' />
+        						<input type='hidden' name='attr_rolltSpellcasting' value='{{name=@{character_name} }} {{skill_rank=@{spellcasting_display} }} {{skill_roll=[[@{spellcasting_rank} + @{SpellcastingskillMod}+ @{linkedspellcastingattscoreformula} + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{SpellcastingMod} + @{SpellcastingskillMod} + @{linkedspellcastingattscoreformula} + @{traitmods} ]]}}' />
         						<input type="checkbox" class="sheet-useSkillSpec" name="attr_altRuleSkillSpec" style="display: none;" />
         						<div class='sheet-SkillSpec'>
         						    <fieldset class="repeating_spellcastingspec">
@@ -3274,7 +3308,7 @@
                             <!-- Stealth Skill (Agility) -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticStealth" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticStealth'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tStealthRoll' title="@{tStealthRoll}" value='&{template:roll} {{trait=^{stealth}}} @{rolltStealth} @{setmodsenc} @{showtraitmodsenc}' data-i18n="stealth"> Stealth</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tStealthRoll' title="@{tStealthRoll}" value='&{template:roll} {{trait=^{stealth}}} @{rolltStealth} @{setmodsenc} @{showtraitmods}' data-i18n="stealth"> Stealth</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
                                 <span class="sheet-attrankselect"><select name="attr_stealth" title="@{Stealth}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -3358,7 +3392,7 @@
                             <!-- Swimming skill (Agility) -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticSwimming" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticSwimming'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tSwimmingRoll' title="@{tSwimmingRoll}" value='&{template:roll} {{trait=^{swimming}}} @{rolltSwimming} @{setmodsenc} @{showtraitmodsenc}' data-i18n="swimming"> Swimming</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tSwimmingRoll' title="@{tSwimmingRoll}" value='&{template:roll} {{trait=^{swimming}}} @{rolltSwimming} @{setmodsenc} @{showtraitmods}' data-i18n="swimming"> Swimming</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
                                 <span class="sheet-attrankselect"><select name="attr_swimming" title="@{Swimming}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -3414,7 +3448,7 @@
 							<!-- Thievery -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticThievery" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticThievery'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tThieveryRoll' title="@{tThieveryRoll}" value='&{template:roll} {{trait=^{thievery}}} @{rolltThievery} @{setmodsenc} @{showtraitmodsenc}' data-i18n="thievery"> Thievery</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tThieveryRoll' title="@{tThieveryRoll}" value='&{template:roll} {{trait=^{thievery}}} @{rolltThievery} @{setmodsenc} @{showtraitmods}' data-i18n="thievery"> Thievery</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
                                 <span class="sheet-attrankselect"><select name="attr_thievery" title="@{thievery}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -3442,7 +3476,7 @@
                             <!-- Throwing skill (Agility) -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticThrowing" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticThrowing'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tThrowingRoll' title="@{tThrowingRoll}" value='&{template:roll} {{trait=^{throwing}}} @{rolltThrowing} @{setmodsenc} @{showtraitmodsenc}' data-i18n="throwing"> Throwing</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tThrowingRoll' title="@{tThrowingRoll}" value='&{template:roll} {{trait=^{throwing}}} @{rolltThrowing} @{setmodsenc} @{showtraitmods}' data-i18n="throwing"> Throwing</button><span class='sheet-linkedAtt' data-i18n="agl-u">(AGL)</span>
                                 <span class="sheet-attrankselect"><select name="attr_throwing" title="@{Throwing}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -3498,18 +3532,18 @@
                             <!-- Weird Science (TBD) -->
                             <input class="sheet-StaticSkill" type="checkbox" name="attr_staticWeirdScience" style='display:none;'/>
                             <div class='sheet-basetrait sheet-staticWeirdScience'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tWeirdScienceRoll' title="@{tWeirdScienceRoll}" value='&{template:roll} {{trait=^{weird-science}}} @{rolltWeirdScience} @{setmods} @{showtraitmods}' data-i18n="weird-science"> WeirdScience</button>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tWeirdScienceRoll' title="@{tWeirdScienceRoll}" value='&{template:roll} {{trait=^{weird-science}}} @{rolltWeirdScience} @{linkedweirdscienceattscorebutton} @{showtraitmods}' data-i18n="weird-science"> WeirdScience</button>
                                 <div class='sheet-linkedAtt' style="display: inline-block; margin-left: -4px;">
-                                    <input class="sheet-LAA" type='checkbox' name='attr_LinkedWeirdScienceAttScore' style="display:none;" value="(AGL)" />
-                                    <input class="sheet-LASm" type='checkbox' name='attr_LinkedWeirdScienceAttScore' style="display:none;" value="(SMA)" checked />
-                                    <input class="sheet-LASp" type='checkbox' name='attr_LinkedWeirdScienceAttScore' style="display:none;" value="(SPI)" />
-                                    <input class="sheet-LASt" type='checkbox' name='attr_LinkedWeirdScienceAttScore' style="display:none;" value="(STR)" />
-                                    <input class="sheet-LAV" type='checkbox' name='attr_LinkedWeirdScienceAttScore' style="display:none;" value="(VIG)" />
-                                    <span class="sheet-LAAGI" name='attr_LinkedWeirdScienceAttScore' data--i18n="agl-u">(AGL)</span>
-                                    <span class="sheet-LASMA" name='attr_LinkedWeirdScienceAttScore' data--i18n="sma-u">(SMA)</span>
-                                    <span class="sheet-LASPI" name='attr_LinkedWeirdScienceAttScore' data--i18n="spi-u">(SPI)</span>
-                                    <span class="sheet-LASTR" name='attr_LinkedWeirdScienceAttScore' data--i18n="str-u">(STR)</span>
-                                    <span class="sheet-LAVIG" name='attr_LinkedWeirdScienceAttScore' data-i18n="vig-u">(VIG)</span>&nbsp;
+                                    <input class="sheet-LAA" type='checkbox' name='attr_linkedweirdscienceattscore' style="display:none;" value="(AGL)" />
+                                    <input class="sheet-LASm" type='checkbox' name='attr_linkedweirdscienceattscore' style="display:none;" value="(SMA)" checked />
+                                    <input class="sheet-LASp" type='checkbox' name='attr_linkedweirdscienceattscore' style="display:none;" value="(SPI)" />
+                                    <input class="sheet-LASt" type='checkbox' name='attr_linkedweirdscienceattscore' style="display:none;" value="(STR)" />
+                                    <input class="sheet-LAV" type='checkbox' name='attr_linkedweirdscienceattscore' style="display:none;" value="(VIG)" />
+                                    <span class="sheet-LAAGI" name='attr_linkedweirdscienceattscore' data--i18n="agl-u">(AGL)</span>
+                                    <span class="sheet-LASMA" name='attr_linkedweirdscienceattscore' data--i18n="sma-u">(SMA)</span>
+                                    <span class="sheet-LASPI" name='attr_linkedweirdscienceattscore' data--i18n="spi-u">(SPI)</span>
+                                    <span class="sheet-LASTR" name='attr_linkedweirdscienceattscore' data--i18n="str-u">(STR)</span>
+                                    <span class="sheet-LAVIG" name='attr_linkedweirdscienceattscore' data-i18n="vig-u">(VIG)</span>&nbsp;
                                 </div>
                                 <span class="sheet-attrankselect"><select name="attr_weirdscience" title="@{WeirdScience}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
@@ -3522,19 +3556,21 @@
                                 <input class='sheet-moremods' type='checkbox' name='attr_showWeirdScienceRollMod' /><span>y</span>
         						<div class='sheet-basetrait sheet-traitmodplus'>
         						    <span class="sheet-ModDesc" data-i18n="linked-attribute">Linked Attribute</span>
-        						    <select class="sheet-LinkedAttSelect" name="attr_LinkedWeirdScienceAttScore">
-        						        <option value="(AGI)" data-i18n="agility">Agility</option>
+        						    <select class="sheet-LinkedAttSelect" name="attr_linkedweirdscienceattscore">
+        						        <option value="(AGL)" data-i18n="agility">Agility</option>
     									<option value="(SMA)" selected data-i18n="smarts">Smarts</option>
     									<option value="(SPI)" data-i18n="spirit">Spirit</option>
     									<option value="(STR)" data-i18n="strength">Strength</option>
     									<option value="(VIG)" data-i18n="vigor">Vigor</option>
         						    </select>
+        						    <input type='hidden' name='attr_linkedweirdscienceattscorebutton' value='@{setmods}' />
+        						    <input type='hidden' name='attr_linkedweirdscienceattscoreformula' value='@{ModSum}[Distracted, Wounds, Fatigue]' />
         						    <input type='text' class='sheet-ModDesc' name='attr_weirdscienceModType' placeholder='Modifier due to edges, hindrances, etc' data-i18n-placeholder="att-mod-description" />
         						    +<input class="sheet-otraitmod" type="number" name="attr_WeirdScienceskillMod" title="@{WeirdScienceskillMod}" value="0" />
         						</div>
         						<input type='hidden' name='attr_weirdscience_rank' value='1d4!' />
         						<input type='hidden' name='attr_weirdscience_display' value='1d4' />
-        						<input type='hidden' name='attr_rolltWeirdScience' value='{{name=@{character_name} }} {{skill_rank=@{weirdscience_display} }} {{skill_roll=[[@{weirdscience_rank} + @{WeirdScienceskillMod}+ @{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance] + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{WeirdScienceMod} + @{WeirdScienceskillMod} + @{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance] + @{traitmods} ]]}}' />
+        						<input type='hidden' name='attr_rolltWeirdScience' value='{{name=@{character_name} }} {{skill_rank=@{weirdscience_display} }} {{skill_roll=[[@{weirdscience_rank} + @{WeirdScienceskillMod}+ @{linkedweirdscienceattscoreformula} + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{WeirdScienceMod} + @{WeirdScienceskillMod} + @{linkedweirdscienceattscoreformula} + @{traitmods} ]]}}' />
         						<input type="checkbox" class="sheet-useSkillSpec" name="attr_altRuleSkillSpec" style="display: none;" />
         						<div class='sheet-SkillSpec'>
         						    <fieldset class="repeating_weirdsciencespec">
@@ -3548,19 +3584,19 @@
                             <div class='sheet-base sheet-staticOther'>
                                 <fieldset class="repeating_skills">
                                     <div class='sheet-basetrait'>
-                                        <button class="sheet-traitbutton sheet-smallskillflexattbutton" type='roll' name='roll_tSkillRoll' value='&{template:roll} {{trait=@{SkillName} }} @{rolltSkill}'></button>
+                                        <button class="sheet-traitbutton sheet-smallskillflexattbutton" type='roll' name='roll_tSkillRoll' value='&{template:roll} {{trait=@{SkillName} }} @{rolltSkill} @{linkedotherattscorebutton} @{showtraitmods}'></button>
                                         <input class="sheet-otherskill" type="text" name="attr_SkillName" placeholder="Skill" data-i18n-placeholder="skill" />
                                         <div class='sheet-linkedAtt'>
-                                            <input class="sheet-LAA" type='checkbox' name='attr_LinkedOtherAttScore' style="display:none;" value="(AGL)" />
-                                            <input class="sheet-LASm" type='checkbox' name='attr_LinkedOtherAttScore' style="display:none;" value="(SMA)" checked />
-                                            <input class="sheet-LASp" type='checkbox' name='attr_LinkedOtherAttScore' style="display:none;" value="(SPI)" />
-                                            <input class="sheet-LASt" type='checkbox' name='attr_LinkedOtherAttScore' style="display:none;" value="(STR)" />
-                                            <input class="sheet-LAV" type='checkbox' name='attr_LinkedOtherAttScore' style="display:none;" value="(VIG)" />
-                                            <span class="sheet-LAAGI" name='attr_LinkedOtherAttScore' data--i18n="agl-u">(AGL)</span>
-                                            <span class="sheet-LASMA" name='attr_LinkedOtherAttScore' data--i18n="sma-u">(SMA)</span>
-                                            <span class="sheet-LASPI" name='attr_LinkedOtherAttScore' data--i18n="spi-u">(SPI)</span>
-                                            <span class="sheet-LASTR" name='attr_LinkedOtherAttScore' data--i18n="str-u">(STR)</span>
-                                            <span class="sheet-LAVIG" name='attr_LinkedOtherAttScore' data-i18n="vig-u">(VIG)</span>
+                                            <input class="sheet-LAA" type='checkbox' name='attr_linkedotherattscore' style="display:none;" value="(AGL)" />
+                                            <input class="sheet-LASm" type='checkbox' name='attr_linkedotherattscore' style="display:none;" value="(SMA)" checked />
+                                            <input class="sheet-LASp" type='checkbox' name='attr_linkedotherattscore' style="display:none;" value="(SPI)" />
+                                            <input class="sheet-LASt" type='checkbox' name='attr_linkedotherattscore' style="display:none;" value="(STR)" />
+                                            <input class="sheet-LAV" type='checkbox' name='attr_linkedotherattscore' style="display:none;" value="(VIG)" />
+                                            <span class="sheet-LAAGI" name='attr_linkedotherattscore' data-i18n="agl-u"></span>
+                                            <span class="sheet-LASMA" name='attr_linkedotherattscore' data-i18n="sma-u"></span>
+                                            <span class="sheet-LASPI" name='attr_linkedotherattscore' data-i18n="spi-u"></span>
+                                            <span class="sheet-LASTR" name='attr_linkedotherattscore' data-i18n="str-u"></span>
+                                            <span class="sheet-LAVIG" name='attr_linkedotherattscore' data-i18n="vig-u"></span>
                                         </div>
                                         <span class="sheet-attrankselect"><select name="attr_skillnamerank" title="@{repeating_skills_$#_SkillNameRank}" class="sheet-traitdie" value="4">
                                             <option value="4">d4</option>
@@ -3572,22 +3608,24 @@
             							<input class="sheet-traitmod" style="margin-left: .5px;" type="number" name="attr_skillnamerankmod" title="@{repeating_skills_$#_skillnamerankmod}" value="0" />
                                         <input class='sheet-moremods' type='checkbox' name='attr_showOtherRollMod' checked /><span>y</span>
                 						<div class='sheet-basetrait sheet-traitmodplus'>
-                						    <label><input type="checkbox" name="attr_SkillEncumbrance" value="1" /> 
-        						            <span class='sheet-ModDesc' data-i18n="apply-encumbrance">Apply Encumbrance</span></label><br />
+                						    <!--<label><input type="checkbox" name="attr_SkillEncumbrance" value="1" /> 
+        						            <span class='sheet-ModDesc' data-i18n="apply-encumbrance">Apply Encumbrance</span></label><br />-->
                 						    <span class="sheet-ModDesc" data-i18n="linked-attribute">Linked Attribute</span>
-                						    <select class="sheet-LinkedAttSelect" name="attr_LinkedOtherAttScore">
-                						        <option value="(AGI)" data-i18n="agility">Agility</option>
+                						    <select class="sheet-LinkedAttSelect" name="attr_linkedotherattscore">
+                						        <option value="(AGL)" data-i18n="agility">Agility</option>
             									<option value="(SMA)" selected data-i18n="smarts">Smarts</option>
             									<option value="(SPI)" data-i18n="spirit">Spirit</option>
             									<option value="(STR)" data-i18n="strength">Strength</option>
             									<option value="(VIG)" data-i18n="vigor">Vigor</option>
                 						    </select>
+                						    <input type='hidden' name='attr_linkedotherattscorebutton' value='@{setmods}' />
+                						    <input type='hidden' name='attr_linkedotherattscoreformula' value='@{ModSum}[Distracted, Wounds, Fatigue]' />
                 						    <input type='text' class='sheet-ModDesc' name='attr_otherModType' placeholder='Modifier due to edges, hindrances, etc' data-i18n-placeholder="att-mod-description" />
                 						    +<input class="sheet-otraitmod" type="number" name="attr_SkillMod" value="0" />
                 						</div>
                 						<input type='hidden' name='attr_skillnamerank_rank' value='1d4!' />
                 						<input type='hidden' name='attr_skillnamerank_display' value='1d4' />
-                						<input type='hidden' name='attr_rolltSkill' value='{{name=@{character_name} }} {{skill_rank=@{skillnamerank_display} }} {{skill_roll=[[@{skillnamerank_rank} + @{SkillMod}+ @{ModSum}[Trait Test Modifiers, Wounds, Fatigue]+(@{UnskilledEncumbrance}*@{encumbrance})[Encumbrance Penalty] ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{skillnamerankmod} + @{SkillMod} + @{ModSum}[Trait Test Modifiers, Wounds, Fatigue]+(@{UnskilledEncumbrance}*@{encumbrance})[Encumbrance Penalty] ]]}} {{ttmod=@{ttmod}}} {{wounds=-@{woundsMod} }} {{faigue=-@{fatigue}}} {{encumbrance=@{encumbrance}}}' />  
+                						<input type='hidden' name='attr_rolltSkill' value='{{name=@{character_name} }} {{skill_rank=@{skillnamerank_display} }} {{skill_roll=[[@{skillnamerank_rank} + @{SkillMod}+ @{linkedotherattscoreformula} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{skillnamerankmod} + @{SkillMod} + @{linkedotherattscoreformula} ]]}} {{ttmod=@{ttmod}}} {{wounds=-@{woundsMod} }} {{faigue=-@{fatigue}}}' />  
                                     </div>
                                 </fieldset>
                             </div>
@@ -4063,31 +4101,41 @@
                     <input type="checkbox" class="sheet-hideWeapons" name="attr_hideWeapons" /><span class="sheet-showNhide"></span>
 					<h1 class="sheet-gearcolHeader" data-i18n="weapons">Weapons</h1>
 					<div class="sheet-weapons">
-					    <h4 class="sheet-repeatingHeader sheet-button" style="margin-right: 10px;">&nbsp;</h4>
-					    <h4 class="sheet-repeatingHeader sheet-weapon" data-i18n="weapon">Weapon</h4>
-						<h4 class="sheet-repeatingHeader sheet-range" data-i18n="range">Range</h4>
-						<h4 class="sheet-repeatingHeader sheet-rof" data-i18n="rate-of-fire-abbr">ROF</h4>
-						<h4 class="sheet-repeatingHeader sheet-damage" data-i18n="damage">Damage</h4>
-						<h4 class="sheet-repeatingHeader sheet-weaponap" data-i18n="armor-piercing-abbr-u">AP</h4>
-						<h4 class="sheet-repeatingHeader sheet-shots" data-i18n="number-of-shots-shortened">Shots</h4>
-						<h4 class="sheet-repeatingHeader sheet-weaponweight" data-i18n="weight-abbr">Wt</h4>
-						<h4 class="sheet-repeatingHeader sheet-weaponcarried" data-i18n="carried">Carried</h4>
-						<hr />
+				        <!--<h4 class="sheet-weaponItem sheet-button">&nbsp;</h4>
+					    <h4 class="sheet-weaponItem sheet-weapon" data-i18n="weapon">Weapon</h4>
+						<h4 class="sheet-weaponItem sheet-range" data-i18n="range">Range</h4>
+						<h4 class="sheet-weaponItem sheet-rof" data-i18n="rate-of-fire-abbr">ROF</h4>
+						<h4 class="sheet-weaponItem sheet-damage" data-i18n="damage">Damage</h4>
+						<h4 class="sheet-weaponItem sheet-weaponap" data-i18n="armor-piercing-abbr-u">AP</h4>
+						<h4 class="sheet-weaponItem sheet-shots" data-i18n="number-of-shots-shortened">Shots</h4>
+						<h4 class="sheet-weaponItem sheet-weaponweight" data-i18n="weight-abbr">Wt</h4>
+						<h4 class="sheet-weaponItem sheet-weaponcarried" data-i18n="carried">Carried</h4>-->
+						<span class="sheet-weaponHeader sheet-weaponItem sheet-button">&nbsp;</span>
+					    <span class="sheet-weaponHeader sheet-weaponItem sheet-weapon" data-i18n="weapon">Weapon</span>
+						<span class="sheet-weaponHeader sheet-weaponItem sheet-range" data-i18n="range">Range</span>
+						<span class="sheet-weaponHeader sheet-weaponItem sheet-rof" data-i18n="rate-of-fire-abbr">ROF</span>
+						<span class="sheet-weaponHeader sheet-weaponItem sheet-damage" data-i18n="damage">Damage</span>
+						<span class="sheet-weaponHeader sheet-weaponItem sheet-weaponap" data-i18n="armor-piercing-abbr-u">AP</span>
+						<span class="sheet-weaponHeader sheet-weaponItem sheet-shots" data-i18n="number-of-shots-shortened">Shots</span>
+						<span class="sheet-weaponHeader sheet-weaponItem sheet-weaponweight" data-i18n="weight-abbr">Wt</span>
+						<span class="sheet-weaponHeader sheet-weaponItem sheet-weaponcarried" data-i18n="carried">Carried</span>
+						<hr class="sheet-weaponItem sheet-hr" />
 						<input type='hidden' name='attr_vbonusdamage' value='1d6!' />
 						<fieldset class="repeating_weapons" style="width: 100%;">
-						    <div class='sheet-weaponitem'>
-    						    <button type='roll' class="sheet-button" name='roll_tWeapon' value="@{weaponroll}"><input type="hidden" name="attr_weaponbutton" class="sheet-weaponbutton" value="1" /><span class="sheet-buttonand" data-i18n="attack-and-damage-abbr">Atk+Dmg</span><span class="sheet-buttondo" data-i18n="damage">Damage</span></button>
+						    <!--<div class='sheet-weaponitem'>-->
+						    <div class='sheet-weapons'>
+    						    <button type='roll' class="sheet-weaponItem sheet-button" name='roll_tWeapon' value="@{weaponroll}"><input type="hidden" name="attr_weaponbutton" class="sheet-weaponbutton" value="1" /><span class="sheet-buttonand" data-i18n="attack-and-damage-abbr">Atk+Dmg</span><span class="sheet-buttondo" data-i18n="damage">Damage</span></button>
     						    <button type='roll' style='display: none;' name='roll_dmg' value='@{damageOnly}'></button>
-    						    <input type='text' class='sheet-weapon' name='attr_weapon' data-i18n-placeholder="weapon" placeholder="Weapon" />
-    						    <input type='text' class='sheet-range' name='attr_range' data-i18n-placeholder="range" placeholder="Range" />
-    						    <input type='number' style="width: 35px;" class='sheet-rof' name='attr_rof' data-i18n-placeholder="rate-of-fire-abbr" placeholder="ROF" />
-    						    <input type='text' class='sheet-damage' name='attr_weapondamage' value="Str+d4" readonly />
-								<input type="number" style="width:50px;" class='sheet-weaponap' name='attr_weaponap' />
-    						    <input type='number' class='sheet-shots' name='attr_shots' data-i18n-placeholder="number-of-shots-shortened" placeholder="Shots" />
-    						    <input type='number' style="width:65px;" class='sheet-weaponweight' name='attr_weaponweight' data-i18n-placeholder="weight-abbr" placeholder="Wt" />
-    						    <div class='sheet-weaponcarried'><input type='checkbox' name='attr_weaponcarried' /></div>
+    						    <input type='text' class='sheet-weaponItem sheet-weapon' name='attr_weapon' data-i18n-placeholder="weapon" placeholder="Weapon" />
+    						    <input type='text' class='sheet-weaponItem sheet-range' name='attr_range' data-i18n-placeholder="range" placeholder="Range" />
+    						    <input type='number' class='sheet-weaponItem sheet-rof' name='attr_rof' data-i18n-placeholder="rate-of-fire-abbr" placeholder="ROF" />
+    						    <input type='text' class='sheet-weaponItem sheet-damage' name='attr_weapondamage' value="Str+d4" readonly />
+								<input type="number" class='sheet-weaponItem sheet-weaponap' name='attr_weaponap' />
+    						    <input type='number' class='sheet-weaponItem sheet-shots' name='attr_shots' data-i18n-placeholder="number-of-shots-shortened" placeholder="Shots" />
+    						    <input type='number' class='sheet-weaponItem sheet-weaponweight' name='attr_weaponweight' data-i18n-placeholder="weight-abbr" placeholder="Wt" />
+    						    <div class='sheet-weaponItem sheet-weaponcarried'><input type='checkbox' name='attr_weaponcarried' /></div>
     						    <input class='sheet-moreweapon' type='checkbox' name='attr_showweaponconfig' checked /><span>y</span>
-    						    <textarea name='attr_weaponnotes' class='sheet-weaponnotes' data-i18n-placeholder="notes" placeholder="Notes"></textarea>
+    						    <textarea name='attr_weaponnotes' class='sheet-weaponItem sheet-weaponnotes' data-i18n-placeholder="notes" placeholder="Notes"></textarea>
     						    <div class="sheet-weaponconfig">
         						    <label class="sheet-configlabels" data-i18n="button-behavior">Button Behavior</label>
         						    <select name="attr_weaponbutton" class="sheet-weaponbutton">
@@ -5924,11 +5972,10 @@
         			    <label class='sheet-miscItem'><input type="checkbox" name="attr_showmods" checked /> <span data-i18n="show-modifiers">Show Modifiers For Trait Rolls</span></label>
         			    <!-- Hidden Fields to set whether to show mods in the Roll Template or not -->
     					<input type="hidden" name="attr_setmods" value="{{mods=[[1d0+@{absmod}+abs(@traitmods)]] }}" />
-    					<input type="hidden" name="attr_setmodsenc" value="{{mods=[[1d0+@{absmodenc}+abs(@traitmods)+abs(@{encumbrance}) ]] }}" />
+    					<input type="hidden" name="attr_setmodsenc" value="{{mods=[[1d0+@{absmodenc}+abs(@traitmods))]] }} {{showenc=[[1d0+@{encumbrance}]]}} {{encumbrance=@{encumbrance}}}" />
     					<input type="hidden" name="attr_setdmgmods" value="{{mods=[[1d0+abs(@traitmods)]] }}" />
     					<!-- Hidden Fields to set the rest of the Roll Template Information -->
     					<input type="hidden" name="attr_showtraitmods" value="{{showtt=[[1d0+@{traitmods}]]}} {{ttmod=@{traitmods}}} {{showwounds=[[1d0+@{woundsMod}]]}} {{wounds=-@{woundsMod} }} {{showfatigue=[[1d0+@{fatigue}]]}} {{fatigue=-@{fatigue}}} {{showdistracted=[[1d0+@{distracted}]]}} {{distracted=@{distracted}}}" />
-    					<input type="hidden" name="attr_showtraitmodsenc" value="{{showtt=[[1d0+@{traitmods}]]}} {{ttmod=@{traitmods}}} {{showwounds=[[1d0+@{woundsMod}]]}} {{wounds=-@{woundsMod} }} {{showfatigue=[[1d0+@{fatigue}]]}} {{fatigue=-@{fatigue}}} {{showdistracted=[[1d0+@{distracted}]]}} {{distracted=@{distracted}}} {{showenc=[[1d0+@{encumbrance}]]}} {{encumbrance=@{encumbrance}}}" />
     					<input type="hidden" name="attr_showdmgmods" value="{{showdmg=[[1d0+@{damagemods}]]}} {{ttmod=@{traitmods}}}" />
     					<!-- Hidden Fields to make Dice Rolling easier -->
     					<input type="hidden" name="attr_traitmods" value="@{ttmod}" />

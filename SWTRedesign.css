@@ -1483,9 +1483,10 @@ input.sheet-armorCarried {
 /*----------- End Armor Section -----------*/
 
 /*----------- Start Melee Section -----------*/
-.sheet-weapons {
+/*.sheet-weapons {
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
     margin-top: -15px;
 }
 
@@ -1511,34 +1512,94 @@ input.sheet-armorCarried {
 }
 
 .sheet-weapon {
-    width: 242px;
-    text-align: left;
-    box-sizing: border-box;
+    width: 275px;
+    text-align: left !important;
 }
 
 .sheet-range {
     width: 113px;
-    text-align: center;
-    box-sizing: border-box;
 }
 
 .sheet-rof {
-    width: 35px;
-    box-sizing: border-box;
+    width: 35px !important;
 }
 
 .sheet-weaponap,
 .sheet-weaponweight,
 .sheet-weaponcarried {
-	width: 50px;
-	box-sizing: border-box;
+	width: 60px !important;
 }
 
 .sheet-weaponnotes {
     width: 98%;
     height: 50px;
-    box-sizing: border-box;
+}*/
+.sheet-weaponHeader {
+    font-size: 14px;
+    font-weight: bold;
 }
+
+.sheet-hr {
+    width: 100%;
+}
+
+.sheet-weapons {
+  display: inline-flex;
+  width: 863px;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.sheet-weaponItem {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin: 0 0 4px 0;
+  box-sizing: border-box;
+}
+
+.sheet-button,
+.sheet-weapon,
+.sheet-range,
+.sheet-rof,
+.sheet-damage,
+.sheet-shots,
+.sheet-weaponap,
+.sheet-weaponweight,
+.sheet-weaponcarried,
+.sheet-weaponTotalWeight {
+  text-align: center;
+  display: inline-block;
+}
+ .sheet-button,
+ .sheet-damage,
+ .sheet-shots {
+   width: 85px !important;
+ }
+ 
+ .sheet-weapon {
+   width: 265px;
+   text-align: left !important;
+ }
+ 
+ .sheet-range {
+   width: 113px !important;
+ }
+ 
+ .sheet-rof {
+   width: 35px !important;
+ }
+ 
+ .sheet-weaponap,
+ .sheet-weaponweight,
+ .sheet-weaponcarried {
+   width: 60px !important;
+ }
+ 
+ .sheet-weaponnotes {
+   width: 89.5%;
+   height: 50px;
+ }
 
 .sheet-configlabels {
     display: inline;
@@ -1602,11 +1663,16 @@ input.sheet-armorCarried {
 .sheet-morespell {
     z-index: 9999;
     opacity: 0;
+    margin-top: -15px;
+    margin-left: 85px;
 }
 
 .sheet-moreweapon + span {
     font-family: "Pictos";
-    margin-left: -12px;
+    /*margin-left: -12px;*/
+    margin-right: -18px;
+    margin-top: -17px;
+    margin-left: -26px;
     color: gray;
     opacity: 0;
 }
@@ -1622,7 +1688,8 @@ input.sheet-armorCarried {
     opacity: 0;
 }
 
-.sheet-weaponitem:hover > .sheet-moreweapon + span,
+/*.sheet-weaponitem:hover > .sheet-moreweapon + span,*/
+.sheet-weapons:hover > .sheet-moreweapon + span,
 .sheet-moreweapon:hover + span,
 .sheet-moreweapon:checked + span,
 .sheet-powerrow:hover + .sheet-morespell + span,
@@ -1645,7 +1712,7 @@ input.sheet-armorCarried {
 .sheet-morespell:checked ~ .sheet-spellconfig {
     display: inline-block;
     width: 100%;
-    margin: -5px 0px 30px 0px;
+    margin: 0px 0px 30px 0px;
     border-bottom: 1px solid silver;
 }
 
@@ -1957,6 +2024,10 @@ input.sheet-armorCarried {
 }
 .editmode ~ .repcontrol .repcontrol_edit:after {
     content: ')';
+}
+
+[data-groupname=repeating_skills] > .repitem > .itemcontrol {
+    z-index: 10000;
 }
 /*----------- End Repeating Button Display -----------*/
 span.sheet-vehiclesT {
