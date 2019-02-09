@@ -1596,6 +1596,10 @@ input.sheet-armorCarried {
    width: 60px !important;
  }
  
+ .sheet-itemCarried {
+     width: 50px;
+ }
+ 
  .sheet-weaponnotes {
    width: 89.5%;
    height: 50px;
@@ -1663,8 +1667,12 @@ input.sheet-armorCarried {
 .sheet-morespell {
     z-index: 9999;
     opacity: 0;
-    margin-top: -15px;
+    margin-top: 0px;
     margin-left: 85px;
+}
+
+.sheet-moreweapon {
+    margin-top: -15px;
 }
 
 .sheet-moreweapon + span {

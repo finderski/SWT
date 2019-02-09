@@ -1374,14 +1374,15 @@
 	on("change:repeating_spells:spellbutton change:repeating_spells:spellskill", function(eventInfo) {
 	    console.log(eventInfo.sourceAttribute);
 	    let sid = eventInfo.sourceAttribute.slice(18,38);
-	    const skillUn = "&{template:roll} @{rolltUnskilled} {{trait=Unskilled}} {{source=@{power}}} {{PowerTemplate=y}}";
-	    const skillFa = "&{template:roll} {{trait=Faith}} @{rolltFaith} {{source=@{power}}} {{PowerTemplate=y}}";
-	    const skillFo = "&{template:roll} {{trait=Focus}} @{rolltFocus} {{source=@{power}}} {{PowerTemplate=y}}";
-	    const skillPe = "&{template:roll} {{trait=Performance}} @{rolltPerformance} {{source=@{power}}} {{PowerTemplate=y}}";
-	    const skillPs = "&{template:roll} {{trait=Psionics}} @{rolltPsionics} {{source=@{power}}} {{PowerTemplate=y}}";
-	    const skillRi = "&{template:roll} {{trait=Ritual}} @{rolltRitual} {{source=@{power}}} {{PowerTemplate=y}}";
-	    const skillSp = "&{template:roll} {{trait=Spellcasting}} @{rolltSpellcasting} {{source=@{power}}} {{PowerTemplate=y}}";
-	    const skillWs = "&{template:roll} {{trait=WeirdScience}} @{rolltWeirdScience} {{source=@{power}}} {{PowerTemplate=y}}";
+	    const skillUn = "@{rolltUnskilled} {{trait=Unskilled}}";
+	    const skillFa = "{{trait=Faith}} @{rolltFaith}";
+	    const skillFo = "{{trait=Focus}} @{rolltFocus}";
+	    const skillPe = "{{trait=Performance}} @{rolltPerformance}";
+	    const skillPs = "{{trait=Psionics}} @{rolltPsionics}";
+	    const skillRi = "{{trait=Ritual}} @{rolltRitual}";
+	    const skillSp = "{{trait=Spellcasting}} @{rolltSpellcasting}";
+	    const skillWs = "{{trait=WeirdScience}} @{rolltWeirdScience}";
+	    const skilltemp = "&{template:roll} {{source=@{power}}} {{PowerTemplate=y}} {{notes=@{spellnotes}}}"
 	    
 	    let skillToUse = skillSp;
 	    console.log("sid: "+sid);
@@ -1391,33 +1392,34 @@
 	        if(value.repeating_spells_spellbutton === "0" || value.repeating_spells_spellbutton === "2") {
 	            //Attack + Damage Roll in One
 	            console.log("!! Need to use Skills !!");
+	            skillToUse = skilltemp + " ";
 	            switch(value.repeating_spells_spellskill) {
 	                case 'faith':
-	                    skillToUse = skillFa;
+	                    skillToUse += skillFa;
 	                    break;
 	                case 'focus':
-	                    skillToUse = skillFo;
+	                    skillToUse += skillFo;
 	                    break;
 	                case 'performance':
-	                    skillToUse = skillPe;
+	                    skillToUse += skillPe;
 	                    break;
 	                case 'psionics':
-	                    skillToUse = skillPs;
+	                    skillToUse += skillPs;
 	                    break;
 	                case 'ritual':
-	                    skillToUse = skillRi;
+	                    skillToUse += skillRi;
 	                    break;
 	                case 'spellcasting':
-	                    skillToUse = skillSp;
+	                    skillToUse += skillSp;
 	                    break;
 	                case 'weirdscience':
-	                    skillToUse = skillWs;
+	                    skillToUse += skillWs;
 	                    break;
 	                case 'unskilled':
-	                    skillToUse = skillUn;
+	                    skillToUse += skillUn;
 	                    break;
 	                default:
-	                    skillToUse = skillSp;
+	                    skillToUse += skillSp;
 	                    break;
 	            }
 	            console.log("spellskill: "+value.repeating_spells_spellskill);
@@ -4133,7 +4135,7 @@
 								<input type="number" class='sheet-weaponItem sheet-weaponap' name='attr_weaponap' />
     						    <input type='number' class='sheet-weaponItem sheet-shots' name='attr_shots' data-i18n-placeholder="number-of-shots-shortened" placeholder="Shots" />
     						    <input type='number' class='sheet-weaponItem sheet-weaponweight' name='attr_weaponweight' data-i18n-placeholder="weight-abbr" placeholder="Wt" />
-    						    <div class='sheet-weaponItem sheet-weaponcarried'><input type='checkbox' name='attr_weaponcarried' /></div>
+    						    <div class='sheet-weaponItem sheet-weaponcarried'><input type='checkbox' class='sheet-itemCarried sheet-isCarried' name='attr_weaponcarried' /><span class="sheet-isCarriedIcon"></span></div>
     						    <input class='sheet-moreweapon' type='checkbox' name='attr_showweaponconfig' checked /><span>y</span>
     						    <textarea name='attr_weaponnotes' class='sheet-weaponItem sheet-weaponnotes' data-i18n-placeholder="notes" placeholder="Notes"></textarea>
     						    <div class="sheet-weaponconfig">
@@ -4583,6 +4585,13 @@
             </div>
             <!-- Start Vehicles -->
             <div class='sheet-vehicles'>
+                <input type="checkbox" class="sheet-hideQS" name="attr_is_sailing" /><span class="sheet-showQS"></span>
+			    <h3 class="sheet-configSectionTitle" data-i18n="quick-setting-configuration">Sailing Ship</h3>
+    			<div class="sheet-SailingShip">
+    			    <!-- Stuff -->
+    			</div>
+    			
+    			<!-- OLD -->
                 <div class='sheet-row' style="width: 800px;">
     				<div class='sheet-row'><h2 class='sheet-sectionHeader'><span data-i18n="vehicles-u">VEHICLES</span></h2></div>
     				<!-- Sailing Ship -->
