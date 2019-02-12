@@ -1382,7 +1382,7 @@
 	    const skillRi = "{{trait=Ritual}} @{rolltRitual}";
 	    const skillSp = "{{trait=Spellcasting}} @{rolltSpellcasting}";
 	    const skillWs = "{{trait=WeirdScience}} @{rolltWeirdScience}";
-	    const skilltemp = "&{template:roll} {{source=@{power}}} {{PowerTemplate=y}} {{notes=@{spellnotes}}}"
+	    const skilltemp = "&{template:roll} {{source=@{power}}} {{PowerTemplate=y}} @{shownotes}"
 	    
 	    let skillToUse = skillSp;
 	    console.log("sid: "+sid);
@@ -1988,6 +1988,31 @@
 	        console.log("Not using using Variable Bonus Damage...");
 	        setAttrs({vbonusdamage: '1d6!'});
 	    }
+	});
+	
+	on("change:repeating_spells:shownotes change:repeating_spells:spellbutton", function() {
+	    /*If spellbutton is set to Atk+Dmg, then don't show notes on damage roll*/
+	    getAttrs(["repeating_spells_shownotes","repeating_spells_spellbutton"], function(v) {
+	        console.log(`shownotes: ${v.repeating_spells_shownotes} || spellbutton: ${v.repeating_spells_spellbutton}`);
+	        if (v.repeating_spells_shownotes != "0") {
+	            //showing notes is checked 
+	            console.log("Showing Notes");
+	            if (v.repeating_spells_spellbutton === "0") {
+	                //button is set to Attack + Damage...don't show notes on damage roll 
+	                console.log("Set Damage Rolls to not show notes");
+	                setAttrs({repeating_spells_dmgshownotes: "0"})
+	            }
+	            else {
+	                console.log("Set Damage to show Spell Notes");
+	                setAttrs({repeating_spells_dmgshownotes: "{{notes=@{spellnotes}}}"});
+	            }
+	        }
+	        else {
+	            //Not showing notes, don't show notes on damage rolls 
+	            console.log("Set Damage Rolls to not show notes");
+	            setAttrs({repeating_spells_dmgshownotes: "0"});
+	        }
+	    });
 	});
 	
 </script>
@@ -4300,7 +4325,11 @@
         									<option value="d20!">d20</option>
         								 </select>
         								 +
-        								 <input type="text" class="sheet-spellnum" name="attr_spelldmgbonusnum" />
+        								 <input type="text" class="sheet-spellnum" name="attr_spelldmgbonusnum" value="0" />
+            						</div>
+            						<div class="sheet-spellnotesconfig">
+            						    <label class='sheet-configlabels' data-i18n="show-notes-with-roll">Show notes with roll</label>
+            						    <input type="checkbox" name="attr_shownotes" value="{{notes=@{spellnotes}}}" />
             						</div>
             						<!-- Hidden Fields for the roll button(s), etc -->
     								<input type='hidden' name='attr_spellroll' value='@{damageOnly}' />
@@ -4310,8 +4339,9 @@
     								<!-- Build the Damage Roll Template Info -->
     								<input type='hidden' name='attr_spelldmg' /> <!-- the damage formula -->
     								<input type='hidden' name='attr_spellbonusdmg' value='1d6!' />
-    								<input type='text' style='display: none;' name='attr_spelldmgTemplate' value='&{template:damage} {{name=@{character_name}}} {{source=@{power} }} {{dmg_rank=@{powerdamage}}} {{dmg_roll=[[@{spelldmg} + @{damagemods}]]}} {{bonus_die=[[@{vbonusdamage}]]}} {{notes=@{spellnotes}}} {{button=y}} {{DmgRoll=[Re-Roll Damage](~repeating_spells_spelldmg) }}' />
+    								<input type='text' style='display: none;' name='attr_spelldmgTemplate' value='&{template:damage} {{name=@{character_name}}} {{source=@{power} }} {{dmg_rank=@{powerdamage}}} {{dmg_roll=[[@{spelldmg} + @{damagemods}]]}} {{bonus_die=[[@{vbonusdamage}]]}} @{dmgshownotes} {{button=y}} {{DmgRoll=[Re-Roll Damage](~repeating_spells_spelldmg) }}' />
     								<input type='hidden' name='attr_skTemplate' value='1d6!' />
+    								<input type='hidden' name='attr_dmgshownotes' value='{{notes=@{spellnotes}}}' />
     						    </div>
     					    </fieldset>
     					</div><!-- End Powers -->

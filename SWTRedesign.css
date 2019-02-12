@@ -1624,6 +1624,7 @@ input.sheet-armorCarried {
 }
 
 .sheet-weapondamage,
+.sheet-spellnotesconfig,
 .sheet-weaponbutton[value="0"] + .sheet-weaponskill,
 .sheet-spellbutton[value="1"] ~ .sheet-spelldamage,
 .sheet-spellbutton[value="0"] ~ .sheet-spelldamage,
@@ -1939,7 +1940,7 @@ input.sheet-armorCarried {
 
 .sheet-spelldamage {
     display: none;
-    width: 400px;
+    /*width: 400px;*/
 }
 
 .sheet-spellatt {
