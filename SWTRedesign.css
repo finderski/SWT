@@ -123,14 +123,14 @@ input[value="10"]:checked ~ .sheet-background { /*Lahnkmar*/
 
 input[value="11"]:checked ~ .sheet-background {
 	/* background: url("http://www.geeksville.us/roll20/Rifts-CSBackground.jpg") repeat-y center center; */
-	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/Rifts-ws.jpg") repeat-y center center;
+	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/Rifts-ws.jpg");
 	/*background-size: 863px 840px;*/
 	background-size: 890px 840px;
 }
 
 input[value="12"]:checked ~ .sheet-background {
 	/* background: url("http://www.geeksville.us/roll20/RippersBG.jpg") repeat-y center center; */
-	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/RippersBG-ws.jpg") repeat-y center center;
+	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/RippersBG-ws.jpg");
 	background-size: 890px 840px;
 }
 
@@ -2899,9 +2899,12 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
 }
 
 .sheet-quickconfig,
-.sheet-bgconfig,
-.sheet-miscconfig {
+.sheet-bgconfig {
     height: 100px;
+}
+
+.sheet-miscconfig {
+    height: 175px;
 }
 
 .sheet-logoconfig,
