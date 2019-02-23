@@ -2766,8 +2766,6 @@
 <!-- END SHEET WORKERS -->
 
 <div class='sheet-maindiv'>
-    [strength](~tStrengthRoll)
-    <br />
     <input type='text' style='display: none;' name='attr_character_sheet' value='Savage Worlds Tabbed v1.9' />
     <input type='text' style='display: none;' name='attr_agility_rank' value='1d4!' />
     <input type='text' style='display: none;' name='attr_smarts_rank' value='1d4!' />
@@ -2796,47 +2794,23 @@
 			<input type='checkbox' class='sheet-Dismiss' style='display: none;' name='attr_dismissRN' value='1' />
 			<div class='sheet-row sheet-CSRelease' style='width: 100%; padding-top: 5px; padding-bottom: 5px;'>
 		        <label style='width: 100%; display: inline-block;'>
-		        <input type='checkbox' class='sheet-releasenotice' style='opacity: 100%;' name='attr_releasenotice' value='1' /><span class='sheet-releasenotice' style='color: red;'><h3 style='display: inline-block; color: red;'>!! Important Notice !!</h3></span></label>
-		        <input type='checkbox' class='sheet-releasenotice' style='display: none;' name='attr_releasenotice' value='1' />
+		        <input type='checkbox' class='sheet-releasenotice' style='opacity: 100%;' name='attr_releasenotice1' value='1' checked /><span class='sheet-releasenotice' style='color: red;'><h3 style='display: inline-block; color: red;'>!! Important Notice !!</h3></span></label>
+		        <input type='checkbox' class='sheet-releasenotice' style='display: none;' name='attr_releasenotice1' value='1' checked />
 		        <div class='sheet-row sheet-releasenotice' style='width: 100%; padding: 0px; margin: 0px'>
-		            <input type='checkbox' class='sheet-Dismiss' name='attr_dismissRN' value='1' /><span class='sheet-Dismiss'>&nbsp;&nbsp;Dismiss</span>
+		            <input type='checkbox' class='sheet-Dismiss' name='attr_dismissRN2' value='1' /><span class='sheet-Dismiss'>&nbsp;&nbsp;Dismiss</span>
 		            
 		            <p>Savage Worlds Tabbed Sheet: Version 2.0</p>
 		            <p>
-		                Changes this Release:
-		                <ul>
-		                    <li>Added Translation Support</li>
-		                    <li>Added a Banner for easy identification of character type (Mook vs. Wild Card)</li>
-		                    <li>Mook Fields have migrated to use the same fields as Wild Cards</li>
-		                        <ul>
-		                            <li>No data should be lost</li>
-		                            <li>You can get back to the old Mook View by:</li>
-		                                <ol>
-		                                    <li>Go to the Attribute & Abilities tab</li>
-		                                    <li>Click on the Attributes +Add button</li>
-		                                    <li>Name the new attribute: showMook</li>
-		                                    <li>set the value of showMook to 1</li>
-		                                    NOTE: this view will be going away in the near-ish future.
-		                                </ol>
-		                            <li>This is was done to simplify the code-base and allow for universal macros</li>
-		                        </ul> 
-		                    <li>Added Stat Block button</li>
-		                        <ul>
-		                            <li>Whispers the Stat Block to the GM</li>
-		                            <li>Allows rolling from the stat block</li>
-		                            <li>Better formatting may be coming in the future. :)</li>
-		                        </ul>
-		                    <li>Weight/Encumbrance now supports decimals (needed for some international translations)</li>
-		                    <li>Can Change Running Die (in Configuration)</li>
-		                    <li>Added a Running roll button to the Basic Info tab</li>
-		                    <li>Added checkbox for Shaken status</li>
-		                        <ul>
-		                            <li>The Character Type Banner will also display this</li>
-		                        </ul>
-		                    <li>Added a field to Hindrances to indicate Major/Minor hindrance type</li>
-		                    <li>Added a Release Notes section to the Configuration</li>
-		                </ul>
-		            </p> 
+		                Just a notice that in the next few weeks the newer version (version 3.0) will be released. This will be a major update and will completely change the layout of the sheet. It will be updated to support SWADE and be backwards compatible with with SWEX.
+		            </p>
+		            <p>
+		                Because of all the changes that will be implemented, it's recommended that you make a back-up of your game; it's not anticipated that there should be any data loss with this upgrade, but there are some major changes and some existing fields will be deprecated and new fields created. What are those major changes?
+		            </p>
+		            <ul>
+	                    <li>Melee and Ranged Weapons are being combined into a single section</li>
+	                    <li>Damaging and non-damaging powers are being combined into a single section</li>
+	                    <li>Tweaks to the Vehicles' Crew sections</li>
+	                </ul>
 		            <p>
 		                If you'd like to see what's happening with the sheet, join my Test/QA game at: <br /><br />
 		                https://tinyurl.com/SWTabbedQA
@@ -2938,7 +2912,7 @@
 					<div class='sheet-row'><h2 class='sheet-sectionHeader'><span data-i18n="configuration-u">CONFIGURATION</span></h2></div>
 					<div class="sheet-row">
 						<h4 class="sheet-subsectionHeader"><span data-i18n="api-fields">API Fields</span></h4>
-						API: Initiative Edges <span class="sheet-tooltip">i<span><strong style='line-height: 30px; text-align: center;'><span data-i18n="dealinit-api-script">DealInit API Script</span></strong><br><p><span data-i18n="dealinit-use">Initiative Edges must be stored in a comma separated list in an Attribute named InitEdges. (e.g. Qu,LH)</span></p><p><span data-i18n="dealinit-shorthand">The Edge shorthand is as follows</span>:<br /><ul><li><strong>Qui</strong> = <span data-i18n="quick">Quick</span></li><li><strong>LH</strong> = <span data-i18n="level-headed">Level Headed</span></li><li><strong>ILH</strong> = <span data-i18n="improved-level-headed">Improved Level Headed</span></li><li><strong>WCE</strong> = <span data-i18n="any-joker-activated">Any Joker Activated Wild Card Edge</span></li></ul></p></span></span>
+						API: Initiative Edges <span class="sheet-tooltip">i<span class="sheet-instructions"><strong style='line-height: 30px; text-align: center;'><span data-i18n="dealinit-api-script">DealInit API Script</span></strong><br><p><span data-i18n="dealinit-use">Initiative Edges must be stored in a comma separated list in an Attribute named InitEdges. (e.g. Qu,LH)</span></p><p><span data-i18n="dealinit-shorthand">The Edge shorthand is as follows</span>:<br /><ul><li><strong>Qui</strong> = <span data-i18n="quick">Quick</span></li><li><strong>LH</strong> = <span data-i18n="level-headed">Level Headed</span></li><li><strong>ILH</strong> = <span data-i18n="improved-level-headed">Improved Level Headed</span></li><li><strong>WCE</strong> = <span data-i18n="any-joker-activated">Any Joker Activated Wild Card Edge</span></li></ul></p></span></span>
 					    <input class="sheet-standard" type="text" title="@{InitEdges}" name="attr_InitEdges"/>
 					</div>
 					<hr />
@@ -3426,7 +3400,7 @@
 								<div class='sheet-Academics'>
 									<label class='sheet-nameRankXp'><span data-i18n="academics">Academics:</span></label>
 									<input type="number" name="attr_academics" class="sheet-derivedStat" title="@{academics}" value="0"/>
-									<input type="number" name="attr_academics" class="sheet-derivedStat" title="@{academics}" value="0"/>
+									<input type="number" name="attr_academicsMod" title="@{academicsMod}" class="sheet-standardNum" value="0" />
 									<span class="sheet-numSpan">&nbsp;</span>
 									<input type="number" name="attr_academicsCur" title="@{academicsCur}" class="sheet-derivedStat" value="@{academics} + @{academicsMod}" disabled="true" /><br />
 								</div>
@@ -3672,7 +3646,7 @@
 								<input type="checkbox" class="sheet-useEngrams" name="attr_izengrams" style="width: 15px; display: none;" />
 								<div class="sheet-engrams" style='width: 100%; padding: 0px; margin: 0px;'>
 									<div class='sheet-row' style='width: 100%; padding: 0px; margin: 0px;'>
-										<div class='sheet-col' style='width: 100%; margin: 0px; padding:0px; font-size: 1.5em; font-weight: bold;'><span data-i18n="engrams">Engrams</span></div><br />
+										<div class='sheet-col' style='width: 100%; margin: 0px; padding:0px; text-align: center; font-size: 1.5em; font-weight: bold;'><span data-i18n="engrams">Engrams</span></div><br />
 										<div class='sheet-col' style='width: 70%; margin: 0px; padding: 0px; text-align: center; font-size: .9em; font-weight: bold;'><span data-i18n="engram">Engram</span></div>
 										<div class='sheet-col' style='width: 16%; margin: 0px; margin-left: -3px; padding: 0px; text-align: center; font-size: .9em; font-weight: bold;'><span data-i18n="ams">AMS</span></div>
 										<!--<div class='sheet-col' style='width: 8%; margin: 0px; padding: 0px; text-align: center; font-size: .9em; font-weight: bold;'><span class="sheet-tooltip">i<span><p>Checked Engrams are active and count toward your AMS total slots used.</p></span></span></div>-->
@@ -11788,7 +11762,7 @@
 	    <!---{{#^rollTotal() mook 0}}<img src='http://www.geeksville.us/roll20/WildCardIcon-black.png' style='height: auto; border:0; margin-bottom: -8px; position: relative; width: 35px;' alt='Dead Jester Logo by geno sulum' />{{/^rollTotal() mook 0}}<h2 class='sheet-caption' style='display: inline-block;'>{{name}} Statblock</h2><br />-->
 	    <h2 class='sheet-caption'>{{#^rollTotal() mook 0}}{{WCI}}{{/^rollTotal() mook 0}} {{name}} <span data-i18n="stat-block">Statblock</span></h2>
 	    {{#Description}}{{Description}}<br />{{/Description}}
-	    **<span data-i18n="pace">Pace</span>**: {{Pace}}; **<span data-i18n="parry">Parry</span>**: {{Parry}}; **<span data-i18n="toughness">Toughness</span>**: {{Toughness}}; **<span data-i18n="charisma">Charisma</span>**: {{Charisma}}{{#^rollTotal() dsAcademics 0}}; **<span data-i18n="academics">Academics</span>**: {{Academics}}{{/^rollTotal() dsAcademics 0}}{{#^rollTotal() dsCorruption 0}}; **<span data-i18n="corruption">Corruption</span>**: {{Corruption}}{{/^rollTotal() dsCorruption 0}}{{#^rollTotal() dsFame 0}}; **<span data-i18n="fame">Fame</span>**: {{Fame}}{{/^rollTotal() dsFame 0}}{{#^rollTotal() dsFirewall 0}}; **<span data-i18n="firewall">Firewall</span>**: {{Firewall}}{{/^rollTotal() dsFirewall 0}}{{#^rollTotal() dsGlory 0}}; **<span data-i18n="glory">Glory</span>**: {{Glory}}{{/^rollTotal() dsGlory 0}}{{#^rollTotal() dsGrit 0}}; **<span data-i18n="grit">Grit</span>**: {{Grit}}{{/^rollTotal() dsGrit 0}}{{#^rollTotal() dsNToughness 0}}; **<span data-i18n="neural-toughness">Neural Toughness</span>**: {{NToughness}}{{/^rollTotal() dsNToughness 0}}{{#^rollTotal() dsReason 0}}; **Reason**: {{Reason}}{{/^rollTotal() dsReason 0}}{{#^rollTotal() dsSanity 0}}; **<span data-i18n="sanity">Sanity</span>**: {{Sanity}}{{/^rollTotal() dsSanity 0}}{{#^rollTotal() dsStatus 0}}; **<span data-i18n="status">Status</span>**: {{Status}}{{/^rollTotal() dsStatus 0}}{{#^rollTotal() dsStrain 0}}; **<span data-i18n="straing">Strain</span> (max={{StrainMax}})**: {{Strain}}{{/^rollTotal() dsStrain 0}}{{#^rollTotal() dsStreetCred 0}}; **<span data-i18n="street-cred">Street Cred</span>**: {{StreetCred}}{{/^rollTotal() dsStreetCred 0}}
+	    **<span data-i18n="pace">Pace</span>**: {{Pace}}; **<span data-i18n="parry">Parry</span>**: {{Parry}}; **<span data-i18n="toughness">Toughness</span>**: {{Toughness}}; **<span data-i18n="charisma">Charisma</span>**: {{Charisma}}{{#^rollTotal() dsAcademics 0}}; **<span data-i18n="academics">Academics</span>**: {{Academics}}{{/^rollTotal() dsAcademics 0}}{{#^rollTotal() dsCorruption 0}}; **<span data-i18n="corruption">Corruption</span>**: {{Corruption}}{{/^rollTotal() dsCorruption 0}}{{#^rollTotal() dsFame 0}}; **<span data-i18n="fame">Fame</span>**: {{Fame}}{{/^rollTotal() dsFame 0}}{{#^rollTotal() dsFirewall 0}}; **<span data-i18n="firewall">Firewall</span>**: {{Firewall}}{{/^rollTotal() dsFirewall 0}}{{#^rollTotal() dsGlory 0}}; **<span data-i18n="glory">Glory</span>**: {{Glory}}{{/^rollTotal() dsGlory 0}}{{#^rollTotal() dsGrit 0}}; **<span data-i18n="grit">Grit</span>**: {{Grit}}{{/^rollTotal() dsGrit 0}}{{#^rollTotal() dsNToughness 0}}; **<span data-i18n="neural-toughness">Neural Toughness</span>**: {{NToughness}}{{/^rollTotal() dsNToughness 0}}{{#^rollTotal() dsReason 0}}; **Reason**: {{Reason}}{{/^rollTotal() dsReason 0}}{{#^rollTotal() dsSanity 0}}; **<span data-i18n="sanity">Sanity</span>**: {{Sanity}}{{/^rollTotal() dsSanity 0}}{{#^rollTotal() dsStatus 0}}; **<span data-i18n="status">Status</span>**: {{Status}}{{/^rollTotal() dsStatus 0}}{{#^rollTotal() dsStrain 0}}; **<span data-i18n="strain">Strain</span> (max={{StrainMax}})**: {{Strain}}{{/^rollTotal() dsStrain 0}}{{#^rollTotal() dsStreetCred 0}}; **<span data-i18n="street-cred">Street Cred</span>**: {{StreetCred}}{{/^rollTotal() dsStreetCred 0}}
 	    <h3 class='sheet-statheader'><span data-i18n="attributes">Attributes</span></h3>
 	    **<span data-i18n="agility">Agility</span>**: {{Agility}}<span class='sheet-showDie' style='font-family: "dicefontd20";'>t</span>, **<span data-i18n="smarts">Smarts</span>**: {{Smarts}}, **<span data-i18n="spirit">Spirit</span>**: {{Spirit}}, **<span data-i18n="strength">Strength</span>**: {{Strength}}, **<span data-i18n="vigor">Vigor</span>**: {{Vigor}}
 	    <h3 class='sheet-statheader'><span data-i18n="skills">Skills</span></h3>

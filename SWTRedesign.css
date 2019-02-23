@@ -350,6 +350,7 @@ input:checked + .sheet-slider:before {
 button[type=roll].sheet-traitbutton,
 button[type=roll].sheet-hindranceOutput,
 button[type=roll].sheet-edgeOutput,
+button[type=roll].sheet-shipcrewbutton,
 button[type=roll].sheet-APIOutput {
     border: none;
     background-color: transparent;
@@ -364,6 +365,7 @@ button[type=roll].sheet-APIOutput {
 }
 
 button[type=roll].sheet-hindranceOutput::before,
+button[type=roll].sheet-shipcrewbutton::before,
 button[type=roll].sheet-edgeOutput::before,
 button[type=roll].sheet-APIOutput::before {
     content: '';
@@ -371,6 +373,7 @@ button[type=roll].sheet-APIOutput::before {
 
 button[type=roll].sheet-hindranceOutput,
 button[type=roll].sheet-edgeOutput,
+button[type=roll].sheet-shipcrewbutton,
 button[type=roll].sheet-APIOutput {
     font-family: "Pictos";
 }
@@ -1964,7 +1967,9 @@ input.sheet-armorCarried {
 [data-groupname=repeating_rippertech],
 [data-groupname=repeating_augmentation],
 [data-groupname=repeating_heroicpath],
-[data-groupname=repeating_quests] {
+[data-groupname=repeating_quests],
+[data-groupname=repeating_sailweapons],
+[data-groupname=repeating_sshipcrew] {
     width: 100%;
 }
 .repcontrol_add,
@@ -2401,6 +2406,249 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
 .sheet-usePowerArmor:checked ~ .sheet-ship-PowerArmor,
 .sheet-useRobotArmor:checked ~ .sheet-ship-RobotArmor {
     display: block;
+}
+
+.sheet-SailingShip {
+    background: rgba(255,255,255,0.75);
+}
+
+.sheet-hideShip,
+.sheet-hideshiprepeating {
+    width:60px;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    opacity: 0;
+    z-index: 9999;
+}
+
+.sheet-showShip,
+.sheet-showshiprepeating {
+    width: 60px;
+    font-family: "Pictos";
+    font-size: 1.5em;
+    margin-left: -60px;
+}
+
+.sheet-hideShip:checked + .sheet-showShip::before,
+.sheet-hideshiprepeating:checked + .sheet-showshiprepeating::before {
+	content: 'E';
+}
+
+.sheet-hideShip:not(:checked) + .sheet-showShip::before,
+.sheet-hideshiprepeating:not(:checked) + .sheet-showshiprepeating::before {
+	content: 'J';
+}
+
+.sheet-hideShip:checked ~ .sheet-ship,
+.sheet-hideshiprepeating:checked ~ .sheet-shipWeapons {
+	display: none;
+}
+
+.sheet-ship {
+    width: 863px;
+    padding: none;
+    width: 0 0 0 0;
+}
+.sheet-shipheaderrow {
+    display: inline-flex;
+    width: 100%;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.sheet-shipField {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid black;
+  text-align: center !important;
+  font-size: 1.25em;
+  background-color: transparent;
+  color: black;
+}
+
+.sheet-shiplabel {
+  width:100%;
+  text-align: center !important;
+  font-weight: bold;
+  font-size: .75em;
+}
+
+.sheet-shipItem {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin: 0 0 4px 0;
+  box-sizing: border-box;
+  width: 33%;
+}
+
+.sheet-shipMainSection {
+  display: inline-flex;
+  width: 100%;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.sheet-shipMainColumn1,
+.sheet-shipMainColumn2,
+.sheet-shipMainColumn3 {
+  display: inline-flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.sheet-shipMainColumn1 {
+  width: 30%;
+}
+
+.sheet-shipMainColumn2,
+.sheet-shipMainColumn3 {
+  width: 34.25%;
+}
+
+.sheet-shipMainItem {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin: 0 0 5px 0;
+  width: 100%;
+}
+
+.sheet-shipMainLabel {
+  display: inline-block;
+  width: 35%;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+.sheet-shipMainInput {
+  width: 45% !important;
+  border: none;
+  border-bottom: 1px solid black;
+  background-color: transparent;
+  color: black;
+}
+
+.sheet-shipWound {
+  border: none;
+  border-bottom: 1px solid black;
+  width: 19%;
+  background-color: transparent;
+  color: black;
+}
+
+.sheet-vtext {
+    width: 95%;
+    max-width: 95%;
+    height: 70px;
+    min-height: 50px;
+    background-color: transparent;
+    color: black;
+}
+
+.sheet-repTitle {
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    margin-top: -25px;
+    margin-bottom: 10px;
+}
+
+.sheet-shipWeapons,
+.sheet-shipCrew {
+  display: inline-flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.sheet-shipWeaponsItem,
+.sheet-shipCrewMember {
+  flex: 0 0 auto;
+  align-self: flex-start;
+  margin: 0 0 5px 0;
+}
+
+
+.sheet-shipweapon,
+.sheet-shiprange,
+.sheet-shiprof,
+.sheet-shipdamage,
+.sheet-shipplacement,
+.sheet-shipcrewname,
+.sheet-shipcrewtype,
+.sheet-shipcrewposition,
+.sheet-shipcrewsalary {
+  text-align: center;
+  display: inline-block;
+  background-color: transparent;
+  color: black;
+}
+
+.sheet-shipbutton {
+   width: 10%;
+}
+ 
+.sheet-shipweapon {
+   width: 31%;
+   text-align: left !important;
+}
+ 
+.sheet-shiprange,
+.sheet-shipdamage {
+   width: 15%;
+}
+ 
+.sheet-shiprof {
+   width: 10% !important;
+}
+ 
+.sheet-shipplacement {
+   width: 15% !important;
+}
+ 
+.sheet-shipweaponnotes {
+   width: 99%;
+   height: 50px;
+   min-height: 25px;
+   resize: vertical;
+   background-color: transparent;
+   color: black;
+}
+
+.sheet-shipcrewbutton {
+	width: 5%;
+}
+
+.sheet-shipcrewname {
+   width: 20%;
+   text-align: left !important;
+}
+
+.sheet-shipcrewtype {
+    width: 10%;
+}
+
+.sheet-shipcrewposition {
+    width: 20%;
+}
+
+.sheet-shipcrewsalary {
+    width: 10%;
+}
+
+.sheet-shipcrewnotes {
+    /*width: 30%;*/
+	width: 35%;
+	height: 18px;
+	min-height: 18px;
+	resize: vertical;
+	background-color: transparent;
+	color: black;
 }
 
 /*----------- End Vehicle Tab Configuration Stuff -----------*/

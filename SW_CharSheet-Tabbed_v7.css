@@ -948,7 +948,7 @@ div.sheet-core-content { display: none; width:840px;}
 .charsheet input.sheet-tab8:checked ~ div.sheet-section-combat,
 .charsheet input.sheet-attacks:checked ~ div.sheet-options-attack,
 .charsheet input.sheet-defend:checked ~ div.sheet-options-defend,
-.charsheet input.sheet-misc:checked ~ div.sheet-options-other, {
+.charsheet input.sheet-misc:checked ~ div.sheet-options-other {
 	/*max-height: 999999px;
 	visibility: visible;
 	opacity: 1;
@@ -1957,8 +1957,7 @@ input.sheet-sbButtonCheck:checked ~ button.sheet-sbButton {
 .sheet-HideSkills:checked ~ *.sheet-mskills,
 .sheet-HideMWeapons:checked ~ *.sheet-mweapons,
 .sheet-HideRWeapons:checked ~ *.sheet-rweapons,
-.sheet-HideArcanum:checked ~ *.sheet-arcanum,
-.sheet-hideArcanum:checked ~ *.sheet-section-arcanum,
+.sheet-hideArcanum:checked + *.sheet-arcanum,
 .sheet-NoPP:checked + *.sheet-PowerPoints,
 .sheet-HideNotes:checked ~ *.sheet-notes,
 .sheet-HideConfig:checked ~ *.sheet-config,

@@ -4615,96 +4615,99 @@
             </div>
             <!-- Start Vehicles -->
             <div class='sheet-vehicles'>
-                <input type="checkbox" class="sheet-hideQS" name="attr_is_sailing" /><span class="sheet-showQS"></span>
-			    <h3 class="sheet-configSectionTitle" data-i18n="quick-setting-configuration">Sailing Ship</h3>
+                <input class="sheet-useSailingShips" type="checkbox" name="attr_sailingShip" style="display: none;" />
     			<div class="sheet-SailingShip">
-    			    <!-- Stuff -->
-    			</div>
-    			
-    			<!-- OLD -->
-                <div class='sheet-row' style="width: 800px;">
-    				<div class='sheet-row'><h2 class='sheet-sectionHeader'><span data-i18n="vehicles-u">VEHICLES</span></h2></div>
-    				<!-- Sailing Ship -->
-    				<input class="sheet-useSailingShips" type="checkbox" name="attr_sailingShip" style="display: none;" />
-    				<div class="sheet-ship-sailing" style="width: 800px;">
-    					<!--<input class="sheet-HideSailing" type="checkbox" name="attr_is_sailing" /><span class="sheet-is-sailing-tab"> Sailing Ship</span>-->
-    					<div class="sheet-isSailing" style="width: 800px;">
-    						<input class="sheet-HideSection" type="checkbox" name="attr_is_sailing" /><span class='sheet-HidebuttonLight'></span>
-    						<h3 class="sheet-subsubsectionHeader"><span data-i18n="sailing-ship">Sailing Ship</span></h3>
-    						<div class='sheet-SailingShip'>
-    							<div class="sheet-row" style="width: 100%; text-align: center;">
-    								<input type="text" class="sheet-standard" name="attr_SailingShipName" title="@{SailingShipName}" placeholder="Ship's Name" style="font-size: 200%; width: 790px; text-align: center;" /><br />
-    								<input type="text" class="sheet-standard" name="attr_SShipCaptain" title="@{SShipCaptain}" data-i18n-placeholder="ships-captain"  placeholder="Ship's Captain" style="font-size: 150%; width: 790px; text-align: center;" /><br />
-    								<input type="text" class="sheet-standard" name="attr_SShipType" title="@{SShipType}" data-i18n-placeholder="type-of-ship" placeholder="Type of Ship" style="font-size: 100%; width: 790px; text-align: center;" />
-    								<div class="sheet-standardtext" style="text-align: center; width: 790px; margin-left: 5px; padding: 5px;">
-    									<h3 style="width: 100%; text-align: center;"><span data-i18n="wounds-u">WOUNDS</span></h3>
-    									<input type="number" class="sheet-standardNum" name="attr_SShipWounds" title="@{SShipWounds}" style="text-align: center; margin-bottom:-3px;" value="0" /> of <input type="number" class="sheet-standardNum" name="attr_SShipWounds_max" title="@{SShipWounds_max}" style="text-align: center; margin-bottom: -3px;" value="2" />							
-    								</div>
-    							</div>
-    							<span class="sheet-spacer"></span>
-    							<div class="sheet-3colrow">
-    								<div class="sheet-col" style="width: 20%;">
-    									<label class="sheet-nameRankXp"><span data-i18n="acceleration">Acceleration</span>:</label><input type="number" class="sheet-standardNum" name="attr_SShipAcc" title="@{SShipAcc}" /><br />
-    									<!--<label class="sheet-nameRankXp">Travel Speed:</label><input type="number" class="sheet-standardNum" name="attr_SShipTrSpeed" title="@{SShipTrSpeed}" /><br />-->
-    									<label class="sheet-nameRankXp"><span data-i18n="top-speed">Top Speed</span>:</label><input type="number" class="sheet-standardNum" name="attr_SShipTopSpeed" title="@{SShipTopSpeed}" /><br />
-    									<label class="sheet-nameRankXp"><span data-i18n="toughness">Toughness</span>:</label><input type="text" class="sheet-standardNum" name="attr_SShipToughness" title="@{SShipToughness}" /><br />
-    									<label class="sheet-nameRankXp"><span data-i18n="handling">Handling</span>:</label><input type="number" class="sheet-standardNum" name="attr_SShipHandling" title="@{SShipHandling}" /><br />
-    									<label class="sheet-nameRankXp"><span data-i18n="crew">Crew</span>:</label><input type="text" class="sheet-standardNum" name="attr_SShipCrew" title="@{SShipCrew}" /><br />
-    									<label class="sheet-nameRankXp"><span data-i18n="cargo-slots">Cargo Slots</span>:</label><input type="number" class="sheet-standardNum" name="attr_SShipSlots" title="@{SShipSlots}" /><br />
-    									<label class="sheet-nameRankXp"><span data-i18n="original-cost">Orignal Cost</span>:</label><input type="number" class="sheet-standardNum" name="attr_SShipOCost" title="@{SShipOCost}" /><br />
-    									<label class="sheet-nameRankXp"><span data-i18n="days-at-sea">Days at Sea</span>:</label><input type="number" class="sheet-standardNum" name="attr_SShipAtSea" title="@{SShipAtSea}" /><br />
-    								</div>
-    								<div class="sheet-col" style="width: 33%;">
-    									<h4 class="sheet-subsectionHeader"><span data-i18n="provisions">Provisions</span></h4>
-    									<textarea class="sheet-standardtext"  style="width: 95%; height: 100px;" name="attr_SShipProv" title="@{SShipProv}"></textarea>
-    									<span class="sheet-spacer"></span>
-    									<h4 class="sheet-subsectionHeader"><span data-i18n="cargo">Cargo</span></h4>
-    									<textarea class="sheet-standardtext"  style="width: 95%; height: 100px;" name="attr_SShipCargo" title="@{SShipCargo}"></textarea>
-    								</div>
-    								<div class="sheet-col" style="width: 33%;">
-    									<h4 class="sheet-subsectionHeader"><span data-i18n="hindrances">Hindrances</span></h4>
-    									<textarea class="sheet-standardtext"  style="width: 95%; height: 100px;" name="attr_SShipHindrances" title="@{SShipHindrances}"></textarea>
-    									<h4 class="sheet-subsectionHeader"><span data-i18n="critical-hits">Critical Hits</span></h4>
-    									<textarea class="sheet-standardtext"  style="width: 95%; height: 100px;" name="attr_SShipCritHit" title="@{SShipCritHit}"></textarea>
-    								</div>
-    							</div>
-    							<input type="checkbox" class="sheet-HideSShipEdges" name="attr_hideshipedges" /><span class="sheet-HideSSEdges"> <span data-i18n="ships-edges">Ship's Edges</span></span>
-    							<div class="sheet-SShipEdges">
-    								<h4 class="sheet-subsectionHeader"><span data-i18n="edges">Edges</span></h4>
-    								<textarea class="sheet-standardtext"  style="width: 98%; height: 100px;" name="attr_SShipEdges" title="@{SShipEdges}"></textarea>
-    							</div>
-    							<span class="sheet-spacer"></span>
-    							<input type="checkbox" class="sheet-HideSShipWeapons" name="attr_hideshipweapons" /><span class="sheet-HideSSWeapons"> <span data-i18n="ships-weapons">Ship's Weapons</span></span>
-    							<div class="sheet-SShipWeapons">
-    								<!--Ships Armaments-->
-    								<h4 class="sheet-subsectionHeader"><span data-i18n="ships-armaments">Ship's Armaments</span></h4>
-    								<span class="sheet-spacer"></span>
-    								<div class='sheet-col' style='width:200px;'> <!-- Weapon Type (150px) -->
-    									<h4 class="sheet-repeatingHeader"><span data-i18n="weapon-type">Weapon Type</span></h4>
-    								</div>
-    								<div class='sheet-col' style='width:85px;'> <!-- Range (100px) -->
-    									<h4 class="sheet-repeatingHeader"><span data-i18n="range">Range</span></h4>
-    								</div>
-    								<div class='sheet-col' style='width:40px;'> <!-- Rof (45px) -->
-    									<h4 class="sheet-repeatingHeader"><span data-i18n="rof">RoF</span></h4>
-    								</div>
-    								<div class='sheet-col' style='width:130px;'> <!-- Damage (167px) -->
-    									<h4 class="sheet-repeatingHeader"><span data-i18n="damage">Damage</span></h4>
-    								</div>
-    								<div class='sheet-col' style='width:45px; text-align: center;'> <!-- Raise/Bonus Damage (60px)-->
-    									<h4 class="sheet-repeatingHeader"><span data-i18n="raise">Raise</span></h4>
-    								</div>
-    								<div class='sheet-col' style='width:280px;'> <!-- Weight (45px)-->
-    									<h4 class="sheet-repeatingHeader"><span data-i18n="placement">Placement</span></h4>
-    								</div>
-    								<input class='sheet-buttonbox' type="checkbox" name="attr_skillwrt" value="0" style="display: none;" />
-    								<input type="checkbox" class="sheet-useRaiseHB" name="attr_RaiseHBRule" style="width: 15px; display: none;" />
-    								<fieldset class='repeating_sailweapons'>
-    									<div class="sheet-row">
-    										<input type="text" class="sheet-standard" style="width: 200px;" name="attr_SShipWeaponType" data-i18n-placeholder="weapon"  placeholder="Weapon" />
-    										<input type="text" class="sheet-standard" style="width: 85px;" name="attr_SShipWeaponRange" data-i18n-placeholder="range"  placeholder="Range" />
-    										<input type="number" class="sheet-standardNum" style="width: 40px;" name="attr_SShipWeaponRoF" data-i18n-placeholder="rof" placeholder="RoF" />
-    										<input type="number" name="attr_NoDmgDice" class="sheet-short" style="width: 35px;" value="2" />
+    			    <input type="checkbox" class="sheet-hideShip" name="attr_is_sailing" /><span class="sheet-showShip"></span>
+			        <h3 class="sheet-configSectionTitle" data-i18n="sailing-ship">Sailing Ship</h3>
+			        <div class="sheet-ship">
+			            <div class="sheet-shipheaderrow">
+			                <div class="sheet-shipItem sheet-shipname">
+    			                <input type="text" class="sheet-shipField" name="attr_SailingShipName" title="@{SailingShipName}" />
+    			                <div class="sheet-shiplabel" data-i18n="ship-name">Ship Name</div>
+    			            </div>
+    			            <div class="sheet-shipItem sheet-capnname">
+    			                <input type="text" class="sheet-shipField" name="attr_SShipCaptain" title="@{SShipCaptain}" />
+    			                <div class="sheet-shiplabel" data-i18n="captain">Captain</div>
+    			            </div>
+    			            <div class="sheet-shipItem sheet-shipname">
+    			                <input type="text" class="sheet-shipField" name="attr_SShipType" title="@{SShipType}" />
+    			                <div class="sheet-shiplabel" data-i18n="ship-type">Ship Type</div>
+    			            </div>
+			            </div>
+			            <div class="sheet-shipMainSection">
+			                <div class="sheet-shipMainColumn1">
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="wounds">Wounds:</label>
+			                         <input type="number" class="sheet-shipWound" name="attr_SShipWounds" />&nbsp;<span data-i18n="of">of</span>&nbsp;<input type="number" class="sheet-shipWound" name="attr_SShipWounds_max" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="acceleration">Acceleration:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_SShipAcc" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="top-speed">Top Speed:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_SShipTopSpeed" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="toughness">Toughness:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_SShipToughness" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="handling">Handling:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_SShipHandling" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="crew">Crew:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_SShipCrew" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="cargo-slots">Cargo Slots:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_SShipSlots" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="original-cost">Original Cost:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_SShipOCost" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="days-at-sea">Days at Sea:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_SShipAtSea" />
+			                    </div>
+			                </div> <!-- End Column 1 -->
+			                <div class="sheet-shipMainColumn2">
+			                    <h4 class="sheet-subsectionHeader" data-i18n="provisions">Provisions</h4>
+								<textarea class="sheet-vtext" name="attr_SShipProv" title="@{SShipProv}"></textarea>
+								<h4 class="sheet-subsectionHeader" data-i18n="cargo">Cargo</h4>
+								<textarea class="sheet-vtext" name="attr_SShipCargo" title="@{SShipCargo}"></textarea>
+								<h4 class="sheet-subsectionHeader" data-i18n="critical-hits">Critical Hits</h4>
+    							<textarea class="sheet-vtext" name="attr_SShipCritHit" title="@{SShipCritHit}"></textarea>
+			                </div> <!-- End Column 2 -->
+			                <div class="sheet-shipMainColumn3">
+			                    <h4 class="sheet-subsectionHeader"><span data-i18n="hindrances">Hindrances</span></h4>
+    							<textarea class="sheet-vtext"  name="attr_SShipHindrances" title="@{SShipHindrances}"></textarea>
+    							<h4 class="sheet-subsectionHeader"><span data-i18n="edges">Edges</span></h4>
+    							<textarea class="sheet-vtext"  name="attr_SShipEdges" title="@{SShipEdges}"></textarea>
+    							<h4 class="sheet-subsectionHeader" data-i18n="notes-and-upgrades">Notes and Upgrades</h4>
+    							<textarea class='sheet-vtext' name="attr_SShipNotes"></textarea>
+			                </div> <!-- End Column 3 -->
+			            </div>
+			            <div class="sheet-shipArmaments">
+			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipweapons" /><span class="sheet-showshipweapons"></span>
+			                <h4 class="sheet-repTitle" data-i18n="ships-armaments">Ship's Armaments</h4>
+			                <div class="sheet-shipWeapons">
+    			                <h4 class="sheet-weaponItem sheet-shipbutton">&nbsp;</h4>
+    			                <h4 class="sheet-weaponItem sheet-shipweapon" data-i18n="weapon">Weapon</h4>
+    			                <h4 class="sheet-weaponItem sheet-shiprange" data-i18n="range">Range</h4>
+    			                <h4 class="sheet-weaponItem sheet-shiprof" data-i18n="rate-of-fire-abbr">ROF</h4>
+    			                <h4 class="sheet-weaponItem sheet-shipdamage" data-i18n="rate-of-fire-abbr">damage</h4>
+    			                <h4 class="sheet-weaponItem sheet-shipplacement" data-i18n="placement">Placement</h4>
+    			                <fieldset class='repeating_sailweapons'>
+    			                    <div class="sheet-shipWeapons">
+    			                        <button class='sheet-weaponItem sheet-shipbutton' type='roll' name='roll_tRangeWeapon' title="@{repeating_sailweapons_$#_tRangeWeaponRoll}" value='@{rolltSSRangeWeapon}'></button>
+    			                        <input type="text" class="sheet-weaponItem sheet-shipweapon" name="attr_SShipWeaponType" data-i18n-placeholder="weapon"  placeholder="Weapon" />
+										<input type="text" class="sheet-weaponItem sheet-shiprange" name="attr_SShipWeaponRange" data-i18n-placeholder="range"  placeholder="Range" />
+										<input type="number" class="sheet-weaponItem sheet-shiprof" name="attr_SShipWeaponRoF" data-i18n-placeholder="rof" placeholder="RoF" />
+										<div class="sheet-weaponItem sheet-shipdamage">
+										    <input type="number" name="attr_NoDmgDice" class="sheet-short" style="width: 35px;" value="2" />
     										<select name="attr_RDmgType" class="dtype" style="margin:0px;'">
     											<option value="d4!">d4</option>
     											<option value="d6!">d6</option>
@@ -4712,79 +4715,46 @@
     											<option value="d10!">d10</option>
     											<option value="d12!">d12</option>
     										</select>+<input class="sheet-modifier" style="margin: 0px; width: 35px;" type="number" name="attr_RDmgMod" value="0" />
-    										<div class="sheet-col" style="width: 10px;">&nbsp;</div>
-    										<div class='sheet-useHB' style='width:45px; text-align: center;'> <!-- Bonus Damage (60px)-->
-    											<select name="attr_RDmgRaise" class="dtype">
-    												<option value="0">n/a</option>
-    												<option value="4!">d4</option>
-    												<option value="6!">d6</option>
-    												<option value="8!">d8</option>
-    												<option value="10!">d10</option>
-    												<option value="12!">d12</option>
-    											</select>
-    										</div>
-    										<div class='sheet-useStandard sheet-col' style='width:45px; text-align: center;'>
-    											<input type="checkbox" name="attr_RDmgRaise" value="6!" />
-    										</div>
-    										<div class='sheet-col' style='width: 280px;'>
-    											<input type="text" class="sheet-standard" style="width: 210px;" name="attr_SShipWeaponPlacement" data-i18n-placeholder="placement" placeholder="Placement" />
+										</div>
+										<input type="text" class="sheet-weaponItem sheet-shipplacement" name="attr_SShipWeaponPlacement" data-i18n-placeholder="placement" placeholder="Placement" />
+										<textarea class="sheet-weaponItem sheet-shipweaponnotes" name="attr_SShipWeaponNotes"></textarea>
+									</div>
+									<input type='hidden' name='attr_rolltSSRangeWeapon' value="&{template:damage} {{name=@{SailingShipName}}} {{source=@{SShipWeaponType}}} {{dmg_rank=@{NoDmgDice}@{RDmgType}+@{RDmgMod}}} {{dmg_roll=@{SSRangeWeapon}}} {{bonus_die=[[1d6!]]}} {{notes=@{SShipWeaponNotes}}}" />
+									<input type="hidden" name="attr_SSRangeWeapon" value="[[@{NoDmgDice}@{RDmgType}+@{RDmgMod} + @{damagemods}]]" />
+    			                </fieldset>
+    			            </div>
+			            </div>
+			            <div class='sheet-shipRoster'>
+			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipcrew" /><span class="sheet-showshipweapons"></span>
+			                <h4 class="sheet-repTitle" data-i18n="ships-crew">Ship's Crew</h4>
+			                <div class='sheet-shipCrew'>
+			                    <!--<h4 class="sheet-crewMember sheet-shipcrewbutton">&nbsp;</h4>-->
+								<h4 class="sheet-crewMember sheet-shipcrewname" data-i18n="name-or-number">Name or Number</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewtype" data-i18n="type">Type</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewposition" data-i18n="position">Position</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewsalary" data-i18n="pay">Pay</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewnotes" data-i18n="notes">Notes</h4>
+    			                <fieldset class='repeating_SShipCrew'>
+    			                    <div class="sheet-shipCrew">
+										<!--<button type='roll' name='roll_crewInfo' class="sheet-crewMember sheet-shipcrewbutton" value="">w</button>-->
+    			                        <input type="text" class="sheet-crewMember sheet-shipcrewname" name="attr_SShipCrewName" />
+    			                        <input type="text" class="sheet-crewMember sheet-shipcrewtype" name="attr_SShipCrewType" />
+										<input type="text" class="sheet-crewMember sheet-shipcrewposition" name="attr_SShipCrewPos" />
+										<input type="text" class="sheet-crewMember sheet-shipcrewsalary" name="attr_SShipCrewSalary" />
+										<textarea class='sheet-crewMember sheet-shipcrewnotes' name="attr_SShipCrewNotes"></textarea>
+									</div>
+    			                </fieldset>
+			                </div>
+			            </div>
+			        </div>
+    			</div><!-- End Sailing Ship -->
+    			
+    			<!-- OLD -->
+                <div class='sheet-row' style="width: 800px;">
+    				<div class='sheet-row'><h2 class='sheet-sectionHeader'><span data-i18n="vehicles-u">VEHICLES</span></h2></div>
+    				<!-- Sailing Ship -->
+    							
     								
-    											<input type='hidden' name='attr_rollSSRangeWeapon' value="[[@{NoDmgDice}@{RDmgType}+@{RDmgMod}[Weapon Damage]+@{dmgmod}[Damage Modifier]+1d@{RDmgRaise}[Bonus Damage]]]" />
-    											<input type='hidden' name='attr_rolltSSRangeWeapon' value="{{name=@{character_name}}} {{weapon=@{SShipWeaponType}}} {{damage_type=@{NoDmgDice}@{RDmgType}+@{RDmgMod}}} {{damage=@{rollSSRangeWeapon}}} {{raise=@{RDmgRaise}}} {{dmgmod=@{dmgmod}}} {{notes=@{SShipWeaponNotes}}}" />
-    								
-    											<button class='sheet-templatebutton' type='roll' name='roll_tRangeWeapon' title="@{repeating_sailweapons_$#_tRangeWeaponRoll}" value='@{skillwrt} @{defdTemplate} @{rolltSSRangeWeapon}'></button><button class="sheet-templatebutton sheet-GM-button" type='roll' name='roll_tgmSSRangeWeaponRoll' title="@{repeating_sailweapons_$#_tgmSSRangeWeaponRoll}" value='/w gm @{skillwrt} @{defdTemplate} @{rolltSSRangeWeapon}'></button>
-    											<button class='sheet-normalbutton' type='roll' name='roll_rWeaponTypeRoll' title="@{repeating_sailweapons_$#_rWeaponTypeRoll}" value='/em @{character_name} @{notemplatedamage} @{SShipWeaponType} @{notemplateandrolls}: @{rollSSRangeWeapon}!'></button><button type='roll' class="sheet-normalbutton sheet-GM-button" name='roll_gmrWeaponTypeRoll' title="@{repeating_sailweapons_$#_gmrWeaponTypeRoll}" value='/w gm @{character_name} @{notemplatedamage} @{SShipWeaponType} @{notemplateandrolls}: @{rollSSRangeWeapon}!'></button>
-    								
-    											<!--<button type='roll' name='roll_srWeaponTypeRoll' value='/em @{character_name} @{notemplatedamage} @{SShipWeaponType} @{notemplateandrolls}: [[@{NoDmgDice}@{RDmgType}+@{RDmgMod}[Weapon Damage]+@{dmgmod}[Damage Modifier]+@{RDmgRaise}[Bonus Damage]]]!'></button><button type='roll' class="sheet-GM-button" name='roll_gmsrWeaponTypeRoll' value='/w gm @{character_name} @{notemplatedamage} @{SShipWeaponType} @{notemplateandrolls}: [[@{NoDmgDice}@{RDmgType}+@{RDmgMod}[Weapon Damage]+@{dmgmod}[Damage Modifier]+@{RDmgRaise}[Bonus Damage]]]!'></button>-->
-    										</div>
-    										<h4 class="sheet-repeatingHeader"><span data-i18n="notes">Notes</span></h4>
-    										<textarea class="sheet-standardtext"  style="width: 98%; height: 50px;" name="attr_SShipWeaponNotes"></textarea>
-    									</div>
-    								</fieldset>
-    								<div class="sheet-templatebutton">
-    									<input type='checkbox' name='attr_sailFormula' class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
-    									<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
-    										<textarea style='width:775px; height:50px;'>&{template:soliddamage} {{name=@{character_name}}} {{weapon=@{repeating_sailweapons_$0_SShipWeaponType}}} {{damage_type=@{repeating_sailweapons_$0_NoDmgDice}@{repeating_sailweapons_$0_RDmgType}+@{repeating_sailweapons_$0_RDmgMod}}} {{damage=[[@{repeating_sailweapons_$0_NoDmgDice}@{repeating_sailweapons_$0_RDmgType} + @{repeating_sailweapons_$0_RDmgMod}[Weapon Damage] + @{dmgmod}[Damage Modifier] + 1d@{repeating_sailweapons_$0_RDmgRaise}[Bonus Damage]]]}} {{raise=@{repeating_sailweapons_$0_RDmgRaise}}} {{dmgmod=@{dmgmod}}}</textarea><br />
-    										<div class="sheet-row" style="color:red;">
-                                            <strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-solid-damage">&{template:soliddamage} can be replaced with &{template:clubsdamage}. Also, the _$0_ represents the first added skill. For each subsequent skill added, increment the number.</span>
-    										</div>
-    									</div>
-    								</div>
-    								<div class="sheet-normalbutton">
-    									<input type='checkbox' name='attr_sailFormula' class='arrow' style='width:15px;' checked='checked'/> <span class="sheet-spaceBetween"> &nbsp; <span data-i18n="hide-macro-formula">Hide Macro Formula</span> &nbsp; </span>
-    									<div class='sheet-formula' style='width:785px; height:60px; border:solid; border-width:1px;'>
-    										<textarea style='width:775px; height:50px;'>/em @{character_name} @{notemplatedamage} @{repeating_sailweapons_$0_SShipWeaponType} @{notemplateandrolls}: [[@{repeating_sailweapons_$0_NoDmgDice}@{repeating_sailweapons_$0_RDmgType}+@{repeating_sailweapons_$0_RDmgMod}[Weapon Damage]+@{dmgmod}[Damage Modifier]+@{repeating_sailweapons_$0_RDmgRaise}[Bonus Damage]]]!</textarea><br />
-    										<span style='color:red;display:inline-block'>
-    							<strong><span data-i18n="note-u">NOTE</span>:</strong> <span data-i18n="note-template-replace">the <span style='border:solid, border-width:1px;'> _$0_ </span> represents the first added skill. For each subsequent skill added, increment the number.</span>
-    						</span>
-    										<br />
-    									</div>
-    								</div>
-    								<hr />
-    							</div>
-    							<!--<span class="sheet-spacer"></span>-->
-    							<input type="checkbox" class="sheet-HideSShipCrew" name="attr_hideshipcrew" /><span class="sheet-HideSSCrew"> <span data-i18n="ships-crew">Ship's Crew</span></span>
-    							<div class="sheet-SShipCrew">
-    								<h4 class="sheet-subsectionHeader"><span data-i18n="ships-crew">Ship's Crew</span></h4>
-    								<span class="sheet-spacer"></span>
-    								<div class="sheet-col" style="width: 100px;">
-    									<h4 class="sheet-repeatingHeader"><span data-i18n="name-or-number">Name or #</span></h4>
-    								</div>
-    								<div class="sheet-col" style="width: 100px;">
-    									<h4 class="sheet-repeatingHeader"><span data-i18n="type">Type</span></h4>
-    								</div>
-    								<div class="sheet-col" style="width: 100px;">
-    									<h4 class="sheet-repeatingHeader"><span data-i18n="position">Position</span></h4>
-    								</div>
-    								<div class="sheet-col" style="width: 100px;">
-    									<h4 class="sheet-repeatingHeader" style="width: 95px;"><span data-i18n="salary">Salary</span></h4>
-    								</div>
-    								<div class="sheet-col" style="width: 65px; text-align: center;">
-    									<h4 class="sheet-repeatingHeader"><span data-i18n="shares">Shares</span></h4>
-    								</div>
-    								<div class="sheet-col" style="width:315px;">
-    									<h4 class="sheet-repeatingHeader"><span data-i18n="notes">Notes</span></h4>
-    								</div>
     								<fieldset class="repeating_SShipCrew">
     									<div class="sheet-row">
     										<input type="text" class="sheet-standard" style="width: 100px;" name="attr_SShipCrewName" />
