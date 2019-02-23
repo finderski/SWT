@@ -133,7 +133,7 @@ input[value="9"]:checked ~ .sheet-background { /*Hellfrost: Land of Fire*/
 
 input[value="10"]:checked ~ .sheet-background { /*Lahnkmar*/
 	/*background-image: url("http://www.geeksville.us/roll20/lankhmar-bg-1.jpg");*/
-	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master//lankhmar-ws.jpg");
+	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/lankhmar-ws.jpg");
 	/*background-size: 840 840px;*/
     background-repeat: repeat;
     /*background-attachment: fixed;*/
