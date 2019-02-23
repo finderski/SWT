@@ -42,45 +42,33 @@ textarea {
 input[value="1"]:checked ~ .sheet-background {
 	background-image: none;
 	background-color: white;
-	/*background-image: url("http://www.geeksville.us/roll20/oldMap_seamless_2.png");
-	background-size: 845px 900px;*/
-    /*background-repeat: no-repeat;*/
-    /*background-attachment: fixed;*/
-    /*background-position: center; 
-    background-origin: content-box;*/
 }
 
 input[value="2"]:checked ~ .sheet-background {
-	background-image: url("http://www.geeksville.us/roll20/oldMap_seamless_2.png");
-	/*background-size: 845px 900px;*/
-    /*background-repeat: no-repeat;*/
-    /*background-attachment: fixed;*/
+	/*background-image: url("http://www.geeksville.us/roll20/oldMap_seamless_2.png");*/
+	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/oldMap-ws.jpg");
+	background-size: 100%;
     background-position: center; 
     background-origin: content-box;
 }
 
 input[value="3"]:checked ~ .sheet-background {
-	background-image: url("http://www.geeksville.us/roll20/Z-background.jpg");
-	/*background-size: 845px 564px;*/
-    /*background-repeat: no-repeat;*/
-    /*background-attachment: fixed;*/
+	/*background-image: url("http://www.geeksville.us/roll20/Z-background.jpg");*/
+	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/Z-ws.jpg");
     background-position: center; 
     background-origin: content-box;
 }
 
 input[value="4"]:checked ~ .sheet-background {
-	/*background-image: url("http://www.geeksville.us/roll20/NYC-Night_2.jpg");*/
-	/*background-image: url("http://www.geeksville.us/roll20/noir3.jpg");*/
-	background-image: url("http://www.geeksville.us/roll20/NewNoir2.jpg");
-	/*background-size: 850px 920px;*/
-    /*background-repeat: no-repeat;*/
-    /*background-attachment: fixed;*/
+	/* background-image: url("http://www.geeksville.us/roll20/NewNoir2.jpg"); */
+	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/Noir-ws.jpg");
     background-position: center; 
     background-origin: content-box;
 }
 
 input[value="5"]:checked ~ .sheet-background {
-	background-image: url("http://www.geeksville.us/roll20/LastParsec-Background.jpg");
+	/* background-image: url("http://www.geeksville.us/roll20/LastParsec-Background.jpg"); */
+	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/LastParsec-ws.jpg");
 	background-size: 863px 1060px;
     /*background-repeat: no-repeat;*/
     /*background-attachment: fixed;*/
@@ -94,39 +82,31 @@ input[value="5"]:checked ~ .sheet-background {
 }
 
 input[value="6"]:checked ~ .sheet-background {
-	background-image: url("http://www.geeksville.us/roll20/supers.jpg");
-	/*background-size: 840px 564px;*/
-    /*background-repeat: no-repeat;*/
-    /*background-attachment: fixed;*/
+	/* background-image: url("http://www.geeksville.us/roll20/supers.jpg"); */
+	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/supers-ws.jpg");
     background-position: center; 
     background-origin: content-box;
 }
 
 input[value="7"]:checked ~ .sheet-background {
-	/*background-image: url("http://www.geeksville.us/roll20/cyberpunk2.jpg");*/
-	background-image: url("http://www.geeksville.us/roll20/cyberpunk-2.5.jpg");
-	/*background-size: 840px 840px;*/
-    /*background-repeat: no-repeat;*/
-    /*background-attachment: fixed;*/
+	/* background-image: url("http://www.geeksville.us/roll20/cyberpunk-2.5.jpg"); */
+	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/cyberpunk-ws.jpg");
     background-position: center; 
     background-origin: content-box;
 }
 
 input[value="8"]:checked ~ .sheet-background { /*Hellfrost*/
-	/*background-image: url("http://www.geeksville.us/roll20/cyberpunk2.jpg");*/
-	background-image: url("http://www.geeksville.us/roll20/Hellfrost_4.jpg");
-	/*background-size: 840px 840px;*/
+	/* background-image: url("http://www.geeksville.us/roll20/Hellfrost_4.jpg"); */
+	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/Hellfrost-ws.jpg");
     background-repeat: repeat;
-    /*background-attachment: fixed;*/
     background-position: center; 
     background-origin: content-box;
 }
 
 input[value="9"]:checked ~ .sheet-background { /*Hellfrost: Land of Fire*/
-	background-image: url("http://www.geeksville.us/roll20/Hellfrost_LoF.jpg");
-	/*background-size: 840px 840px;*/
+	/* background-image: url("http://www.geeksville.us/roll20/Hellfrost_LoF.jpg"); */
+	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/Hellfrost_LoF-ws.jpg");
     background-repeat: repeat;
-    /*background-attachment: fixed;*/
     background-position: center; 
     background-origin: content-box;
 }
@@ -142,16 +122,15 @@ input[value="10"]:checked ~ .sheet-background { /*Lahnkmar*/
 }
 
 input[value="11"]:checked ~ .sheet-background {
-	/*background: url(http://i.imgur.com/PCO6UbB.jpg) repeat-y center center;*/
-	background: url("http://www.geeksville.us/roll20/Rifts-CSBackground.jpg") repeat-y center center;
+	/* background: url("http://www.geeksville.us/roll20/Rifts-CSBackground.jpg") repeat-y center center; */
+	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/Rifts-ws.jpg") repeat-y center center;
 	/*background-size: 863px 840px;*/
 	background-size: 890px 840px;
 }
 
 input[value="12"]:checked ~ .sheet-background {
-	/*background: url(http://i.imgur.com/PCO6UbB.jpg) repeat-y center center;*/
-	background: url("http://www.geeksville.us/roll20/RippersBG.jpg") repeat-y center center;
-	/*background-size: 863px 840px;*/
+	/* background: url("http://www.geeksville.us/roll20/RippersBG.jpg") repeat-y center center; */
+	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/RippersBG-ws.jpg") repeat-y center center;
 	background-size: 890px 840px;
 }
 
@@ -328,7 +307,7 @@ input:checked + .sheet-slider:before {
 }
 
 .sheet-characterT:checked ~ div.sheet-character,
-.sheet-configT:checked ~ div.sheet-config,
+.sheet-configT:checked ~ .sheet-config,
 .sheet-vehiclesT:checked ~ div.sheet-vehicles,
 .sheet-journalT:checked ~ div.sheet-notes {
 	display: block;
@@ -2804,6 +2783,7 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
     margin: 0 0 10px 0;
     padding: 5px 5px 5px 5px;
 }
+
 .sheet-vehicleTypes,
 .sheet-PowerTypes,
 .sheet-xpmod {
