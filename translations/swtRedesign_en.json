@@ -749,5 +749,13 @@
 	"power-type-desc": "Check this box to show other options for Power Lables, such as Miracles, Spells, etc",
 	"custom-power-label-text": "Replaces the generic Powers lable with one you write in",
 	"enter-custom-power-label": "Enter custom Power Label",
-	"bonus-damage-die-type": "Bonus Damage Die Type"
+	"bonus-damage-die-type": "Bonus Damage Die Type",
+	"show-notes-with-roll": "Show notes with roll",
+	"captain": "Captain",
+	"ship-type": "Ship Type",
+	"pay": "Pay",
+	"vehicle-manufacturer": "Vehicle Manufacturer",
+	"driver": "Driver",
+	"vehicle-type": "Vehicle Type",
+	"walker-type": "Walker Type"
 }

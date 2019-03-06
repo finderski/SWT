@@ -1949,7 +1949,12 @@ input.sheet-armorCarried {
 [data-groupname=repeating_heroicpath],
 [data-groupname=repeating_quests],
 [data-groupname=repeating_sailweapons],
-[data-groupname=repeating_sshipcrew] {
+[data-groupname=repeating_sshipcrew],
+[data-groupname=repeating_fshipcrew],
+[data-groupname=repeating_gshipcrew],
+[data-groupname=repeating_wshipcrew],
+[data-groupname=repeating_paweapons],
+[data-groupname=repeating_raweapons] {
     width: 100%;
 }
 .repcontrol_add,
@@ -2388,7 +2393,11 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
     display: block;
 }
 
-.sheet-SailingShip {
+.sheet-SailingShip,
+.sheet-ship-flying,
+.sheet-ship-groundvehicle,
+.sheet-ship-walker,
+.sheet-ship-PowerArmor {
     background: rgba(255,255,255,0.75);
 }
 
@@ -2514,9 +2523,36 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
 .sheet-shipWound {
   border: none;
   border-bottom: 1px solid black;
-  width: 19%;
+  width: 19% !important;
   background-color: transparent;
   color: black;
+}
+
+.sheet-paimg {
+	width: 50%;
+	align-self: center;
+}
+
+.sheet-shipPAStatBlock {
+  display: inline-flex;
+  /*border: 1px solid silver;*/
+  width: 100%;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  text-align: center;
+}
+
+.sheet-shipPALabel {
+  width: 30% !important;
+  text-align: left;
+}
+
+.sheet-shipPAGround,
+.sheet-shipPAFlight,
+.sheet-shipPASwim {
+  width: 20.5% !important;
+  text-align: center;
 }
 
 .sheet-vtext {
@@ -2631,6 +2667,18 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
 	color: black;
 }
 
+ .sheet-paweapon {
+   width: 325px;
+   text-align: left !important;
+ }
+ 
+ .sheet-panotes {
+    width: 98% !important;
+ }
+
+.sheet-panotesheader {
+    text-align: center;
+}
 /*----------- End Vehicle Tab Configuration Stuff -----------*/
 
 /*----------- Disclaimer Info Setup -----------*/

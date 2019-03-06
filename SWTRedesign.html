@@ -247,6 +247,61 @@
         });
     }
     
+    function salaryNshares (rsection, salaryfield, sharesfield) {
+        // rsection should be the full name: repeating_<section>
+        console.log(`====> Repeating Section: ${rsection} <====`);
+        getSectionIDs(rsection, function(idArray) {
+            if (idArray.length > 0) {
+                console.log(`<==== ${idArray.length} row(s) to combine ====>`);
+                let fullArray = [];
+                let salaryArray = [];
+                let sharesArray = [];
+                for (let a=0; a < idArray.length; a++) {
+                    fullArray.length = `${rsection}_${idArray[a]}_${salaryfield}`;
+                    fullArray.length = `${rsection}_${idArray[a]}_${sharesfield}`;
+                }
+                console.log("### Full Array Length: "+fullArray.length +" ####");
+                getAttrs(fullArray, function(v) {
+                    let sattrs = {};
+                    for (let c=0; c < idArray.length; c++) {
+                        var fieldVal = '';
+                        //check Salary field for a value
+                        console.log(`Salary Field Value: ${salaryArray[c]}`);
+                        if (v[salaryArray[c]].length < 1) {
+                            console.log("No Salary Info");
+                        }
+                        else {
+                            console.log("Salary info to care for")
+                            fieldVal = v[salaryArray[c]] + " (salary)";
+                        }
+                        //check Shares field for a value
+                        console.log(`Salary Field Value: ${salaryArray[c]}`);
+                        if (v[sharesArray[c]].length < 1) {
+                            console.log("No Shares Info");
+                        }
+                        else {
+                            console.log("Shares info to care for")
+                            if (fieldVal.length < 1) {
+                                fieldVal = v[sharesArray[c]] + " (shares)";
+                            }
+                            else {
+                                fieldVal = ` and ${v[sharesArray[c]]} (shares)`;
+                            }
+                        }
+                        if (fieldVal.length > 0) {
+                            //set the salary field
+                            sattrs[salaryArray[c]] = fieldVal;
+                        }
+                    }
+                    setAttrs(sattrs);
+                });
+            }
+            else {
+                console.log(`<==== Nothing to combine ====>`);
+            }
+        });
+    }
+    
     function convertRS (originSection, destinationSection, ofieldArray, dfieldArray, daddlfieldArray, defaultValues) {
         /*------ example of call ------
         ||  originSection = section (without repeating_) fields will be migrated FROM
@@ -349,8 +404,8 @@
     const upgradeSheet = function(version) {
 	    if (version < 3.0) {
 	        //migrate old fields to new
-	        const oldAtts = ["agMod","smMod","spMod","stMod","viMod","UnskilledEncumbrance","FightingMod","Academicsskill","AcademicsskillMod","Athletics","AthleticsMod","Battle","BattleMod","BoatingMod","Climbing","ClimbingMod","Commonknowledge","CommonknowledgeMod","Driving","DrivingMod","Electronics","ElectronicsMod","Faith","FaithMod","Focus","FocusMod","Gambling","GamblingMod","Guts","GutsMod","Hacking","HackingMod","Healing","HealingMod","Intimidation","IntimidationMod","Investigation","InvestigationMod","Language","LanguageMod","Lockpicking","LockpickingMod","Notice","NoticeMod","Occult","OccultMod","Performance","PerformanceMod","Persuasion","PersuasionMod","Piloting","PilotingMod","Psionics","PsionicsMod","Repair","RepairMod","Research","ResearchMod","Riding","RidingMod","Ritual","RitualMod","Science","ScienceMod","Shooting","ShootingMod","Spellcasting","SpellcastingMod","Stealth","StealthMod","Streetwise","StreetwiseMod","Survival","SurvivalMod","Swimming","SwimmingMod","Taunt","TauntMod","Thievery","ThieveryMod","Throwing","ThrowingMod","Tracking","TrackingMod","WeirdScience","WeirdScienceMod","LinkedPsionicsAtt","LinkedRitualAttScore","LinkedSpellcastingAttScore","LinkedWeirdScienceAttScore"];
-	        const newAtts = ["agilitymod","smartsmod","spiritmod","strengthmod","vigormod","unskilledencumbrance","fightingmod","academicsskill","academicsskillmod","athletics","athleticsmod","battle","battlemod","boatingmod","climbing","climbingmod","commonknowledge","commonknowledgemod","driving","drivingmod","electronics","electronicsmod","faith","faithmod","focus","focusmod","gambling","gamblingmod","guts","gutsmod","hacking","hackingmod","healing","healingmod","intimidation","intimidationmod","investigation","investigationmod","language","languagemod","lockpicking","lockpickingmod","notice","noticemod","occult","occultmod","performance","performancemod","persuasion","persuasionmod","piloting","pilotingmod","psionics","psionicsmod","repair","repairmod","research","researchmod","riding","ridingmod","ritual","ritualmod","science","sciencemod","shooting","shootingmod","spellcasting","spellcastingmod","stealth","stealthmod","streetwise","streetwisemod","survival","survivalmod","swimming","swimmingmod","taunt","tauntmod","thievery","thieverymod","throwing","throwingmod","tracking","trackingmod","weirdscience","weirdsciencemod","linkedpsionicsatt","linkedritualattscore","linkedspellcastingattscore","linkedweirdscienceattscore"];
+	        const oldAtts = ["agMod","smMod","spMod","stMod","viMod","UnskilledEncumbrance","FightingMod","Academicsskill","AcademicsskillMod","Athletics","AthleticsMod","Battle","BattleMod","BoatingMod","Climbing","ClimbingMod","Commonknowledge","CommonknowledgeMod","Driving","DrivingMod","Electronics","ElectronicsMod","Faith","FaithMod","Focus","FocusMod","Gambling","GamblingMod","Guts","GutsMod","Hacking","HackingMod","Healing","HealingMod","Intimidation","IntimidationMod","Investigation","InvestigationMod","Language","LanguageMod","Lockpicking","LockpickingMod","Notice","NoticeMod","Occult","OccultMod","Performance","PerformanceMod","Persuasion","PersuasionMod","Piloting","PilotingMod","Psionics","PsionicsMod","Repair","RepairMod","Research","ResearchMod","Riding","RidingMod","Ritual","RitualMod","Science","ScienceMod","Shooting","ShootingMod","Spellcasting","SpellcastingMod","Stealth","StealthMod","Streetwise","StreetwiseMod","Survival","SurvivalMod","Swimming","SwimmingMod","Taunt","TauntMod","Thievery","ThieveryMod","Throwing","ThrowingMod","Tracking","TrackingMod","WeirdScience","WeirdScienceMod","LinkedPsionicsAtt","LinkedRitualAttScore","LinkedSpellcastingAttScore","LinkedWeirdScienceAttScore","PAstrength","PAstMod","PAstrollMod"];
+	        const newAtts = ["agilitymod","smartsmod","spiritmod","strengthmod","vigormod","unskilledencumbrance","fightingmod","academicsskill","academicsskillmod","athletics","athleticsmod","battle","battlemod","boatingmod","climbing","climbingmod","commonknowledge","commonknowledgemod","driving","drivingmod","electronics","electronicsmod","faith","faithmod","focus","focusmod","gambling","gamblingmod","guts","gutsmod","hacking","hackingmod","healing","healingmod","intimidation","intimidationmod","investigation","investigationmod","language","languagemod","lockpicking","lockpickingmod","notice","noticemod","occult","occultmod","performance","performancemod","persuasion","persuasionmod","piloting","pilotingmod","psionics","psionicsmod","repair","repairmod","research","researchmod","riding","ridingmod","ritual","ritualmod","science","sciencemod","shooting","shootingmod","spellcasting","spellcastingmod","stealth","stealthmod","streetwise","streetwisemod","survival","survivalmod","swimming","swimmingmod","taunt","tauntmod","thievery","thieverymod","throwing","throwingmod","tracking","trackingmod","weirdscience","weirdsciencemod","linkedpsionicsatt","linkedritualattscore","linkedspellcastingattscore","linkedweirdscienceattscore","pastrength","pastmod","pastrollmod","rastrength","rastmod","rastrollmod"];
 	        let sAttrs = {};
 	        getAttrs(oldAtts, function(v) {
 	            //Convert from Old Trait Mod Format (e.g. agMod) to the new format (e.g. agilitymod)
@@ -360,7 +415,7 @@
     	        }
     	        setAttrs(sAttrs);
     	        //Need to create rank and display values for existing sheets
-    	        const otraits = ['agility','smarts','spirit','strength','vigor','fighting','academicsskill','athletics','battle','boating','climbing','commonknowledge','driving','electronics','faith','focus','gambling','guts','hacking','healing','intimidation','investigation','language','lockpicking','notice','occult','performance','persuasion','piloting','psionics','repair','research','riding','ritual','science','shooting','spellcasting','stealth','streetwise','survival','swimming','taunt','throwing','thievery','tracking','weirdscience','repeating_skills:skillnamerank'];
+    	        const otraits = ['agility','smarts','spirit','strength','vigor','fighting','academicsskill','athletics','battle','boating','climbing','commonknowledge','driving','electronics','faith','focus','gambling','guts','hacking','healing','intimidation','investigation','language','lockpicking','notice','occult','performance','persuasion','piloting','psionics','repair','research','riding','ritual','science','shooting','spellcasting','stealth','streetwise','survival','swimming','taunt','throwing','thievery','tracking','weirdscience','repeating_skills:skillnamerank','pastrength','rastrength'];
     	        otraits.forEach(otraits => {
     	           rankNdisplay(otraits);
     	        });
@@ -441,7 +496,33 @@
             let rangedweaponDefaultValues = ["na","on"];
             convertRS ("rangeweapons", "weapons", rangedFields, weaponFieldsII,morerangedweaponFields,rangedweaponDefaultValues);
             
-            //stepwiseFaux("weapons","dmgbonusnum");
+            //Migrate Power Armor Ranged Weapons to Power Armor Weapons
+    	    let parangedFields = ["PAWeaponType","PAWeaponRange","PAWeaponRoF","PANoDmgDice","PARDmgType","PARDmgMod","PAWeaponNotes"];
+            let paweaponFieldsII =["paweapon","parange","parof","padmgnumdice","padmgdietype","padmgbonusnum","paweaponnotes"];
+            let pamorerangedweaponFields = ["padamageatt"];
+            let parangedweaponDefaultValues = ["na"];
+            convertRS ("PAweapons", "paweapons", parangedFields, paweaponFieldsII, pamorerangedweaponFields, parangedweaponDefaultValues);
+            
+            //Migrate Power Armor Melee Weapons to Power Armor Weapons
+    	    let pameleeFields = ["PAMWeaponType","PAMMeleeDieNum","PAMDmgType","PAMMDmgMod","PAMmeleeWNotes"];
+    	    let paweaponFields = ["paweapon","padmgnumdice","padmgdietype","padmgbonusnum","paweaponnotes"];
+    	    let pamoreweaponFields = ["padamageatt"];
+    	    let paweaponDefaultValues = ["strength"];
+            convertRS("PAmeleeweapons","paweapons", pameleeFields, paweaponFields, pamoreweaponFields, paweaponDefaultValues);
+            
+            //Migrate Robot Armor Ranged Weapons to Robot Armor Weapons
+    	    let rarangedFields = ["RAWeaponType","RAWeaponRange","RAWeaponRoF","RANoDmgDice","RARDmgType","RARDmgMod","RAWeaponNotes"];
+            let raweaponFieldsII =["raweapon","rarange","rarof","radmgnumdice","radmgdietype","radmgbonusnum","raweaponnotes"];
+            let ramorerangedweaponFields = ["radamageatt"];
+            let rarangedweaponDefaultValues = ["na"];
+            convertRS ("RAweapons", "raweapons", rarangedFields, raweaponFieldsII, ramorerangedweaponFields, rarangedweaponDefaultValues);
+            
+            //Migrate Robot Armor Melee Weapons to Robot Armor Weapons
+    	    let rameleeFields = ["RAMWeaponType","RAMMeleeDieNum","RAMDmgType","RAMMDmgMod","RAMmeleeWNotes"];
+    	    let raweaponFields = ["raweapon","radmgnumdice","radmgdietype","radmgbonusnum","raweaponnotes"];
+    	    let ramoreweaponFields = ["radamageatt"];
+    	    let raweaponDefaultValues = ["strength"];
+            convertRS("RAmeleeweapons","raweapons", rameleeFields, raweaponFields, ramoreweaponFields, raweaponDefaultValues);
             
             //Migrate Damaging Spells to powers
             let dmgSpells = ["Spell","SpellCost","SpellRange","SpellDuration","NoSpllDmgDice","SDmgType","SDmgMod","DmgSpellNotes"];
@@ -457,8 +538,15 @@
             let morespellDefaultValues = ["na","2","0"];
             convertRS ("ndspells", "spells", nondmgSpells, powerFieldsII, morespellFields, morespellDefaultValues);
             
-            //stepwiseFaux("spells","spelldmgbonusnum");
-	    
+            //Migrate Ground Vehicles Crew
+            let crewfields = ["GVCrewName","GVCrewType","GVCrewPos","GVCrewSalary","GVCrewShares","GVCrewNotes"];
+            convertRS ("FShipCrew", "GShipCrew", crewfields, crewfields);
+            
+            //Migrate Walker Vehicles Crew
+            let wcrewfields = ["WalkerCrewName","WalkerCrewType","WalkerCrewPos","WalkerCrewSalary","WalkerCrewShares","WalkerCrewNotes"];
+            convertRS ("FShipCrew", "WShipCrew", wcrewfields, wcrewfields);
+             
+            
 	        //Configure Variable Damage Option
 	        getAttrs(["RaiseHBRule"], function(v) {
 	            if (v.RaiseHBRule === "on") {
@@ -477,6 +565,8 @@
             updateField("repeating_hindrances:showHindraceDesc","0");
             updateField("repeating_edges:showEdgeDesc","0");
             updateField("repeating_skills:showOtherRollMod","0");
+            
+            
 	    }
 	    else {
 	        console.log("!!! Sheet Already Upgraded !!!");
@@ -504,6 +594,39 @@
     });
 	/* ---- End Sheet Version Validation & Update ---- */
     
+    /*Combine Shares and Salary fields if necessary*/
+    on('sheet:opened', function() {
+       console.log("!!! Combining Pay !!!");
+       getAttrs(['dopay'], function(v) {
+           switch (v.dopay) {
+                case 'first':
+                   //combine salary and shares on Vehicles
+                   salaryNshares("repeating_SShipCrew", "SShipCrewSalary", "SShipCrewShares");
+                   salaryNshares("repeating_FShipCrew", "FShipCrewSalary", "FShipCrewShares");
+                   salaryNshares("repeating_GShipCrew", "GVCrewSalary", "GVCrewShares");
+                   salaryNshares("repeating_WShipCrew", "WalkerCrewSalary", "WalkerCrewShares");
+                   setAttrs({dopay:"done"});
+                   console.log("second attempt to combine pay");
+                   break;
+                case 'init':
+                   //combine salary and shares on Vehicles
+                   salaryNshares("repeating_SShipCrew", "SShipCrewSalary", "SShipCrewShares");
+                   salaryNshares("repeating_FShipCrew", "FShipCrewSalary", "FShipCrewShares");
+                   salaryNshares("repeating_GShipCrew", "GVCrewSalary", "GVCrewShares");
+                   salaryNshares("repeating_WShipCrew", "WalkerCrewSalary", "WalkerCrewShares");
+                   setAttrs({dopay:"first"});
+                   console.log("first attempt to combine pay");
+                   break;
+                case 'done':
+                   console.log("pay already combined");
+                   break;
+                default:
+                    setAttrs({dopay:"init"});
+                    break;
+           }
+       }) ;
+    });
+    
     const setWildDie = function() {
         getAttrs(["is_npc"], function(lvalue) {
 		    console.log("<==== Updating whether to Roll the Wild Die ====>")
@@ -516,7 +639,7 @@
 			    console.log("Is not a Wild Card: Don't roll a Wild Die");
 			    setAttrs({ wdNum: 0 });
 			}
-      	   console.log("<==== Finished Updating vigor_rank ====>");
+      	   console.log("<==== Finished Identifying Mook vs Wild Card ====>");
    		});
     }
     
@@ -919,6 +1042,26 @@
 			var Fighting = parseInt(pvalue.fighting);
 			var FightingMod = parseInt(pvalue.fightingmod);
             var totFighting = Fighting + FightingMod;
+            switch (Fighting) {
+                case 4:
+                    if (Fighting === 4 && FightingMod === -2) {
+        			    //Unskilled
+        			    totFighting = 0;
+        			}
+        			else { totFighting = Fighting; }
+        			break;
+        		case 6:
+        		case 8:
+        		case 10:
+        		    totFighting = Fighting;
+        		    break;
+        		case 12:
+        		    totFighting = Fighting + FightingMod;
+        		    break;
+        		default:
+        		    totFighting = 4;
+            }
+			
             var parryMod = parseInt(pvalue.parryMod);
             var parryCalc = Math.floor(totFighting/2) + 2;
       		setAttrs({ parry: parryCalc  });
@@ -1317,58 +1460,95 @@
 	});
 	
 	//Weapon Button config
-	on("change:repeating_weapons:weaponbutton change:repeating_weapons:weaponskill", function(eventInfo) {
-	    console.log(eventInfo.sourceAttribute);
-	    let sid = eventInfo.sourceAttribute.slice(18,38);
-	    const skillUn = "&{template:roll} @{rolltUnskilled} {{trait=Unskilled}} {{source=@{weapon}}} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_weapons_dmg) }}";
-	    const skillFi = "&{template:roll} {{trait=Fighting}} {{source=@{weapon}}} @{rolltFighting} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_weapons_dmg) }}";
-	    const skillAt = "&{template:roll} {{trait=Athletics}} {{source=@{weapon}}} @{rolltAthletics} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_weapons_dmg) }}";
-	    const skillSh = "&{template:roll} {{trait=Shooting}} {{source=@{weapon}}} @{rolltShooting} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_weapons_dmg) }}";
-	    const skillTh = "&{template:roll} {{trait=Throwing}} {{source=@{weapon}}} @{rolltShooting} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_weapons_dmg) }}";
-	    let skillToUse = skillFi;
-	    console.log("sid: "+sid);
-	    console.log("skillFi: "+skillFi);
-	    getAttrs(["repeating_weapons_weaponbutton","repeating_weapons_weaponskill"], function(value) {
-	        let tWeaponFormula = '';
-	        if(value.repeating_weapons_weaponbutton === "0") {
-	            //Attack + Damage Roll in One
-	            console.log("!! Attack + Damage !!");
-	            tWeaponFormula = "@{skillNDamage}";
-	            switch(value.repeating_weapons_weaponskill) {
-	                case 'fighting':
-	                    skillToUse = skillFi;
-	                    break;
-	                case 'athletics':
-	                    skillToUse = skillAt;
-	                    break;
-	                case 'shooting':
-	                    skillToUse = skillSh;
-	                    break;
-	                case 'throwing':
-	                    skillToUse = skillTh;
-	                    break;
-	                case 'unskilled':
-	                    skillToUse = skillUn;
-	                    break;
-	                default:
-	                    skillToUse = skillFi;
-	                    break;
-	            }
-	            console.log("weaponskill: "+value.repeating_weapons_weaponskill);
-	            console.log("skillToUse: "+skillToUse);
-	        }
-	        else {
-	            //Damage roll only
-	            console.log("!! Damage Only !!");
-	            //tWeaponFormula = "@{repeating_weapons_"+ sid +"_damageOnly}";
-	            tWeaponFormula = "@{damageOnly}";
-	        }
-	        setAttrs({
-	            repeating_weapons_weaponroll: tWeaponFormula,
-	            repeating_weapons_skillNDamage: skillToUse
-	        });
-	    });
+	const weapon = ['repeating_weapons','repeating_paweapons','repeating_raweapons'];
+	
+	weapon.forEach(weapon => {
+		on(`change:${weapon}:weaponbutton change:${weapon}:weaponskill change:${weapon}:paweaponbutton change:${weapon}:paweaponskill change:${weapon}:raweaponbutton change:${weapon}:raweaponskill`, function(eventInfo) {
+			console.log(eventInfo.sourceAttribute);
+			let pa = '';
+			let wbutton = 'repeating_weapons_weaponbutton';
+			let wskill = 'repeating_weapons_weaponskill';
+			if (eventInfo.sourceAttribute.slice(10,12) === 'pa') {
+				pa = 'pa';
+				wbutton = 'repeating_paweapons_paweaponbutton';
+				wskill = 'repeating_paweapons_paweaponskill';
+			}
+			else if (eventInfo.sourceAttribute.slice(10,12) === 'ra') {
+			    pa = 'ra';
+				wbutton = 'repeating_raweapons_raweaponbutton';
+				wskill = 'repeating_raweapons_raweaponskill';
+			}
+			const skillUn = `&{template:roll} @{rolltUnskilled} {{trait=Unskilled}} {{source=@{${pa}weapon}}} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_${pa}weapons_${pa}dmg) }}`;
+			const skillFi = `&{template:roll} {{trait=Fighting}} {{source=@{${pa}weapon}}} @{rolltFighting} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_${pa}weapons_${pa}dmg) }}`;
+			const skillAt = `&{template:roll} {{trait=Athletics}} {{source=@{${pa}weapon}}} @{rolltAthletics} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_${pa}weapons_${pa}dmg) }}`;
+			const skillSh = `&{template:roll} {{trait=Shooting}} {{source=@{${pa}weapon}}} @{rolltShooting} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_${pa}weapons_${pa}dmg) }}`;
+			const skillTh = `&{template:roll} {{trait=Throwing}} {{source=@{${pa}weapon}}} @{rolltThrowing} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_${pa}weapons_${pa}dmg) }}`;
+			console.log(eventInfo.sourceAttribute);
+			let sid = eventInfo.sourceAttribute.slice(18,38);
+			let skillToUse = skillFi;
+			console.log("sid: "+sid);
+			console.log("skillFi: "+skillFi);
+			getAttrs([`${weapon}_${pa}weaponbutton`,`${weapon}_${pa}weaponskill`], function(value) {
+				let tWeaponFormula = '';
+				if(value[wbutton] === "0") {
+					//Attack + Damage Roll in One
+					console.log("!! Attack + Damage !!");
+					tWeaponFormula = `@{${pa}skillNDamage}`;
+					switch(value[wskill]) {
+						case 'fighting':
+							skillToUse = skillFi;
+							break;
+						case 'athletics':
+							skillToUse = skillAt;
+							break;
+						case 'shooting':
+							skillToUse = skillSh;
+							break;
+						case 'throwing':
+							skillToUse = skillTh;
+							break;
+						case 'unskilled':
+							skillToUse = skillUn;
+							break;
+						default:
+							skillToUse = skillFi;
+							break;
+					}
+					console.log("weaponskill: "+value[wskill]);
+					console.log("skillToUse: "+skillToUse);
+				}
+				else {
+					//Damage roll only
+					console.log("!! Damage Only !!");
+					//tWeaponFormula = "@{repeating_weapons_"+ sid +"_damageOnly}";
+					tWeaponFormula = `@{${pa}damageOnly}`;
+					console.log(`tWeaponFormula: ${tWeaponFormula}`);
+				}
+				switch(pa) {
+					case 'pa':
+						setAttrs({
+							repeating_paweapons_paweaponroll: tWeaponFormula,
+							repeating_paweapons_paskillNDamage: skillToUse
+						});
+						break;
+					case 'ra':
+					    console.log("### Updating the Robot Button Values ###");
+						setAttrs({
+							repeating_raweapons_raweaponroll: tWeaponFormula,
+							repeating_raweapons_raskillNDamage: skillToUse
+						});
+						break;
+					default:
+						setAttrs({
+							repeating_weapons_weaponroll: tWeaponFormula,
+							repeating_weapons_skillNDamage: skillToUse
+						});
+						break;
+				}
+			});
+		});
 	});
+	
 	
 	//Spell Button config
 	on("change:repeating_spells:spellbutton change:repeating_spells:spellskill", function(eventInfo) {
@@ -1451,8 +1631,15 @@
 	});
 	
 	//Get Weapon Damage
-	on("change:repeating_weapons:damageatt change:repeating_weapons:dmgnumdice change:repeating_weapons:dmgdietype change:repeating_weapons:dmgbonusnum",function() {
-		getAttrs(["agility_display","smarts_rank","spirit_rank","strength_rank","vigor_rank","repeating_weapons_damageatt","repeating_weapons_dmgnumdice","repeating_weapons_dmgdietype","repeating_weapons_dmgbonusnum"],function(value) {
+	on("change:repeating_weapons:damageatt change:repeating_weapons:dmgnumdice change:repeating_weapons:dmgdietype change:repeating_weapons:dmgbonusnum change:repeating_paweapons:padamageatt change:repeating_paweapons:padmgnumdice change:repeating_paweapons:padmgdietype change:repeating_paweapons:padmgbonusnum change:repeating_raweapons:radamageatt change:repeating_raweapons:radmgnumdice change:repeating_raweapons:radmgdietype change:repeating_raweapons:radmgbonusnum",function(eventInfo) {
+		let pa = '';
+		if (eventInfo.sourceAttribute.slice(10,12) === 'pa') {
+			pa = 'pa';
+		}
+		else if (eventInfo.sourceAttribute.slice(10,12) === 'ra') {
+			pa = 'ra';
+		}
+		getAttrs(["agility_display","smarts_rank","spirit_rank","strength_rank","vigor_rank",`repeating_${pa}weapons_${pa}damageatt`,`repeating_${pa}weapons_${pa}dmgnumdice`,`repeating_${pa}weapons_${pa}dmgdietype`,`repeating_${pa}weapons_${pa}dmgbonusnum`],function(value) {
 			let dmgdisplay, dmgformula = "";
 			let strTranslation = getTranslationByKey('strength-abbr');
 			let aglTranslation = getTranslationByKey('agility-abbr');
@@ -1460,10 +1647,10 @@
 			let spiTranslation = getTranslationByKey('spirit-abbr');
 			let vigTranslation = getTranslationByKey('vigor-abbr');
 			//Step One: Get the Attribute, if one is selected
-			console.log("The Value: "+value.repeating_weapons_damageatt);
-			if (value.repeating_weapons_damageatt === "strength") {
+			console.log("The Value: "+value[`repeating_${pa}weapons_${pa}damageatt`]);
+			if (value[`repeating_${pa}weapons_${pa}damageatt`] === "strength") {
 			    dmgdisplay = strTranslation;
-			    dmgformula = "@{strength_rank}";
+			    dmgformula = `@{${pa}strength_rank}`;
 			}
 			else if (value.repeating_weapons_damageatt === "agility") {
 			    dmgdisplay = aglTranslation;
@@ -1487,7 +1674,7 @@
 			    dmgformula = "";
 			}
 			//Step Two: Determine the number of dice
-			let numDice = parseInt(value.repeating_weapons_dmgnumdice) || 0;
+			let numDice = parseInt(value[`repeating_${pa}weapons_${pa}dmgnumdice`]) || 0;
 			if (numDice > 100) { 
 			    console.log("Number of Dice too great, not using it as part of the damage expression");
 			    dmgdisplay = dmgdisplay;
@@ -1499,18 +1686,18 @@
 			    dmgformula = dmgformula;
 			}
 			else { // Means the number of dice is bettween 1 and 100
-			    if (value.repeating_weapons_damageatt === "na") {
-			        dmgdisplay = value.repeating_weapons_dmgnumdice + value.repeating_weapons_dmgdietype.replace('!','');
-			        dmgformula = value.repeating_weapons_dmgnumdice + value.repeating_weapons_dmgdietype;
+			    if (value[`repeating_${pa}weapons_${pa}damageatt`] === "na") {
+			        dmgdisplay = value[`repeating_${pa}weapons_${pa}dmgnumdice`] + value[`repeating_${pa}weapons_${pa}dmgdietype`].replace('!','');
+			        dmgformula = value[`repeating_${pa}weapons_${pa}dmgnumdice`] + value[`repeating_${pa}weapons_${pa}dmgdietype`];
 			    }
 			    else {
-			        dmgdisplay += "+" + value.repeating_weapons_dmgnumdice + value.repeating_weapons_dmgdietype.replace('!','');
-			        dmgformula += "+" + value.repeating_weapons_dmgnumdice + value.repeating_weapons_dmgdietype;
+			        dmgdisplay += "+" + value[`repeating_${pa}weapons_${pa}dmgnumdice`] + value[`repeating_${pa}weapons_${pa}dmgdietype`].replace('!','');
+			        dmgformula += "+" + value[`repeating_${pa}weapons_${pa}dmgnumdice`] + value[`repeating_${pa}weapons_${pa}dmgdietype`];
 			    }
 			}
 			console.log("___ Stuff so far: "+dmgdisplay+" ___");
 			//Step Three:  Determine if we need to add a Modifier
-			let checkString = value.repeating_weapons_dmgbonusnum;
+			let checkString = value[`repeating_${pa}weapons_${pa}dmgbonusnum`];
 			//will match anything from a single number to #d#!+/-###
 			//const modFormat = /^(\d*d?\d{1,2}!)?([\+-]?\d{0,3})$/g; 
 			const modFormat = /^(-?\d*)((d?)(\d{1,2}))(!?)?([\+-]?)(\d{0,3})$/g;
@@ -1542,10 +1729,27 @@
 			//Step Four: update the values
 			console.log("!!! Damage: " + dmgdisplay + " !!!");
 			console.log("!!! Formula: " + dmgformula + " !!!");
-			setAttrs({
-			    repeating_weapons_weapondamage: dmgdisplay,
-			    repeating_weapons_weapondmg: dmgformula
-			});
+			switch(pa) {
+				case 'pa':
+					setAttrs({
+						repeating_paweapons_paweapondamage: dmgdisplay,
+						repeating_paweapons_paweapondmg: dmgformula
+					});
+					break;
+				case 'ra':
+					setAttrs({
+						repeating_raweapons_raweapondamage: dmgdisplay,
+						repeating_raweapons_raweapondmg: dmgformula
+					});
+					break;
+				default:
+					setAttrs({
+						repeating_weapons_weapondamage: dmgdisplay,
+						repeating_weapons_weapondmg: dmgformula
+					});
+					break;
+			}
+			
 		});
 	});
 	
@@ -1698,7 +1902,7 @@
 	});
 	
 	//Create Trait values for rank and display hidden fields
-	const traits = ['agility','smarts','spirit','strength','vigor','fighting','academicsskill','athletics','battle','boating','climbing','commonknowledge','driving','electronics','faith','focus','gambling','guts','hacking','healing','intimidation','investigation','language','lockpicking','notice','occult','performance','persuasion','piloting','psionics','repair','research','riding','ritual','science','shooting','spellcasting','stealth','streetwise','survival','swimming','taunt','throwing','thievery','tracking','weirdscience','repeating_skills:skillnamerank'];
+	const traits = ['agility','smarts','spirit','strength','vigor','fighting','academicsskill','athletics','battle','boating','climbing','commonknowledge','driving','electronics','faith','focus','gambling','guts','hacking','healing','intimidation','investigation','language','lockpicking','notice','occult','performance','persuasion','piloting','psionics','repair','research','riding','ritual','science','shooting','spellcasting','stealth','streetwise','survival','swimming','taunt','throwing','thievery','tracking','weirdscience','repeating_skills:skillnamerank','pastrength','rastrength'];
 	traits.forEach(traits => {
 	    on(`change:${traits} change:${traits}mod`, function(eventInfo) {
     	    console.log(`+++ Change Detected for ${traits} +++`);
@@ -2016,6 +2220,7 @@
 	});
 	
 </script>
+<input type='hidden' name='attr_dopay' value="init" />
 <input type='text' style='display: none;' name='attr_character_sheet' value='Savage Worlds Tabbed v2.0' />
 <input type='text' style='display: none;' name='attr_wdNum' value='1' />
 <div class='sheet-maindiv'>
@@ -3071,7 +3276,7 @@
         						    <span class="sheet-ModDesc" data-i18n="linked-attribute">Linked Attribute</span>
         						    <select class="sheet-LinkedAttSelect" name="attr_linkedpsionicsatt">
         						        <option value="(AGL)" data-i18n="agility">Agility</option>
-    									<option value="(SMA)" selected data-i18n="smarts" selected >Smarts</option>
+    									<option value="(SMA)" data-i18n="smarts" selected >Smarts</option>
     									<option value="(SPI)" data-i18n="spirit">Spirit</option>
     									<option value="(STR)" data-i18n="strength">Strength</option>
     									<option value="(VIG)" data-i18n="vigor">Vigor</option>
@@ -4676,7 +4881,7 @@
     			                <h4 class="sheet-weaponItem sheet-shipweapon" data-i18n="weapon">Weapon</h4>
     			                <h4 class="sheet-weaponItem sheet-shiprange" data-i18n="range">Range</h4>
     			                <h4 class="sheet-weaponItem sheet-shiprof" data-i18n="rate-of-fire-abbr">ROF</h4>
-    			                <h4 class="sheet-weaponItem sheet-shipdamage" data-i18n="rate-of-fire-abbr">damage</h4>
+    			                <h4 class="sheet-weaponItem sheet-shipdamage" data-i18n="damage">Damage</h4>
     			                <h4 class="sheet-weaponItem sheet-shipplacement" data-i18n="placement">Placement</h4>
     			                <fieldset class='repeating_sailweapons'>
     			                    <div class="sheet-shipWeapons">
@@ -4697,7 +4902,7 @@
 										<input type="text" class="sheet-weaponItem sheet-shipplacement" name="attr_SShipWeaponPlacement" data-i18n-placeholder="placement" placeholder="Placement" />
 										<textarea class="sheet-weaponItem sheet-shipweaponnotes" name="attr_SShipWeaponNotes"></textarea>
 									</div>
-									<input type='hidden' name='attr_rolltSSRangeWeapon' value="&{template:damage} {{name=@{SailingShipName}}} {{source=@{SShipWeaponType}}} {{dmg_rank=@{NoDmgDice}@{RDmgType}+@{RDmgMod}}} {{dmg_roll=@{SSRangeWeapon}}} {{bonus_die=[[1d6!]]}} {{notes=@{SShipWeaponNotes}}}" />
+									<input type='hidden' name='attr_rolltSSRangeWeapon' value="&{template:damage} {{name=@{SailingShipName}}} {{source=@{SShipWeaponType}}} {{dmg_rank=@{NoDmgDice}@{RDmgType}+@{RDmgMod}}} {{dmg_roll=@{SSRangeWeapon}}} {{bonus_die=[[@{vbonusdamage}]]}} {{notes=@{SShipWeaponNotes}}}" />
 									<input type="hidden" name="attr_SSRangeWeapon" value="[[@{NoDmgDice}@{RDmgType}+@{RDmgMod} + @{damagemods}]]" />
     			                </fieldset>
     			            </div>
@@ -4727,6 +4932,760 @@
 			        </div>
     			</div>
     			<!-- End Sailing Ship -->
+    			<!-- Start Flying Ship -->
+                <input class="sheet-useFlyingShips" type="checkbox" name="attr_flyingShip" style="display: none;" />
+    			<div class="sheet-ship-flying">
+    			    <input type="checkbox" class="sheet-hideShip" name="attr_is_flying" /><span class="sheet-showShip"></span>
+			        <h3 class="sheet-configSectionTitle" data-i18n="flying-ship">Flying Ship</h3>
+			        <div class="sheet-ship">
+			            <div class="sheet-shipheaderrow">
+			                <div class="sheet-shipItem sheet-shipname">
+    			                <input type="text" class="sheet-shipField" name="attr_FlyingShipName" />
+    			                <div class="sheet-shiplabel" data-i18n="ship-name">Ship Name</div>
+    			            </div>
+    			            <div class="sheet-shipItem sheet-capnname">
+    			                <input type="text" class="sheet-shipField" name="attr_FShipCaptain" />
+    			                <div class="sheet-shiplabel" data-i18n="captain">Captain</div>
+    			            </div>
+    			            <div class="sheet-shipItem sheet-shipname">
+    			                <input type="text" class="sheet-shipField" name="attr_FShipType" />
+    			                <div class="sheet-shiplabel" data-i18n="ship-type">Ship Type</div>
+    			            </div>
+			            </div>
+			            <div class="sheet-shipMainSection">
+			                <div class="sheet-shipMainColumn1">
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="wounds">Wounds:</label>
+			                         <input type="number" class="sheet-shipWound" name="attr_FShipWounds" />&nbsp;<span data-i18n="of">of</span>&nbsp;<input type="number" class="sheet-shipWound" name="attr_FShipWounds_max" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="size">Size:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_FShipSize" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="acceleration">Acceleration:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_FShipAcc" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="top-speed">Top Speed:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_FShipTopSpeed" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="toughness">Toughness:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_FShipToughness" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="handling">Handling:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_FShipHandling" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="climb">Climb:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_FShipClimb" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="energy">Energy:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_FShipEnergy" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="crew">Crew:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_FShipCrew" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="total-mod-slots">Total Mod Slots:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_FShipSlots" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="used-mod-slots">Used Mod Slots:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_FShipSlotsUsed" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="original-cost">Original Cost:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_FShipOCost" />
+			                    </div>
+			                </div> <!-- End Column 1 -->
+			                <div class="sheet-shipMainColumn2">
+			                    <h4 class="sheet-subsectionHeader" data-i18n="provisions">Provisions</h4>
+								<textarea class="sheet-vtext" name="attr_FShipProv"></textarea>
+								<h4 class="sheet-subsectionHeader" data-i18n="cargo">Cargo</h4>
+								<textarea class="sheet-vtext" name="attr_FShipCargo"></textarea>
+								<h4 class="sheet-subsectionHeader" data-i18n="critical-hits">Critical Hits</h4>
+    							<textarea class="sheet-vtext" name="attr_FShipCritHit"></textarea>
+			                </div> <!-- End Column 2 -->
+			                <div class="sheet-shipMainColumn3">
+			                    <h4 class="sheet-subsectionHeader"><span data-i18n="hindrances">Hindrances</span></h4>
+    							<textarea class="sheet-vtext"  name="attr_FShipHindrances"></textarea>
+    							<h4 class="sheet-subsectionHeader"><span data-i18n="edges">Edges</span></h4>
+    							<textarea class="sheet-vtext"  name="attr_FShipEdges"></textarea>
+    							<h4 class="sheet-subsectionHeader" data-i18n="notes-and-upgrades">Notes and Upgrades</h4>
+    							<textarea class='sheet-vtext' name="attr_FShipNotes"></textarea>
+			                </div> <!-- End Column 3 -->
+			            </div>
+			            <div class="sheet-shipArmaments">
+			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipweapons" /><span class="sheet-showshipweapons"></span>
+			                <h4 class="sheet-repTitle" data-i18n="ships-armaments">Ship's Armaments</h4>
+			                <div class="sheet-shipWeapons">
+    			                <h4 class="sheet-weaponItem sheet-shipbutton">&nbsp;</h4>
+    			                <h4 class="sheet-weaponItem sheet-shipweapon" data-i18n="weapon">Weapon</h4>
+    			                <h4 class="sheet-weaponItem sheet-shiprange" data-i18n="range">Range</h4>
+    			                <h4 class="sheet-weaponItem sheet-shiprof" data-i18n="rate-of-fire-abbr">ROF</h4>
+    			                <h4 class="sheet-weaponItem sheet-shipdamage" data-i18n="damage">Damage</h4>
+    			                <h4 class="sheet-weaponItem sheet-shipplacement" data-i18n="placement">Placement</h4>
+    			                <fieldset class='repeating_flyingweapons'>
+    			                    <div class="sheet-shipWeapons">
+    			                        <button class='sheet-weaponItem sheet-shipbutton' type='roll' name='roll_tFSRangeWeapon' value='@{rolltFSRangeWeapon}'></button>
+    			                        <input type="text" class="sheet-weaponItem sheet-shipweapon" name="attr_FShipWeaponType" data-i18n-placeholder="weapon"  placeholder="Weapon" />
+										<input type="text" class="sheet-weaponItem sheet-shiprange" name="attr_FShipWeaponRange" data-i18n-placeholder="range"  placeholder="Range" />
+										<input type="number" class="sheet-weaponItem sheet-shiprof" name="attr_FShipWeaponRoF" data-i18n-placeholder="rof" placeholder="RoF" />
+										<div class="sheet-weaponItem sheet-shipdamage">
+										    <input type="number" name="attr_NoDmgDice" class="sheet-short" style="width: 35px;" value="2" />
+    										<select name="attr_RDmgType" class="dtype" style="margin:0px;'">
+    											<option value="d4!">d4</option>
+    											<option value="d6!">d6</option>
+    											<option value="d8!">d8</option>
+    											<option value="d10!">d10</option>
+    											<option value="d12!">d12</option>
+    										</select>+<input class="sheet-modifier" style="margin: 0px; width: 35px;" type="number" name="attr_RDmgMod" value="0" />
+										</div>
+										<input type="text" class="sheet-weaponItem sheet-shipplacement" name="attr_FShipWeaponPlacement" data-i18n-placeholder="placement" placeholder="Placement" />
+										<textarea class="sheet-weaponItem sheet-shipweaponnotes" name="attr_FShipWeaponNotes"></textarea>
+									</div>
+									<input type='hidden' name='attr_rolltFSRangeWeapon' value="&{template:damage} {{name=@{FlyingShipName}}} {{source=@{FShipWeaponType}}} {{dmg_rank=@{NoDmgDice}@{RDmgType}+@{RDmgMod}}} {{dmg_roll=@{FSRangeWeapon}}} {{bonus_die=[[@{vbonusdamage}]]}} {{notes=@{FShipWeaponNotes}}}" />
+									<input type="hidden" name="attr_FSRangeWeapon" value="[[@{NoDmgDice}@{RDmgType}+@{RDmgMod} + @{damagemods}]]" />
+    			                </fieldset>
+    			            </div>
+			            </div>
+			            <div class='sheet-shipRoster'>
+			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipcrew" /><span class="sheet-showshipweapons"></span>
+			                <h4 class="sheet-repTitle" data-i18n="ships-crew">Ship's Crew</h4>
+			                <div class='sheet-shipCrew'>
+			                    <!--<h4 class="sheet-crewMember sheet-shipcrewbutton">&nbsp;</h4>-->
+								<h4 class="sheet-crewMember sheet-shipcrewname" data-i18n="name-or-number">Name or Number</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewtype" data-i18n="type">Type</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewposition" data-i18n="position">Position</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewsalary" data-i18n="pay">Pay</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewnotes" data-i18n="notes">Notes</h4>
+    			                <fieldset class='repeating_FShipCrew'>
+    			                    <div class="sheet-shipCrew">
+										<!--<button type='roll' name='roll_crewInfo' class="sheet-crewMember sheet-shipcrewbutton" value="">w</button>-->
+    			                        <input type="text" class="sheet-crewMember sheet-shipcrewname" name="attr_FShipCrewName" />
+    			                        <input type="text" class="sheet-crewMember sheet-shipcrewtype" name="attr_FShipCrewType" />
+										<input type="text" class="sheet-crewMember sheet-shipcrewposition" name="attr_FShipCrewPos" />
+										<input type="text" class="sheet-crewMember sheet-shipcrewsalary" name="attr_FShipCrewSalary" />
+										<textarea class='sheet-crewMember sheet-shipcrewnotes' name="attr_FShipCrewNotes"></textarea>
+									</div>
+    			                </fieldset>
+			                </div>
+			            </div>
+			        </div>
+    			</div>
+    			<!-- End Flying Ship -->
+    			<!-- Start Ground Vehicle -->
+                <input class="sheet-useGroundVehicle" type="checkbox" name="attr_groundVehicle" style="display: none;" />
+    			<div class="sheet-ship-groundvehicle">
+    			    <input type="checkbox" class="sheet-hideShip" name="attr_is_ground" /><span class="sheet-showShip"></span>
+			        <h3 class="sheet-configSectionTitle" data-i18n="ground-vehicle">Ground Vehicle</h3>
+			        <div class="sheet-ship">
+			            <div class="sheet-shipheaderrow">
+			                <div class="sheet-shipItem sheet-shipname">
+    			                <input type="text" class="sheet-shipField" name="attr_gvmanufacturer" />
+    			                <div class="sheet-shiplabel" data-i18n="vehicle-manufacturer">Vehicle Manufacturer</div>
+    			            </div>
+    			            <div class="sheet-shipItem sheet-capnname">
+    			                <input type="text" class="sheet-shipField" name="attr_gvdriver" />
+    			                <div class="sheet-shiplabel" data-i18n="driver">Driver</div>
+    			            </div>
+    			            <div class="sheet-shipItem sheet-shipname">
+    			                <input type="text" class="sheet-shipField" name="attr_GVType" />
+    			                <div class="sheet-shiplabel" data-i18n="vehicle-type">Vehicle Type</div>
+    			            </div>
+			            </div>
+			            <div class="sheet-shipMainSection">
+			                <div class="sheet-shipMainColumn1">
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="wounds">Wounds:</label>
+			                         <input type="number" class="sheet-shipWound" name="attr_GVWounds" />&nbsp;<span data-i18n="of">of</span>&nbsp;<input type="number" class="sheet-shipWound" name="attr_GVWounds_max" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="size">Size:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_GVSize" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="acceleration">Acceleration:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_GVAcc" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="top-speed">Top Speed:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_GVTopSpeed" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="toughness">Toughness:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_GVToughness" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="original-cost">Original Cost:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_GVOCost" />
+			                    </div>
+			                </div> <!-- End Column 1 -->
+			                <div class="sheet-shipMainColumn2">
+			                    <h4 class="sheet-subsectionHeader" data-i18n="provisions">Provisions</h4>
+								<textarea class="sheet-vtext" name="attr_GVProv"></textarea>
+								<h4 class="sheet-subsectionHeader" data-i18n="cargo">Cargo</h4>
+								<textarea class="sheet-vtext" name="attr_GVCargo"></textarea>
+								<h4 class="sheet-subsectionHeader" data-i18n="critical-hits">Critical Hits</h4>
+    							<textarea class="sheet-vtext" name="attr_GVCritHit"></textarea>
+			                </div> <!-- End Column 2 -->
+			                <div class="sheet-shipMainColumn3">
+			                    <h4 class="sheet-subsectionHeader"><span data-i18n="hindrances">Hindrances</span></h4>
+    							<textarea class="sheet-vtext"  name="attr_GVHindrances"></textarea>
+    							<h4 class="sheet-subsectionHeader"><span data-i18n="edges">Edges</span></h4>
+    							<textarea class="sheet-vtext"  name="attr_GVEdges"></textarea>
+    							<h4 class="sheet-subsectionHeader" data-i18n="notes-and-upgrades">Notes and Upgrades</h4>
+    							<textarea class='sheet-vtext' name="attr_GVNotes"></textarea>
+			                </div> <!-- End Column 3 -->
+			            </div>
+			            <div class="sheet-shipArmaments">
+			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipweapons" /><span class="sheet-showshipweapons"></span>
+			                <h4 class="sheet-repTitle" data-i18n="ships-armaments">Ship's Armaments</h4>
+			                <div class="sheet-shipWeapons">
+    			                <h4 class="sheet-weaponItem sheet-shipbutton">&nbsp;</h4>
+    			                <h4 class="sheet-weaponItem sheet-shipweapon" data-i18n="weapon">Weapon</h4>
+    			                <h4 class="sheet-weaponItem sheet-shiprange" data-i18n="range">Range</h4>
+    			                <h4 class="sheet-weaponItem sheet-shiprof" data-i18n="rate-of-fire-abbr">ROF</h4>
+    			                <h4 class="sheet-weaponItem sheet-shipdamage" data-i18n="damage">Damage</h4>
+    			                <h4 class="sheet-weaponItem sheet-shipplacement" data-i18n="placement">Placement</h4>
+    			                <fieldset class='repeating_groundweapons'>
+    			                    <div class="sheet-shipWeapons">
+    			                        <button class='sheet-weaponItem sheet-shipbutton' type='roll' name='roll_tGVRangeWeapon' value='@{rolltFSRangeWeapon}'></button>
+    			                        <input type="text" class="sheet-weaponItem sheet-shipweapon" name="attr_GVWeaponType" data-i18n-placeholder="weapon"  placeholder="Weapon" />
+										<input type="text" class="sheet-weaponItem sheet-shiprange" name="attr_GVWeaponRange" data-i18n-placeholder="range"  placeholder="Range" />
+										<input type="number" class="sheet-weaponItem sheet-shiprof" name="attr_GVWeaponRoF" data-i18n-placeholder="rof" placeholder="RoF" />
+										<div class="sheet-weaponItem sheet-shipdamage">
+										    <input type="number" name="attr_NoDmgDice" class="sheet-short" style="width: 35px;" value="2" />
+    										<select name="attr_RDmgType" class="dtype" style="margin:0px;'">
+    											<option value="d4!">d4</option>
+    											<option value="d6!">d6</option>
+    											<option value="d8!">d8</option>
+    											<option value="d10!">d10</option>
+    											<option value="d12!">d12</option>
+    										</select>+<input class="sheet-modifier" style="margin: 0px; width: 35px;" type="number" name="attr_RDmgMod" value="0" />
+										</div>
+										<input type="text" class="sheet-weaponItem sheet-shipplacement" name="attr_GVWeaponPlacement" data-i18n-placeholder="placement" placeholder="Placement" />
+										<textarea class="sheet-weaponItem sheet-shipweaponnotes" name="attr_GVWeaponNotes"></textarea>
+									</div>
+									<input type='hidden' name='attr_rolltGVRangeWeapon' value="&{template:damage} {{name=@{GVType}}} {{source=@{GVWeaponType}}} {{dmg_rank=@{NoDmgDice}@{RDmgType}+@{RDmgMod}}} {{dmg_roll=@{rollGVRangeWeapon}}} {{bonus_die=[[@{vbonusdamage}]]}} {{notes=@{GVWeaponNotes}}}" />
+									<input type="hidden" name="attr_rollGVRangeWeapon" value="[[@{NoDmgDice}@{RDmgType}+@{RDmgMod} + @{damagemods}]]" />
+    			                </fieldset>
+    			            </div>
+			            </div>
+			            <div class='sheet-shipRoster'>
+			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipcrew" /><span class="sheet-showshipweapons"></span>
+			                <h4 class="sheet-repTitle" data-i18n="ships-crew">Ship's Crew</h4>
+			                <div class='sheet-shipCrew'>
+			                    <!--<h4 class="sheet-crewMember sheet-shipcrewbutton">&nbsp;</h4>-->
+								<h4 class="sheet-crewMember sheet-shipcrewname" data-i18n="name-or-number">Name or Number</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewtype" data-i18n="type">Type</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewposition" data-i18n="position">Position</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewsalary" data-i18n="pay">Pay</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewnotes" data-i18n="notes">Notes</h4>
+    			                <fieldset class='repeating_GShipCrew'>
+    			                    <div class="sheet-shipCrew">
+										<!--<button type='roll' name='roll_crewInfo' class="sheet-crewMember sheet-shipcrewbutton" value="">w</button>-->
+    			                        <input type="text" class="sheet-crewMember sheet-shipcrewname" name="attr_GVCrewName" />
+    			                        <input type="text" class="sheet-crewMember sheet-shipcrewtype" name="attr_GVCrewType" />
+										<input type="text" class="sheet-crewMember sheet-shipcrewposition" name="attr_GVCrewPos" />
+										<input type="text" class="sheet-crewMember sheet-shipcrewsalary" name="attr_GVCrewSalary" />
+										<textarea class='sheet-crewMember sheet-shipcrewnotes' name="attr_GVCrewNotes"></textarea>
+										<input type="hidden" name="attr_WalkerCrewShares" />
+									</div>
+    			                </fieldset>
+			                </div>
+			            </div>
+			        </div>
+    			</div>
+    			<!-- End Ground Vehicles -->
+    			<!-- Start Walker -->
+                <input class="sheet-useWalker" type="checkbox" name="attr_Walker" style="display: none;" />
+    			<div class="sheet-ship-walker">
+    			    <input type="checkbox" class="sheet-hideShip" name="attr_is_walker" /><span class="sheet-showShip"></span>
+			        <h3 class="sheet-configSectionTitle" data-i18n="walker">Walker</h3>
+			        <div class="sheet-ship">
+			            <div class="sheet-shipheaderrow">
+			                <div class="sheet-shipItem sheet-shipname">
+    			                <input type="text" class="sheet-shipField" name="attr_WalkerName" />
+    			                <div class="sheet-shiplabel" data-i18n="ship-name">Ship Name</div>
+    			            </div>
+    			            <div class="sheet-shipItem sheet-capnname">
+    			                <input type="text" class="sheet-shipField" name="attr_WalkerCaptain" />
+    			                <div class="sheet-shiplabel" data-i18n="captain">Captain</div>
+    			            </div>
+    			            <div class="sheet-shipItem sheet-shipname">
+    			                <input type="text" class="sheet-shipField" name="attr_WalkerType" />
+    			                <div class="sheet-shiplabel" data-i18n="walker-type">Walker Type</div>
+    			            </div>
+			            </div>
+			            <div class="sheet-shipMainSection">
+			                <div class="sheet-shipMainColumn1">
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="wounds">Wounds:</label>
+			                         <input type="number" class="sheet-shipWound" name="attr_WalkerWounds" />&nbsp;<span data-i18n="of">of</span>&nbsp;<input type="number" class="sheet-shipWound" name="attr_WalkerWounds_max" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="size">Size:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_WalkerSize" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="acceleration">Acceleration:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_WalkerAcc" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="top-speed">Top Speed:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_WalkerTopSpeed" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="toughness">Toughness:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_WalkerToughness" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="handling">Handling:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_WalkerHandling" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="crew">Crew:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_WalkerCrew" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="original-cost">Original Cost:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_WalkerOCost" />
+			                    </div>
+			                </div> <!-- End Column 1 -->
+			                <div class="sheet-shipMainColumn2">
+			                    <h4 class="sheet-subsectionHeader" data-i18n="provisions">Provisions</h4>
+								<textarea class="sheet-vtext" name="attr_WalkerProv"></textarea>
+								<h4 class="sheet-subsectionHeader" data-i18n="cargo">Cargo</h4>
+								<textarea class="sheet-vtext" name="attr_WalkerCargo"></textarea>
+								<h4 class="sheet-subsectionHeader" data-i18n="critical-hits">Critical Hits</h4>
+    							<textarea class="sheet-vtext" name="attr_WalkerCritHit"></textarea>
+			                </div> <!-- End Column 2 -->
+			                <div class="sheet-shipMainColumn3">
+			                    <h4 class="sheet-subsectionHeader"><span data-i18n="hindrances">Hindrances</span></h4>
+    							<textarea class="sheet-vtext"  name="attr_WalkerHindrances"></textarea>
+    							<h4 class="sheet-subsectionHeader"><span data-i18n="edges">Edges</span></h4>
+    							<textarea class="sheet-vtext"  name="attr_WalkerEdges"></textarea>
+    							<h4 class="sheet-subsectionHeader" data-i18n="notes-and-upgrades">Notes and Upgrades</h4>
+    							<textarea class='sheet-vtext' name="attr_WalkerNotes"></textarea>
+			                </div> <!-- End Column 3 -->
+			            </div>
+			            <div class="sheet-shipArmaments">
+			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipweapons" /><span class="sheet-showshipweapons"></span>
+			                <h4 class="sheet-repTitle" data-i18n="ships-armaments">Ship's Armaments</h4>
+			                <div class="sheet-shipWeapons">
+    			                <h4 class="sheet-weaponItem sheet-shipbutton">&nbsp;</h4>
+    			                <h4 class="sheet-weaponItem sheet-shipweapon" data-i18n="weapon">Weapon</h4>
+    			                <h4 class="sheet-weaponItem sheet-shiprange" data-i18n="range">Range</h4>
+    			                <h4 class="sheet-weaponItem sheet-shiprof" data-i18n="rate-of-fire-abbr">ROF</h4>
+    			                <h4 class="sheet-weaponItem sheet-shipdamage" data-i18n="damage">Damage</h4>
+    			                <h4 class="sheet-weaponItem sheet-shipplacement" data-i18n="placement">Placement</h4>
+    			                <fieldset class='repeating_wsweapons'>
+    			                    <div class="sheet-shipWeapons">
+    			                        <button class='sheet-weaponItem sheet-shipbutton' type='roll' name='roll_tWalkerRangeWeapon' value='@{rolltWalkerRangeWeapon}'></button>
+    			                        <input type="text" class="sheet-weaponItem sheet-shipweapon" name="attr_WalkerWeaponType" data-i18n-placeholder="weapon"  placeholder="Weapon" />
+										<input type="text" class="sheet-weaponItem sheet-shiprange" name="attr_WalkerWeaponRange" data-i18n-placeholder="range"  placeholder="Range" />
+										<input type="number" class="sheet-weaponItem sheet-shiprof" name="attr_WalkerWeaponRoF" data-i18n-placeholder="rof" placeholder="RoF" />
+										<div class="sheet-weaponItem sheet-shipdamage">
+										    <input type="number" name="attr_NoDmgDice" class="sheet-short" style="width: 35px;" value="2" />
+    										<select name="attr_RDmgType" class="dtype" style="margin:0px;'">
+    											<option value="d4!">d4</option>
+    											<option value="d6!">d6</option>
+    											<option value="d8!">d8</option>
+    											<option value="d10!">d10</option>
+    											<option value="d12!">d12</option>
+    										</select>+<input class="sheet-modifier" style="margin: 0px; width: 35px;" type="number" name="attr_RDmgMod" value="0" />
+										</div>
+										<input type="text" class="sheet-weaponItem sheet-shipplacement" name="attr_WalkerWeaponPlacement" data-i18n-placeholder="placement" placeholder="Placement" />
+										<textarea class="sheet-weaponItem sheet-shipweaponnotes" name="attr_WalkerWeaponNotes"></textarea>
+									</div>
+									<input type='hidden' name='attr_rolltWalkerRangeWeapon' value="&{template:damage} {{name=@{WalkerType}}} {{source=@{WalkerWeaponType}}} {{dmg_rank=@{NoDmgDice}@{RDmgType}+@{RDmgMod}}} {{dmg_roll=@{rollWRangeWeapon}}} {{bonus_die=[[@{vbonusdamage}]]}} {{notes=@{WalkerWeaponNotes}}}" />
+									<input type="hidden" name="attr_rollWRangeWeapon" value="[[@{NoDmgDice}@{RDmgType}+@{RDmgMod} + @{damagemods}]]" />
+    			                </fieldset>
+    			            </div>
+			            </div>
+			            <div class='sheet-shipRoster'>
+			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipcrew" /><span class="sheet-showshipweapons"></span>
+			                <h4 class="sheet-repTitle" data-i18n="ships-crew">Ship's Crew</h4>
+			                <div class='sheet-shipCrew'>
+			                    <!--<h4 class="sheet-crewMember sheet-shipcrewbutton">&nbsp;</h4>-->
+								<h4 class="sheet-crewMember sheet-shipcrewname" data-i18n="name-or-number">Name or Number</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewtype" data-i18n="type">Type</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewposition" data-i18n="position">Position</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewsalary" data-i18n="pay">Pay</h4>
+    			                <h4 class="sheet-crewMember sheet-shipcrewnotes" data-i18n="notes">Notes</h4>
+    			                <fieldset class='repeating_WShipCrew'>
+    			                    <div class="sheet-shipCrew">
+										<!--<button type='roll' name='roll_crewInfo' class="sheet-crewMember sheet-shipcrewbutton" value="">w</button>-->
+    			                        <input type="text" class="sheet-crewMember sheet-shipcrewname" name="attr_WalkerCrewName" />
+    			                        <input type="text" class="sheet-crewMember sheet-shipcrewtype" name="attr_WalkerCrewType" />
+										<input type="text" class="sheet-crewMember sheet-shipcrewposition" name="attr_WalkerCrewPos" />
+										<input type="text" class="sheet-crewMember sheet-shipcrewsalary" name="attr_WalkerCrewSalary" />
+										<textarea class='sheet-crewMember sheet-shipcrewnotes' name="attr_WalkerCrewNotes"></textarea>
+										<input type="hidden" name="attr_WalkerCrewShares" />
+									</div>
+    			                </fieldset>
+			                </div>
+			            </div>
+			        </div>
+    			</div>
+    			<!-- End Walker -->
+    			<!-- Start Power Armor -->
+                <input class="sheet-usePowerArmor" type="checkbox" name="attr_PowerArmor" style="display: none;" />
+    			<div class="sheet-ship-PowerArmor">
+    			    <input type="checkbox" class="sheet-hideShip" name="attr_is_powerarmor" /><span class="sheet-showShip"></span>
+			        <h3 class="sheet-configSectionTitle" data-i18n="power-armor">Power Armor</h3>
+			        <div class="sheet-ship">
+			            <div class="sheet-shipMainSection">
+			                <div class="sheet-shipMainColumn1">
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="wounds">Wounds:</label>
+			                         <input type="number" class="sheet-shipWound" name="attr_PAWounds" />&nbsp;<span data-i18n="of">of</span>&nbsp;<input type="number" class="sheet-shipWound" name="attr_PAWounds_max" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="size">Size:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_PASize" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="armor">Armor:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_PAArmor" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="toughness">Toughness:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_PAToughness" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="weight">Weight:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_PAWeight" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="cost">Cost:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_PACost" />
+			                    </div>
+			                </div> <!-- End Column 1 -->
+			                <div class="sheet-shipMainColumn2">
+			                    <img class='sheet-paimg' src='http://www.geeksville.us/roll20/PowerArmor.png'>
+			                </div> <!-- End Column 2 -->
+			                <div class="sheet-shipMainColumn3">
+			                    <div class='sheet-shipPAStatBlock'>
+			                        <label class="sheet-shipMainLabel sheet-shipPALabel">&nbsp;</label>
+			                        <label class="sheet-shipMainLabel sheet-shipPAGround" data-i18n="ground">Ground</label>
+			                        <label class="sheet-shipMainLabel sheet-shipPAFlight" data-i18n="flight">Flight</label>
+			                        <label class="sheet-shipMainLabel sheet-shipPASwim" data-i18n="swim">Swim</label>
+			                    </div>
+			                    <div class='sheet-shipPAStatBlock'>
+			                        <label class="sheet-shipMainLabel sheet-shipPALabel" data-i18n="pace">Pace</label>
+			                        <input class="sheet-shipPAGround" type="number" name="attr_PAGroundPace" />
+			                        <input class="sheet-shipPAFlight" type="number" name="attr_PAFlightPace" />
+			                        <input class="sheet-shipPASwim" type="number" name="attr_PASwimPace" />
+			                    </div>
+			                    <div class='sheet-shipPAStatBlock'>
+			                        <label class="sheet-shipMainLabel sheet-shipPALabel" data-i18n="acceleration">Acceleration</label>
+			                        <input class="sheet-shipPAGround" type="number" name="attr_PAGroundAcc" />
+			                        <input class="sheet-shipPAFlight" type="number" name="attr_PAFlightAcc" />
+			                        <input class="sheet-shipPASwim" type="number" name="attr_PASwimAcc" />
+			                    </div>
+								<div class='sheet-shipPAStatBlock'>
+			                        <label class="sheet-shipMainLabel sheet-shipPALabel" data-i18n="top-speed">Top Speed</label>
+			                        <input class="sheet-shipPAGround" type="number" name="attr_PAGroundTS" />
+			                        <input class="sheet-shipPAFlight" type="number" name="attr_PAFlightTS" />
+			                        <input class="sheet-shipPASwim" type="number" name="attr_PASwimTS" />
+			                    </div>
+								<div class='sheet-shipPAStatBlock'>
+			                        <label class="sheet-shipMainLabel sheet-shipPALabel" data-i18n="climb">Climb</label>
+			                        <span class="sheet-shipPAGround">&nbsp;</span>
+			                        <input class="sheet-shipPAFlight" type="number" name="attr_PAFlightClimb" />
+			                        <span class="sheet-shipPASwim">&nbsp;</span>
+			                    </div>
+								<!-- PA Strength -->
+								<div class='sheet-basetrait' style="border-bottom: none;">
+									<button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tPAStrengthRoll' value='&{template:roll} @{rolltPAStrength} @{setmodsenc} @{showtraitmods}' data-i18n="strength"> Strength</button>
+									<span><select name="attr_pastrength" class="sheet-traitdie" value="4">
+										<option value="4">d4</option>
+										<option value="6">d6</option>
+										<option value="8">d8</option>
+										<option value="10">d10</option>
+										<option value="12">d12</option>
+									</select>+</span>
+									<input class="sheet-otraitmod" type="number" name="attr_pastmod" value="0" />
+									<input class='sheet-moremods' type='checkbox' name='attr_showpaStMod' /><span>y</span>
+									<div class='sheet-basetrait sheet-traitmodplus'>
+										<input type='text' class='sheet-ModDesc' name='attr_pastModType' placeholder='Modifier due to edges, hindrances, etc' data-i18n-placeholder="att-mod-description" />
+										+<input class="sheet-otraitmod" type="number" name="attr_pastrollmod" value="0" />
+									</div>
+									<input type='hidden' name='attr_pastrength_rank' value='1d4!' />
+									<input type='hidden' name='attr_pastrength_display' value='1d4' />
+									<input type='hidden' name='attr_rolltPAStrength' value='{{name=@{character_name} }} {{trait=Strength}} {{skill_rank=@{pastrength_display} }} {{skill_roll=[[@{pastrength_rank} + @{pastrollmod}+ @{ModSumEnc}[Wounds, Fatigue, Encumbrance, Distracted] + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{pastrengthmod} + @{pastrollmod} + @{ModSumEnc}[Wounds, Fatigue, Encumbrance, Distracted] + @{traitmods} ]]}}' />
+								</div>
+			                </div> <!-- End Column 3 -->
+			            </div>
+			            <div class="sheet-shipArmaments">
+			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipweapons" /><span class="sheet-showshipweapons"></span>
+			                <h4 class="sheet-repTitle" data-i18n="ships-armaments">Ship's Armaments</h4>
+			                <div class="sheet-shipWeapons">
+    			                <span class="sheet-weaponHeader sheet-weaponItem sheet-button">&nbsp;</span>
+								<span class="sheet-weaponHeader sheet-weaponItem sheet-paweapon" data-i18n="weapon">Weapon</span>
+								<span class="sheet-weaponHeader sheet-weaponItem sheet-range" data-i18n="range">Range</span>
+								<span class="sheet-weaponHeader sheet-weaponItem sheet-rof" data-i18n="rate-of-fire-abbr">ROF</span>
+								<span class="sheet-weaponHeader sheet-weaponItem sheet-damage" data-i18n="damage">Damage</span>
+								<span class="sheet-weaponHeader sheet-weaponItem sheet-weaponap" data-i18n="armor-piercing-abbr-u">AP</span>
+								<span class="sheet-weaponHeader sheet-weaponItem sheet-shots" data-i18n="number-of-shots-shortened">Shots</span>
+								<hr class="sheet-weaponItem sheet-hr" />
+								<input type='hidden' name='attr_vbonusdamage' value='1d6!' />
+								<fieldset class="repeating_paweapons" style="width: 100%;">
+									<!--<div class='sheet-weaponitem'>-->
+									<div class='sheet-weapons'>
+										<button type='roll' class="sheet-weaponItem sheet-button" name='roll_tpaWeapon' value="@{paweaponroll}"><input type="hidden" name="attr_paweaponbutton" class="sheet-weaponbutton" value="1" /><span class="sheet-buttonand" data-i18n="attack-and-damage-abbr">Atk+Dmg</span><span class="sheet-buttondo" data-i18n="damage">Damage</span></button>
+										<button type='roll' style='display: none;' name='roll_padmg' value='@{padamageOnly}'></button>
+										<input type='text' class='sheet-weaponItem sheet-paweapon' name='attr_paweapon' data-i18n-placeholder="weapon" placeholder="Weapon" />
+										<input type='text' class='sheet-weaponItem sheet-range' name='attr_parange' data-i18n-placeholder="range" placeholder="Range" />
+										<input type='number' class='sheet-weaponItem sheet-rof' name='attr_parof' data-i18n-placeholder="rate-of-fire-abbr" placeholder="ROF" />
+										<input type='text' class='sheet-weaponItem sheet-damage' name='attr_paweapondamage' value="Str+d4" readonly />
+										<input type="number" class='sheet-weaponItem sheet-weaponap' name='attr_paweaponap' />
+										<input type='number' class='sheet-weaponItem sheet-shots' name='attr_pashots' data-i18n-placeholder="number-of-shots-shortened" placeholder="Shots" />
+										<input class='sheet-moreweapon' type='checkbox' name='attr_showpaweaponconfig' checked /><span>y</span>
+										<textarea name='attr_paweaponnotes' class='sheet-weaponItem sheet-weaponnotes' data-i18n-placeholder="notes" placeholder="Notes"></textarea>
+										<div class="sheet-weaponconfig">
+											<label class="sheet-configlabels" data-i18n="button-behavior">Button Behavior</label>
+											<select name="attr_paweaponbutton" class="sheet-weaponbutton">
+												<option value="0" data-i18n="attack-and-damage-abbr">Atk + Dmg</option>
+												<option value="1" data-i18n="damage-only" selected>Damage Only</option>
+											</select>
+											<input type="hidden" name="attr_paweaponbutton" class="sheet-weaponbutton" />
+											<div class='sheet-weaponskill'>
+												<label class="sheet-configlabels" data-i18n="skill">Skill</label>
+												<select name="attr_paweaponskill" class="sheet-weaponbutton" value="1">
+													<option value="fighting" data-i18n="fighting" selected>Fighting</option>
+													<option value="athletics" data-i18n="athletics">Athletics</option>
+													<option value="shooting" data-i18n="shooting">Shooting</option>
+													<option value="throwing" data-i18n="throwing">Throwing</option>
+													<option value="unskilled" data-i18n="unskilled">Unskilled</option>
+												</select>
+											</div>
+											<div class='sheet-weapondamage'>
+												<label class='sheet-configlabels' data-i18n="damage">Damage</label>
+												<select class='sheet-weaponatt' name="attr_padamageatt">
+													<option value="na" data-i18n="not-applicable-abbr">N/A</option>
+													<option value="strength" data-i18n="strength" selected>Strength</option>
+													<!--<option value="agility" data-i18n="agility">Agility</option>
+													<option value="smarts" data-i18n="smarts">Smarts</option>
+													<option value="spirit" data-i18n="spirit">Spirit</option>
+													<option value="vigor" data-i18n="vigor">Vigor</option>-->
+												</select>
+												+
+												<input type="number" class="sheet-weaponnum" name="attr_padmgnumdice" style="text-align: right;" value="1" />
+												<select name="attr_padmgdietype" class="sheet-dtype">
+													<option value="d4!">d4</option>
+													<option value="d6!">d6</option>
+													<option value="d8!">d8</option>
+													<option value="d10!">d10</option>
+													<option value="d12!">d12</option>
+													<option value="d20!">d20</option>
+												 </select>
+												 +
+												 <input type="text" class="sheet-weaponnum" name="attr_padmgbonusnum" />
+											</div>
+										</div>
+										<!-- Hidden Fields for the roll button(s), etc -->
+										<input type='hidden' name='attr_paweaponroll' value='@{padamageOnly}' />
+										<input type='hidden' name='attr_paskillNDamage' value="&{template:roll} {{trait=Fighting}} {{source=@{paweapon}}} @{rolltFighting} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_paweapons_padmg) }}" /> <!--Used for Skill and Damage roll -->
+										<input type='hidden' name='attr_padamageOnly' value='@{padmgTemplate}' /> <!-- Used for Damage Only -->
+										<!-- Build the Damage Roll Template Info -->
+										<input type='hidden' name='attr_paweapondmg' value="@{strength_rank}+1d4!" /> <!-- the damage formula -->
+										<input type='hidden' name='attr_pabonusdmg' value='1d6!' />
+										<input type='text' style='display: none;' name='attr_padmgTemplate' value='&{template:damage} {{name=@{character_name}}} {{source=@{paweapon} }} {{dmg_rank=@{paweapondamage}}} {{dmg_roll=[[@{paweapondmg} + @{damagemods}]]}} {{bonus_die=[[@{vbonusdamage}]]}} {{showap=[[1d0+@{paweaponap}]]}} {{ap=@{paweaponap}}} {{notes=@{paweaponnotes}}} {{button=y}} {{DmgRoll=[Re-Roll Damage](~repeating_paweapons_padmg) }}' />
+									</div>
+								</fieldset>
+    			            </div>
+			            </div>
+			            <h4 class="sheet-subsectionHeader sheet-panotesheader" data-i18n="notes-and-upgrades">Notes and Upgrades</h4>
+						<textarea class='sheet-vtext sheet-panotes' name="attr_PANotes"></textarea>
+			        </div>
+    			</div>
+    			<!-- End Power Armor -->
+    			<!-- Start Robot Armor -->
+                <input class="sheet-useRobotArmor" type="checkbox" name="attr_RobotArmor" style="display: none;" />
+    			<div class="sheet-ship-RobotArmor">
+    			    <input type="checkbox" class="sheet-hideShip" name="attr_is_robotarmor" /><span class="sheet-showShip"></span>
+			        <h3 class="sheet-configSectionTitle" data-i18n="robots-armor">Robot Armor</h3>
+			        <div class="sheet-ship">
+			            <div class="sheet-shipMainSection">
+			                <div class="sheet-shipMainColumn1">
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="wounds">Wounds:</label>
+			                         <input type="number" class="sheet-shipWound" name="attr_RAWounds" />&nbsp;<span data-i18n="of">of</span>&nbsp;<input type="number" class="sheet-shipWound" name="attr_RAWounds_max" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="size">Size:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_RASize" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="crew">Crew:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_RACrew" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="passengers">Passengers:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_RAPassengers" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="armor">Armor:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_RAArmor" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="toughness">Toughness:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_RAToughness" />
+			                    </div>
+			                    <div class="sheet-shipMainItem">
+			                         <label class="sheet-shipMainLabel" data-i18n="cost">Cost:</label>
+			                         <input type="number" class="sheet-shipMainInput" name="attr_RACost" />
+			                    </div>
+			                </div> <!-- End Column 1 -->
+			                <div class="sheet-shipMainColumn2">
+			                    <img class='sheet-paimg' src='http://www.geeksville.us/roll20/RobotArmor.png'>
+			                </div> <!-- End Column 2 -->
+			                <div class="sheet-shipMainColumn3">
+			                    <div class='sheet-shipPAStatBlock'>
+			                        <label class="sheet-shipMainLabel sheet-shipPALabel">&nbsp;</label>
+			                        <label class="sheet-shipMainLabel sheet-shipPAGround" data-i18n="ground">Ground</label>
+			                        <label class="sheet-shipMainLabel sheet-shipPAFlight" data-i18n="flight">Flight</label>
+			                        <label class="sheet-shipMainLabel sheet-shipPASwim" data-i18n="swim">Swim</label>
+			                    </div>
+			                    <div class='sheet-shipPAStatBlock'>
+			                        <label class="sheet-shipMainLabel sheet-shipPALabel" data-i18n="pace">Pace</label>
+			                        <input class="sheet-shipPAGround" type="number" name="attr_RAGroundPace" />
+			                        <input class="sheet-shipPAFlight" type="number" name="attr_RAFlightPace" />
+			                        <input class="sheet-shipPASwim" type="number" name="attr_RASwimPace" />
+			                    </div>
+			                    <div class='sheet-shipPAStatBlock'>
+			                        <label class="sheet-shipMainLabel sheet-shipPALabel" data-i18n="acceleration">Acceleration</label>
+			                        <input class="sheet-shipPAGround" type="number" name="attr_RAGroundAcc" />
+			                        <input class="sheet-shipPAFlight" type="number" name="attr_RAFlightAcc" />
+			                        <input class="sheet-shipPASwim" type="number" name="attr_RASwimAcc" />
+			                    </div>
+								<div class='sheet-shipPAStatBlock'>
+			                        <label class="sheet-shipMainLabel sheet-shipPALabel" data-i18n="top-speed">Top Speed</label>
+			                        <input class="sheet-shipPAGround" type="number" name="attr_RAGroundTS" />
+			                        <input class="sheet-shipPAFlight" type="number" name="attr_RAFlightTS" />
+			                        <input class="sheet-shipPASwim" type="number" name="attr_RASwimTS" />
+			                    </div>
+								<div class='sheet-shipPAStatBlock'>
+			                        <label class="sheet-shipMainLabel sheet-shipPALabel" data-i18n="climb">Climb</label>
+			                        <span class="sheet-shipPAGround">&nbsp;</span>
+			                        <input class="sheet-shipPAFlight" type="number" name="attr_RAFlightClimb" />
+			                        <span class="sheet-shipPASwim">&nbsp;</span>
+			                    </div>
+								<!-- RA Strength -->
+								<div class='sheet-basetrait' style="border-bottom: none;">
+									<button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tRAStrengthRoll' value='&{template:roll} @{rolltRAStrength} @{setmodsenc} @{showtraitmods}' data-i18n="strength"> Strength</button>
+									<span><select name="attr_rastrength" class="sheet-traitdie" value="4">
+										<option value="4">d4</option>
+										<option value="6">d6</option>
+										<option value="8">d8</option>
+										<option value="10">d10</option>
+										<option value="12">d12</option>
+									</select>+</span>
+									<input class="sheet-otraitmod" type="number" name="attr_rastmod" value="0" />
+									<input class='sheet-moremods' type='checkbox' name='attr_showraStMod' /><span>y</span>
+									<div class='sheet-basetrait sheet-traitmodplus'>
+										<input type='text' class='sheet-ModDesc' name='attr_rastModType' placeholder='Modifier due to edges, hindrances, etc' data-i18n-placeholder="att-mod-description" />
+										+<input class="sheet-otraitmod" type="number" name="attr_rastrollmod" value="0" />
+									</div>
+									<input type='hidden' name='attr_rastrength_rank' value='1d4!' />
+									<input type='hidden' name='attr_rastrength_display' value='1d4' />
+									<input type='hidden' name='attr_rolltRAStrength' value='{{name=@{character_name} }} {{trait=Strength}} {{skill_rank=@{rastrength_display} }} {{skill_roll=[[@{rastrength_rank} + @{rastrollmod}+ @{ModSumEnc}[Wounds, Fatigue, Encumbrance, Distracted] + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{rastrengthmod} + @{rastrollmod} + @{ModSumEnc}[Wounds, Fatigue, Encumbrance, Distracted] + @{traitmods} ]]}}' />
+								</div>
+			                </div> <!-- End Column 3 -->
+			            </div>
+			            <div class="sheet-shipArmaments">
+			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipweapons" /><span class="sheet-showshipweapons"></span>
+			                <h4 class="sheet-repTitle" data-i18n="ships-armaments">Ship's Armaments</h4>
+			                <div class="sheet-shipWeapons">
+    			                <span class="sheet-weaponHeader sheet-weaponItem sheet-button">&nbsp;</span>
+								<span class="sheet-weaponHeader sheet-weaponItem sheet-paweapon" data-i18n="weapon">Weapon</span>
+								<span class="sheet-weaponHeader sheet-weaponItem sheet-range" data-i18n="range">Range</span>
+								<span class="sheet-weaponHeader sheet-weaponItem sheet-rof" data-i18n="rate-of-fire-abbr">ROF</span>
+								<span class="sheet-weaponHeader sheet-weaponItem sheet-damage" data-i18n="damage">Damage</span>
+								<span class="sheet-weaponHeader sheet-weaponItem sheet-weaponap" data-i18n="armor-piercing-abbr-u">AP</span>
+								<span class="sheet-weaponHeader sheet-weaponItem sheet-shots" data-i18n="number-of-shots-shortened">Shots</span>
+								<hr class="sheet-weaponItem sheet-hr" />
+								<input type='hidden' name='attr_vbonusdamage' value='1d6!' />
+								<fieldset class="repeating_raweapons" style="width: 100%;">
+									<!--<div class='sheet-weaponitem'>-->
+									<div class='sheet-weapons'>
+										<button type='roll' class="sheet-weaponItem sheet-button" name='roll_traWeapon' value="@{raweaponroll}"><input type="hidden" name="attr_raweaponbutton" class="sheet-weaponbutton" value="1" /><span class="sheet-buttonand" data-i18n="attack-and-damage-abbr">Atk+Dmg</span><span class="sheet-buttondo" data-i18n="damage">Damage</span></button>
+										<button type='roll' style='display: none;' name='roll_radmg' value='@{radamageOnly}'></button>
+										<input type='text' class='sheet-weaponItem sheet-paweapon' name='attr_raweapon' data-i18n-placeholder="weapon" placeholder="Weapon" />
+										<input type='text' class='sheet-weaponItem sheet-range' name='attr_rarange' data-i18n-placeholder="range" placeholder="Range" />
+										<input type='number' class='sheet-weaponItem sheet-rof' name='attr_rarof' data-i18n-placeholder="rate-of-fire-abbr" placeholder="ROF" />
+										<input type='text' class='sheet-weaponItem sheet-damage' name='attr_raweapondamage' value="Str+d4" readonly />
+										<input type="number" class='sheet-weaponItem sheet-weaponap' name='attr_raweaponap' />
+										<input type='number' class='sheet-weaponItem sheet-shots' name='attr_rashots' data-i18n-placeholder="number-of-shots-shortened" placeholder="Shots" />
+										<input class='sheet-moreweapon' type='checkbox' name='attr_showraweaponconfig' checked /><span>y</span>
+										<textarea name='attr_raweaponnotes' class='sheet-weaponItem sheet-weaponnotes' data-i18n-placeholder="notes" placeholder="Notes"></textarea>
+										<div class="sheet-weaponconfig">
+											<label class="sheet-configlabels" data-i18n="button-behavior">Button Behavior</label>
+											<select name="attr_raweaponbutton" class="sheet-weaponbutton">
+												<option value="0" data-i18n="attack-and-damage-abbr">Atk + Dmg</option>
+												<option value="1" data-i18n="damage-only" selected>Damage Only</option>
+											</select>
+											<input type="hidden" name="attr_raweaponbutton" class="sheet-weaponbutton" />
+											<div class='sheet-weaponskill'>
+												<label class="sheet-configlabels" data-i18n="skill">Skill</label>
+												<select name="attr_raweaponskill" class="sheet-weaponbutton" value="1">
+													<option value="fighting" data-i18n="fighting" selected>Fighting</option>
+													<option value="athletics" data-i18n="athletics">Athletics</option>
+													<option value="shooting" data-i18n="shooting">Shooting</option>
+													<option value="throwing" data-i18n="throwing">Throwing</option>
+													<option value="unskilled" data-i18n="unskilled">Unskilled</option>
+												</select>
+											</div>
+											<div class='sheet-weapondamage'>
+												<label class='sheet-configlabels' data-i18n="damage">Damage</label>
+												<select class='sheet-weaponatt' name="attr_radamageatt">
+													<option value="na" data-i18n="not-applicable-abbr">N/A</option>
+													<option value="strength" data-i18n="strength" selected>Strength</option>
+													<!--<option value="agility" data-i18n="agility">Agility</option>
+													<option value="smarts" data-i18n="smarts">Smarts</option>
+													<option value="spirit" data-i18n="spirit">Spirit</option>
+													<option value="vigor" data-i18n="vigor">Vigor</option>-->
+												</select>
+												+
+												<input type="number" class="sheet-weaponnum" name="attr_radmgnumdice" style="text-align: right;" value="1" />
+												<select name="attr_radmgdietype" class="sheet-dtype">
+													<option value="d4!">d4</option>
+													<option value="d6!">d6</option>
+													<option value="d8!">d8</option>
+													<option value="d10!">d10</option>
+													<option value="d12!">d12</option>
+													<option value="d20!">d20</option>
+												 </select>
+												 +
+												 <input type="text" class="sheet-weaponnum" name="attr_radmgbonusnum" />
+											</div>
+										</div>
+										<!-- Hidden Fields for the roll button(s), etc -->
+										<input type='hidden' name='attr_raweaponroll' />
+										<input type='hidden' name='attr_raskillNDamage' value="&{template:roll} {{trait=Fighting}} {{source=@{raweapon}}} @{rolltFighting} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_raweapons_radmg) }}" /> <!--Used for Skill and Damage roll -->
+										<input type='hidden' name='attr_radamageOnly' value='@{radmgTemplate}' /> <!-- Used for Damage Only -->
+										<!-- Build the Damage Roll Template Info -->
+										<input type='hidden' name='attr_raweapondmg' value="@{strength_rank}+1d4!" /> <!-- the damage formula -->
+										<input type='hidden' name='attr_rabonusdmg' value='1d6!' />
+										<input type='text' style='display: none;' name='attr_radmgTemplate' value='&{template:damage} {{name=@{character_name}}} {{source=@{raweapon} }} {{dmg_rank=@{raweapondamage}}} {{dmg_roll=[[@{raweapondmg} + @{damagemods}]]}} {{bonus_die=[[@{vbonusdamage}]]}} {{showap=[[1d0+@{raweaponap}]]}} {{ap=@{raweaponap}}} {{notes=@{raweaponnotes}}} {{button=y}} {{DmgRoll=[Re-Roll Damage](~repeating_raweapons_radmg) }}' />
+									</div>
+								</fieldset>
+    			            </div>
+    			            <!-- Crew & Passengers -->
+			            </div>
+			            <h4 class="sheet-subsectionHeader sheet-panotesheader" data-i18n="notes-and-upgrades">Notes and Upgrades</h4>
+						<textarea class='sheet-vtext sheet-panotes' name="attr_RANotes"></textarea>
+			        </div>
+    			</div>
+    			<!-- End Robot Armor -->
             </div>
             <!-- End Vehicles -->
             <div class='sheet-config'> <!--Configuration Tab-->
