@@ -41,7 +41,7 @@ textarea {
 
 input[value="1"]:checked ~ .sheet-background {
 	background-image: none;
-	background-color: white;
+	background-color: rgba(244,244,244);
 }
 
 input[value="2"]:checked ~ .sheet-background {
@@ -1950,8 +1950,11 @@ input.sheet-armorCarried {
 [data-groupname=repeating_quests],
 [data-groupname=repeating_sailweapons],
 [data-groupname=repeating_sshipcrew],
+[data-groupname=repeating_flyingweapons],
 [data-groupname=repeating_fshipcrew],
+[data-groupname=repeating_groundweapons],
 [data-groupname=repeating_gshipcrew],
+[data-groupname=repeating_wsweapons],
 [data-groupname=repeating_wshipcrew],
 [data-groupname=repeating_paweapons],
 [data-groupname=repeating_raweapons] {
@@ -2391,13 +2394,15 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
 .sheet-usePowerArmor:checked ~ .sheet-ship-PowerArmor,
 .sheet-useRobotArmor:checked ~ .sheet-ship-RobotArmor {
     display: block;
+    margin-bottom: 15px;
 }
 
 .sheet-SailingShip,
 .sheet-ship-flying,
 .sheet-ship-groundvehicle,
 .sheet-ship-walker,
-.sheet-ship-PowerArmor {
+.sheet-ship-PowerArmor,
+.sheet-ship-RobotArmor {
     background: rgba(255,255,255,0.75);
 }
 
@@ -2686,14 +2691,144 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
 .sheet-disclaimer{
 	font-size: 10px;
 	text-align: center;
-	display: none;
-}
-
-.sheet-logo:checked + span.sheet-disclaimer {
 	display: inline-block;
+	width: 100%;
 }
 
-.sheet-playDisclaimer input[value="1"]:checked + span.sheet-disclaimer::after,
+.sheet-logoallforone,
+.sheet-logorifts {
+    display: none;
+}
+
+input[value="1"].sheet-logo ~ .sheet-logotext::before,
+input[value="4"].sheet-logo ~ .sheet-logotext::before {
+    content:"Savage Worlds";
+}
+
+input[value="2"].sheet-logo ~ .sheet-logotext::before {
+    content:"The Pirates of the Spanish Main";
+}
+
+input[value="3"].sheet-logo ~ .sheet-logotext::before {
+    content:"The Last Parsec";
+}
+
+input[value="5"].sheet-logo ~ .sheet-logotext::before {
+    content:"The Necessary Evil";
+}
+
+input[value="6"].sheet-logo ~ .sheet-logotext::before {
+    content:"The Deadlands";
+}
+
+input[value="7"].sheet-logo ~ .sheet-logotext::before {
+    content:"The Deadlands: Noir";
+}
+
+input[value="8"].sheet-logo ~ .sheet-logotext::before {
+    content:"The Deadlands: Hell on Earth";
+}
+
+input[value="12"].sheet-logo ~ .sheet-logotext::before {
+    content:"Lankhmar";
+}
+
+input[value="14"].sheet-logo ~ .sheet-logotext::before {
+    content:"East Texas University";
+}
+
+input[value="16"].sheet-logo ~ .sheet-logotext::before {
+    content:"Rippers";
+}
+
+input[value="9"].sheet-logo ~ .sheet-logotext::before {
+    content:"Interface Zero 2.0";
+}
+
+input[value="10"].sheet-logo ~ .sheet-logotext::before {
+    content:"Hellfrost";
+}
+
+input[value="11"].sheet-logo ~ .sheet-logotext::before {
+    content:"Hellfrost: Land of Fire";
+}
+
+input[value="13"].sheet-logo ~ .sheet-logotext::before {
+    content:"All for One";
+}
+
+input[value="15"].sheet-logo ~ .sheet-logotext::before {
+    content:"Rifts";
+}
+
+
+input[value="1"].sheet-logo ~ .sheet-trademarkholder::before,
+input[value="2"].sheet-logo ~ .sheet-trademarkholder::before,
+input[value="3"].sheet-logo ~ .sheet-trademarkholder::before,
+input[value="4"].sheet-logo ~ .sheet-trademarkholder::before,
+input[value="5"].sheet-logo ~ .sheet-trademarkholder::before,
+input[value="6"].sheet-logo ~ .sheet-trademarkholder::before,
+input[value="7"].sheet-logo ~ .sheet-trademarkholder::before,
+input[value="8"].sheet-logo ~ .sheet-trademarkholder::before,
+input[value="12"].sheet-logo ~ .sheet-trademarkholder::before,
+input[value="14"].sheet-logo ~ .sheet-trademarkholder::before,
+input[value="16"].sheet-logo ~ .sheet-trademarkholder::before {
+    content:"Pinnacle Entertainment Group";
+}
+
+input[value="9"].sheet-logo ~ .sheet-trademarkholder::before {
+    content:"Gun Metal Games";
+}
+
+input[value="10"].sheet-logo ~ .sheet-trademarkholder::before,
+input[value="11"].sheet-logo ~ .sheet-trademarkholder::before {
+    content:"Triple Ace Games";
+}
+
+input[value="15"].sheet-logo ~ .sheet-logostandard,
+input[value="15"].sheet-logo ~ .sheet-trademarkholder {
+    display: none;
+}
+
+input[value="13"].sheet-logo ~ .sheet-logoallforone {
+    display: inline;
+}
+
+input[value="13"].sheet-logo ~ .sheet-logostandard,
+input[value="13"].sheet-logo ~ .sheet-trademarkholder {
+    display: none;
+}
+
+input[value="15"].sheet-logo ~ .sheet-logorifts {
+    display: inline;
+}
+
+input[value="1"].sheet-logo ~ .sheet-website::before,
+input[value="2"].sheet-logo ~ .sheet-website::before,
+input[value="3"].sheet-logo ~ .sheet-website::before,
+input[value="4"].sheet-logo ~ .sheet-website::before,
+input[value="5"].sheet-logo ~ .sheet-website::before,
+input[value="6"].sheet-logo ~ .sheet-website::before,
+input[value="7"].sheet-logo ~ .sheet-website::before,
+input[value="8"].sheet-logo ~ .sheet-website::before,
+input[value="12"].sheet-logo ~ .sheet-website::before,
+input[value="14"].sheet-logo ~ .sheet-website::before,
+input[value="15"].sheet-logo ~ .sheet-website::before,
+input[value="16"].sheet-logo ~ .sheet-website::before {
+    content: "http://www.peginc.com/";
+}
+
+input[value="9"].sheet-logo ~ .sheet-website::before {
+    content: "http://www.gunmetalgames.com/";
+}
+
+input[value="10"].sheet-logo ~ .sheet-website::before,
+input[value="11"].sheet-logo ~ .sheet-website::before,
+input[value="13"].sheet-logo ~ .sheet-website::before {
+    content: "http://www.tripleacegames.com/";
+}
+
+/*.sheet-playDisclaimer input[value="1"]:checked + span.sheet-disclaimer::after,
 .sheet-playDisclaimer input[value="4"]:checked + span.sheet-disclaimer::after,
 .sheet-playDisclaimer input[value="3"]:checked + span.sheet-disclaimer::after,
 .sheet-playDisclaimer input[value="2"]:checked + span.sheet-disclaimer::after,
@@ -2706,12 +2841,12 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
 .sheet-playDisclaimer input[value="16"]:checked + span.sheet-disclaimer::after  {
 	content: "logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
 	display: inline-block;
-}
+}*/
 
-.sheet-playDisclaimer input[value="15"]:checked + span.sheet-disclaimer::after {
+/*.sheet-playDisclaimer input[value="15"]:checked + span.sheet-disclaimer::after {
 	content: "and Megaverse are registered trademarks of PALLADIUM BOOKS, INC. All character names and likenesses are copyright and trademarks owned by Palladium Books, Inc. Savage Worlds logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
-	/*display: inline-block;*/
-}
+	display: inline-block;
+}*/
 
 /*.sheet-playDisclaimer input[value="3"]:checked + span.sheet-disclaimer::before {
 	content: "The Last Parsec logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
@@ -2737,28 +2872,28 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
 	content: "The Deadlands: Hell on Earth logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
 }*/
 
-.sheet-playDisclaimer input[value="9"]:checked + span.sheet-disclaimer::after {
+/*.sheet-playDisclaimer input[value="9"]:checked + span.sheet-disclaimer::after {
 	content: "logo is a trademark of Gun Metal Games. Used with permission.";
-}
+}*/
 
-.sheet-playDisclaimer input[value="10"]:checked + span.sheet-disclaimer::after,
+/*.sheet-playDisclaimer input[value="10"]:checked + span.sheet-disclaimer::after,
 .sheet-playDisclaimer input[value="11"]:checked + span.sheet-disclaimer::after {
 	content: "logo is a trademark of Triple Ace Games. Used with permission.";
 	display: inline-block;
-}
+}*/
 
-.sheet-playDisplaimer input[value="13"]:checked +span.sheet-disclaimer::after {
+/*.sheet-playDisplaimer input[value="13"]:checked +span.sheet-disclaimer::after {
 	content: "logo &copy; 2016 Triple Ace Games Ltd. All for One: R&eacute;gime Diabolique and all related marks and logos are trademarks of  Triple Ace Games Ltd. Ubiquity Roleplaying System, Exile Games Studio, and all associated logos and trademarks are copyright, Exile Games Studio, LLC. Used with permission.";
-}
+}*/
 
 /*--- Web Site Info For Disclaimer ---*/
 
-.sheet-CoURL {
+/*.sheet-CoURL {
 	font-size: 10px;
 	text-align: center;
-}
+}*/
 
-.sheet-playDisclaimer input[value="1"]:checked ~ span.sheet-CoURL::after,
+/*.sheet-playDisclaimer input[value="1"]:checked ~ span.sheet-CoURL::after,
 .sheet-playDisclaimer input[value="2"]:checked ~ span.sheet-CoURL::after,
 .sheet-playDisclaimer input[value="3"]:checked ~ span.sheet-CoURL::after,
 .sheet-playDisclaimer input[value="4"]:checked ~ span.sheet-CoURL::after,
@@ -2781,7 +2916,7 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
 .sheet-playDisclaimer input[value="11"]:checked ~ span.sheet-CoURL::after,
 .sheet-playDisclaimer input[value="13"]:checked ~ span.sheet-CoURL::after {
 	content: "http://www.tripleacegames.com/";
-}
+}*/
 
 /*----------- End Disclaimer Info Setup -----------*/
 /*----------- Start Tool Tip -----------*/
@@ -2887,6 +3022,7 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
     text-align: center;
     margin-top: -30px;
     margin-bottom: 10px;
+    background-color: lightgray;
 }
 
 .sheet-hideQS:checked + .sheet-showQS::before,

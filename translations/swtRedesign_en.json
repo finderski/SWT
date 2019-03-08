@@ -757,5 +757,14 @@
 	"vehicle-manufacturer": "Vehicle Manufacturer",
 	"driver": "Driver",
 	"vehicle-type": "Vehicle Type",
-	"walker-type": "Walker Type"
+	"walker-type": "Walker Type",
+	"flying-vehicle": "Flying Vehicle",
+	"vehicle-name": "Vehicle Name",
+	"armaments": "Armaments",
+	"walker-name": "Walker Name",
+	"the": "The",
+	"logo-info": "logo is a trademark of",
+	"used-with-permission-visit-website": "Used with permission. Visit their website at",
+	"all-for-one-logo-info": "logo &copy; 2016 Triple Ace Games Ltd. All for One: R&eacute;gime Diabolique and all related marks and logos are trademarks of  Triple Ace Games Ltd. Ubiquity Roleplaying System, Exile Games Studio, and all associated logos and trademarks are copyright, Exile Games Studio, LLC",
+	"rifts-logo-info": "logo and Megaverse are registered trademarks of PALLADIUM BOOKS, INC. All character names and likenesses are copyright and trademarks owned by Palladium Books, Inc. Savage Worlds logo is a trademark of Pinnacle Entertainment Group"
 }

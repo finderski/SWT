@@ -257,37 +257,56 @@
                 let salaryArray = [];
                 let sharesArray = [];
                 for (let a=0; a < idArray.length; a++) {
-                    fullArray.length = `${rsection}_${idArray[a]}_${salaryfield}`;
-                    fullArray.length = `${rsection}_${idArray[a]}_${sharesfield}`;
+                    salaryArray[salaryArray.length] = `${rsection}_${idArray[a]}_${salaryfield}`;
+                    sharesArray[sharesArray.length] = `${rsection}_${idArray[a]}_${sharesfield}`;
+                    fullArray[fullArray.length] = `${rsection}_${idArray[a]}_${salaryfield}`;
+                    fullArray[fullArray.length] = `${rsection}_${idArray[a]}_${sharesfield}`;
                 }
                 console.log("### Full Array Length: "+fullArray.length +" ####");
+                console.log("### Salary Array Length: "+salaryArray.length +" ####");
+                console.log("### Shares Array Length: "+sharesArray.length +" ####");
                 getAttrs(fullArray, function(v) {
                     let sattrs = {};
                     for (let c=0; c < idArray.length; c++) {
                         var fieldVal = '';
                         //check Salary field for a value
-                        console.log(`Salary Field Value: ${salaryArray[c]}`);
+                        console.log(`Salary Field: ${salaryArray[c]}`);
+                        console.log(`Salary Field value: ${v[salaryArray[c]]}`);
                         if (v[salaryArray[c]].length < 1) {
                             console.log("No Salary Info");
                         }
                         else {
-                            console.log("Salary info to care for")
-                            fieldVal = v[salaryArray[c]] + " (salary)";
+                            var p = v[salaryArray[c]].indexOf('salary');
+                            if (p < 0) {
+                                console.log("Salary info to care for")
+                                fieldVal = v[salaryArray[c]] + " (salary)";
+                            }
+                            console.log("Pay field already updated");
                         }
                         //check Shares field for a value
-                        console.log(`Salary Field Value: ${salaryArray[c]}`);
-                        if (v[sharesArray[c]].length < 1) {
-                            console.log("No Shares Info");
+                        console.log(`Shares Field: ${sharesArray[c]}`);
+                        console.log(`Shares Field value: ${v[sharesArray[c]]}`);
+                        var m = fieldVal.indexOf('shares');
+                        if(typeof v[sharesArray[c]]) {
+                            console.log("*** No Shares Info undefined ***");
                         }
                         else {
-                            console.log("Shares info to care for")
-                            if (fieldVal.length < 1) {
-                                fieldVal = v[sharesArray[c]] + " (shares)";
+                            if (v[sharesArray[c]].length < 1) {
+                                console.log("No Shares Info");
                             }
                             else {
-                                fieldVal = ` and ${v[sharesArray[c]]} (shares)`;
+                                console.log("Shares info to care for")
+                                if (fieldVal.length < 1) {
+                                    fieldVal = v[sharesArray[c]] + " (shares)";
+                                }
+                                else {
+                                    if (m < 0) {
+                                        fieldVal += ` and ${v[sharesArray[c]]} (shares)`;
+                                    }
+                                }
                             }
                         }
+                        
                         if (fieldVal.length > 0) {
                             //set the salary field
                             sattrs[salaryArray[c]] = fieldVal;
@@ -351,7 +370,7 @@
                             getORF = originRF+ofieldArray[r];
                             console.log(i+"-"+r+") Current value of getORF: "+getORF+": "+v[getORF]);
                             putdestinationRF = destinationRF+dfieldArray[r];
-                            if (ofieldArray[r] === "DmgType") {
+                            if (ofieldArray[r] === "DmgType" || ofieldArray[r] === "RDmgType") {
                                 if (typeof v[getORF] === 'undefined') {
                                     sattrs[putdestinationRF]="d4!"
                                 }
@@ -369,20 +388,26 @@
                             }
                         }
                         //Check to see if we need to set any default values
-                        if (daddlfieldArray.length > 0 && daddlfieldArray.length === defaultValues.length) {
-                            console.log("!! Need to set some additional fields !!");
-                            //Set default value for other fields
-                            for(let r=0; r < daddlfieldArray.length; r++) {
-                                let getORF = '', putdestinationRF = '';
-                                console.log("********************");
-                                console.log("** destinationRF: "+destinationRF+daddlfieldArray[r]);
-                                console.log("********************");
-                                putdestinationRF = destinationRF+daddlfieldArray[r];
-                                sattrs[putdestinationRF] = defaultValues[r];
-                            }
+                        console.log("*** Checking for Additional Fields to set Defaults ***");
+                        if(typeof daddlfieldArray === 'undefined') {
+                            console.log("*** No Additional Fields to set...undefined ***");
                         }
                         else {
-                            console.log("!! No additional fields to set OR the number of fields doesn't match the number of values !!");
+                            if (daddlfieldArray.length > 0 && daddlfieldArray.length === defaultValues.length) {
+                                console.log("!! Need to set some additional fields !!");
+                                //Set default value for other fields
+                                for(let r=0; r < daddlfieldArray.length; r++) {
+                                    let getORF = '', putdestinationRF = '';
+                                    console.log("********************");
+                                    console.log("** destinationRF: "+destinationRF+daddlfieldArray[r]);
+                                    console.log("********************");
+                                    putdestinationRF = destinationRF+daddlfieldArray[r];
+                                    sattrs[putdestinationRF] = defaultValues[r];
+                                }
+                            }
+                            else {
+                                console.log("!! No additional fields to set OR the number of fields doesn't match the number of values !!");
+                            }
                         }
                         console.log("##### sattrs: " + JSON.stringify(sattrs) + " #####");
                         setAttrs(sattrs);
@@ -2472,7 +2497,15 @@
                             </div>
                         </div>
                         <div class="sheet-base sheet-AttsSum">
-                            <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_AgilitySumRoll' title="@{tAgilityRoll}" value="~tAgilityRoll"><span data-i18n="agility-abbr">Agl</span>: <span name='attr_agility_display'></span></button>
+                            <button class="sheet-traitbutton" type='roll' name='roll_AgilitySumRoll' value='&{template:roll} @{rolltAgility} @{setmodsenc} @{showtraitmods}'><span data-i18n="agility-abbr">Agl</span>: <span name='attr_agility_display'></span></button>,
+                            
+                            <button class="sheet-traitbutton" type='roll' name='roll_SmartsSumRoll' value='&{template:roll} @{rolltSmarts} @{setmods} @{showtraitmods}'><span data-i18n="smarts-abbr">Sma</span>: <span name='attr_smarts_display'></span></button>,
+                            
+                            <button class="sheet-traitbutton" type='roll' name='roll_SpiritSumRoll' value='&{template:roll} @{rolltSpirit} @{setmods} @{showtraitmods}'><span data-i18n="spirit-abbr">Spi</span>: <span name='attr_spirit_display'></span></button>,
+                            
+                            <button class="sheet-traitbutton" type='roll' name='roll_StrengthSumRoll' value='&{template:roll} @{rolltStrength} @{setmodsenc} @{showtraitmods}'><span data-i18n="strength-abbr">Str</span>: <span name='attr_strength_display'></span></button>,
+                            
+                            <button class="sheet-traitbutton" type='roll' name='roll_VigorSumRoll' value='&{template:roll} @{rolltVigor} @{setmods} @{showtraitmods}'><span data-i18n="vigor-abbr">Vig</span>: <span name='attr_vigor_display'></span></button>
                         </div>
                         <input type="checkbox" class="sheet-hideskillsconfig" /><span class="sheet-skillList"></span>
                         <h1 class='sheet-colHeader'>Skills</h1>
@@ -4799,7 +4832,7 @@
             <div class='sheet-vehicles'>
                 <!-- Start Sailing Ship -->
                 <input class="sheet-useSailingShips" type="checkbox" name="attr_sailingShip" style="display: none;" />
-    			<div class="sheet-SailingShip">
+    			<div class="sheet-ship-sailing">
     			    <input type="checkbox" class="sheet-hideShip" name="attr_is_sailing" /><span class="sheet-showShip"></span>
 			        <h3 class="sheet-configSectionTitle" data-i18n="sailing-ship">Sailing Ship</h3>
 			        <div class="sheet-ship">
@@ -4875,7 +4908,7 @@
 			            </div>
 			            <div class="sheet-shipArmaments">
 			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipweapons" /><span class="sheet-showshipweapons"></span>
-			                <h4 class="sheet-repTitle" data-i18n="ships-armaments">Ship's Armaments</h4>
+			                <h4 class="sheet-repTitle" data-i18n="armaments">Armaments</h4>
 			                <div class="sheet-shipWeapons">
     			                <h4 class="sheet-weaponItem sheet-shipbutton">&nbsp;</h4>
     			                <h4 class="sheet-weaponItem sheet-shipweapon" data-i18n="weapon">Weapon</h4>
@@ -4909,7 +4942,7 @@
 			            </div>
 			            <div class='sheet-shipRoster'>
 			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipcrew" /><span class="sheet-showshipweapons"></span>
-			                <h4 class="sheet-repTitle" data-i18n="ships-crew">Ship's Crew</h4>
+			                <h4 class="sheet-repTitle" data-i18n="crew">Crew</h4>
 			                <div class='sheet-shipCrew'>
 			                    <!--<h4 class="sheet-crewMember sheet-shipcrewbutton">&nbsp;</h4>-->
 								<h4 class="sheet-crewMember sheet-shipcrewname" data-i18n="name-or-number">Name or Number</h4>
@@ -4936,12 +4969,12 @@
                 <input class="sheet-useFlyingShips" type="checkbox" name="attr_flyingShip" style="display: none;" />
     			<div class="sheet-ship-flying">
     			    <input type="checkbox" class="sheet-hideShip" name="attr_is_flying" /><span class="sheet-showShip"></span>
-			        <h3 class="sheet-configSectionTitle" data-i18n="flying-ship">Flying Ship</h3>
+			        <h3 class="sheet-configSectionTitle" data-i18n="flying-vehicle">Flying Vehicle</h3>
 			        <div class="sheet-ship">
 			            <div class="sheet-shipheaderrow">
 			                <div class="sheet-shipItem sheet-shipname">
     			                <input type="text" class="sheet-shipField" name="attr_FlyingShipName" />
-    			                <div class="sheet-shiplabel" data-i18n="ship-name">Ship Name</div>
+    			                <div class="sheet-shiplabel" data-i18n="vehicle-name">Vehicle Name</div>
     			            </div>
     			            <div class="sheet-shipItem sheet-capnname">
     			                <input type="text" class="sheet-shipField" name="attr_FShipCaptain" />
@@ -4949,7 +4982,7 @@
     			            </div>
     			            <div class="sheet-shipItem sheet-shipname">
     			                <input type="text" class="sheet-shipField" name="attr_FShipType" />
-    			                <div class="sheet-shiplabel" data-i18n="ship-type">Ship Type</div>
+    			                <div class="sheet-shiplabel" data-i18n="vehicle-type">Vehicle Type</div>
     			            </div>
 			            </div>
 			            <div class="sheet-shipMainSection">
@@ -5022,7 +5055,7 @@
 			            </div>
 			            <div class="sheet-shipArmaments">
 			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipweapons" /><span class="sheet-showshipweapons"></span>
-			                <h4 class="sheet-repTitle" data-i18n="ships-armaments">Ship's Armaments</h4>
+			                <h4 class="sheet-repTitle" data-i18n="armaments">Armaments</h4>
 			                <div class="sheet-shipWeapons">
     			                <h4 class="sheet-weaponItem sheet-shipbutton">&nbsp;</h4>
     			                <h4 class="sheet-weaponItem sheet-shipweapon" data-i18n="weapon">Weapon</h4>
@@ -5056,7 +5089,7 @@
 			            </div>
 			            <div class='sheet-shipRoster'>
 			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipcrew" /><span class="sheet-showshipweapons"></span>
-			                <h4 class="sheet-repTitle" data-i18n="ships-crew">Ship's Crew</h4>
+			                <h4 class="sheet-repTitle" data-i18n="crew">Crew</h4>
 			                <div class='sheet-shipCrew'>
 			                    <!--<h4 class="sheet-crewMember sheet-shipcrewbutton">&nbsp;</h4>-->
 								<h4 class="sheet-crewMember sheet-shipcrewname" data-i18n="name-or-number">Name or Number</h4>
@@ -5145,7 +5178,7 @@
 			            </div>
 			            <div class="sheet-shipArmaments">
 			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipweapons" /><span class="sheet-showshipweapons"></span>
-			                <h4 class="sheet-repTitle" data-i18n="ships-armaments">Ship's Armaments</h4>
+			                <h4 class="sheet-repTitle" data-i18n="armaments">Armaments</h4>
 			                <div class="sheet-shipWeapons">
     			                <h4 class="sheet-weaponItem sheet-shipbutton">&nbsp;</h4>
     			                <h4 class="sheet-weaponItem sheet-shipweapon" data-i18n="weapon">Weapon</h4>
@@ -5179,7 +5212,7 @@
 			            </div>
 			            <div class='sheet-shipRoster'>
 			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipcrew" /><span class="sheet-showshipweapons"></span>
-			                <h4 class="sheet-repTitle" data-i18n="ships-crew">Ship's Crew</h4>
+			                <h4 class="sheet-repTitle" data-i18n="crew">Crew</h4>
 			                <div class='sheet-shipCrew'>
 			                    <!--<h4 class="sheet-crewMember sheet-shipcrewbutton">&nbsp;</h4>-->
 								<h4 class="sheet-crewMember sheet-shipcrewname" data-i18n="name-or-number">Name or Number</h4>
@@ -5212,7 +5245,7 @@
 			            <div class="sheet-shipheaderrow">
 			                <div class="sheet-shipItem sheet-shipname">
     			                <input type="text" class="sheet-shipField" name="attr_WalkerName" />
-    			                <div class="sheet-shiplabel" data-i18n="ship-name">Ship Name</div>
+    			                <div class="sheet-shiplabel" data-i18n="walker-name">Walker Name</div>
     			            </div>
     			            <div class="sheet-shipItem sheet-capnname">
     			                <input type="text" class="sheet-shipField" name="attr_WalkerCaptain" />
@@ -5277,7 +5310,7 @@
 			            </div>
 			            <div class="sheet-shipArmaments">
 			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipweapons" /><span class="sheet-showshipweapons"></span>
-			                <h4 class="sheet-repTitle" data-i18n="ships-armaments">Ship's Armaments</h4>
+			                <h4 class="sheet-repTitle" data-i18n="armaments">Armaments</h4>
 			                <div class="sheet-shipWeapons">
     			                <h4 class="sheet-weaponItem sheet-shipbutton">&nbsp;</h4>
     			                <h4 class="sheet-weaponItem sheet-shipweapon" data-i18n="weapon">Weapon</h4>
@@ -5311,7 +5344,7 @@
 			            </div>
 			            <div class='sheet-shipRoster'>
 			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipcrew" /><span class="sheet-showshipweapons"></span>
-			                <h4 class="sheet-repTitle" data-i18n="ships-crew">Ship's Crew</h4>
+			                <h4 class="sheet-repTitle" data-i18n="crew">Crew</h4>
 			                <div class='sheet-shipCrew'>
 			                    <!--<h4 class="sheet-crewMember sheet-shipcrewbutton">&nbsp;</h4>-->
 								<h4 class="sheet-crewMember sheet-shipcrewname" data-i18n="name-or-number">Name or Number</h4>
@@ -5426,7 +5459,7 @@
 			            </div>
 			            <div class="sheet-shipArmaments">
 			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipweapons" /><span class="sheet-showshipweapons"></span>
-			                <h4 class="sheet-repTitle" data-i18n="ships-armaments">Ship's Armaments</h4>
+			                <h4 class="sheet-repTitle" data-i18n="armaments">Armaments</h4>
 			                <div class="sheet-shipWeapons">
     			                <span class="sheet-weaponHeader sheet-weaponItem sheet-button">&nbsp;</span>
 								<span class="sheet-weaponHeader sheet-weaponItem sheet-paweapon" data-i18n="weapon">Weapon</span>
@@ -5603,7 +5636,7 @@
 			            </div>
 			            <div class="sheet-shipArmaments">
 			                <input type="checkbox" class="sheet-hideshiprepeating" name="attr_hidesshipweapons" /><span class="sheet-showshipweapons"></span>
-			                <h4 class="sheet-repTitle" data-i18n="ships-armaments">Ship's Armaments</h4>
+			                <h4 class="sheet-repTitle" data-i18n="armaments">Armaments</h4>
 			                <div class="sheet-shipWeapons">
     			                <span class="sheet-weaponHeader sheet-weaponItem sheet-button">&nbsp;</span>
 								<span class="sheet-weaponHeader sheet-weaponItem sheet-paweapon" data-i18n="weapon">Weapon</span>
@@ -5899,7 +5932,13 @@
     </div>
 </div>
 <div class="sheet-disclaimer">
-	Disclaimers will go here
+    <input class="sheet-logo" type="hidden" name="attr_logo" />
+	<span data-i18n="the">The</span>&nbsp;<span class="sheet-logotext"></span>&nbsp;<span class="sheet-logostandard" data-i18n="logo-info">logo is a trademark of</span>&nbsp;<span class="sheet-trademarkholder"></span><span class="sheet-logoallforone" data-i18n="all-for-one-logo-info">logo &copy; 2016 Triple Ace Games Ltd. All for One: R&eacute;gime Diabolique and all related marks and logos are trademarks of  Triple Ace Games Ltd. Ubiquity Roleplaying System, Exile Games Studio, and all associated logos and trademarks are copyright, Exile Games Studio, LLC</span><span class="sheet-logorifts" data-i18n="rifts-logo-info">logo and Megaverse are registered trademarks of PALLADIUM BOOKS, INC. All character names and likenesses are copyright and trademarks owned by Palladium Books, Inc. Savage Worlds logo is a trademark of Pinnacle Entertainment Group</span>. <span data-i18n="used-with-permission-visit-website">Used with permission. Visit their website at</span>:&nbsp;<span class="sheet-website"></span>
+	
+	
+	<!--
+	
+	-->
 </div>
 <!--- templates -->
 <rolltemplate class="sheet-rolltemplate-roll">
