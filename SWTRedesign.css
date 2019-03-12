@@ -21,13 +21,14 @@ input,
 select {
     border: none;
     border-bottom: 1px solid black;
-    /*background-color: transparent;*/
-    background: rgba(255,255,255,0.75);
+    background-color: transparent;
+    /*background: rgba(255,255,255,0.75);*/
 }
 
 textarea {
     width: 94%;
     resize: vertical;
+    background-color: transparent;
 }
 
 /*------ End Transformations -------->*/
@@ -292,6 +293,10 @@ input:checked + .sheet-slider:before {
 
 /*----------- Tab Setup ------------------------------------*/
 
+span.sheet-bg {
+    margin-right: 5px;
+}
+
 .sheet-tab {
 	z-index: 9999;
 	font-size: 6em;
@@ -302,14 +307,23 @@ input:checked + .sheet-slider:before {
 .sheet-character,
 .sheet-config,
 .sheet-vehicles,
-.sheet-notes {
+.sheet-notes,
+.sheet-release,
+.sheet-documentation {
 	display: none;
+}
+
+.sheet-release,
+.sheet-documentation {
+    background: rgba(255,255,255,0.75);
 }
 
 .sheet-characterT:checked ~ div.sheet-character,
 .sheet-configT:checked ~ .sheet-config,
 .sheet-vehiclesT:checked ~ div.sheet-vehicles,
-.sheet-journalT:checked ~ div.sheet-notes {
+.sheet-journalT:checked ~ div.sheet-notes,
+.sheet-releaseN:checked ~ div.sheet-release,
+.sheet-documentatioN:checked ~div.sheet-documentation {
 	display: block;
 	width: 100%;
 	margin: 0px;
@@ -1466,57 +1480,7 @@ input.sheet-armorCarried {
 /*----------- End Armor Section -----------*/
 
 /*----------- Start Melee Section -----------*/
-/*.sheet-weapons {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    margin-top: -15px;
-}
 
-.sheet-button,
-.sheet-weapon,
-.sheet-range,
-.sheet-rof,
-.sheet-damage,
-.sheet-shots,
-.sheet-weaponap,
-.sheet-weaponweight,
-.sheet-weaponcarried,
-.sheet-weaponTotalWeight {
-    display: inline-block;
-    text-align: center;
-}
-
-.sheet-button,
-.sheet-damage,
-.sheet-shots {
-    width: 85px;
-    box-sizing: border-box;
-}
-
-.sheet-weapon {
-    width: 275px;
-    text-align: left !important;
-}
-
-.sheet-range {
-    width: 113px;
-}
-
-.sheet-rof {
-    width: 35px !important;
-}
-
-.sheet-weaponap,
-.sheet-weaponweight,
-.sheet-weaponcarried {
-	width: 60px !important;
-}
-
-.sheet-weaponnotes {
-    width: 98%;
-    height: 50px;
-}*/
 .sheet-weaponHeader {
     font-size: 14px;
     font-weight: bold;
@@ -1929,14 +1893,6 @@ input.sheet-armorCarried {
 .sheet-spellatt {
     width: 105px;
 }
-
-/*.sheet-useInvest:not(:checked) + .sheet-power {
-    width: 435px !important;
-}
-
-.sheet-useInvest:not(:checked) ~ .sheet-invested {
-    display: none;
-}*/
 
 /*----------- End Powers Section -----------*/
 
@@ -2828,96 +2784,6 @@ input[value="13"].sheet-logo ~ .sheet-website::before {
     content: "http://www.tripleacegames.com/";
 }
 
-/*.sheet-playDisclaimer input[value="1"]:checked + span.sheet-disclaimer::after,
-.sheet-playDisclaimer input[value="4"]:checked + span.sheet-disclaimer::after,
-.sheet-playDisclaimer input[value="3"]:checked + span.sheet-disclaimer::after,
-.sheet-playDisclaimer input[value="2"]:checked + span.sheet-disclaimer::after,
-.sheet-playDisclaimer input[value="5"]:checked + span.sheet-disclaimer::after,
-.sheet-playDisclaimer input[value="6"]:checked + span.sheet-disclaimer::after,
-.sheet-playDisclaimer input[value="7"]:checked + span.sheet-disclaimer::after,
-.sheet-playDisclaimer input[value="8"]:checked + span.sheet-disclaimer::after,
-.sheet-playDisclaimer input[value="12"]:checked + span.sheet-disclaimer::after,
-.sheet-playDisclaimer input[value="14"]:checked + span.sheet-disclaimer::after,
-.sheet-playDisclaimer input[value="16"]:checked + span.sheet-disclaimer::after  {
-	content: "logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
-	display: inline-block;
-}*/
-
-/*.sheet-playDisclaimer input[value="15"]:checked + span.sheet-disclaimer::after {
-	content: "and Megaverse are registered trademarks of PALLADIUM BOOKS, INC. All character names and likenesses are copyright and trademarks owned by Palladium Books, Inc. Savage Worlds logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
-	display: inline-block;
-}*/
-
-/*.sheet-playDisclaimer input[value="3"]:checked + span.sheet-disclaimer::before {
-	content: "The Last Parsec logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
-}*/
-
-/*.sheet-playDisclaimer input[value="2"]:checked + span.sheet-disclaimer::before {
-	content: "The Pirates of the Spanish Main logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
-}*/
-
-/*.sheet-playDisclaimer input[value="5"]:checked + span.sheet-disclaimer::before {
-	content: "The Necessary Evil logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
-}*/
-
-/*.sheet-playDisclaimer input[value="6"]:checked + span.sheet-disclaimer::before {
-	content: "The Deadlands logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
-}*/
-
-/*.sheet-playDisclaimer input[value="7"]:checked + span.sheet-disclaimer::before {
-	content: "The Deadlands: Noir logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
-}*/
-
-/*.sheet-playDisclaimer input[value="8"]:checked + span.sheet-disclaimer::before {
-	content: "The Deadlands: Hell on Earth logo is a trademark of Pinnacle Entertainment Group. Used with permission.";
-}*/
-
-/*.sheet-playDisclaimer input[value="9"]:checked + span.sheet-disclaimer::after {
-	content: "logo is a trademark of Gun Metal Games. Used with permission.";
-}*/
-
-/*.sheet-playDisclaimer input[value="10"]:checked + span.sheet-disclaimer::after,
-.sheet-playDisclaimer input[value="11"]:checked + span.sheet-disclaimer::after {
-	content: "logo is a trademark of Triple Ace Games. Used with permission.";
-	display: inline-block;
-}*/
-
-/*.sheet-playDisplaimer input[value="13"]:checked +span.sheet-disclaimer::after {
-	content: "logo &copy; 2016 Triple Ace Games Ltd. All for One: R&eacute;gime Diabolique and all related marks and logos are trademarks of  Triple Ace Games Ltd. Ubiquity Roleplaying System, Exile Games Studio, and all associated logos and trademarks are copyright, Exile Games Studio, LLC. Used with permission.";
-}*/
-
-/*--- Web Site Info For Disclaimer ---*/
-
-/*.sheet-CoURL {
-	font-size: 10px;
-	text-align: center;
-}*/
-
-/*.sheet-playDisclaimer input[value="1"]:checked ~ span.sheet-CoURL::after,
-.sheet-playDisclaimer input[value="2"]:checked ~ span.sheet-CoURL::after,
-.sheet-playDisclaimer input[value="3"]:checked ~ span.sheet-CoURL::after,
-.sheet-playDisclaimer input[value="4"]:checked ~ span.sheet-CoURL::after,
-.sheet-playDisclaimer input[value="5"]:checked ~ span.sheet-CoURL::after,
-.sheet-playDisclaimer input[value="6"]:checked ~ span.sheet-CoURL::after,
-.sheet-playDisclaimer input[value="7"]:checked ~ span.sheet-CoURL::after,
-.sheet-playDisclaimer input[value="8"]:checked ~ span.sheet-CoURL::after,
-.sheet-playDisclaimer input[value="12"]:checked ~ span.sheet-CoURL::after,
-.sheet-playDisclaimer input[value="14"]:checked ~ span.sheet-CoURL::after,
-.sheet-playDisclaimer input[value="15"]:checked ~ span.sheet-CoURL::after,
-.sheet-playDisclaimer input[value="16"]:checked ~ span.sheet-CoURL::after {
-	content: "http://www.peginc.com/";
-}
-
-.sheet-playDisclaimer input[value="9"]:checked ~ span.sheet-CoURL::after {
-	content: "http://www.gunmetalgames.com/";
-}
-
-.sheet-playDisclaimer input[value="10"]:checked ~ span.sheet-CoURL::after,
-.sheet-playDisclaimer input[value="11"]:checked ~ span.sheet-CoURL::after,
-.sheet-playDisclaimer input[value="13"]:checked ~ span.sheet-CoURL::after {
-	content: "http://www.tripleacegames.com/";
-}*/
-
 /*----------- End Disclaimer Info Setup -----------*/
 /*----------- Start Tool Tip -----------*/
 .sheet-tooltip {
@@ -3178,6 +3044,55 @@ input[value="13"].sheet-logo ~ .sheet-website::before {
 }
 
 /*----------- End Configuration Window -----------*/
+
+/*----------- Start Release Notes Stuff -----------*/
+
+.sheet-rowlabel {
+    width: 100%;
+    display: inline-block;
+}
+
+div.sheet-releasenotes {
+    width: 100%;
+    display: block;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    box-sizing: border-box;
+}
+
+.sheet-releasenotes:checked + div.sheet-releasenotes {
+    display: none;
+}
+
+input.sheet-releasenotes {
+    cursor: pointer;	
+	position: relative;
+	opacity: 0;
+	z-index: 9999;
+}
+
+span.sheet-releasenotes {
+    margin-left: -13px;
+}
+
+input.sheet-releasenotes:checked + span.sheet-releasenotes::before {
+    content: '►';
+}
+
+input.sheet-releasenotes:not(:checked) + span.sheet-releasenotes::before {
+    content: '▼';
+}
+
+.sheet-rnversion {
+    display: inline-block; 
+    color: red;
+}
+
+/*----------- End Release Notes Stuff -----------*/
+
+/*----------- Start Documentation Stuff -----------*/
+
+/*----------- End Documentation Stuff -----------*/
 
 /*----------- Start ETU Stuff -----------*/
 .sheet-etuSection {

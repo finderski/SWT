@@ -2265,11 +2265,13 @@
     	<div class='sheet-base'>
     	    <input type="checkbox" class="sheet-useBackground" style="display: none;" name="attr_background" value="4" />
     	    <input type="checkbox" class="sheet-useBackground" style="display: none;" name="attr_background" value="3" />
-        	&nbsp;&nbsp;<input type='radio' class='sheet-tab sheet-characterT' name='attr_sheetTab' value='1' checked /><span class="sheet-bg">U</span>
+        	&nbsp;&nbsp;<input type='radio' class='sheet-tab sheet-characterT' name='attr_sheetTab' data-i18n-title="main-character-view" title="Main Character View" value='1' checked /><span class="sheet-bg">U</span>
         	<input type="checkbox" class="sheet-showVehicles" name="attr_vehicle" style="display: none;" />
-            <span class="sheet-vehiclesT">&nbsp;&nbsp;</span><input type='radio' class='sheet-tab sheet-vehiclesT' name='attr_sheetTab' value='3' /><span class="sheet-bg sheet-vehiclesT">T</span>
-            &nbsp;&nbsp;<input type="radio" class="sheet-tab sheet-journalT" name="attr_sheetTab" value="4" data-i18n-title="journal" title="Journal" /><span class="sheet-bg">n</span>
-            &nbsp;&nbsp;<input type='radio' class='sheet-tab sheet-configT' name='attr_sheetTab' value='2' /><span class="sheet-bg">x</span>
+            <span class="sheet-vehiclesT">&nbsp;&nbsp;</span><input type='radio' class='sheet-tab sheet-vehiclesT' name='attr_sheetTab' data-i18n-title="vehicles" title="Vehicles" value='3' /><span class="sheet-bg sheet-vehiclesT">T</span>
+            &nbsp;&nbsp;<input type="radio" class="sheet-tab sheet-journalT" name="attr_sheetTab" data-i18n-title="journal-and-other-info" title="Journal and other Info" value="4" /><span class="sheet-bg">n</span>
+            &nbsp;&nbsp;<input type='radio' class='sheet-tab sheet-configT' name='attr_sheetTab' data-i18n-title="sheet-configuration" title="Sheet Configuration" value='2' /><span class="sheet-bg">x</span>
+            &nbsp;&nbsp;<input type='radio' class='sheet-tab sheet-releaseN' name='attr_sheetTab' data-i18n-title="release-notes" title="Release Notes" value='5' /><span class="sheet-bg">N</span>
+            &nbsp;&nbsp;<input type='radio' class='sheet-tab sheet-documentatioN' name='attr_sheetTab' data-i18n-title="sheet-documentation" title="Sheet Documentation" value='6' /><span class="sheet-bg">i</span>
             <!--<div class="sheet-toprow">
                 Trait Test Modifier: 
                 Damage Modifier: 
@@ -5188,7 +5190,7 @@
     			                <h4 class="sheet-weaponItem sheet-shipplacement" data-i18n="placement">Placement</h4>
     			                <fieldset class='repeating_groundweapons'>
     			                    <div class="sheet-shipWeapons">
-    			                        <button class='sheet-weaponItem sheet-shipbutton' type='roll' name='roll_tGVRangeWeapon' value='@{rolltFSRangeWeapon}'></button>
+    			                        <button class='sheet-weaponItem sheet-shipbutton' type='roll' name='roll_tGVRangeWeapon' value='@{rolltGVRangeWeapon}'></button>
     			                        <input type="text" class="sheet-weaponItem sheet-shipweapon" name="attr_GVWeaponType" data-i18n-placeholder="weapon"  placeholder="Weapon" />
 										<input type="text" class="sheet-weaponItem sheet-shiprange" name="attr_GVWeaponRange" data-i18n-placeholder="range"  placeholder="Range" />
 										<input type="number" class="sheet-weaponItem sheet-shiprof" name="attr_GVWeaponRoF" data-i18n-placeholder="rof" placeholder="RoF" />
@@ -5928,6 +5930,49 @@
     			<!--<input class='sheet-sbButtonCheck' type='checkbox' style='display: none;' name='attr_initializeStatblock' />
     			<label class='sheet-isbButton' style='cursor: pointer; width: 150px;'><span data-i18n="initialize-statblock">Initialize Statblock</span><input type='checkbox' style='display: none;' name='attr_initializeStatblock' /></label>-->
     		</div>
+    		<!--                     -->
+			<!-- BEGIN RELEASE NOTES -->
+			<!--                     -->
+			<div class="sheet-release">
+			    <h3 class='subsectionHeader' data-i18n="release-notes">Release Notes</h3>
+			    <label class="sheet-rowlabel">
+			        <input type='checkbox' class='sheet-releasenotes' name='attr_releasenotes' value='1' /><span class='sheet-releasenotes' style='color: red;'><h4 class="sheet-rnversion"><span data-i18n="version">Version</span> 3.0</h4></span>
+			    </label>
+			    <input type='checkbox' class='sheet-releasenotes' style='display: none;' name='attr_releasenotes' value='1' />
+        		<div class='sheet-releasenotes'>
+        		   <p data-i18n="changes-this-release">
+        		       Changes this release:
+        		   </p>
+    		       <ul>
+    		           <li data-i18n="complete-rewrite-from-the-ground-up">Complete re-write from the ground up</li>
+    		           <ul>
+    		               <li data-i18n="about-half-the-size">The sheet is about half the size of it used to be</li>
+    		           </ul>
+    		           <li data-i18n="complete-visual-redesign">Complete visual redesign</li>
+    		           <ul>
+    		               <li data-i18n="layout-more-streamlined">This layout should be more streamlined</li>
+    		               <li data-i18n="commonly-used-features-on-one-page">The most commonly used features on one page</li>
+    		               <li data-i18n="moved-from-configuration">Moved some things from the configuration page for ease of use</li>
+    		               <ul>
+    		                   <li data-i18n="running-die-on-main-page">The Running Die can now be changed on the main page</li>
+    		                   <li data-i18n="nerves-of-steel-under-wounds">Nerves of Steel is now accessible under the Wounds configuration</li>
+    		                   <li data-i18n="skill-specialization-under-skill-config">Skill Specialization is now toggle-able under the Skills configuration</li>
+    		               </ul>
+    		           </ul>
+    		           <li data-i18n="savage-worlds-adventure-edition-abbr-compatability">SWADE Compatibility</li>
+    		           <li data-i18n="insheet-documentation">In-sheet documentation</li>
+    		           <ul>
+    		               <li data-i18n="built-out-over-time">This will be built out over time</li>
+    		           </ul>
+    		       </ul>
+        		</div>
+			</div>
+			<!--                     -->
+			<!-- BEGIN DOCUMENTATION -->
+			<!--                     -->
+			<div class="sheet-documentation">
+			    <h3 class="subsectionheader" data-i18n="documentation">Documentation</h3>
+			</div>
     	</div>
     </div>
 </div>
