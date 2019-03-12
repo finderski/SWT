@@ -3043,6 +3043,16 @@ input[value="13"].sheet-logo ~ .sheet-website::before {
     text-align: center;
 }
 
+.sheet-race,
+.sheet-species {
+    display: none;
+}
+
+.sheet-useSpecies:not(:checked) ~ .sheet-race,
+.sheet-useSpecies:checked ~ .sheet-species {
+    display: block;
+}
+
 /*----------- End Configuration Window -----------*/
 
 /*----------- Start Release Notes Stuff -----------*/
@@ -3087,6 +3097,7 @@ input.sheet-releasenotes:not(:checked) + span.sheet-releasenotes::before {
     display: inline-block; 
     color: red;
 }
+
 
 /*----------- End Release Notes Stuff -----------*/
 
