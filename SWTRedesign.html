@@ -1387,7 +1387,8 @@
 	});
 	
 	//Calculate Total Gear Weight
-	on("change: repeating_gear:itemweight remove:repeating_gear", function(v) {
+	on("change:repeating_gear:itemweight remove:repeating_gear", function() {
+	    console.log("Gear Weight Change");
 	    repeatingSimpleSum('gear','itemWeight','geartotalweightcarried');
 	})
 	
@@ -4643,7 +4644,7 @@
 							</fieldset>
 							<div class='sheet-weaponTotalWeight' style="margin-left: 160px;"><!-- Set up the Total Weight Carried box -->
     							<div class='sheet-col' style='width:200px; text-align:right;'> <!-- Protection (240px)-->
-    								<h4 class="sheet-weight"><span data-i18n="total-weapon-weight-carried">Total Gear Weight Carried</span>:</h4>
+    								<h4 class="sheet-weight"><span data-i18n="total-gear-weight-carried">Total Gear Weight Carried</span>:</h4>
     							</div>
     							<div class='sheet-col' style='width:60px;'> <!-- Weight (60px)-->
     								<input type="number" style="width:65px;" class='sheet-weaponweight' name="attr_geartotalweightcarried" title="@{geartotalweightcarried}" value="0" readonly />
@@ -4682,9 +4683,12 @@
 					<input type='checkbox' class='sheet-useAugmentations' name='attr_augment' style='display: none;' />
 					<div class='sheet-showAugments' style="width: 100%;">
     					<input type="checkbox" class="sheet-hideAugments" name="attr_hideaugments" /><span class="sheet-showNhide"></span>
-    					<h1 class="sheet-gearcolHeader" data-i18n="augmentations">Augmentations</h1>
+    					<input type="checkbox" class="sheet-useCybernetics" name="attr_Cybernetics" style="display:none;" value="1" />
+    					<h1 class="sheet-gearcolHeader sheet-aug" data-i18n="augmentations">Augmentations</h1>
+    					<h1 class="sheet-gearcolHeader sheet-cybernetics" data-i18n="cybernetics">Cybernetics</h1>
 					    <div class="sheet-augmentations">
-					        <h4 class="sheet-repeatingHeader sheet-augitem" data-i18n="augmentation">Augmentation</h4>
+					        <h4 class="sheet-repeatingHeader sheet-augitem sheet-aug" data-i18n="augmentation">Augmentation</h4>
+					        <h4 class="sheet-repeatingHeader sheet-augitem sheet-cybernetics" data-i18n="cybernetic-enhancement">Cybernetic Enhancement</h4>
     					    <h4 class="sheet-repeatingHeader sheet-augstrain" data-i18n="strain">Strain</h4>
     						<h4 class="sheet-repeatingHeader sheet-augdetails" data-i18n="details">Details</h4>
     					    <fieldset class="repeating_augmentation">

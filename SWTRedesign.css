@@ -1289,7 +1289,7 @@ tr.sheet-taprow:hover .sheet-moreTAP + span {
 .sheet-isSkillList {
     display: inline-flex;
     flex-flow: column wrap;
-    height: 400px;
+    height: 430px;
 }
 
 .sheet-StaticSkill {
@@ -3052,6 +3052,22 @@ input[value="13"].sheet-logo ~ .sheet-website::before {
 .sheet-useSpecies:checked ~ .sheet-species {
     display: block;
 }
+
+.sheet-aug,
+.sheet-cybernetics {
+    display: none;
+}
+
+.sheet-useCybernetics:checked ~ .sheet-cybernetics,
+.sheet-useCybernetics:not(:checked) ~ .sheet-aug {
+    display: block;
+}
+
+.sheet-useCybernetics:checked ~ .sheet-augmentations > .sheet-cybernetics,
+.sheet-useCybernetics:not(:checked) ~ .sheet-augmentations > .sheet-aug {
+    display: inline-block;
+}
+
 
 /*----------- End Configuration Window -----------*/
 
