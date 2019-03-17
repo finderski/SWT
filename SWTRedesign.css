@@ -1,8 +1,8 @@
 /*------ HTML Transformations ------->*/
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 select.sheet-dtype {
@@ -49,21 +49,21 @@ input[value="2"]:checked ~ .sheet-background {
 	/*background-image: url("http://www.geeksville.us/roll20/oldMap_seamless_2.png");*/
 	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/oldMap-ws.jpg");
 	background-size: 100%;
-    background-position: center; 
+    background-position: center;
     background-origin: content-box;
 }
 
 input[value="3"]:checked ~ .sheet-background {
 	/*background-image: url("http://www.geeksville.us/roll20/Z-background.jpg");*/
 	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/Z-ws.jpg");
-    background-position: center; 
+    background-position: center;
     background-origin: content-box;
 }
 
 input[value="4"]:checked ~ .sheet-background {
 	/* background-image: url("http://www.geeksville.us/roll20/NewNoir2.jpg"); */
 	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/Noir-ws.jpg");
-    background-position: center; 
+    background-position: center;
     background-origin: content-box;
 }
 
@@ -73,7 +73,7 @@ input[value="5"]:checked ~ .sheet-background {
 	background-size: 863px 1060px;
     /*background-repeat: no-repeat;*/
     /*background-attachment: fixed;*/
-    background-position: center; 
+    background-position: center;
     background-origin: content-box;
     -webkit-border-image:url("http://www.geeksville.us/roll20/LastParsec-Border.png"); /*  Safari 3.1-5 */
     -o-border-image:url("http://www.geeksville.us/roll20/LastParsec-Border.png"); /*round; Opera 11-12.1 */
@@ -85,14 +85,14 @@ input[value="5"]:checked ~ .sheet-background {
 input[value="6"]:checked ~ .sheet-background {
 	/* background-image: url("http://www.geeksville.us/roll20/supers.jpg"); */
 	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/supers-ws.jpg");
-    background-position: center; 
+    background-position: center;
     background-origin: content-box;
 }
 
 input[value="7"]:checked ~ .sheet-background {
 	/* background-image: url("http://www.geeksville.us/roll20/cyberpunk-2.5.jpg"); */
 	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/cyberpunk-ws.jpg");
-    background-position: center; 
+    background-position: center;
     background-origin: content-box;
 }
 
@@ -100,7 +100,7 @@ input[value="8"]:checked ~ .sheet-background { /*Hellfrost*/
 	/* background-image: url("http://www.geeksville.us/roll20/Hellfrost_4.jpg"); */
 	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/Hellfrost-ws.jpg");
     background-repeat: repeat;
-    background-position: center; 
+    background-position: center;
     background-origin: content-box;
 }
 
@@ -108,7 +108,7 @@ input[value="9"]:checked ~ .sheet-background { /*Hellfrost: Land of Fire*/
 	/* background-image: url("http://www.geeksville.us/roll20/Hellfrost_LoF.jpg"); */
 	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/Hellfrost_LoF-ws.jpg");
     background-repeat: repeat;
-    background-position: center; 
+    background-position: center;
     background-origin: content-box;
 }
 
@@ -118,7 +118,7 @@ input[value="10"]:checked ~ .sheet-background { /*Lahnkmar*/
 	/*background-size: 840 840px;*/
     background-repeat: repeat;
     /*background-attachment: fixed;*/
-    background-position: center; 
+    background-position: center;
     background-origin: content-box;
 }
 
@@ -236,7 +236,7 @@ input:checked + .sheet-slider:before {
 .sheet-Class {
     width: 90px;
     margin-bottom:1px;
-    border: none; 
+    border: none;
     border-bottom: solid black 1px;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -602,7 +602,7 @@ button[type=roll].sheet-APIOutput {
 .sheet-hideTAP:checked + span.sheet-showhide::before,
 .sheet-hideEngrams:checked + span.sheet-showhide::before,
 .sheet-hideHindrances:checked + span.sheet-showhide::before,
-.sheet-hideEdges:checked + span.sheet-showhide::before, 
+.sheet-hideEdges:checked + span.sheet-showhide::before,
 .sheet-hideAdv:checked + span.sheet-showhide::before,
 .sheet-hideArmor:checked + span.sheet-showNhide::before,
 .sheet-hideWeapons:checked + span.sheet-showNhide::before,
@@ -700,8 +700,8 @@ button[type=roll].sheet-APIOutput {
 }
 
 .sheet-taptable {
-    width: 100%; 
-    border: 1px thin silver; 
+    width: 100%;
+    border: 1px thin silver;
     background-color: transparent;
     table-layout: fixed;
 }
@@ -884,8 +884,8 @@ button[type=roll].sheet-APIOutput {
 
 .sheet-incinfo,
 .sheet-shakeninfo {
-    display: block; 
-    font-size: .75em; 
+    display: block;
+    font-size: .75em;
     margin-top: -10px;
 	font-weight: bold;
 }
@@ -1098,7 +1098,7 @@ button[type=roll].sheet-APIOutput {
 }
 
 .charsheet td.sheet-tapreadout {
-	text-align: center; 
+	text-align: center;
 	font-size: .9em;
 	background-color: #919191;
 	color: white;
@@ -1163,16 +1163,21 @@ tr.sheet-taprow:hover .sheet-moreTAP + span {
 .sheet-moreFirewall:checked ~ .sheet-fwplus,
 .sheet-moreNT:checked ~ .sheet-ntplus,
 .sheet-moreTRange:checked ~ .sheet-trplus,
-.sheet-useSkillSpec:checked + .sheet-SkillSpec,
 .sheet-useFencingStyle:checked + .sheet-FencingStyle {
     display: block;
     width: 100%;
     border: none;
 }
 
+.sheet-useSkillSpec:checked + .sheet-SkillSpec {
+    display: block;
+    width: 90%;
+}
+
 .sheet-SkillSpec,
 .sheet-FencingStyle {
     margin-left: 20px;
+    margin-bottom: 15px;
 }
 
 .sheet-ModDesc {
@@ -1399,9 +1404,9 @@ tr.sheet-taprow:hover .sheet-moreTAP + span {
 
 .sheet-armorWornContainer,
 .sheet-armorCarriedContainer {
-    display: inline-flex; 
-    margin: 0px; 
-    padding: 0px; 
+    display: inline-flex;
+    margin: 0px;
+    padding: 0px;
     width: 50px;
 }
 .sheet-armorWorn {
@@ -1523,30 +1528,30 @@ input.sheet-armorCarried {
  .sheet-shots {
    width: 85px !important;
  }
- 
+
  .sheet-weapon {
    width: 265px;
    text-align: left !important;
  }
- 
+
  .sheet-range {
    width: 113px !important;
  }
- 
+
  .sheet-rof {
    width: 35px !important;
  }
- 
+
  .sheet-weaponap,
  .sheet-weaponweight,
  .sheet-weaponcarried {
    width: 60px !important;
  }
- 
+
  .sheet-itemCarried {
      width: 50px;
  }
- 
+
  .sheet-weaponnotes {
    width: 89.5%;
    height: 50px;
@@ -2082,7 +2087,7 @@ span.sheet-vehiclesT {
 .sheet-hideGear:checked + span  + h1 + .sheet-gear,
 .sheet-hidePowers:checked + span  + h1 + .sheet-arcane,
 .sheet-hideRipper:checked + span + h1 + .sheet-rippertech,
-.sheet-hideAugments:checked + span + h1 + .sheet-augmentations, 
+.sheet-hideAugments:checked + span + h1 + .sheet-augmentations,
 .sheet-hideHindrances:checked ~ .sheet-hindrances,
 .sheet-hideTAP:checked ~ .sheet-taptable,
 .sheet-hideEngrams:checked ~ .sheet-engramsDeets,
@@ -2569,25 +2574,25 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
 .sheet-shipbutton {
    width: 10%;
 }
- 
+
 .sheet-shipweapon {
    width: 31%;
    text-align: left !important;
 }
- 
+
 .sheet-shiprange,
 .sheet-shipdamage {
    width: 15%;
 }
- 
+
 .sheet-shiprof {
    width: 10% !important;
 }
- 
+
 .sheet-shipplacement {
    width: 15% !important;
 }
- 
+
 .sheet-shipweaponnotes {
    width: 99%;
    height: 50px;
@@ -2632,7 +2637,7 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
    width: 325px;
    text-align: left !important;
  }
- 
+
  .sheet-panotes {
     width: 98% !important;
  }
@@ -2971,13 +2976,13 @@ input[value="13"].sheet-logo ~ .sheet-website::before {
 .sheet-bgItem,
 .sheet-logoItem,
 .sheet-miscItem,
-.sheet-dsItem, 
+.sheet-dsItem,
 .sheet-fnItem,
 .sheet-asfItem,
 .sheet-srmItem {
     flex: 0 1 auto;
     font-weight: normal;
-    cursor: pointer; 
+    cursor: pointer;
     width: auto;
     font-size: 1em;
 }
@@ -2991,11 +2996,11 @@ input[value="13"].sheet-logo ~ .sheet-website::before {
 }
 
 .sheet-reset {
-    width:120px; 
-    margin-left: -120px; 
-    text-align: center; 
-    background-color: black; 
-    color: white; 
+    width:120px;
+    margin-left: -120px;
+    text-align: center;
+    background-color: black;
+    color: white;
     border-radius: 4px;
 }
 
@@ -3091,7 +3096,7 @@ div.sheet-releasenotes {
 }
 
 input.sheet-releasenotes {
-    cursor: pointer;	
+    cursor: pointer;
 	position: relative;
 	opacity: 0;
 	z-index: 9999;
@@ -3110,7 +3115,7 @@ input.sheet-releasenotes:not(:checked) + span.sheet-releasenotes::before {
 }
 
 .sheet-rnversion {
-    display: inline-block; 
+    display: inline-block;
     color: red;
 }
 
@@ -3119,6 +3124,65 @@ input.sheet-releasenotes:not(:checked) + span.sheet-releasenotes::before {
 
 /*----------- Start Documentation Stuff -----------*/
 
+.sheet-hideIntroSection,
+.sheet-hideMainViewSection,
+.sheet-hideVehicleSection,
+.sheet-hideJournalSection,
+.sheet-hideConfigSection,
+.sheet-hideReleaseSection,
+.sheet-hideDocSection {
+    width:60px;
+    margin: 0 0 0 0;
+    padding: 0 0 0 0;
+    opacity: 0;
+    z-index: 9999;
+}
+
+.sheet-showSection {
+    width: 60px;
+    font-family: "Pictos";
+    font-size: 1.5em;
+    margin-left: -60px;
+}
+
+.sheet-hideIntroSection:checked + .sheet-showSection::before,
+.sheet-hideMainViewSection:checked + .sheet-showSection::before,
+.sheet-hideVehicleSection:checked + .sheet-showSection::before,
+.sheet-hideJournalSection:checked + .sheet-showSection::before,
+.sheet-hideConfigSection:checked + .sheet-showSection::before,
+.sheet-hideReleaseSection:checked + .sheet-showSection::before,
+.sheet-hideDocSection:checked + .sheet-showSection::before {
+	content: 'E';
+}
+
+.sheet-hideIntroSection:not(:checked) + .sheet-showSection::before,
+.sheet-hideMainViewSection:not(:checked) + .sheet-showSection::before,
+.sheet-hideVehicleSection:not(:checked) + .sheet-showSection::before,
+.sheet-hideJournalSection:not(:checked) + .sheet-showSection::before,
+.sheet-hideConfigSection:not(:checked) + .sheet-showSection::before,
+.sheet-hideReleaseSection:not(:checked) + .sheet-showSection::before,
+.sheet-hideDocSection:not(:checked) + .sheet-showSection::before {
+	content: 'J';
+}
+
+.sheet-hideIntroSection:checked ~ .sheet-intro,
+.sheet-hideMainViewSection:checked ~ .sheet-maincvpage,
+.sheet-hideVehicleSection:checked ~ .sheet-vehiclepage,
+.sheet-hideJournalSection:checked ~ .sheet-journalpage,
+.sheet-hideConfigSection:checked ~ .sheet-configpage,
+.sheet-hideReleaseSection:checked ~ .sheet-releasepage,
+.sheet-hideDocSection:checked ~ .sheet-docpage {
+	display: none;
+}
+
+.sheet-pictos {
+    font-family: "Pictos";
+    font-size: 1.25em;
+}
+
+.sheet-docparagraph {
+    text-indent: 20px;
+}
 /*----------- End Documentation Stuff -----------*/
 
 /*----------- Start ETU Stuff -----------*/
@@ -3439,8 +3503,8 @@ textarea.sheet-event {
 
 .sheet-rolltemplate-roll .sheet-rollLabel,
 .sheet-rolltemplate-damage .sheet-rollLabel {
-	display: block; 
-	font-size: .75em; 
+	display: block;
+	font-size: .75em;
 	margin: 5px;
 	width: 100%;
 	text-align: center;
@@ -3448,7 +3512,7 @@ textarea.sheet-event {
 
 .sheet-rolltemplate-roll .sheet-rollContainer,
 .sheet-rolltemplate-damage .sheet-rollContainer {
-	display: block; 
+	display: block;
 	font-size: 1em;
 	text-align: center;
 	width: 100%;
@@ -3616,8 +3680,8 @@ textarea.sheet-event {
 .sheet-rolltemplate-statblock h2.sheet-caption {
 	width: 90%;
 	max-width: 200px;
-	text-align: center; 
-    color: white; 
+	text-align: center;
+    color: white;
     background-color: black;
 	border-radius: 15px;
 	font-family: "cinzelregular";
