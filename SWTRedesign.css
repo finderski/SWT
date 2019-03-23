@@ -22,6 +22,7 @@ select {
     border: none;
     border-bottom: 1px solid black;
     background-color: transparent;
+    font-weight: 400;
     /*background: rgba(255,255,255,0.75);*/
 }
 
@@ -436,6 +437,8 @@ button[type=roll].sheet-APIOutput {
 
 .sheet-gearcolHeader {
     margin-top: -25px;
+	background-color: silver;
+	margin-bottom: 25px;
 }
 
 .sheet-subheader {
@@ -652,6 +655,11 @@ button[type=roll].sheet-APIOutput {
 .sheet-traitflexattbutton {
     width: 202px;
     text-align: left;
+}
+
+.sheet-deriveflexbutton {
+	width: 95%;
+	text-align: left;
 }
 
 .sheet-skillflexattbutton {
@@ -964,6 +972,10 @@ button[type=roll].sheet-APIOutput {
     opacity: 0;
 }
 
+.sheet-useLoad:not(:checked) + .sheet-loadstuff {
+	display: none;
+}
+
 .sheet-loadstuff:hover + .sheet-loadmods + span,
 .sheet-loadmods:hover + span,
 .sheet-loadmods:checked + span {
@@ -1076,6 +1088,11 @@ button[type=roll].sheet-APIOutput {
 .sheet-derivebase {
     display: inline-block;
     width: 15%;
+}
+
+.sheet-derivebaseplus {
+	display: inline-block;
+	width: 25%;
 }
 
 .sheet-derivemod {
@@ -1337,6 +1354,8 @@ tr.sheet-taprow:hover .sheet-moreTAP + span {
     border: none;
     border-bottom: 1px solid black;
     width: 52%;
+    font-weight: bold;
+    color: black;
 }
 
 .sheet-hinfield,
@@ -1568,6 +1587,9 @@ input.sheet-armorCarried {
 .sheet-weaponbutton,
 .sheet-spellbutton {
     width: 100px;
+	-webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 .sheet-weaponskill,
@@ -1609,11 +1631,14 @@ input.sheet-armorCarried {
 .sheet-weaponatt,
 .sheet-speallatt {
     width: 105px;
+	-webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 .sheet-weaponnum,
 .sheet-spellnum {
-    width: 35px;
+    width: 35px !important;
 }
 
 .sheet-moreweapon,
@@ -1675,12 +1700,32 @@ input.sheet-armorCarried {
     width: 100%;
     margin: 0px 0px 30px 0px;
     border-bottom: 1px solid silver;
+	background-color: cornsilk;
 }
 
 .sheet-moreweapon:not(:checked) ~ .sheet-weaponnotes,
-.sheet-morespell:not(:checked) ~ .sheet-spellnotes {
+.sheet-morespell:not(:checked) ~ .sheet-spellnotes,
+.sheet-spelltrappings {
+    min-height: 25px;
     height: 25px;
 }
+.sheet-spelltrappings {
+    width: 98%;
+    box-sizing: border-box;
+    padding-left: 15px;
+    margin: 0 0 0 2%;
+}
+
+.sheet-spellOutput {
+    margin-top: -220px;
+    margin-bottom: 220px;
+}
+
+.sheet-spellconfigb:not(:checked) + .sheet-spellOutput {
+    margin-top: -60px;
+    margin-bottom: 60px;
+}
+
 
 /*----------- End Melee Section -----------*/
 
@@ -1699,6 +1744,17 @@ input.sheet-armorCarried {
 .sheet-worn,
 .sheet-stashed {
     flex: 1 0 50%;
+}
+
+.sheet-item {
+    width: 347px;
+    text-align: left;
+    margin-left: 10px;
+}
+
+.sheet-itemweight {
+    width: 60px;
+    text-align: center;
 }
 
 /*----------- End Gear Section -----------*/
@@ -1884,9 +1940,11 @@ input.sheet-armorCarried {
 }
 
 .sheet-spellnotes {
-    width: 100%;
+    width: 98%;
     height: 50px;
     box-sizing: border-box;
+    padding-left: 15px;
+    margin: -5px 0 0 2%;
     /*margin-top: -18px;*/
 }
 
@@ -2087,7 +2145,7 @@ span.sheet-vehiclesT {
 .sheet-hideGear:checked + span  + h1 + .sheet-gear,
 .sheet-hidePowers:checked + span  + h1 + .sheet-arcane,
 .sheet-hideRipper:checked + span + h1 + .sheet-rippertech,
-.sheet-hideAugments:checked + span + h1 + .sheet-augmentations,
+.sheet-hideAugments:checked ~ .sheet-augmentations,
 .sheet-hideHindrances:checked ~ .sheet-hindrances,
 .sheet-hideTAP:checked ~ .sheet-taptable,
 .sheet-hideEngrams:checked ~ .sheet-engramsDeets,
@@ -2237,6 +2295,25 @@ input[value="5"].sheet-usePieces ~ .sheet-Livre,
 .sheet-useIRSC:checked + .sheet-IRSC,
 .sheet-usexp:checked ~ .sheet-xpmod {
     display: flex;
+}
+
+input:not([value="3"]).sheet-usePieces ~ .sheet-derivebase > .sheet-moneyfield {
+	width: 165px;
+}
+
+.sheet-usewealth {
+	display: none;
+}
+
+.sheet-usewealth:checked ~ .sheet-nonwealth,
+.sheet-usewealth:checked ~ .sheet-lankhmar,
+.sheet-usewealth:checked + .sheet-useLankhmar:checked + .sheet-lankhmar {
+	display: none;
+}
+
+.sheet-usewealth:checked ~ .sheet-usewealth,
+.sheet-usewealth:not(:checked) ~ .sheet-nonwealth {
+	display: flex;
 }
 
 /*----------- End Show/Hide Sections -----------*/
@@ -3025,6 +3102,10 @@ input[value="13"].sheet-logo ~ .sheet-website::before {
     /*width: 24.5%;*/
 }
 
+.sheet-configcheckbox {
+	cursor: pointer;
+}
+
 .sheet-configbox {
     display: flex;
     width: 100%;
@@ -3076,6 +3157,18 @@ input[value="13"].sheet-logo ~ .sheet-website::before {
 
 /*----------- End Configuration Window -----------*/
 
+/*----------- Start Variable Bonus Damage Stuff -----------*/
+
+.sheet-vbonusdamage {
+	display: none;
+}
+
+.sheet-vdamage:checked ~ [data-groupname=repeating_weapons] > .repitem > .sheet-weapons > .sheet-weaponconfig .sheet-vbonusdamage,
+.sheet-vdamage:checked ~ [data-groupname=repeating_spells] > .repitem > .sheet-spellconfig .sheet-vbonusdamage {
+	display: block;
+}
+
+/*----------- End Variable Bonus Damage Stuff -----------*/
 /*----------- Start Release Notes Stuff -----------*/
 
 .sheet-rowlabel {
@@ -3408,6 +3501,24 @@ textarea.sheet-event {
 }
 /*----------- End Hero's Journey Stuff -----------*/
 
+/*----------- Start Unshake Stuff -----------*/
+
+.sheet-unshakebutton {
+    display: none;
+}
+.sheet-useunshakebutton:checked + .sheet-unshakebutton {
+    display: block;
+    border: none;
+    margin-bottom: 15px;
+    width: 98%;
+}
+
+.sheet-unshake {
+    width: 100%;
+}
+
+/*----------- Start Unshake Stuff -----------*/
+
 /*----------- Start Quest Log Stuff -----------*/
 
 /*----------- End Quest Log Stuff -----------*/
@@ -3645,7 +3756,8 @@ textarea.sheet-event {
 .sheet-rolltemplate-damage .inlinerollresult.fullcrit,
 .sheet-rolltemplate-traitroll .inlinerollresult.fullcrit,
 .sheet-rolltemplate-tr_dmg_roll .inlinerollresult.fullcrit,
-.sheet-rolltemplate-dmg_roll .inlinerollresult.fullcrit {
+.sheet-rolltemplate-dmg_roll .inlinerollresult.fullcrit,
+.sheet-rolltemplate-unshake .inlinerollresult.fullcrit {
 	color: #3FB315;
     border: none;
     font-weight: bold;
@@ -3655,7 +3767,8 @@ textarea.sheet-event {
 .sheet-rolltemplate-damage .inlinerollresult.fullfail,
 .sheet-rolltemplate-traitroll .inlinerollresult.fullfail,
 .sheet-rolltemplate-tr_dmg_roll .inlinerollresult.fullfail,
-.sheet-rolltemplate-dmg_roll .inlinerollresult.fullfail {
+.sheet-rolltemplate-dmg_roll .inlinerollresult.fullfail,
+.sheet-rolltemplate-unshake .inlinerollresult.fullfail {
 	color: maroon;
     border: none;
     font-weight: bold;
@@ -3665,9 +3778,24 @@ textarea.sheet-event {
 .sheet-rolltemplate-damage .inlinerollresult.importantroll,
 .sheet-rolltemplate-traitroll .inlinerollresult.importantroll,
 .sheet-rolltemplate-tr_dmg_roll .inlinerollresult.importantroll,
-.sheet-rolltemplate-dmg_roll .inlinerollresult.importantroll {
+.sheet-rolltemplate-dmg_roll .inlinerollresult.importantroll,
+.sheet-rolltemplate-unshake .inlinerollresult.importantroll {
 	color: #3FB315;
     border: none;
+    font-weight: bold;
+}
+
+.sheet-rolltemplate-unshake .inlinerollresult.importantroll,
+.sheet-rolltemplate-unshake .inlinerollresult.fullcrit {
+    color: darkgreen;
+}
+
+.sheet-rolltemplate-unshake .inlinerollresult {
+    background-color: transparent;
+    border: none;
+    padding: 0px;
+    font-weight: normal;
+    font-size: 1.05em;
     font-weight: bold;
 }
 
@@ -3704,6 +3832,18 @@ textarea.sheet-event {
     padding: 0px;
     font-weight: normal;
     font-size: 1.05em;
+}
+
+.sheet-rolltemplate-unshake .sheet-emoteish {
+    border: 1px solid #F0C392;
+    color: #653E10;
+    background-color: #F5E4D3;
+    width: 125%;
+    margin-left: -50px;
+    padding:10px;
+    box-sizing: border-box;
+    font-weight: bolder;
+    font-style: italic;
 }
 
 /*----------- End Roll Template --------------------*/
