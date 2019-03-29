@@ -346,7 +346,8 @@ button[type=roll].sheet-traitbutton,
 button[type=roll].sheet-hindranceOutput,
 button[type=roll].sheet-edgeOutput,
 button[type=roll].sheet-shipcrewbutton,
-button[type=roll].sheet-APIOutput {
+button[type=roll].sheet-APIOutput,
+button[type=roll].sheet-benniesxp {
     border: none;
     background-color: transparent;
     background-image: none;
@@ -362,15 +363,32 @@ button[type=roll].sheet-APIOutput {
 button[type=roll].sheet-hindranceOutput::before,
 button[type=roll].sheet-shipcrewbutton::before,
 button[type=roll].sheet-edgeOutput::before,
-button[type=roll].sheet-APIOutput::before {
+button[type=roll].sheet-APIOutput::before,
+button[type=roll].sheet-benniesxp::before {
     content: '';
 }
 
 button[type=roll].sheet-hindranceOutput,
 button[type=roll].sheet-edgeOutput,
 button[type=roll].sheet-shipcrewbutton,
-button[type=roll].sheet-APIOutput {
+button[type=roll].sheet-APIOutput,
+button[type=roll].sheet-benniesxp {
     font-family: "Pictos";
+}
+
+.sheet-benniesxp {
+    display: none;
+}
+
+.sheet-useBenniesXP:checked ~ .sheet-benniesxp {
+    display: inline;
+    margin-top: -13px;
+    font-size: 2em;
+}
+
+.sheet-benniesxp:hover {
+    cursor: pointer;
+    color: gold;
 }
 /*----- button Configuration end -----*/
 
@@ -907,6 +925,30 @@ button[type=roll].sheet-APIOutput {
     border: none;
     border-bottom: 1px solid black;
     text-align: center;
+}
+
+.sheet-nerves {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 100%;
+    margin: none;
+    padding: 5px;
+    text-align: left
+}
+
+.sheet-healthlabel {
+    display: inline-block;
+    width: 58px;
+    box-sizing: border-box;
+    margin: 0 5px 0 0;
+    font-size: 1em;
+    font-weight: normal;
+}
+.sheet-standardHealthInfo {
+    width: 145px;
+    border: none;
+    border-bottom: 1px solid black;
+    text-align: left;
 }
 
 .sheet-expansionBox {
@@ -1600,6 +1642,7 @@ input.sheet-armorCarried {
 .sheet-weapondamage,
 .sheet-spellnotesconfig,
 .sheet-weaponbutton[value="0"] + .sheet-weaponskill,
+.sheet-weaponbutton[value="2"] + .sheet-weaponskill,
 .sheet-spellbutton[value="1"] ~ .sheet-spelldamage,
 .sheet-spellbutton[value="0"] ~ .sheet-spelldamage,
 .sheet-spellbutton[value="0"] + .sheet-spellskill,
@@ -1610,18 +1653,24 @@ input.sheet-armorCarried {
 
 .sheet-buttonand,
 .sheet-buttondo,
+.sheet-buttonma,
 .sheet-buttonsk {
     display: none;
 }
 
 .sheet-weaponbutton[value="0"] + .sheet-buttonand,
 .sheet-weaponbutton[value="1"] ~ .sheet-buttondo,
+.sheet-weaponbutton[value="2"] ~ .sheet-buttonma,
 .sheet-spellbutton[value="0"] + .sheet-buttonand,
 .sheet-spellbutton[value="1"] ~ .sheet-buttondo,
 .sheet-spellbutton[value="2"] ~ .sheet-buttonsk {
     display: inline;
     font-size: .7em;
     margin-left: 5px;
+}
+
+input[value="0"].sheet-showmultiattack ~ select > .sheet-multiattack {
+    display: none;
 }
 
 .sheet-weaponbutton[value="1"] + .sheet-button::before {
@@ -3834,7 +3883,8 @@ textarea.sheet-event {
     font-size: 1.05em;
 }
 
-.sheet-rolltemplate-unshake .sheet-emoteish {
+.sheet-rolltemplate-unshake .sheet-emoteish,
+.sheet-rolltemplate-emote .sheet-emoteish {
     border: 1px solid #F0C392;
     color: #653E10;
     background-color: #F5E4D3;
