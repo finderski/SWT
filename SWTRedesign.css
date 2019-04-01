@@ -99,7 +99,7 @@ input[value="7"]:checked ~ .sheet-background {
 
 input[value="8"]:checked ~ .sheet-background { /*Hellfrost*/
 	/* background-image: url("http://www.geeksville.us/roll20/Hellfrost_4.jpg"); */
-	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/Hellfrost-ws.jpg");
+	background-image: url("https://raw.githubusercontent.com/Roll20/roll20-character-sheets/master/SavageWorlds-Tabbed/images/Hellfrost-ws.jpg");
     background-repeat: repeat;
     background-position: center;
     background-origin: content-box;
@@ -135,10 +135,18 @@ input[value="12"]:checked ~ .sheet-background {
 	background-image: url("https://raw.githubusercontent.com/finderski/SWT/master/BackgroundImages/RippersBG-ws.jpg");
 	background-size: 890px 840px;
 }
-
-.sheet-useBackground:checked ~ .sheet-bg {
+.sheet-riftsBackground:checked ~ .sheet-characterT + .sheet-bg,
+.sheet-useBackground:checked ~ .sheet-bg,
+.sheet-useBackground:checked ~ .sheet-benniesxp {
     color: white;
 }
+
+.sheet-useBackground:checked ~ .sheet-benniesxp:hover {
+    cursor: pointer;
+    color: gold;
+}
+
+
 /*----------- End Background Info -----------*/
 
 .sheet-toprow {
@@ -303,6 +311,8 @@ span.sheet-bg {
 	font-size: 6em;
 	margin-top: -10px;
 	opacity: 0;
+    width:20px;
+    height: 20px;
 }
 
 .sheet-character,
@@ -1590,6 +1600,20 @@ input.sheet-armorCarried {
    width: 85px !important;
  }
 
+ .sheet-invisbutton {
+    border: none;
+    border-bottom: 1px solid black;
+    height: 27px;
+    font-size: .9em;
+    background-color: transparent;
+    cursor: default;
+ }
+
+ .sheet-highlight:checked + .sheet-configlabels {
+     background-color: cyan;
+     color: red;
+ }
+
  .sheet-weapon {
    width: 265px;
    text-align: left !important;
@@ -2034,6 +2058,7 @@ input[value="0"].sheet-showmultiattack ~ select > .sheet-multiattack {
 .repcontrol_del {
     opacity: 0.6;
 }
+
 .repcontrol_add:hover,
 .repcontrol_edit:hover,
 .repcontrol_move:hover,
@@ -2059,7 +2084,8 @@ input[value="0"].sheet-showmultiattack ~ select > .sheet-multiattack {
     width: 30px;
     background: none;
     border: none;
-    color: black;
+    color: red;
+    font-size: 1.5em;
 }
 .repcontrol_add,
 .repcontrol_edit {
@@ -2079,7 +2105,7 @@ input[value="0"].sheet-showmultiattack ~ select > .sheet-multiattack {
     height: 18px;
     width: 18px;
     padding: 2px 0 0 0;
-    color: #555;
+    color: darkgreen;
 }
 .repcontrol_edit:after {
     content: '(';
@@ -2090,7 +2116,7 @@ input[value="0"].sheet-showmultiattack ~ select > .sheet-multiattack {
     height: 18px;
     width: 18px;
     padding: 2px 0 0 0;
-    color: #555;
+    color: crimson;
 }
 .editmode ~ .repcontrol .repcontrol_edit:after {
     content: ')';
@@ -3622,6 +3648,10 @@ textarea.sheet-event {
     background-color: #035096;
     /*color: #7DF9FF; --original color*/
     color: #B3FBFF;
+}
+
+.sheet-rolltemplate-roll h4.sheet-templateBlue {
+    font-size: 12px;
 }
 
 .sheet-rolltemplate-damage h2,
