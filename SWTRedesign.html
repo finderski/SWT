@@ -1533,7 +1533,7 @@
 				wskill = 'repeating_raweapons_raweaponskill';
 			}
 			const skillUn = `@{whisperweapon} &{template:roll} @{rolltUnskilled} {{trait=^{unskilled}}} {{source=@{${pa}weapon}}} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_${pa}weapons_${pa}dmg) }} @{unskilledencumbrancebutton} @{showtraitmods} @{multiattack}`;
-			const skillFi = `@{whisperweapon} &{template:roll} {{trait=^{fighting}}} {{source=@{${pa}weapon}}} @{rolltFighting} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_${pa}weapons_${pa}dmg) }} @{setmodsenc} @{showtraitmods} @{multiattack}`;
+			const skillFi = `@{whisperweapon} &{template:roll} {{trait=@{fightingname}}} {{source=@{${pa}weapon}}} @{rolltFighting} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_${pa}weapons_${pa}dmg) }} @{setmodsenc} @{showtraitmods} @{multiattack}`;
 			const skillAt = `@{whisperweapon} &{template:roll} {{trait=^{athletics}}} {{source=@{${pa}weapon}}} @{rolltAthletics} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_${pa}weapons_${pa}dmg) }} @{setmodsenc} @{showtraitmods} @{multiattack}`;
 			const skillSh = `@{whisperweapon} &{template:roll} {{trait=^{shooting}}} {{source=@{${pa}weapon}}} @{rolltShooting} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_${pa}weapons_${pa}dmg) }} @{setmodsenc} @{showtraitmods} @{multiattack}`;
 			const skillTh = `@{whisperweapon} &{template:roll} {{trait=^{throwing}}} {{source=@{${pa}weapon}}} @{rolltThrowing} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_${pa}weapons_${pa}dmg) }} @{setmodsenc} @{showtraitmods} @{multiattack}`;
@@ -2146,7 +2146,7 @@
 		setEncPenalty();
 	});
 
-	const setWoundsMod = function(flag) {
+    const setWoundsMod = function(flag) {
 	    console.log("<==== Updating woundsMod ====>");
 	    getAttrs(["wounds","reducewoundsby","increasewoundsby","maxwoundmods","reducereason","increasereason","maxreason"], function(lvalue) {
 		    let wound = parseInt(lvalue.wounds)||0;
@@ -2189,11 +2189,54 @@
 		setWoundsMod();
 	});
 
+    const setFatigueMod = function(flag) {
+	    console.log("<==== Updating fatigueMod ====>");
+	    getAttrs(["fatigue","reducefatigueby","increasefatigueby","maxfatiguemods","fatiguereducereason","fatigueincreasereason","fatiguemaxreason"], function(lvalue) {
+		    let fatigue = parseInt(lvalue.fatigue)||0;
+		    /*let nerves = parseInt(lvalue.NoS)||0;*/
+			let reduce = parseInt(lvalue.reducefatigueby)||0;
+			let increase = parseInt(lvalue.increasefatigueby)||0;
+			let max = parseInt(lvalue.maxfatiguemods)||0;
+
+		    console.log(`<==== Fatigue: ${fatigue} || Reduce: ${reduce} || Increase: ${increase} || Max: ${max} ====>`);
+		    /*var wMS = wound+nerves;*/
+			let fMS = Math.abs(fatigue) - Math.abs(reduce) + Math.abs(increase);
+			console.log(`+++ fMS: ${fMS} +++`);
+			if (fatigue === 0) {
+				console.log("Made it fatigue = 0");
+				fMS = 0;
+			}
+			else {
+				console.log("Made it wounds != 0");
+				if (fMS < 0) {
+					console.log("Fatigue is less than 0, make it 0");
+					fMS = 0;
+				}
+				if (fMS > Math.abs(max)) {
+					console.log("fMS is greater than the Max, make it the max");
+					fMS = Math.abs(max);
+				}
+			}
+		    if (flag === "silent") {
+		        console.log("Setting faitugeMod silently");
+		        setAttrs({fatigueMod: fMS},{silent:true});
+		    }
+		    else {
+		        setAttrs({fatigueMod: fMS});
+		    }
+		    console.log("<==== Finished updating fatigueMod ====>");
+   		});
+	}
+
+    on("change:fatigue change:reducefatigueby change:increasefatigueby change:maxfatiguemods change:fatiguereducereason change:fatigueincreasereason change:fatiguemaxreason",function(){
+		setFatigueMod();
+	});
+
 	const setModSums = function() {
-	    getAttrs(["woundsMod","fatigue","encumbrance","distracted"], function(lvalue) {
+	    getAttrs(["woundsMod","fatigueMod","encumbrance","distracted"], function(lvalue) {
 		    //let tMod = parseInt(lvalue.ttmod)||0;
 		    let wMod = parseInt(lvalue.woundsMod)||0;
-		    let fMod = parseInt(lvalue.fatigue)||0;
+		    let fMod = parseInt(lvalue.fatigueMod)||0;
 		    let eMod = parseInt(lvalue.encumbrance)||0;
 		    let dMod = parseInt(lvalue.distracted)||0;
 
@@ -2214,7 +2257,7 @@
    		});
 	}
 
-	on("change:woundsMod change:fatigue change:encumbrance change:distracted",function(){
+	on("change:woundsmod change:fatiguemod change:encumbrance change:distracted",function(){
 		setModSums();
 	});
 
@@ -2397,7 +2440,7 @@
 	});
 
 	on("change:wealth", function(eventInfo) {
-		let wealth = '&{template:roll} {{name=@{character_name} }} {{trait=Wealth}} {{skill_rank=@{wealth} }} {{skill_roll=[[@{wealth} + @{traitmods}]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{traitmods}]]}} {{wild_die=[[ 1d@{wilddie}! + @{traitmods} ]]}}';
+		let wealth = '&{template:roll} {{name=@{character_name} }} {{trait=Wealth}} {{skill_rank=@{wealth} }} {{skill_roll=[[@{wealth} + @{wealthmod}[Wealth Mod] + @{traitmods}]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{wealthmod}[Wealth Mod] + @{traitmods}]]}}';
 		if(eventInfo.newValue === "d0") {
 			console.log("The character is broke");
 			wealth = "/em is broke and can't make purchases.";
@@ -2772,7 +2815,7 @@
                             </div>
                             <!-- Fighting -->
                             <div class='sheet-basetrait'>
-                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tFightingRoll' title="@{tFightingRoll}" value='@{whisperfighting} &{template:roll} {{trait=^{fighting}}} @{rolltFighting} @{setmodsenc} @{showtraitmods}' data-i18n="fighting"> Fighting</button><span class='sheet-linkedAtt' data--i18n="agl-u">(AGL)</span>
+                                <button class="sheet-traitbutton sheet-skillflexattbutton" type='roll' name='roll_tFightingRoll' title="@{tFightingRoll}" value='@{whisperfighting} &{template:roll} {{trait=^{fighting}}} @{rolltFighting} @{setmodsenc} @{showtraitmods}'> <span name='attr_fightingname'></span></button><span class='sheet-linkedAtt' data--i18n="agl-u">(AGL)</span>
                                 <span><select name="attr_fighting" title="@{fighting}" class="sheet-traitdie" value="4">
                                     <option value="4" selected>d4</option>
     								<option value="6">d6</option>
@@ -4165,6 +4208,7 @@
     					<div class='sheet-vertRight'><span class="sheet-bigger" data-i18n="wounds">Wounds</span></div>
     					<div class='sheet-woundBox'>
     					    <input class="sheet-standardHealth" type="number" name="attr_wounds" title="@{wounds}" value="0"/>
+                            <input type='hidden' name='attr_woundsMod' />
     					    <input type='checkbox' class="sheet-showExpansion" name='attr_showWoundmods' style="display: none;" />
     					    <div class='sheet-expansionBox'><input class='sheet-healthmods' type='checkbox' name='attr_showWoundmods' checked /><span>y</span></div>
     					</div>
@@ -4178,6 +4222,7 @@
     					</div>
     					<div class='sheet-fatigueBox'>
     					    <input class="sheet-standardHealth" type="number" name="attr_fatigue" title="@{fatigue}" value="0"/>
+                            <input type='hidden' name='fatigueMod' value="0" />
     					    <input type='checkbox' class="sheet-showExpansion" name='attr_showFatiguemods' style="display: none;" />
     					    <div class='sheet-expansionBox'><input class='sheet-healthmods' type='checkbox' name='attr_showFatiguemods' /><span>y</span></div>
     					</div>
@@ -4200,6 +4245,12 @@
     					<input type='checkbox' class="sheet-showFatiguemod" name='attr_showFatiguemods' style="display: none;" />
     					<div class='sheet-basetrait sheet-fatiguedmod'>
     					    <span data-i18n="max-fatigue">Max Fatigue level</span>: <input class="sheet-standardNum" type="number" name="attr_fatigue_max" title="@{fatigue_max}" value="2" />
+                            <h5 data-i18n="fatigue-modifiers">Fatigue Modifiers</h5>
+							<div class="sheet-nerves">
+								<label class="sheet-healthlabel" data-i18n="reduce">Reduce</label>: <input class="sheet-standardHealthInfo" type="text" name="attr_fatiguereducereason" placeholder="Edges/Abilities that reduce Wound Mods" /> <input class="sheet-standardHealth" type="number" name="attr_reducefatigueby" value="0" /><br />
+								<label class="sheet-healthlabel" data-i18n="increase">Increase</label>: <input class="sheet-standardHealthInfo" type="text" name="attr_fatigueincreasereason" placeholder="Hindrances/Abilities that reduce Wound Mods" /> <input class="sheet-standardHealth" type="number" name="attr_increasefatigueby" value="0" /><br />
+								<label class="sheet-healthlabel" data-i18n="maximum">Maximum</label>: <input class="sheet-standardHealthInfo" type="text" name="attr_fatiguemaxreason" placeholder="Edges/Abilities that change the # of Wound Mods" /> <input class="sheet-standardHealth" type="number" name="attr_maxfatiguemods" value="-2" />
+							</div>
     					</div>
     					<!-- Rifts stuff -->
     					<input type='checkbox' class='sheet-useBurn' name='attr_useBurn' style='display: none;' />
@@ -4223,7 +4274,7 @@
 						<input class="sheet-useunshakebutton" type="checkbox" name="attr_showunshake" style='display:none;' checked />
 						<div class='sheet-basetrait sheet-unshakebutton'>
 							<button class="sheet-traitbutton sheet-skillflexattbutton sheet-unshake" type='roll' name='roll_unshakeroll' title="@{unshakeroll}" value='@{whisperunshake} &{template:unshake} @{rolltunshake}' data-i18n="unshake"> Unshake</button>
-							<input class='sheet-moremods' type='checkbox' name='attr_showunshakerollmod' /><span>y</span>
+							<input class='sheet-shakenmoremods' type='checkbox' name='attr_showunshakerollmod' /><span>y</span>
 							<div class='sheet-basetrait sheet-traitmodplus'>
 								<input type='text' class='sheet-ModDesc' name='attr_unshakemodtype' placeholder='Modifier due to edges, hindrances, etc' data-i18n-placeholder="att-mod-description" />
 								+<input class="sheet-otraitmod" type="number" name="attr_unshakemod" title="@{unshakemod}" value="0" /><br />
@@ -4517,7 +4568,11 @@
 									<option value="d10">d10</option>
 									<option value="d12">d12</option>
 								</select>
-								<input type='hidden' name='attr_rollwealth' value="&{template:roll} {{name=@{character_name} }} {{trait=Wealth}} {{skill_rank=@{wealth} }} {{skill_roll=[[1@{wealth}! + @{traitmods}]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{traitmods}]]}} {{wild_die=[[ 1d@{wilddie}! + @{traitmods} ]]}}" />
+                                <input type="checkbox" class="sheet-useWealthMod" name="attr_useWealthMod" value="1" style="display: none;" />
+                                <div class="sheet-derivebaseplus sheet-wealthmod">
+                                    + <input type='number' name='attr_wealthmod' value="0" style="text-align: center;" />
+                                </div>
+								<input type='hidden' name='attr_rollwealth' value="&{template:roll} {{name=@{character_name} }} {{trait=^{wealth}}} {{skill_rank=@{wealth} }} {{skill_roll=[[1@{wealth}! + @{wealthmod} + @{traitmods}]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{wealthmod}[wealth mod] + @{traitmods}]]}}" />
 							</div>
         					<!-- End Money -->
     					</div>
@@ -4694,13 +4749,26 @@
             						<input type="hidden" name="attr_weaponbutton" class="sheet-weaponbutton" />
             						<div class='sheet-weaponskill'>
             						    <label class="sheet-configlabels" data-i18n="skill">Skill</label>
-            						    <select name="attr_weaponskill" class="sheet-weaponbutton" value="1">
+            						    <!--<select name="attr_weaponskill" class="sheet-weaponbutton" value="1">
                 							<option value="fighting" data-i18n="fighting" selected>Fighting</option>
 											<option value="athletics" data-i18n="athletics">Athletics</option>
                 							<option value="shooting" data-i18n="shooting">Shooting</option>
                 							<option value="throwing" data-i18n="throwing">Throwing</option>
                 							<option value="unskilled" data-i18n="unskilled">Unskilled</option>
-                						</select>
+                						</select>-->
+                                        <div class="sheet-container">
+                                            <div class="sheet-child">
+                                                <label><input type="radio" class="sheet-select-radio sheet-fighting" name="attr_weaponskill" value="fighting" checked="true" /><span name='attr_fightingname'></span></label>
+                                                <label><input type="radio" class="sheet-select-radio sheet-athletics" name="attr_weaponskill" value="athletics" /><span name='attr_athletics_display'></span></label>
+                                                <label><input type="radio" class="sheet-select-radio sheet-shooting" name="attr_weaponskill" value="shooting" />Shooting</label>
+                                                <input type="checkbox" class="sheet-select-radio sheet-fighting" name="attr_weaponskill" value="fighting" checked="true" style='display:none;' />
+                                                <input type="checkbox" class="sheet-select-radio sheet-athletics" name="attr_weaponskill" value="athletics" style='display:none;' />
+                                                <input type="checkbox" class="sheet-select-radio sheet-shooting" name="attr_weaponskill" value="shooting" style='display:none;' />
+                                                <div class="sheet-fighting"><span name='attr_fightingname'></span></div>
+                                                <div class="sheet-athletics"><span name='attr_athletics_rank'></span></div>
+                                                <div class="sheet-shooting">Shooting</div>
+                                            </div>
+                                        </div>
             						</div>
             						<div class='sheet-weapondamage'>
 										<input type="checkbox" class="sheet-highlight" name="attr_highlightdamage" value="1" style="display: none;" />
@@ -6134,7 +6202,7 @@
     					<input type="hidden" name="attr_setmodsenc" value="{{mods=[[1d0+@{absmodenc}+abs(@traitmods))]] }} {{showenc=[[1d0+@{encumbrance}]]}} {{encumbrance=@{encumbrance}}}" />
     					<input type="hidden" name="attr_setdmgmods" value="{{mods=[[1d0+abs(@traitmods)]] }}" />
     					<!-- Hidden Fields to set the rest of the Roll Template Information -->
-    					<input type="hidden" name="attr_showtraitmods" value="{{showtt=[[1d0+@{traitmods}]]}} {{ttmod=@{traitmods}}} {{showwounds=[[1d0+@{woundsMod}]]}} {{wounds=-@{woundsMod} }} {{showfatigue=[[1d0+@{fatigue}]]}} {{fatigue=-@{fatigue}}} {{showdistracted=[[1d0+@{distracted}]]}} {{distracted=@{distracted}}}" />
+    					<input type="hidden" name="attr_showtraitmods" value="{{showtt=[[1d0+@{traitmods}]]}} {{ttmod=@{traitmods}}} {{showwounds=[[1d0+@{woundsMod}]]}} {{wounds=-@{woundsMod} }} {{showfatigue=[[1d0+@{fatigue}]]}} {{fatigue=-@{fatigueMod}}} {{showdistracted=[[1d0+@{distracted}]]}} {{distracted=@{distracted}}}" />
     					<input type="hidden" name="attr_showdmgmods" value="{{showdmg=[[1d0+@{damagemods}]]}} {{ttmod=@{traitmods}}}" />
     					<!-- Hidden Fields to make Dice Rolling easier -->
     					<input type="hidden" name="attr_traitmods" value="@{ttmod}" />
@@ -6218,6 +6286,52 @@
     					<!--XP--><label class="sheet-fnItem" data-i18n-title="experience-points-text" title="Change the Advances designation used to determine rank to XP."><input type="checkbox" class="sheet-useXP" name="attr_usexplabel" value="1" checked /><span data-i18n="experience-points-abbr-u-advances">XP (Advances)</span></label>
     			    </div>
     			</div>
+                <div class='sheet-configSection'>
+    			    <input type="checkbox" class="sheet-hideCSN" name="attr_hideCSN" /><span class="sheet-showCSN"></span>
+    			    <h3 class='sheet-configSectionTitle' data-i18n="change-skill-names">Change Skill Names</h3>
+    			    <div class="sheet-csnconfig">
+    			        <!--Academics--><label class="sheet-fnItem" data-i18n-title="fighting">Fighting = <input type="text" class="sheet-useClass" name="attr_fightingname" value="Fighting" /></label>
+						<!--Athletics--><label class="sheet-fnItem" data-i18n-title="clams-money-text" title="Replaces 'Money' with 'Clams'. Appropriate for Low Life or any other setting where Clams may be an appropriate replacement for money."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="2" /><span data-i18n="clams-money">Clams (Money)</span></label>
+						<!--Battle--><label class="sheet-fnItem" data-i18n-title="code-name-character-text" title="Useful for games where the character is known by a code- or superhero name such as Necessary Evil or spy themed games. This will add an additional field for Civilian Name."><input type="checkbox" class="sheet-useCodeName" name="attr_codename" style="width: 15px;" /><span data-i18n="code-name-character">Code Name (Character Name)</span></label>
+						<!--Boating--><label class="sheet-fnItem" data-i18n-title="credits-money-text" title="Replaces 'Money' with 'Credits'. Appropriate for Interface Zero or any other setting where Credits may be an appropriate replacement for money."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="4" /><span data-i18n="credits-money">Credits (Money)</span></label>
+						<!--Climbing--><label class="sheet-fnItem" data-i18n-title="cybernetics-augmentations-text" title="Replaces 'Augmentations' with 'Cybernetics'. Appropriate for Rifts and any othe setting where Cybernetics is the vernacular."><input type="checkbox" class="sheet-useCybernetics" name="attr_Cybernetics" style="width: 15px;" value="1" /><span data-i18n="cybernetics-augmentations">Cybernetics (Augmentations)</span></label>
+						<!--Common Knowledge--><label class="sheet-fnItem" data-i18n-title="lankhmar-currency-money-text"  title="Replaces 'Money' with: Iron Tiks, Bronze Agols, Silver Smerduks, and Gold Rilks. Appropriate for the Lankhmar: City of Thieves setting."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="3" /><span data-i18n="lankhmar-currency-money">Lankhmar Currency (Money)</span></label>
+						<!--Driving--><label class="sheet-fnItem" data-i18n-title="livre-money-text"  title="Replaces 'Money' with 'Livre. Appropriate for the All for One setting."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="5" /><span data-i18n="livre-money">Livre (Money)</span></label>
+						<!--Electronics--><label class="sheet-fnItem" data-i18n-title="pieces-of-eight-money-text"  title="Replaces 'Money' with 'Pieces of Eight'. Appropriate for 50 Fathoms or any other Pirate themed setting."><input type="checkbox" class="sheet-usePieces" name="attr_50fPo8Clams" style="width: 15px;" value="1" /><span data-i18n="pieces-of-eight-money">Pieces of Eight (Money)</span></label>
+						<!--Faith--><label class="sheet-fnItem" data-i18n-title="origin-of-parahuman-abilities-text"  title="Modify the Physical Appearance Text Area to include the Origins of Parahuman Abilties. Useful for Necessary Evil and other Superhero-esque settings."><input type="checkbox" class="sheet-useParaHuman" name="attr_powerOrigins" style="width: 15px;" /><span data-i18n="origin-of-parahuman-abilities">Origin of Parahuman Abilities</span></label>
+    			        <!--Focus--><label class="sheet-fnItem" data-i18n-title="ppe-power-points-text" title="Change Power Points to PPE (Potential Psychic Energy) for Rifts"><input type="checkbox" class="sheet-usePPE" value="PPE" name="attr_ppe" style="width: 15px;" /><span data-i18n="ppe-power-points">PPE (Power Points)</span></label>
+                        <!--Gambling--><input type='hidden' name='attr_ppelabel' value="Power Points" />
+    			        <!--Guts--><label class="sheet-fnItem" data-i18n-title="power-type-desc" title="Check this box to show other options for Power Lables, such as Miracles, Spells, etc"><input type="checkbox" class="sheet-showPowerTypes" name="attr_usePowerTypes"> <span data-i18n="power-type">Power Type</span></label>
+    			        <!--Hacking--><input type="checkbox" class="sheet-showPowerTypes" name="attr_usePowerTypes" style="display:none;" />
+    			        <!--Healing--><label class="sheet-fnItem sheet-PowerTypes" data-i18n-title="miracles-text" title="Replaces Powers with Miracles. Can be used for characters with Faith-based magic."><input type="checkbox" class="sheet-useMagicType" name="attr_magictype" value='1' /><span data-i18n="miracles">Miracles</span></label>
+						<!--Intimidation--><label class="sheet-fnItem sheet-PowerTypes" data-i18n-title="psionics-text" title="Replaces Powers with Psionics. Can be used for characters with Psionics."><input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='2' /><span data-i18n="psionics">Psionics</span></label>
+						<!--Investigation--><label class="sheet-fnItem sheet-PowerTypes" data-i18n-title="spells-text" title="Replaces Powers with Spells. Can be used for characters with traditional-type magic."><input type="checkbox" class="sheet-useMagicType" name="attr_magictype" value='3' /><span data-i18n="spells">Spells</span></label>
+						<!--Native Language--><label class="sheet-fnItem sheet-PowerTypes" data-i18n-title="rituals-text" title="Replaces Powers with Rituals. Can be used for characters or settings (like ETU) where all powers are Ritualistic in nature."><input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='4' /><span data-i18n="rituals">Rituals</span></label>
+						<!--Lockpicking--><label class="sheet-fnItem sheet-PowerTypes" data-i18n-title="weird-science-gadgets-text" title="Replaces Powers with Weird Science. Can be used for characters who create magic through gadgets, such as Mad Scientists in Deadlands."><input type="checkbox" class="sheet-useMagicType" name="attr_magictype" style="width: 15px;" value='5' /><span data-i18n="weird-science-gadgets">Weird Science Gadgets</span></label>
+    			        <!--Notice--><label class="sheet-fnItem sheet-PowerTypes" data-i18n-title="custom-power-label-text" title="Replaces the generic Powers lable with one you write in"><input type="checkbox" class="sheet-useMagicType" name="attr_magictype" value='6' /><input class="sheet-customLabel" type="text" name="attr_custompowerlabel" data-i18n-placeholder="enter-custom-power-label" placeholder="Enter custom Power Label" /></label>
+    			        <!--Occult--><label class="sheet-fnItem" data-i18n-title="species-race-text" title="Can be used for Sci-Fi settings like The Last Parsec, or any setting where Species is used instead of Race."><input type="checkbox" class="sheet-useSpecies" name="attr_tlpSpecies" style="width: 15px;" /><span data-i18n="species-race">Species (Race)</span></label>
+    					<!--Performance--><label class="sheet-fnItem" data-i18n-title="threat-rating-rank-text" title="Change the Rank designation to Threat Rating ala Necessary Evil."><input type="checkbox" class="sheet-useThreatRating" name="attr_ThreatRatingClass" value="2" style="width: 15px;" /><span data-i18n="threat-rating-rank">Threat Rating (Rank)</span></label>
+    					<!--Persuasion--><label class="sheet-fnItem" data-i18n-title="experience-points-text" title="Change the Advances designation used to determine rank to XP."><input type="checkbox" class="sheet-useXP" name="attr_usexplabel" value="1" checked /><span data-i18n="experience-points-abbr-u-advances">XP (Advances)</span></label>
+                        <!--Piloting-->
+                        <!--Psionics-->
+                        <!--Repair-->
+                        <!--Research-->
+                        <!--Riding-->
+                        <!--Ritual-->
+                        <!--Science-->
+                        <!--Shooting-->
+                        <!--Spellcasting-->
+                        <!--Stealth-->
+                        <!--Streetwise-->
+                        <!--Survival-->
+                        <!--Swimming-->
+                        <!--Taunt-->
+                        <!--Thievery-->
+                        <!--Throwing-->
+                        <!--Tracking-->
+                        <!--Weird Science-->
+    			    </div>
+    			</div>
     			<div class='sheet-configSection'>
     			    <input type="checkbox" class="sheet-hideASF" name="attr_hideASF" /><span class="sheet-showASF"></span>
     			    <h3 class='sheet-configSectionTitle' data-i18n="additional-setting-fields">Additional Setting Fields</h3>
@@ -6260,6 +6374,7 @@
     				    <label class="sheet-srmItem" data-i18n-title="variable-bonus-damage-die"><input type="checkbox" class="sheet-useRaiseHB" name="attr_RaiseHBRule" value="1" /><span data-i18n="variable-bonus-damage-raise-based">Variable Bonus Damage (Raise based)</span></label>
 						<label class="sheet-srmItem" data-i18n-title="variable-bonus-damage-die"><input type="checkbox" class="sheet-useRaiseHB" name="attr_RaiseHBRule" value="2" /><span data-i18n="variable-bonus-damage-edge-based">Variable Bonus Damage (Edge based)</span></label>
 						<label class="sheet-srmItem"><input type="checkbox" name="attr_usewealth" /> <span data-i18n="use-the-wealth-system">Use the Wealth System</span></label>
+                        <label class="sheet-srmItem"><input type="checkbox" name="attr_useWealthMod" value="1" /> <span data-i18n="use-wealth-modifier-field">Use the Wealth Modifier field</span></label>
     			    </div>
     			</div>
     			<!--<input class='sheet-sbButtonCheck' type='checkbox' style='display: none;' name='attr_initializeStatblock' />
