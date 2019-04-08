@@ -5,6 +5,10 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0;
 }
 
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
 select.sheet-dtype {
     width: 41.31px;
     margin: 0px;
@@ -24,6 +28,12 @@ select {
     background-color: transparent;
     font-weight: 400;
     /*background: rgba(255,255,255,0.75);*/
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 textarea {
@@ -1764,12 +1774,17 @@ input[value="0"].sheet-showmultiattack ~ select > .sheet-multiattack {
     margin-left: -8px;
     position: absolute;
     top: 15px;
-    left: 90px;
+    left: 104px;
     color: gray;
     opacity: 0;
 }
 
 /*.sheet-weaponitem:hover > .sheet-moreweapon + span,*/
+.sheet-fullrow {
+    display: block;
+    width: 100%;
+    margin-bottom:10px;
+}
 .sheet-weapons:hover > .sheet-moreweapon + span,
 .sheet-moreweapon:hover + span,
 .sheet-moreweapon:checked + span,
@@ -1811,7 +1826,7 @@ input[value="0"].sheet-showmultiattack ~ select > .sheet-multiattack {
     margin: 0 0 0 2%;
 }
 
-.sheet-spellOutput {
+/*.sheet-spellOutput {
     margin-top: -220px;
     margin-bottom: 220px;
 }
@@ -1819,7 +1834,7 @@ input[value="0"].sheet-showmultiattack ~ select > .sheet-multiattack {
 .sheet-spellconfigb:not(:checked) + .sheet-spellOutput {
     margin-top: -60px;
     margin-bottom: 60px;
-}
+}*/
 
 
 /*----------- End Melee Section -----------*/
@@ -1985,6 +2000,13 @@ input[value="0"].sheet-showmultiattack ~ select > .sheet-multiattack {
     margin-top: -15px;
 }
 
+.sheet-spellOutput {
+    box-sizing: border-box;
+    flex: 0 0 14px;
+    width: 14px !important;
+    text-align: center;
+}
+
 .sheet-powerbutton,
 .sheet-powerdamage{
     box-sizing: border-box;
@@ -1995,7 +2017,7 @@ input[value="0"].sheet-showmultiattack ~ select > .sheet-multiattack {
 
 .sheet-power {
     box-sizing: border-box;
-    flex: 0 0 370px;
+    flex: 0 0 356px;
     text-align: left;
     width: 370px !important;
 }
@@ -3155,9 +3177,12 @@ input[value="13"].sheet-logo ~ .sheet-website::before {
 }
 
 .sheet-fnconfig,
-.sheet-csnconfig,
 .sheet-asfconfig {
     height: 150px;
+}
+
+.sheet-csnconfig {
+    height: 650px;
 }
 
 .sheet-quickItem,
@@ -3172,6 +3197,14 @@ input[value="13"].sheet-logo ~ .sheet-website::before {
     font-weight: normal;
     cursor: pointer;
     width: auto;
+    font-size: 1em;
+}
+
+.sheet-csnItem {
+    flex: 0 1 auto;
+    font-weight: normal;
+    cursor: pointer;
+    width: 325px;
     font-size: 1em;
 }
 
@@ -3265,7 +3298,16 @@ input[value="13"].sheet-logo ~ .sheet-website::before {
     display: inline-block;
 }
 
+.sheet-csnLabel {
+    display: inline-block;
+    width: 135px;
+    font-weight: bold;
+    font-size: 1em;
+}
 
+.sheet-csnInput {
+    width: 150px;
+}
 /*----------- End Configuration Window -----------*/
 
 /*----------- Start Variable Bonus Damage Stuff -----------*/
@@ -3679,7 +3721,9 @@ sheet-child:hover label {
 
 div.sheet-fighting,
 div.sheet-athletics,
-div.sheet-shooting {
+div.sheet-shooting,
+div.sheet-throwing,
+div.sheet-unskilled {
     width: 100px;
     height: 28px;
     line-height:28px;
@@ -3690,13 +3734,17 @@ div.sheet-shooting {
 
 .sheet-child:not(:hover) input.sheet-select-radio.sheet-fighting:checked ~ div.sheet-fighting,
 .sheet-child:not(:hover) input.sheet-select-radio.sheet-athletics:checked ~ div.sheet-athletics,
-.sheet-child:not(:hover) input.sheet-select-radio.sheet-shooting:checked ~ div.sheet-shooting {
+.sheet-child:not(:hover) input.sheet-select-radio.sheet-shooting:checked ~ div.sheet-shooting,
+.sheet-child:not(:hover) input.sheet-select-radio.sheet-throwing:checked ~ div.sheet-throwing,
+.sheet-child:not(:hover) input.sheet-select-radio.sheet-unskilled:checked ~ div.sheet-unskilled {
     display: block;
 }
 
 .sheet-child:active input.sheet-select-radio.sheet-fighting:checked ~ div.sheet-fighting,
 .sheet-child:active input.sheet-select-radio.sheet-athletics:checked ~ div.sheet-athletics,
-.sheet-child:active input.sheet-select-radio.sheet-shooting:checked ~ div.sheet-shooting {
+.sheet-child:active input.sheet-select-radio.sheet-shooting:checked ~ div.sheet-shooting,
+.sheet-child:active input.sheet-select-radio.sheet-throwing:checked ~ div.sheet-throwing,
+.sheet-child:active input.sheet-select-radio.sheet-unskilled:checked ~ div.sheet-unskilled {
     background-color: orange;
 }
 
