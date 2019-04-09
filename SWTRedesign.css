@@ -3691,10 +3691,15 @@ textarea.sheet-event {
     z-index: 1;
 }
 
+.sheet-ddmenu {
+    font-weight: normal;
+    font-size: 1em;
+}
+
 .sheet-child:hover {
     border-radius: 10px;
-    /*background: gray;*/
-    background: rgba(117,121,127,.75);
+    background: silver;
+    /*background: rgba(117,121,127,1);*/
     position:absolute;
     width: 100px;
     margin-top: -14px;

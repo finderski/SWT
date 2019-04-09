@@ -901,5 +901,6 @@
 	"maincv-p20-v1": "You can still select Atk + Dmg for the roll button, and that will only do a single attack and a single wild die.",
 	"maincv-p21-v1": "<b>NOTE</b>: If any weapon is configured for Auto-fire before you change the configuration for how auto-fire is handled, those weapons will not be automatically updated to use the new configuration…you will need to change the ROF and then change it back to get the new configuration",
 	"maincv-p22-v1": "<b>Pro Tip</b>: You can set the ROF to 2 for a melee weapon and use this option for things like Frenzy.",
-	"use-wealth-modifier-field": "Use the Wealth Modifier Field"
+	"use-wealth-modifier-field": "Use the Wealth Modifier Field",
+	"change-skill-names": "Change Skill Names"
 }
