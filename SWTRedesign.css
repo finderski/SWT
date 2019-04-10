@@ -3710,10 +3710,6 @@ textarea.sheet-event {
     padding: 5px;
 }
 
-sheet-child:hover label {
-    display: inline;
-}
-
 .sheet-child:hover label {
     display: inline-block;
 }
