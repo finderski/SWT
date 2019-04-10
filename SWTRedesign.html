@@ -1684,6 +1684,7 @@
 	    console.log(eventInfo.sourceAttribute);
 	    let sid = eventInfo.sourceAttribute.slice(18,38);
 	    const skillUn = "@{rolltUnskilled} {{trait=^{unskilled}}} @{unskilledencumbrancebutton} @{showtraitmods}";
+        const skillAt = "{{trait=@{athleticsname}}} @{rolltAthletics} @{setmodsenc} @{showtraitmods}";
 	    const skillFa = "{{trait=@{faithname}}} @{rolltFaith} @{setmods} @{showtraitmods}";
 	    const skillFo = "{{trait=@{focusname}}} @{rolltFocus} @{setmods} @{showtraitmods}";
 	    const skillPe = "{{trait=@{performancename}}} @{rolltPerformance} @{setmods} @{showtraitmods}";
@@ -1703,7 +1704,10 @@
 	            console.log("!! Need to use Skills !!");
 	            skillToUse = skilltemp + " ";
 	            switch(value.repeating_spells_spellskill) {
-	                case 'faith':
+                    case 'athletics':
+	                    skillToUse += skillAt;
+	                    break;
+                    case 'faith':
 	                    skillToUse += skillFa;
 	                    break;
 	                case 'focus':
@@ -2482,27 +2486,86 @@
 		});
 	});
 
-	function setSkillDropdown(section, field, value) {
+	function setSkillDropdown(section, field, value, rowid) {
 		let repsection = `repeating_${section}`;
-		getSectionIDs(repsection, function(idArray) {
-			let setskill = {};
-			for (let i = 0; i < idArray.length; i++) {
-				console.log(`${repsection}_${idArray[i]}_r${field}: ${value}`);
-				setskill[`${repsection}_${idArray[i]}_r${field}`] = value;
-			}
-			setAttrs(setskill);
-		});
+        let setskill = {};
+        if(Array.isArray(field) && value === "get names") {
+            //is Array
+            console.log("Field array: " + field);
+            repsection += `_${rowid}_`;
+            console.log("!!! Passed an Array !!!");
+            getAttrs(field, function(v) {
+                let setfield;
+                let fieldprefix;
+                let setvalue;
+                if (section === "weapons") {fieldprefix = "r";}
+                else {fieldprefix = "s";}
+                for (let a = 0; a < field.length; a++) {
+                    console.log("iii section ID: " + rowid + " iii");
+                    setfield = repsection + fieldprefix + field[a];
+                    setvalue = v[field[a]];
+                    console.log(`iii setfield: ${setfield} iii`);
+                    console.log(`iii setvalue: ${setvalue} iii`);
+                    setskill[setfield] = setvalue;
+                }
+                let defaultval = field[0].split('name');
+                if (section === "weapons") { setfield = repsection + "weaponskill"; }
+                else { setfield = repsection + "spellskill"; }
+                setskill[setfield] = defaultval;
+                console.log("Setting: " + JSON.stringify(setskill));
+                setAttrs(setskill);
+            });
+        }
+        else {
+            console.log("iii passed a single field, so need to update that single field iii");
+            getSectionIDs(repsection, function(idArray) {
+                //passing in a single field
+                for (let i = 0; i < idArray.length; i++) {
+    				console.log(`${repsection}_${idArray[i]}_${field}: ${value}`);
+    				setskill[`${repsection}_${idArray[i]}_${field}`] = value;
+    			}
+    			setAttrs(setskill);
+    		});
+        }
+
 	}
 
 	const weaponsskilllist = ["fighting","athletics","shooting","throwing"];
 	weaponsskilllist.forEach(weaponsskilllist => {
 		on(`change:${weaponsskilllist}name`, function(eventInfo) {
 			console.log("Triggering Attribute: " + eventInfo.sourceAttribute);
-			let field = eventInfo.sourceAttribute;
+			let field = "r" + eventInfo.sourceAttribute;
 			let value = eventInfo.newValue;
 			setSkillDropdown("weapons", field, value);
 		});
 	});
+
+    const spellskilllist = ["faith","athletics","focus","performance","psionics","ritual","spellcasting","weirdscience"];
+	spellskilllist.forEach(spellskilllist => {
+		on(`change:${spellskilllist}name`, function(eventInfo) {
+			console.log("Triggering Attribute: " + eventInfo.sourceAttribute);
+			let field = "s" + eventInfo.sourceAttribute;
+			let value = eventInfo.newValue;
+			setSkillDropdown("spells", field, value);
+		});
+	});
+
+    const weaponsskillnamelist = ["fightingname","athleticsname","shootingname","throwingname"];
+    const spellskillnamelist = ["faithname","athleticsname","focusname","performancename","psionicsname","ritualname","spellcastingname","weirdsciencename"];
+    on("change:repeating_spells:spellbutton change:repeating_weapons:weaponbutton", function(eventInfo) {
+        console.log("iii sourceAttribute: " + eventInfo.sourceAttribute + " iii");
+        let parts = eventInfo.sourceAttribute.split('_');
+        let field, value;
+        if (parts[1] === "weapons") { field = weaponsskillnamelist; }
+        else { field = spellskillnamelist; }
+        if (eventInfo.newValue === "2" || eventInfo.newValue === "0") {
+            console.log("Make sure the drop down is populated with skill names");
+            setSkillDropdown(parts[1], field, "get names", parts[2]);
+        }
+        else {
+            console.log("No need to update anything...");
+        }
+    });
 
 </script>
 <input type='hidden' name='attr_dopay' value="init" />
@@ -4798,12 +4861,12 @@
                 						</select>-->
                                         <div class="sheet-container">
                                             <div class="sheet-child">
-                                                <label class="sheet-ddmenu"><input type="radio" class="sheet-select-radio sheet-fighting" name="attr_weaponskill" value="fighting" checked="true" />&nbsp;<span name='attr_rfightingname'></span></label>
-                                                <label class="sheet-ddmenu"><input type="radio" class="sheet-select-radio sheet-athletics" name="attr_weaponskill" value="athletics" />&nbsp;<span name='attr_rathleticsname'></span></label>
-                                                <label class="sheet-ddmenu"><input type="radio" class="sheet-select-radio sheet-shooting" name="attr_weaponskill" value="shooting" />&nbsp;<span name='attr_rshootingname'></span></label>
-												<label class="sheet-ddmenu"><input type="radio" class="sheet-select-radio sheet-throwing" name="attr_weaponskill" value="throwing" />&nbsp;<span name='attr_rthrowingname'></span></label>
-												<label class="sheet-ddmenu"><input type="radio" class="sheet-select-radio sheet-unskilled" name="attr_weaponskill" value="unskilled" />&nbsp;<span data-i18n='unskilled'>Unskilled</span></label>
-                                                <input type="checkbox" class="sheet-select-radio sheet-fighting" name="attr_weaponskill" value="fighting" checked="true" style='display:none;' />
+                                                <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-fighting" name="attr_weaponskill" value="fighting" checked="checked" />&nbsp;<span name='attr_rfightingname'></span></label>
+                                                <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-athletics" name="attr_weaponskill" value="athletics" />&nbsp;<span name='attr_rathleticsname'></span></label>
+                                                <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-shooting" name="attr_weaponskill" value="shooting" />&nbsp;<span name='attr_rshootingname'></span></label>
+												<label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-throwing" name="attr_weaponskill" value="throwing" />&nbsp;<span name='attr_rthrowingname'></span></label>
+												<label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-unskilled" name="attr_weaponskill" value="unskilled" />&nbsp;<span data-i18n='unskilled'>Unskilled</span></label>
+                                                <input type="checkbox" class="sheet-select-radio sheet-fighting" name="attr_weaponskill" value="fighting" checked="checked" style='display:none;' />
                                                 <input type="checkbox" class="sheet-select-radio sheet-athletics" name="attr_weaponskill" value="athletics" style='display:none;' />
                                                 <input type="checkbox" class="sheet-select-radio sheet-shooting" name="attr_weaponskill" value="shooting" style='display:none;' />
 												<input type="checkbox" class="sheet-select-radio sheet-throwing" name="attr_weaponskill" value="throwing" style='display:none;' />
@@ -4952,7 +5015,7 @@
 										<input type="hidden" name="attr_spellbutton" class="sheet-spellbutton" />
 										<div class='sheet-spellskill'>
 											<label class="sheet-configlabels" data-i18n="skill">Skill</label>
-											<select name="attr_spellskill" class="sheet-spellbutton" value="1">
+											<!--<select name="attr_spellskill" class="sheet-spellbutton" value="1">
 												<option value="faith" data-i18n="faith">Faith</option>
 												<option value="focus" data-i18n="focus">Focus</option>
 												<option value="performance" data-i18n="performance">Performance</option>
@@ -4961,7 +5024,38 @@
 												<option value="spellcasting" data-i18n="spellcasting" selected >Spellcasting</option>
 												<option value="weirdscience" data-i18n="weird-science">Weird Science</option>
 												<option value="unskilled" data-i18n="unskilled">Unskilled</option>
-											</select>
+											</select>-->
+                                            <div class="sheet-container">
+                                                <div class="sheet-child">
+                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-athletics" name="attr_spellskill" value="athletics" />&nbsp;<span name='attr_sathleticsname'></span></label>
+                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-faith" name="attr_spellskill" value="faith" checked="checked" />&nbsp;<span name='attr_sfaithname'></span></label>
+                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-focus" name="attr_spellskill" value="focus" />&nbsp;<span name='attr_sfocusname'></span></label>
+                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-performance" name="attr_spellskill" value="performance" />&nbsp;<span name='attr_sperformancename'></span></label>
+    												<label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-psionics" name="attr_spellskill" value="psionics" />&nbsp;<span name='attr_spsionicsname'></span></label>
+                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-ritual" name="attr_spellskill" value="ritual" />&nbsp;<span name='attr_sritualname'></span></label>
+                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-spellcasting" name="attr_spellskill" value="spellcasting" />&nbsp;<span name='attr_sspellcastingname'></span></label>
+                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-weirdscience" name="attr_spellskill" value="weirdscience" />&nbsp;<span name='attr_sweirdsciencename'></span></label>
+    												<label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-unskilled" name="attr_spellskill" value="unskilled" />&nbsp;<span data-i18n='unskilled'>Unskilled</span></label>
+                                                    <input type="checkbox" class="sheet-select-radio sheet-athletics" name="attr_spellskill" value="athletics" style='display:none;' />
+                                                    <input type="checkbox" class="sheet-select-radio sheet-faith" name="attr_spellskill" value="faith" checked="checked" style='display:none;' />
+                                                    <input type="checkbox" class="sheet-select-radio sheet-focus" name="attr_spellskill" value="focus" style='display:none;' />
+                                                    <input type="checkbox" class="sheet-select-radio sheet-performance" name="attr_spellskill" value="performance" style='display:none;' />
+                                                    <input type="checkbox" class="sheet-select-radio sheet-psionics" name="attr_spellskill" value="psionics" style='display:none;' />
+                                                    <input type="checkbox" class="sheet-select-radio sheet-ritual" name="attr_spellskill" value="ritual" style='display:none;' />
+                                                    <input type="checkbox" class="sheet-select-radio sheet-spellcasting" name="attr_spellskill" value="spellcasting" style='display:none;' />
+    												<input type="checkbox" class="sheet-select-radio sheet-weirdscience" name="attr_spellskill" value="weirdscience" style='display:none;' />
+    												<input type="checkbox" class="sheet-select-radio sheet-unskilled" name="attr_spellskill" value="unskilled" style='display:none;' />
+                                                    <div class="sheet-athletics"><span name='attr_sathleticsname'></span></div>
+                                                    <div class="sheet-faith"><span name='attr_sfaithname'></span></div>
+                                                    <div class="sheet-focus"><span name='attr_sfocusname'></span></div>
+    												<div class="sheet-performance"><span name='attr_sperformancename'></span></div>
+                                                    <div class="sheet-psionics"><span name='attr_spsionicsname'></span></div>
+                                                    <div class="sheet-ritual"><span name='attr_sritualname'></span></div>
+                                                    <div class="sheet-spellcasting"><span name='attr_sspellcastingname'></span></div>
+                                                    <div class="sheet-weirdscience"><span name='attr_sweirdsciencename'></span></div>
+    												<div class="sheet-unskilled"><span data-i18n='unskilled'>Unskilled</span></div>
+                                                </div>
+                                            </div>
 										</div>
 										<div class='sheet-spelldamage'>
 											<input type="checkbox" name="attr_shighlightdamage" class="sheet-highlight" value="1" style="display:none;" />
@@ -6435,7 +6529,31 @@
 			<!--                     -->
 			<div class="sheet-release">
 			    <h3 class='subsectionHeader' data-i18n="release-notes">Release Notes</h3>
-				<label class="sheet-rowlabel">
+                <label class="sheet-rowlabel">
+			        <input type='checkbox' class='sheet-releasenotes' name='attr_releasenotes32' value='1' /><span class='sheet-releasenotes' style='color: red;'><h4 class="sheet-rnversion"><span data-i18n="version">Version</span> 3.2</h4></span>
+			    </label>
+			    <input type='checkbox' class='sheet-releasenotes' style='display: none;' name='attr_releasenotes32' value='1' />
+        		<div class='sheet-releasenotes'>
+        		   <p data-i18n="changes-this-release">
+        		       Changes this release:
+        		   </p>
+				   <ul>
+						<li><strong data-i18n="bug-fixes">Bug Fixes</strong></li>
+						<ul>
+							<li data-i18n="internationalization-expansion">Various items were missing or had malformed data-i18n tags.</li>
+                            <ul>
+                                <li data-i18n="thanks-gronyon-for-your-help">Thanks Gronyon, for your help!</li>
+                            </ul>
+						</ul>
+						<li><strong data-i18n="sheet-enhancements">Functionality Enhancements</strong></li>
+						<ul>
+							<li data-i18n="ability-to-rename-skills">Ability to rename skills</li>
+							<li data-i18n="nerves-of-steel-type-functionality-for-fatigue">Nerves of Steel type functionality for Fatigue</li>
+							<li data-i18n="wealth-modifier-for-wealth-rolls">Wealth modifier for Wealth Rolls</li>
+						</ul>
+				   </ul>
+				</div>
+                <label class="sheet-rowlabel">
 			        <input type='checkbox' class='sheet-releasenotes' name='attr_releasenotes31' value='1' /><span class='sheet-releasenotes' style='color: red;'><h4 class="sheet-rnversion"><span data-i18n="version">Version</span> 3.1</h4></span>
 			    </label>
 			    <input type='checkbox' class='sheet-releasenotes' style='display: none;' name='attr_releasenotes31' value='1' />
@@ -6604,6 +6722,11 @@
                             </ul>
                         <li data-i18n='additional-derived-stats'>Additional Derived Stats</li>
                         <li data-i18n='field-name-replacements'>Field Name Replacements</li>
+                        <li data-i18n='change-skill-names'>Change Skill Names</li>
+                        <ul>
+                            <li data-i18n="skills-can-be-named-anything">Skills can be named anything you like.</li>
+                            <li data-i18n="changes-reflected-in-all-areas">Changes to skill names will be reflected in all areas of the character sheet</li>
+                        </ul>
                         <li data-i18n='additional-setting-fields'>Additional Setting Fields</li>
                             <ul>
                                 <li data-i18n='activities-and-exams'>Activies & Exams</li>

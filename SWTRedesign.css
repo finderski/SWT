@@ -3673,6 +3673,7 @@ textarea.sheet-event {
 /*----------- Start faux select Stuff -----------*/
 .sheet-container {
     width: 100px;
+    border-bottom: 1px solid black;
 }
 
 .sheet-container,
@@ -3694,6 +3695,7 @@ textarea.sheet-event {
 .sheet-ddmenu {
     font-weight: normal;
     font-size: 1em;
+    width: 95%;
 }
 
 .sheet-child:hover {
@@ -3708,18 +3710,10 @@ textarea.sheet-event {
     padding: 5px;
 }
 
-/*.sheet-child:hover > div.sheet-fighting {
-    display: none;
-}*/
-
 sheet-child:hover label {
     display: inline;
 }
 
-/*.sheet-child:hover label {
-   margin-right: 50%
-}
-*/
 .sheet-child:hover label {
     display: inline-block;
 }
@@ -3728,12 +3722,20 @@ div.sheet-fighting,
 div.sheet-athletics,
 div.sheet-shooting,
 div.sheet-throwing,
-div.sheet-unskilled {
+div.sheet-unskilled,
+div.sheet-faith,
+div.sheet-focus,
+div.sheet-performance,
+div.sheet-psionics,
+div.sheet-ritual,
+div.sheet-spellcasting,
+div.sheet-weirdscience {
     width: 100px;
     height: 28px;
     line-height:28px;
     color: black;
     border-bottom: 1px solid black;
+    text-align: center;
     display: none;
 }
 
@@ -3741,15 +3743,18 @@ div.sheet-unskilled {
 .sheet-child:not(:hover) input.sheet-select-radio.sheet-athletics:checked ~ div.sheet-athletics,
 .sheet-child:not(:hover) input.sheet-select-radio.sheet-shooting:checked ~ div.sheet-shooting,
 .sheet-child:not(:hover) input.sheet-select-radio.sheet-throwing:checked ~ div.sheet-throwing,
-.sheet-child:not(:hover) input.sheet-select-radio.sheet-unskilled:checked ~ div.sheet-unskilled {
+.sheet-child:not(:hover) input.sheet-select-radio.sheet-unskilled:checked ~ div.sheet-unskilled,
+.sheet-child:not(:hover) input.sheet-select-radio.sheet-faith:checked ~ div.sheet-faith,
+.sheet-child:not(:hover) input.sheet-select-radio.sheet-focus:checked ~ div.sheet-focus,
+.sheet-child:not(:hover) input.sheet-select-radio.sheet-performance:checked ~ div.sheet-performance,
+.sheet-child:not(:hover) input.sheet-select-radio.sheet-psionics:checked ~ div.sheet-psionics,
+.sheet-child:not(:hover) input.sheet-select-radio.sheet-ritual:checked ~ div.sheet-ritual,
+.sheet-child:not(:hover) input.sheet-select-radio.sheet-spellcasting:checked ~ div.sheet-spellcasting,
+.sheet-child:not(:hover) input.sheet-select-radio.sheet-weirdscience:checked ~ div.sheet-weirdscience {
     display: block;
 }
 
-.sheet-child:active input.sheet-select-radio.sheet-fighting:checked ~ div.sheet-fighting,
-.sheet-child:active input.sheet-select-radio.sheet-athletics:checked ~ div.sheet-athletics,
-.sheet-child:active input.sheet-select-radio.sheet-shooting:checked ~ div.sheet-shooting,
-.sheet-child:active input.sheet-select-radio.sheet-throwing:checked ~ div.sheet-throwing,
-.sheet-child:active input.sheet-select-radio.sheet-unskilled:checked ~ div.sheet-unskilled {
+label.sheet-ddmenu:hover {
     background-color: orange;
 }
 
