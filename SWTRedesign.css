@@ -3167,7 +3167,7 @@ input[value="13"].sheet-logo ~ .sheet-website::before {
 }
 
 .sheet-miscconfig {
-    height: 175px;
+    height: 200px;
 }
 
 .sheet-logoconfig,
@@ -3181,7 +3181,7 @@ input[value="13"].sheet-logo ~ .sheet-website::before {
 }
 
 .sheet-csnconfig {
-    height: 650px;
+    height: 700px;
 }
 
 .sheet-quickItem,

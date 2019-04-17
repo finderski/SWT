@@ -1474,14 +1474,31 @@
 						}
 						else {
 							//Armor covers Torso
-							if(aProtection > highestNonStack) {
+                            if(aStack === 0) {
+                                //Armor doesn't stack--need to find the highest armor value and store it
+                                if(aProtection > highestNonStack) {
+                                    //Make this new armor value the Highest Non Stack
+                                    console.log("!!! Worn Armor Covers Torso and protection is Higher than current highest Armor value");
+    							    console.log("!!! Highest Value: "+highestNonStack);
+    							    console.log("!!! Current Value: "+ aProtection);
+                                    previousHighest = highestNonStack;
+                                    highestNonStack = aProtection;
+                                }
+                                else {
+                                    console.log("!!! Current Armor value is not higher than the current highest !!!");
+                                }
+                            }
+                            else {
+                                //Armor Stacks
+                                stackCalc += Math.floor(aProtection*aStack);
+                            }
+							/*if(aProtection > highestNonStack) {
 							    console.log("!!! Worn Armor Covers Torso and protection is Higher than current highest Armor value");
 							    console.log("!!! Highest Value: "+highestNonStack);
 							    console.log("!!! Current Value: "+ aProtection);
 							    stackCalc = Math.floor(highestNonStack*highestStack);
 							    console.log("!!! "+highestNonStack+" times "+highestStack);
 							    console.log("!!! Previous Highest Armor Value Now: "+stackCalc);
-							    //console.log("!!! Stack Protection ("+stackProtection") + Stack Calc (" + stackCalc +")");
 							    stackProtection += stackCalc;
 							    previousHighest = highestNonStack;
 							    previousStack = highestStack;
@@ -1502,12 +1519,13 @@
 							    stackProtection += stackCalc;
 							    console.log("Highest Armor: "+highestNonStack);
 							    console.log("Stack Protection: "+stackProtection);
-							}
+							}*/
 						}
 					}
 				}
 				console.log("Done iterating through the Armor");
-				armorTotal = highestNonStack + stackProtection;
+				//armorTotal = highestNonStack + stackProtection;
+                armorTotal = highestNonStack + stackCalc;
 				console.log("___ Total Armor Protection: "+armorTotal+" ___");
 				setAttrs({toughnessArmor: armorTotal});
         	});
