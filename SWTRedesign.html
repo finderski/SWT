@@ -2749,7 +2749,8 @@
                         <!--<input type="checkbox" class="sheet-hideAtts" name="attr_hideAtts" /><span class="sheet-showhide"></span>-->
                         <div class='sheet-base sheet-attributes'>
                             <div class='sheet-basetrait'>
-                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tAgilityRoll' title="@{tAgilityRoll}" value='@{whisperagility} &{template:roll} @{rolltAgility} @{setmodsenc} @{showtraitmods}' data-i18n="agility"> Agility</button>
+                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tAgilityRoll' title="@{tAgilityRoll}" value='@{agilitybutton}' data-i18n="agility"> Agility</button>
+                                <input type="hidden" name="attr_agilitybutton" value="@{whisperagility} &{template:roll} @{rolltAgility} @{setmodsenc} @{showtraitmods}" />
                                 <span><select name="attr_agility" title="@{agility}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -2769,7 +2770,8 @@
         						<input type='hidden' name='attr_rolltAgility' value='{{name=@{character_name} }} {{trait=^{agility}}} {{skill_rank=@{agility_display} }} {{skill_roll=[[@{agility_rank} + @{agrollMod}+ @{ModSumEnc}[Wounds, Fatigue, Encumbrance, Distracted] + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{agilitymod} + @{agrollMod} + @{ModSumEnc}[Wounds, Fatigue, Encumbrance] + @{traitmods} ]]}}' />
                             </div>
                             <div class='sheet-basetrait'>
-                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tSmartsRoll' title="@{tSmartsRoll}" value='@{whispersmarts} &{template:roll} @{rolltSmarts} @{setmods} @{showtraitmods}' data-i18n="smarts"> Smarts</button>
+                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tSmartsRoll' title="@{tSmartsRoll}" value='@{smartsbutton}' data-i18n="smarts"> Smarts</button>
+                                <input type="hidden" name="attr_smartsbutton" value="@{whispersmarts} &{template:roll} @{rolltSmarts} @{setmods} @{showtraitmods}" />
                                 <span><select name="attr_smarts" title="@{smarts}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -2789,7 +2791,8 @@
         						<input type='hidden' name='attr_rolltSmarts' value='{{name=@{character_name} }} {{trait=^{smarts}}} {{skill_rank=@{smarts_display} }} {{skill_roll=[[@{smarts_rank} + @{smrollMod}+ @{ModSum}[Wounds, Fatigue, Distracted] + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{smartsmod} + @{smrollMod} + @{ModSum}[Wounds, Fatigue, Distracted] + @{traitmods}]]}}' />
                             </div>
                             <div class='sheet-basetrait'>
-                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tSpiritRoll' title="@{tSpiritRoll}" value='@{whisperspirit} &{template:roll} @{rolltSpirit} @{setmods} @{showtraitmods}' data-i18n="spirit"> Spirit</button>
+                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tSpiritRoll' title="@{tSpiritRoll}" value='@{spiritbutton}' data-i18n="spirit"> Spirit</button>
+                                <input type="hidden" name="attr_spiritbutton" value="@{whisperspirit} &{template:roll} @{rolltSpirit} @{setmods} @{showtraitmods}" />
                                 <span><select name="attr_spirit" title="@{spirit}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -2809,7 +2812,8 @@
         						<input type='hidden' name='attr_rolltSpirit' value='{{name=@{character_name} }} {{trait=^{spirit}}} {{skill_rank=@{spirit_display} }} {{skill_roll=[[@{spirit_rank} + @{sprollMod}+ @{ModSum}[Wounds, Fatigue, Distracted] + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{spiritmod} + @{sprollMod} + @{ModSum}[Wounds, Fatigue, Distracted] + @{traitmods} ]]}}' />
                             </div>
                             <div class='sheet-basetrait'>
-                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tStrengthRoll' title="@{tStrengthRoll}" value='@{whisperstrength} &{template:roll} @{rolltStrength} @{setmodsenc} @{showtraitmods}' data-i18n="strength"> Strength</button>
+                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tStrengthRoll' title="@{tStrengthRoll}" value='@{strengthbutton}' data-i18n="strength"> Strength</button>
+                                <input type="hidden" name="attr_strengthbutton" value="@{whisperstrength} &{template:roll} @{rolltStrength} @{setmodsenc} @{showtraitmods}" />
                                 <span><select name="attr_strength" title="@{strength}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -2829,7 +2833,8 @@
         						<input type='hidden' name='attr_rolltStrength' value='{{name=@{character_name} }} {{trait=^{strength}}} {{skill_rank=@{strength_display} }} {{skill_roll=[[@{strength_rank} + @{strollMod}+ @{ModSumEnc}[Wounds, Fatigue, Encumbrance, Distracted] + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{strengthmod} + @{strollMod} + @{ModSumEnc}[Wounds, Fatigue, Encumbrance, Distracted] + @{traitmods} ]]}}' />
                             </div>
                             <div class='sheet-basetrait'>
-                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tVigorRoll' title="@{tVigorRoll}" value='@{whispervigor} &{template:roll} @{rolltVigor} @{setmods} @{showtraitmods}' data-i18n="vigor"> Vigor</button>
+                                <button class="sheet-traitbutton sheet-traitflexattbutton" type='roll' name='roll_tVigorRoll' title="@{tVigorRoll}" value='@{vigorbutton}' data-i18n="vigor"> Vigor</button>
+                                <input type="hidden" name="attr_vigorbutton" value="@{whispervigor} &{template:roll} @{rolltVigor} @{setmods} @{showtraitmods}" />
                                 <span><select name="attr_vigor" title="@{vigor}" class="sheet-traitdie" value="4">
                                     <option value="4">d4</option>
     								<option value="6">d6</option>
@@ -2850,16 +2855,16 @@
                             </div>
                         </div>
                         <div class="sheet-base sheet-AttsSum">
-                            <button class="sheet-traitbutton" type='roll' name='roll_AgilitySumRoll' value='&{template:roll} @{rolltAgility} @{setmodsenc} @{showtraitmods}'><span data-i18n="agility-abbr">Agl</span>: <span name='attr_agility_display'></span></button>,
+                            <button class="sheet-traitbutton" type='roll' name='roll_AgilitySumRoll' value='@{agilitybutton}'><span data-i18n="agility-abbr">Agl</span>: <span name='attr_agility_display'></span></button>,
 
-                            <button class="sheet-traitbutton" type='roll' name='roll_SmartsSumRoll' value='&{template:roll} @{rolltSmarts} @{setmods} @{showtraitmods}'><span data-i18n="smarts-abbr">Sma</span>: <span name='attr_smarts_display'></span></button>,
+                            <button class="sheet-traitbutton" type='roll' name='roll_SmartsSumRoll' value='@{smartsbutton}'><span data-i18n="smarts-abbr">Sma</span>: <span name='attr_smarts_display'></span></button>,
 
-                            <button class="sheet-traitbutton" type='roll' name='roll_SpiritSumRoll' value='&{template:roll} @{rolltSpirit} @{setmods} @{showtraitmods}'><span data-i18n="spirit-abbr">Spi</span>: <span name='attr_spirit_display'></span></button>,
+                            <button class="sheet-traitbutton" type='roll' name='roll_SpiritSumRoll' value='@{spiritbutton}'><span data-i18n="spirit-abbr">Spi</span>: <span name='attr_spirit_display'></span></button>,
 
-                            <button class="sheet-traitbutton" type='roll' name='roll_StrengthSumRoll' value='&{template:roll} @{rolltStrength} @{setmodsenc} @{showtraitmods}'><span data-i18n="strength-abbr">Str</span>: <span name='attr_strength_display'></span></button>,
+                            <button class="sheet-traitbutton" type='roll' name='roll_StrengthSumRoll' value='@{strengthbutton}'><span data-i18n="strength-abbr">Str</span>: <span name='attr_strength_display'></span></button>,
 
                             <!--<button class="sheet-traitbutton" type='roll' name='roll_VigorSumRoll' value='&{template:roll} @{rolltVigor} @{setmods} @{showtraitmods}'><span data-i18n="vigor-abbr">Vig</span>: <span name='attr_vigor_display'></span></button>-->
-							<button class="sheet-traitbutton" type='roll' name='roll_VigorSumRoll' value='%{@{character_name}|tVigorRoll}'><span data-i18n="vigor-abbr">Vig</span>: <span name='attr_vigor_display'></span></button>
+							<button class="sheet-traitbutton" type='roll' name='roll_VigorSumRoll' value='@{vigorbutton}'><span data-i18n="vigor-abbr">Vig</span>: <span name='attr_vigor_display'></span></button>
                         </div>
                         <input type="checkbox" class="sheet-hideskillsconfig" /><span class="sheet-skillList"></span>
                         <h1 class='sheet-colHeader' data-i18n="skills">Skills</h1>
@@ -3560,7 +3565,7 @@
     								<option value="10">d10</option>
     								<option value="12">d12</option>
     							</select>+</span>
-    							<input class="sheet-traitmod" type="number" name="attr_ccultmod" title="@{OccultMod}" value="0" />
+    							<input class="sheet-traitmod" type="number" name="attr_occultmod" title="@{occultmod}" value="0" />
                                 <input class='sheet-moremods' type='checkbox' name='attr_showOccultRollMod' /><span>y</span>
         						<div class='sheet-basetrait sheet-traitmodplus'>
         						    <input type='text' class='sheet-ModDesc' name='attr_occultModType' placeholder='Modifier due to edges, hindrances, etc' data-i18n-placeholder="att-mod-description" />
@@ -3569,7 +3574,7 @@
         						</div>
         						<input type='hidden' name='attr_occult_rank' value='1d4!' />
         						<input type='hidden' name='attr_occult_display' value='1d4' />
-        						<input type='hidden' name='attr_rolltOccult' value='{{name=@{character_name} }} {{skill_rank=@{occult_display} }} {{skill_roll=[[@{occult_rank} + @{OccultskillMod}+ @{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance] + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{OccultMod} + @{OccultskillMod} + @{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance] + @{traitmods} ]]}}' />
+        						<input type='hidden' name='attr_rolltOccult' value='{{name=@{character_name} }} {{skill_rank=@{occult_display} }} {{skill_roll=[[@{occult_rank} + @{OccultskillMod}+ @{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance] + @{traitmods} ]] }} {{mook=[[1d0+@{wdNum}]]}} {{wild_die=[[ 1d@{wilddie}! + @{occultmod} + @{OccultskillMod} + @{ModSumEnc}[Distracted, Wounds, Fatigue, Encumbrance] + @{traitmods} ]]}}' />
         						<input type="checkbox" class="sheet-useSkillSpec" name="attr_altRuleSkillSpec" style="display: none;" />
         						<div class='sheet-SkillSpec'>
         						    <fieldset class="repeating_occultspec">
@@ -4344,7 +4349,7 @@
     					</div>
     					<div class='sheet-fatigueBox'>
     					    <input class="sheet-standardHealth" type="number" name="attr_fatigue" title="@{fatigue}" value="0"/>
-                            <input type='hidden' name='fatigueMod' value="0" />
+                            <input type='hidden' name='attr_fatigueMod' value="0" />
     					    <input type='checkbox' class="sheet-showExpansion" name='attr_showFatiguemods' style="display: none;" />
     					    <div class='sheet-expansionBox'><input class='sheet-healthmods' type='checkbox' name='attr_showFatiguemods' /><span>y</span></div>
     					</div>
@@ -6085,7 +6090,7 @@
 										<input type='hidden' name='attr_paskillNDamage' value="&{template:roll} {{trait=Fighting}} {{source=@{paweapon}}} @{rolltFighting} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_paweapons_padmg) }}" /> <!--Used for Skill and Damage roll -->
 										<input type='hidden' name='attr_padamageOnly' value='@{padmgTemplate}' /> <!-- Used for Damage Only -->
 										<!-- Build the Damage Roll Template Info -->
-										<input type='hidden' name='attr_paweapondmg' value="@{strength_rank}+1d4!" /> <!-- the damage formula -->
+										<input type='hidden' name='attr_paweapondmg' value="@{pastrength_rank}+1d4!" /> <!-- the damage formula -->
 										<input type='hidden' name='attr_pabonusdmg' value='1d6!' />
 										<input type='text' style='display: none;' name='attr_padmgTemplate' value='&{template:damage} {{name=@{character_name}}} {{source=@{paweapon} }} {{dmg_rank=@{paweapondamage}}} {{dmg_roll=[[@{paweapondmg} + @{damagemods}]]}} {{bonus_die=[[@{vbonusdamage}]]}} {{showap=[[1d0+@{paweaponap}]]}} {{ap=@{paweaponap}}} {{notes=@{paweaponnotes}}} {{button=y}} {{DmgRoll=[Re-Roll Damage](~repeating_paweapons_padmg) }}' />
 									</div>
@@ -6262,7 +6267,7 @@
 										<input type='hidden' name='attr_raskillNDamage' value="&{template:roll} {{trait=Fighting}} {{source=@{raweapon}}} @{rolltFighting} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_raweapons_radmg) }}" /> <!--Used for Skill and Damage roll -->
 										<input type='hidden' name='attr_radamageOnly' value='@{radmgTemplate}' /> <!-- Used for Damage Only -->
 										<!-- Build the Damage Roll Template Info -->
-										<input type='hidden' name='attr_raweapondmg' value="@{strength_rank}+1d4!" /> <!-- the damage formula -->
+										<input type='hidden' name='attr_raweapondmg' value="@{rastrength_rank}+1d4!" /> <!-- the damage formula -->
 										<input type='hidden' name='attr_rabonusdmg' value='1d6!' />
 										<input type='text' style='display: none;' name='attr_radmgTemplate' value='&{template:damage} {{name=@{character_name}}} {{source=@{raweapon} }} {{dmg_rank=@{raweapondamage}}} {{dmg_roll=[[@{raweapondmg} + @{damagemods}]]}} {{bonus_die=[[@{vbonusdamage}]]}} {{showap=[[1d0+@{raweaponap}]]}} {{ap=@{raweaponap}}} {{notes=@{raweaponnotes}}} {{button=y}} {{DmgRoll=[Re-Roll Damage](~repeating_raweapons_radmg) }}' />
 									</div>
