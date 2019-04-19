@@ -424,7 +424,7 @@
 
 	/* ---- Begin Sheet Version Validation & Update ---- */
 
-	const sheetVersion = "3.2";
+	const sheetVersion = "3.3";
 	const sheetVersionPrefix = "Savage Worlds Tabbed v";
 
     const upgradeSheet = function(version) {
@@ -619,6 +619,25 @@
 				}
 			});
 		}
+        if (version < 3.3) {
+            //migrate old fields to new
+	        const oldAtts = ["pastmod","rastmod"];
+	        const newAtts = ["pastrengthmod","rastrengthmod"];
+	        let sAttrs = {};
+	        getAttrs(oldAtts, function(v) {
+	            //Convert from Old Trait Mod Format (e.g. agMod) to the new format (e.g. agilitymod)
+	            for (let i=0; i<oldAtts.length; i++) {
+    	            console.log(newAtts[i] + " = " + v[oldAtts[i]]);
+    	            sAttrs[newAtts[i]] = v[oldAtts[i]];
+    	        }
+    	        setAttrs(sAttrs);
+    	        //Need to create rank and display values for existing sheets
+    	        const otraits = ['pastrength','rastrength'];
+    	        otraits.forEach(otraits => {
+    	           rankNdisplay(otraits);
+    	        });
+	        });
+        }
 		else {
 	        console.log("!!! Sheet Already Upgraded !!!");
 	    }
@@ -2588,7 +2607,7 @@
 
 </script>
 <input type='hidden' name='attr_dopay' value="init" />
-<input type='text' style='display: none;' name='attr_character_sheet' value='Savage Worlds Tabbed v3.2' />
+<input type='text' style='display: none;' name='attr_character_sheet' value='Savage Worlds Tabbed v3.3' />
 <input type='text' style='display: none;' name='attr_wdNum' value='1' />
 <div class='sheet-maindiv'>
     <input type="checkbox" class="sheet-useBackground" style="display: none;" name="attr_background" value="1" checked />
@@ -4854,22 +4873,22 @@
 						    <div class='sheet-weapons'>
     						    <button type='roll' class="sheet-weaponItem sheet-button" name='roll_tWeapon' value="@{weaponroll}"><input type="hidden" name="attr_weaponbutton" class="sheet-weaponbutton" value="1" /><span class="sheet-buttonand" data-i18n="attack-and-damage-abbr">Atk+Dmg</span><span class="sheet-buttondo" data-i18n="damage">Damage</span><span class="sheet-buttonma" data-i18n="multi-attack-and-damage-abbr">Atk<sup>x</sup>+Dmg</span></button>
     						    <button type='roll' style='display: none;' name='roll_dmg' value='@{damageOnly}'></button>
-    						    <input type='text' class='sheet-weaponItem sheet-weapon' name='attr_weapon' data-i18n-placeholder="weapon" placeholder="Weapon" />
-    						    <input type='text' class='sheet-weaponItem sheet-range' name='attr_range' data-i18n-placeholder="range" placeholder="Range" />
-    						    <input type='number' class='sheet-weaponItem sheet-rof' name='attr_rof' data-i18n-placeholder="rate-of-fire-abbr" placeholder="ROF" />
+    						    <input type='text' class='sheet-weaponItem sheet-weapon' name='attr_weapon' title="@{repeating_weapons_$#_weapon}" data-i18n-placeholder="weapon" placeholder="Weapon" />
+    						    <input type='text' class='sheet-weaponItem sheet-range' name='attr_range' title="@{repeating_weapons_$#_range}" data-i18n-placeholder="range" placeholder="Range" />
+    						    <input type='number' class='sheet-weaponItem sheet-rof' name='attr_rof' title="@{repeating_weapons_$#_rof}" data-i18n-placeholder="rate-of-fire-abbr" placeholder="ROF" />
     						    <input type='hidden' class='sheet-weaponItem sheet-damage' name='attr_weapondamage' value="Str+d4" readonly />
 								<button type="action" name="act_wdamage" class="sheet-weaponItem sheet-damage sheet-invisbutton"><span name="attr_weapondamage"></span></button>
-								<input type="number" class='sheet-weaponItem sheet-weaponap' name='attr_weaponap' />
-    						    <input type='number' class='sheet-weaponItem sheet-shots' name='attr_shots' data-i18n-placeholder="number-of-shots-shortened" placeholder="Shots" />
-    						    <input type='number' class='sheet-weaponItem sheet-weaponweight' step="any" name='attr_weaponweight' data-i18n-placeholder="weight-abbr" placeholder="Wt" />
-    						    <div class='sheet-weaponItem sheet-weaponcarried'><input type='checkbox' class='sheet-itemCarried sheet-isCarried' name='attr_weaponcarried' /><span class="sheet-isCarriedIcon"></span></div>
+								<input type="number" class='sheet-weaponItem sheet-weaponap' name='attr_weaponap' title="@{repeating_weapons_$#_weaponap}" />
+    						    <input type='number' class='sheet-weaponItem sheet-shots' name='attr_shots' title="@{repeating_weapons_$#_shots}" data-i18n-placeholder="number-of-shots-shortened" placeholder="Shots" />
+    						    <input type='number' class='sheet-weaponItem sheet-weaponweight' step="any" name='attr_weaponweight' title="@{repeating_weapons_$#_weaponweight}" data-i18n-placeholder="weight-abbr" placeholder="Wt" />
+    						    <div class='sheet-weaponItem sheet-weaponcarried'><input type='checkbox' class='sheet-itemCarried sheet-isCarried' name='attr_weaponcarried' title="@{repeating_weapons_$#_weaponcarried}" /><span class="sheet-isCarriedIcon"></span></div>
     						    <input class='sheet-moreweapon' type='checkbox' name='attr_showweaponconfig' checked /><span>y</span>
-    						    <textarea name='attr_weaponnotes' class='sheet-weaponItem sheet-weaponnotes' data-i18n-placeholder="notes" placeholder="Notes"></textarea>
+    						    <textarea name='attr_weaponnotes' class='sheet-weaponItem sheet-weaponnotes' title="@{repeating_weapons_$#_weaponnotes}" data-i18n-placeholder="notes" placeholder="Notes"></textarea>
     						    <div class="sheet-weaponconfig">
-                                    <label class="sheet-configlabels sheet-configcheckbox"><input type='checkbox' value='/w gm' name='attr_whisperweapon' /> <span data-i18n="whisper-roll-to-gm">Whisper roll to GM</span></label><br />
+                                    <label class="sheet-configlabels sheet-configcheckbox"><input type='checkbox' value='/w gm' name='attr_whisperweapon' title="@{repeating_weapons_$#_whisperweapon}" /> <span data-i18n="whisper-roll-to-gm">Whisper roll to GM</span></label><br />
         						    <label class="sheet-configlabels" data-i18n="button-behavior">Button Behavior</label>
 									<input class='sheet-showmultiattack' type="hidden" name="attr_showmulti" value="0" />
-        						    <select name="attr_weaponbutton" class="sheet-weaponbutton">
+        						    <select name="attr_weaponbutton" title="@{repeating_weapons_$#_weaponbutton}" class="sheet-weaponbutton">
             							<option value="0" data-i18n="attack-and-damage-abbr">Atk + Dmg</option>
             							<option value="1" data-i18n="damage-only" selected>Damage Only</option>
 										<option class="sheet-multiattack" value="2" data-i18n="multi-attack-and-damage-abbr">Atk^+Dmg</option>
@@ -4886,11 +4905,11 @@
                 						</select>-->
                                         <div class="sheet-container">
                                             <div class="sheet-child">
-                                                <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-fighting" name="attr_weaponskill" value="fighting" checked="checked" />&nbsp;<span name='attr_rfightingname'></span></label>
-                                                <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-athletics" name="attr_weaponskill" value="athletics" />&nbsp;<span name='attr_rathleticsname'></span></label>
-                                                <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-shooting" name="attr_weaponskill" value="shooting" />&nbsp;<span name='attr_rshootingname'></span></label>
-												<label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-throwing" name="attr_weaponskill" value="throwing" />&nbsp;<span name='attr_rthrowingname'></span></label>
-												<label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-unskilled" name="attr_weaponskill" value="unskilled" />&nbsp;<span data-i18n='unskilled'>Unskilled</span></label>
+                                                <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-fighting" name="attr_weaponskill" title="@{repeating_weapons_$#_weaponskill}" value="fighting" checked="checked" />&nbsp;<span name='attr_rfightingname'></span></label>
+                                                <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-athletics" name="attr_weaponskill" title="@{repeating_weapons_$#_weaponskill}" value="athletics" />&nbsp;<span name='attr_rathleticsname'></span></label>
+                                                <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-shooting" name="attr_weaponskill" title="@{repeating_weapons_$#_weaponskill}" value="shooting" />&nbsp;<span name='attr_rshootingname'></span></label>
+												<label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-throwing" name="attr_weaponskill" title="@{repeating_weapons_$#_weaponskill}" value="throwing" />&nbsp;<span name='attr_rthrowingname'></span></label>
+												<label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-unskilled" name="attr_weaponskill" title="@{repeating_weapons_$#_weaponskill}" value="unskilled" />&nbsp;<span data-i18n='unskilled'>Unskilled</span></label>
                                                 <input type="checkbox" class="sheet-select-radio sheet-fighting" name="attr_weaponskill" value="fighting" checked="checked" style='display:none;' />
                                                 <input type="checkbox" class="sheet-select-radio sheet-athletics" name="attr_weaponskill" value="athletics" style='display:none;' />
                                                 <input type="checkbox" class="sheet-select-radio sheet-shooting" name="attr_weaponskill" value="shooting" style='display:none;' />
@@ -4907,7 +4926,7 @@
             						<div class='sheet-weapondamage'>
 										<input type="checkbox" class="sheet-highlight" name="attr_highlightdamage" value="1" style="display: none;" />
             						    <label class='sheet-configlabels' data-i18n="damage">Damage</label>
-            						    <select class='sheet-weaponatt' name="attr_damageatt">
+            						    <select class='sheet-weaponatt' name="attr_damageatt" title="@{repeating_weapons_$#_damageatt}" >
                 							<option value="na" data-i18n="not-applicable-abbr">N/A</option>
                 							<option value="strength" data-i18n="strength" selected>Strength</option>
                 							<option value="agility" data-i18n="agility">Agility</option>
@@ -4916,8 +4935,8 @@
                 							<option value="vigor" data-i18n="vigor">Vigor</option>
                 						</select>
                 						+
-                						<input type="number" class="sheet-weaponnum" name="attr_dmgnumdice" style="text-align: right;" value="1" />
-										<select name="attr_dmgdietype" class="sheet-dtype">
+                						<input type="number" class="sheet-weaponnum" name="attr_dmgnumdice" title="@{repeating_weapons_$#_dmgnumdice}" style="text-align: right;" value="1" />
+										<select name="attr_dmgdietype" title="@{repeating_weapons_$#_dmgdietype}" class="sheet-dtype">
         									<option value="d4!">d4</option>
         									<option value="d6!">d6</option>
         									<option value="d8!">d8</option>
@@ -4926,11 +4945,11 @@
         									<option value="d20!">d20</option>
         								 </select>
         								 +
-        								 <input type="text" class="sheet-weaponnum" name="attr_dmgbonusnum" />
+        								 <input type="text" class="sheet-weaponnum" name="attr_dmgbonusnum" title="@{repeating_weapons_$#_dmgbonusnum}" />
             						</div>
 									<div class="sheet-vbonusdamage">
 										<label class='sheet-configlabels' data-i18n="bonus-damage-die-type">Bonus Damage Die Type</label>
-										<select name="attr_weaponsbdt" class="sheet-dtype">
+										<select name="attr_weaponsbdt" title="@{repeating_weapons_$#_weaponsbdt}" class="sheet-dtype">
         									<option value="d4!">d4</option>
         									<option value="d6!" selected>d6</option>
         									<option value="d8!">d8</option>
@@ -5007,32 +5026,32 @@
 	    					                <button type='roll' style='display: none;' name='roll_spelldmg' value='@{spelldamageOnly}'></button>
 	    					            </div>
 	        					        <div class="sheet-power">
-	        					            <input class='sheet-power' type='text' name='attr_power' data-i18n-placeholder='power' placeholder="Power" />
+	        					            <input class='sheet-power' type='text' name='attr_power' title="@{repeating_spells_$#_power}" data-i18n-placeholder='power' placeholder="Power" />
 	        					        </div>
 	        					        <div class='sheet-pp'>
-	        					            <input class='sheet-pp' type='text' name='attr_pp' data-i18n-placeholder='power-point-abbr-u' placeholder="PP" />
+	        					            <input class='sheet-pp' type='text' name='attr_pp' title="@{repeating_spells_$#_pp}" data-i18n-placeholder='power-point-abbr-u' placeholder="PP" />
 	        					        </div>
 	        					        <div class="sheet-powerrange">
-	        					            <input class='sheet-powerrange' type='text' name='attr_powerrange' data-i18n-placeholder='range' placeholder="Range" />
+	        					            <input class='sheet-powerrange' type='text' name='attr_powerrange' title="@{repeating_spells_$#_powerrange}" data-i18n-placeholder='range' placeholder="Range" />
 	        					        </div>
 	        					        <div class="sheet-powerdamage">
 	        					            <input type='hidden' name='attr_powerdamage' />
 											<button type="action" name="act_sdamage" class="sheet-powerdamage sheet-invisbutton"><span name="attr_powerdamage"></span></button>
 	        					        </div>
 	        					        <div class="sheet-duration">
-	        					            <input class='sheet-duration' type='text' name='attr_powerduration' data-i18n-placeholder='duration' placeholder="Duration" />
+	        					            <input class='sheet-duration' type='text' name='attr_powerduration' title="@{repeating_spells_$#_powerduration}" data-i18n-placeholder='duration' placeholder="Duration" />
 	        					        </div>
 	        					        <div class="sheet-invested">
-	        					            <input class='sheet-invested' type='text' name='attr_ppinvested' data-i18n-placeholder='power-point-abbr-u-invested' placeholder="PP Invested" />
+	        					            <input class='sheet-invested' type='text' name='attr_ppinvested' title="@{repeating_spells_$#_ppinvested}" data-i18n-placeholder='power-point-abbr-u-invested' placeholder="PP Invested" />
 	        					        </div>
 	    					        </div>
 									<input class='sheet-morespell' type='checkbox' name='attr_showspellconfig' checked /><span>y</span>
-									<textarea name="attr_trappings" class='sheet-spelltrappings' data-i18n-placeholder="trappings" placeholder="Trappings"></textarea>
-									<textarea name='attr_spellnotes' class='sheet-spellnotes' data-i18n-placeholder="notes" placeholder="Notes"></textarea>
+									<textarea name="attr_trappings" class='sheet-spelltrappings' title="@{repeating_spells_$#_spelltrappings}" data-i18n-placeholder="trappings" placeholder="Trappings"></textarea>
+									<textarea name='attr_spellnotes' class='sheet-spellnotes' title="@{repeating_spells_$#_spellnotes}" data-i18n-placeholder="notes" placeholder="Notes"></textarea>
 									<div class="sheet-spellconfig">
-										<label class="sheet-configlabels sheet-configcheckbox"><input type='checkbox' value='/w gm' name='attr_whisperspell' /> <span data-i18n="whisper-roll-to-gm">Whisper roll to GM</span></label><br />
+										<label class="sheet-configlabels sheet-configcheckbox"><input type='checkbox' value='/w gm' name='attr_whisperspell' title="@{repeating_spells_$#_whisperspell}" /> <span data-i18n="whisper-roll-to-gm">Whisper roll to GM</span></label><br />
 										<label class="sheet-configlabels" data-i18n="button-behavior">Button Behavior</label>
-										<select name="attr_spellbutton" class="sheet-spellbutton">
+										<select name="attr_spellbutton" title="@{repeating_spells_$#_spellbutton}" class="sheet-spellbutton">
 											<option value="2" data-i18n="skill-only">Skill Only</option>
 											<option value="0" data-i18n="attack-and-damage-abbr">Atk + Dmg</option>
 											<option value="1" data-i18n="damage-only" selected>Damage Only</option>
@@ -5052,15 +5071,15 @@
 											</select>-->
                                             <div class="sheet-container">
                                                 <div class="sheet-child">
-                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-athletics" name="attr_spellskill" value="athletics" />&nbsp;<span name='attr_sathleticsname'></span></label>
-                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-faith" name="attr_spellskill" value="faith" checked="checked" />&nbsp;<span name='attr_sfaithname'></span></label>
-                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-focus" name="attr_spellskill" value="focus" />&nbsp;<span name='attr_sfocusname'></span></label>
-                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-performance" name="attr_spellskill" value="performance" />&nbsp;<span name='attr_sperformancename'></span></label>
-    												<label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-psionics" name="attr_spellskill" value="psionics" />&nbsp;<span name='attr_spsionicsname'></span></label>
-                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-ritual" name="attr_spellskill" value="ritual" />&nbsp;<span name='attr_sritualname'></span></label>
-                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-spellcasting" name="attr_spellskill" value="spellcasting" />&nbsp;<span name='attr_sspellcastingname'></span></label>
-                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-weirdscience" name="attr_spellskill" value="weirdscience" />&nbsp;<span name='attr_sweirdsciencename'></span></label>
-    												<label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-unskilled" name="attr_spellskill" value="unskilled" />&nbsp;<span data-i18n='unskilled'>Unskilled</span></label>
+                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-athletics" name="attr_spellskill" title="@{repeating_spells_$#_spellskill}" value="athletics" />&nbsp;<span name='attr_sathleticsname'></span></label>
+                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-faith" name="attr_spellskill" title="@{repeating_spells_$#_spellskill}" value="faith" checked="checked" />&nbsp;<span name='attr_sfaithname'></span></label>
+                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-focus" name="attr_spellskill" title="@{repeating_spells_$#_spellskill}" value="focus" />&nbsp;<span name='attr_sfocusname'></span></label>
+                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-performance" name="attr_spellskill" title="@{repeating_spells_$#_spellskill}" value="performance" />&nbsp;<span name='attr_sperformancename'></span></label>
+    												<label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-psionics" name="attr_spellskill" title="@{repeating_spells_$#_spellskill}" value="psionics" />&nbsp;<span name='attr_spsionicsname'></span></label>
+                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-ritual" name="attr_spellskill" title="@{repeating_spells_$#_spellskill}" value="ritual" />&nbsp;<span name='attr_sritualname'></span></label>
+                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-spellcasting" name="attr_spellskill" title="@{repeating_spells_$#_spellskill}" value="spellcasting" />&nbsp;<span name='attr_sspellcastingname'></span></label>
+                                                    <label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-weirdscience" name="attr_spellskill" title="@{repeating_spells_$#_spellskill}" value="weirdscience" />&nbsp;<span name='attr_sweirdsciencename'></span></label>
+    												<label class="sheet-ddmenu"><input type="checkbox" class="sheet-select-radio sheet-unskilled" name="attr_spellskill" title="@{repeating_spells_$#_spellskill}" value="unskilled" />&nbsp;<span data-i18n='unskilled'>Unskilled</span></label>
                                                     <input type="checkbox" class="sheet-select-radio sheet-athletics" name="attr_spellskill" value="athletics" style='display:none;' />
                                                     <input type="checkbox" class="sheet-select-radio sheet-faith" name="attr_spellskill" value="faith" checked="checked" style='display:none;' />
                                                     <input type="checkbox" class="sheet-select-radio sheet-focus" name="attr_spellskill" value="focus" style='display:none;' />
@@ -5085,7 +5104,7 @@
 										<div class='sheet-spelldamage'>
 											<input type="checkbox" name="attr_shighlightdamage" class="sheet-highlight" value="1" style="display:none;" />
 											<label class='sheet-configlabels' data-i18n="damage">Damage</label>
-											<select class='sheet-spellatt' name="attr_spelldamageatt">
+											<select class='sheet-spellatt' name="attr_spelldamageatt" title="@{repeating_spells_$#_spelldamageatt}">
 												<option value="na" data-i18n="not-applicable-abbr">N/A</option>
 												<option value="strength" data-i18n="strength" selected>Strength</option>
 												<option value="agility" data-i18n="agility">Agility</option>
@@ -5094,8 +5113,8 @@
 												<option value="vigor" data-i18n="vigor">Vigor</option>
 											</select>
 											+
-											<input type="number" class="sheet-spellnum" name="attr_spelldmgnumdice" style="text-align: right;" value="1" />
-											<select name="attr_spelldmgdietype" class="sheet-dtype">
+											<input type="number" class="sheet-spellnum" name="attr_spelldmgnumdice" title="@{repeating_spells_$#_spelldmgnumdice}" style="text-align: right;" value="1" />
+											<select name="attr_spelldmgdietype" title="@{repeating_spells_$#_spelldmgdietype}" class="sheet-dtype">
 												<option value="d4!">d4</option>
 												<option value="d6!">d6</option>
 												<option value="d8!">d8</option>
@@ -5104,11 +5123,11 @@
 												<option value="d20!">d20</option>
 											 </select>
 											 +
-											 <input type="text" class="sheet-spellnum" name="attr_spelldmgbonusnum" value="0" />
+											 <input type="text" class="sheet-spellnum" name="attr_spelldmgbonusnum" title="@{repeating_spells_$#_spelldmgbonusnum}" value="0" />
 										</div>
 										<div class="sheet-vbonusdamage">
 											<label class='sheet-configlabels' data-i18n="bonus-damage-die-type">Bonus Damage Die Type</label>
-											<select name="attr_spellsbdt" class="sheet-dtype">
+											<select name="attr_spellsbdt" title="@{repeating_spells_$#_spellsbdt}" class="sheet-dtype">
 												<option value="d4!">d4</option>
 												<option value="d6!" selected>d6</option>
 												<option value="d8!">d8</option>
