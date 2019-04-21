@@ -6574,6 +6574,27 @@
 			<div class="sheet-release">
 			    <h3 class='subsectionHeader' data-i18n="release-notes">Release Notes</h3>
                 <label class="sheet-rowlabel">
+			        <input type='checkbox' class='sheet-releasenotes' name='attr_releasenotes33' value='1' /><span class='sheet-releasenotes' style='color: red;'><h4 class="sheet-rnversion"><span data-i18n="version">Version</span> 3.3</h4></span>
+			    </label>
+			    <input type='checkbox' class='sheet-releasenotes' style='display: none;' name='attr_releasenotes33' value='1' />
+        		<div class='sheet-releasenotes'>
+        		   <p data-i18n="changes-this-release">
+        		       Changes this release:
+        		   </p>
+				   <ul>
+						<li><strong data-i18n="bug-fixes">Bug Fixes</strong></li>
+						<ul>
+							<li data-i18n="power-armor-bug">Power Armor and Robot Armor Strength rolls (including Damage) were incorrect</li>
+                            <li data-i18n="config-window-bug">Configuration Window had sections with odd displays for some users</li>
+                            <li data-i18n="armor-stacking-bug">Armor stacking wasn’t working when all Protection values were 1</li>
+                            <li data-i18n="fatiguemod-bug">Many rolls were getting an error due to fatigueMod not being found</li>
+                            <li data-i18n="vigor-failed-bug">Vigor roll failed when Attributes were collapsed</li>
+                            <li data-i18n="agility-roll-bug">Agility roll was odd when Attributes were collapsed</li>
+                            <li data-i18n="occult-roll-bug">Occult rolls had an error</li>
+						</ul>
+				   </ul>
+				</div>
+                <label class="sheet-rowlabel">
 			        <input type='checkbox' class='sheet-releasenotes' name='attr_releasenotes32' value='1' /><span class='sheet-releasenotes' style='color: red;'><h4 class="sheet-rnversion"><span data-i18n="version">Version</span> 3.2</h4></span>
 			    </label>
 			    <input type='checkbox' class='sheet-releasenotes' style='display: none;' name='attr_releasenotes32' value='1' />
