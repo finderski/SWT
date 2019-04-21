@@ -427,7 +427,6 @@
             "attribute":"tlpHW",
             "displayname":"Show Homeworld",
             "displaytranslationkey":"show-homeworld",
-            "displaytranslationkey":"show-homeworld",
             "type":"checkbox",
             "value":"on",
             "description":"Check this box to show the Homeworld field.",
