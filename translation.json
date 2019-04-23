@@ -1012,5 +1012,7 @@
     "fatiguemod-bug": "Many rolls were getting an error due to fatigueMod not being found",
     "vigor-failed-bug": "Vigor roll failed when Attributes were collapsed",
     "agility-roll-bug": "Agility roll was odd when Attributes were collapsed",
-    "occult-roll-bug": "Occult rolls had an error"
+    "occult-roll-bug": "Occult rolls had an error",
+	"injury-roll": "Injury Roll",
+	"use-gritty-damage": "Use Gritty Damage"
 }

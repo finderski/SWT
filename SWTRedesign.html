@@ -4966,7 +4966,8 @@
 								<!-- Build the Damage Roll Template Info -->
 								<input type='hidden' name='attr_weapondmg' value="@{strength_rank}+1d4!" /> <!-- the damage formula -->
 								<input type='hidden' name='attr_weaponsbonusdmg' value='@{vbonusdamage}' />
-								<input type='text' style='display: none;' name='attr_dmgTemplate' value='@{whisperweapon} &{template:damage} {{name=@{character_name}}} {{source=@{weapon} }} {{dmg_rank=@{weapondamage}}} {{dmg_roll=[[@{weapondmg} + @{damagemods}]]}} {{bonus_die=[[@{weaponsbonusdmg}]]}} {{showap=[[1d0+@{weaponap}]]}} {{ap=@{weaponap}}} {{notes=@{weaponnotes}}} {{button=y}} {{DmgRoll=[Re-Roll Damage](~repeating_weapons_dmg) }}' />
+								<input type='text' style='display: none;' name='attr_dmgTemplate' value='@{whisperweapon} &{template:damage} {{name=@{character_name}}} {{source=@{weapon} }} {{dmg_rank=@{weapondamage}}} {{dmg_roll=[[@{weapondmg} + @{damagemods}]]}} {{bonus_die=[[@{weaponsbonusdmg}]]}} {{showap=[[1d0+@{weaponap}]]}} {{ap=@{weaponap}}} {{notes=@{weaponnotes}}} {{button=y}} {{DmgRoll=[Re-Roll Damage](~repeating_weapons_dmg) }} @{gritty} {{GrittyRoll=[Roll Injury](~repeating_weapons_grittyroll)}}' />
+                                <button type='roll' style='display: none;' name='roll_grittyroll' value='&{template:gritty} {{name=Injury Result}} {{result=[[1t[@{injurytablename}]]]}}'></button>
     				        </div>
 						</fieldset>
 						<input class="sheet-useLoad" type="checkbox" name="attr_useLoad" style="display:none;" checked />
@@ -5147,9 +5148,10 @@
 										<!-- Build the Damage Roll Template Info -->
 										<input type='hidden' name='attr_spelldmg' /> <!-- the damage formula -->
 										<input type='hidden' name='attr_spellsbonusdmg' value='@{vbonusdamage}' />
-										<input type='text' style='display: none;' name='attr_spelldmgTemplate' value='@{whisperspell} &{template:damage} {{name=@{character_name}}} {{source=@{power} }} {{trappings=@{trappings}}} {{dmg_rank=@{powerdamage}}} {{dmg_roll=[[@{spelldmg} + @{damagemods}]]}} {{bonus_die=[[@{spellsbonusdmg}]]}} @{dmgshownotes} {{button=y}} {{DmgRoll=[Re-Roll Damage](~repeating_spells_spelldmg) }}' />
+										<input type='text' style='display: none;' name='attr_spelldmgTemplate' value='@{whisperspell} &{template:damage} {{name=@{character_name}}} {{source=@{power} }} {{trappings=@{trappings}}} {{dmg_rank=@{powerdamage}}} {{dmg_roll=[[@{spelldmg} + @{damagemods}]]}} {{bonus_die=[[@{spellsbonusdmg}]]}} @{dmgshownotes} {{button=y}} {{DmgRoll=[Re-Roll Damage](~repeating_spells_spelldmg) }} @{gritty} {{GrittyRoll=[Roll Injury](~repeating_spells_spellgrittyroll)}}' />
 										<input type='hidden' name='attr_skTemplate' value='1d6!' />
 										<input type='hidden' name='attr_dmgshownotes' value='{{notes=@{spellnotes}}}' />
+                                        <button type='roll' style='display: none;' name='roll_spellgrittyroll' value='&{template:gritty} {{name=Injury Result}} {{result=[[1t[@{injurytablename}]]]}}'></button>
 									</div>
 									<input class='sheet-spellconfigb' type='checkbox' name='attr_showspellconfig' style="display:none;" checked />
 								</div>
@@ -6555,7 +6557,10 @@
     			        <label class="sheet-srmItem" data-i18n-title="use-charisma"><input type="checkbox" class="sheet-useCharisma" name="attr_usecharisma" checked /><span data-i18n="use-charisma">Use Charisma</span></label>
     				    <label class="sheet-srmItem" data-i18n-title="power-pointless"><input type="checkbox" class="sheet-NoPP" name="attr_NoPPRule" /><span data-i18n="no-power-points">No Power Points</span></label>
     				    <label class="sheet-srmItem" data-i18n-title="use-xp"><input type="checkbox" class="sheet-usexp" name="attr_usexp" checked /><span data-i18n="use-xp">Use Experience Points</span></label>
-    				    <label class="sheet-srmItem" data-i18n-title="use-xp"><input type="checkbox" name="attr_setrank" /><span data-i18n="manually-set-rank">Manually set Rank</span></label>
+                        <label class="sheet-srmItem" data-i18n-title="gritty-damage"><input type='checkbox' class="sheet-usegritty" name='attr_gritty' value="{{getgritty=gritty}}" /> <span data-i18n="use-gritty-damage">Use Gritty Damage</span></label>
+                        <input type='checkbox' class="sheet-usegritty" name='attr_gritty' value="{{getgritty=gritty}}" style="display: none;" />
+                        <label class="sheet-srmItem sheet-injurytable" data-i18n-title="injury-table-name">Injury Table Name: <input type='text' class="sheet-injury" name="attr_injurytablename" /></label>
+                        <label class="sheet-srmItem" data-i18n-title="use-xp"><input type="checkbox" name="attr_setrank" /><span data-i18n="manually-set-rank">Manually set Rank</span></label>
 						<input type="checkbox" class="sheet-usexp" name="attr_usexp" style="display: none;" checked />
     				    <label class="sheet-srmItem sheet-xpmod" data-i18n-title="roll-for-extra-xp-left-text"><input type='checkbox' name='attr_bennies' class='sheet-Bennies' value='1' /><span data-i18n="roll-extra-xp-for-bennies">Roll XP for un-/spent Bennies</span></label>
     				    <label class="sheet-srmItem" data-i18n-title="variable-bonus-damage-die"><input type="checkbox" class="sheet-useRaiseHB" name="attr_RaiseHBRule" value="1" /><span data-i18n="variable-bonus-damage-raise-based">Variable Bonus Damage (Raise based)</span></label>
@@ -6803,6 +6808,51 @@
                                 <li data-i18n='use-charisma'>Use Charisma</li>
                                 <li data-i18n='dont-use-power-points'>Don't use Power Points</li>
                                 <li data-i18n='use-experience-points-explanation'>Use experinece points instead of the SWADE advancement mechanic</li>
+                                <li data-i18n='use-gritty-damage'>Use Gritty Damage</li>
+                                <ul>
+                                    <li>Selecting this option will add a roll button to the damage output of weapons and spells</li>
+                                    <li>You will need to specify the name of the Injury Table; a field will display for this input</li>
+                                    <li>The Injury Table needs to be a rollable table in order for this functionality to work</li>
+                                    <li>You can set up the Rollable with the following weights</li>
+                                    <table class="sheet-infotable">
+                                        <tr>
+                                            <th>Result (2d6)</th><th>Description</th><th>Sub-effect</th><th>Weight</th>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td><td>Unmentionables</td><td>N/A</td><td>12</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3-4</td><td>Arm</td><td>Left Arm</td><td>30</td>
+                                        </tr>
+                                        <tr>
+                                            <td>3-4</td><td>Arm</td><td>Right Arm</td><td>30</td>
+                                        </tr>
+                                        <tr>
+                                            <td>5-9</td><td>Guts</td><td>Broken</td><td>96</td>
+                                        </tr>
+                                        <tr>
+                                            <td>5-9</td><td>Guts</td><td>Battered</td><td>96</td>
+                                        </tr>
+                                        <tr>
+                                            <td>5-9</td><td>Guts</td><td>Busted</td><td>96</td>
+                                        </tr>
+                                        <tr>
+                                            <td>10-11</td><td>Leg</td><td>Left Leg</td><td>30</td>
+                                        </tr>
+                                        <tr>
+                                            <td>10-11</td><td>Leg</td><td>Right Leg</td><td>30</td>
+                                        </tr>
+                                        <tr>
+                                            <td>12</td><td>Head</td><td>Hideous Scar</td><td>6</td>
+                                        </tr>
+                                        <tr>
+                                            <td>12</td><td>Head</td><td>Blinded</td><td>4</td>
+                                        </tr>
+                                        <tr>
+                                            <td>12</td><td>Head</td><td>Brain Damage</td><td>2</td>
+                                        </tr>
+                                    </table>
+                                </ul>
                                 <li data-i18n='use-variable-die-type-bonus-damage-explanation'>Use variable die types for bonus damage (based on the number of raises)</li>
                             </ul>
                     </ul>
@@ -6913,6 +6963,11 @@
 			{{DmgRoll}}
 		</div>
 		{{/button}}
+        {{#getgritty}}
+        <div class="sheet-templateButton">
+			{{GrittyRoll}}
+		</div>
+        {{/getgritty}}
 	</div>
 </rolltemplate>
 
@@ -6966,4 +7021,11 @@
 	<div class="sheet-emoteish">
 		{{name}} {{does}}
 	</div>
+</rolltemplate>
+
+<rolltemplate class="sheet-rolltemplate-gritty">
+    <div class="sheet-card">
+        <h2 data-i18n="injury-roll">Injury Roll</h2>
+        <div class='sheet-injuryresult'>{{result}}</div>
+    </div>
 </rolltemplate>

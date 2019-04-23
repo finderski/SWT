@@ -3162,7 +3162,19 @@ input[value="13"].sheet-logo ~ .sheet-website::before {
 }
 
 .sheet-srmconfig {
-    height: 85px;
+    height: 100px;
+}
+
+.sheet-injury {
+    width: 100px;
+}
+
+.sheet-injurytable {
+    display: none;
+}
+
+.sheet-usegritty:checked + .sheet-injurytable {
+    display: inline;
 }
 
 .sheet-quickconfig,
@@ -3431,6 +3443,14 @@ input.sheet-releasenotes:not(:checked) + span.sheet-releasenotes::before {
 
 .sheet-docparagraph {
     text-indent: 20px;
+}
+
+.sheet-infotable th, td {
+    border: 1px solid silver;
+}
+
+.sheet-infotable th {
+    background-color: silver;
 }
 /*----------- End Documentation Stuff -----------*/
 
@@ -3774,7 +3794,8 @@ label.sheet-ddmenu:hover {
 .sheet-rolltemplate-damage div,
 .sheet-rolltemplate-damage span,
 .sheet-rolltemplate-damage h1,
-.sheet-rolltemplate-damage h2 {
+.sheet-rolltemplate-damage h2,
+.sheet-rolltemplate-gritty div {
 	box-sizing: border-box;
 }
 
@@ -4072,7 +4093,8 @@ label.sheet-ddmenu:hover {
     padding:0;
 }
 
-.sheet-rolltemplate-statblock .inlinerollresult {
+.sheet-rolltemplate-statblock .inlinerollresult,
+.sheet-rolltemplate-gritty .inlinerollresult {
     background-color: transparent;
     border: inherit;
     padding: 0px;
@@ -4093,4 +4115,27 @@ label.sheet-ddmenu:hover {
     font-style: italic;
 }
 
+.sheet-rolltemplate-gritty .sheet-card {
+    width: 90%;
+	max-width: 200px;
+	min-height: 250px;
+	background: url('http://www.geeksville.us/roll20/Ace_of_Clubs-Red-light.jpg') top left;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+    padding: 5px;
+    border-radius: 15px;
+    border: solid 1px #680000;
+}
+
+.sheet-rolltemplate-gritty h2 {
+    text-align: center;
+    color: maroon;
+}
+
+.sheet-rolltemplate-gritty .sheet-injuryresult {
+    display: flex;
+    align-items: center;
+    height: 250px;
+    text-align: center;
+}
 /*----------- End Roll Template --------------------*/
