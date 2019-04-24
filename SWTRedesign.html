@@ -1143,18 +1143,27 @@
 	});
 
 	const setPace = function() {
-	    getAttrs(["pace", "paceMod"], function(pvalue) {
+	    getAttrs(["pace", "paceMod", "woundsMod", "paceignoreswounds"], function(pvalue) {
 			console.log("pace value: " + pvalue.pace);
 			console.log("mod value: " + pvalue.paceMod);
 			let pace_base = parseInt(pvalue.pace) || 0;
 			let pace_mod = parseInt(pvalue.paceMod) || 0;
-            let totPace = pace_base + pace_mod;
+            let wound_mod = parseInt(pvalue.woundsMod) || 0;
+            let totPace = 0;
+            if (pvalue.paceignoreswounds === "on") {
+                totPace = pace_base + pace_mod;
+            }
+            else {
+                totPace = pace_base + pace_mod - wound_mod;
+            }
+
+            if (totPace < 1) { totPace = 1;}
       		setAttrs({ paceCur: totPace  });
    		});
 	}
 
 	//Set Pace
-	on("change:pace change:pacemod", function() {
+	on("change:pace change:pacemod change:woundsmod change:paceignoreswounds", function() {
 		setPace();
 	});
 
@@ -2506,6 +2515,25 @@
 		})
 	});
 
+    on("clicked:hideadvance", function() {
+        let hideval = "0";
+        let icon = "J";
+        getAttrs(["hideAdv"], function(v) {
+            if (v.hideAdv === "on") {
+                console.log("was hidden, but shouldn't be now");
+            }
+            else {
+                console.log("wasn't hidden, but needs to be...");
+                hideval = "on";
+                icon = "E";
+            }
+            setAttrs({
+                hideAdv: hideval,
+                journaladvancehideicon: icon
+            });
+        });
+    });
+
 	console.log("Make sure Skill Names have been set");
 	const skillnamelist = ["fighting","academics","athletics","battle","boating","climbing","common-knowledge","driving","electronics","faith","focus","gambling","guts","hacking","healing","intimidation","investigation","native-language","lockpicking","notice","occult","performance","persuasion","piloting","psionics","repair","research","riding","ritual","science","shooting","spellcasting","stealth","streetwise","survival","swimming","taunt","thievery","throwing","tracking","weirdscience"];
 	skillnamelist.forEach(skillnamelist => {
@@ -2605,6 +2633,17 @@
         }
     });
 
+    const buttonlist = ["characterprofile1","vehicletab3","journaltab4","configurationtab2","releasetab5","documentationtab6"];
+    buttonlist.forEach(buttonlist => {
+        on(`clicked:${buttonlist}`, function() {
+            console.log(`${buttonlist} button was clicked!!`);
+            let radioval = `${buttonlist}`;
+            radioval = radioval.slice(-1);
+            console.log(`Value for Radio Button is: ${radioval}`);
+            setAttrs({ sheetTab: radioval });
+        });
+    });
+
 </script>
 <input type='hidden' name='attr_dopay' value="init" />
 <input type='text' style='display: none;' name='attr_wdNum' value='1' />
@@ -2623,7 +2662,24 @@
     <input type="checkbox" class="sheet-useBackground" style="display: none;" name="attr_background" value="12" />
     <div class='sheet-background'>
     	<div class='sheet-base'>
-			<input type="checkbox" class="sheet-useBenniesXP" name="attr_bennies" value="1" style="display: none;" />
+            <div class="sheet-buttonbar">
+                <div class="sheet-navbuttons">
+                    <button type="action" name="act_characterprofile1" class="sheet-topbuttons">U</button>
+                    <input type="checkbox" class="sheet-showVehicles" name="attr_vehicle" style="display: none;" />
+                    <button type="action" name="act_vehicletab3" class="sheet-topbuttons sheet-vehiclesT">T</button>
+                    <button type="action" name="act_journaltab4" class="sheet-topbuttons">n</button>
+                    <button type="action" name="act_configurationtab2" class="sheet-topbuttons">x</button>
+                </div>
+                <div class="sheet-functions">
+                    <input type="checkbox" class="sheet-useBenniesXP" name="attr_bennies" value="1" style="display: none;" />
+                    <button class="sheet-benniesxp" type="roll" name="roll_convertBennies" value="&{template:emote} {{name=@{character_name}}} {{does=rolls for XP on ?{Number of Bennies|1} un/spent bennies and gets [[?{Number of Bennies|1}d6>5]] extra experience point(s)!}}">S</button>
+                </div>
+                <div class="sheet-docbuttons">
+                    <button type="action" name="act_releasetab5" class="sheet-topbuttons">N</button>
+                    <button type="action" name="act_documentationtab6" class="sheet-topbuttons">i</button>
+                </div>
+            </div>
+			<!--<input type="checkbox" class="sheet-useBenniesXP" name="attr_bennies" value="1" style="display: none;" />
 			<input type="checkbox" class="sheet-riftsBackground" style="display: none;" name="attr_background" value="11" />
     	    <input type="checkbox" class="sheet-useBackground" style="display: none;" name="attr_background" value="4" />
     	    <input type="checkbox" class="sheet-useBackground" style="display: none;" name="attr_background" value="3" />
@@ -2633,8 +2689,13 @@
             &nbsp;&nbsp;<input type="radio" class="sheet-tab sheet-journalT" name="attr_sheetTab" data-i18n-title="journal-and-other-info" title="Journal and other Info" value="4" /><span class="sheet-bg">n</span>
             &nbsp;&nbsp;<input type='radio' class='sheet-tab sheet-configT' name='attr_sheetTab' data-i18n-title="sheet-configuration" title="Sheet Configuration" value='2' /><span class="sheet-bg">x</span>
             &nbsp;&nbsp;<input type='radio' class='sheet-tab sheet-releaseN' name='attr_sheetTab' data-i18n-title="release-notes" title="Release Notes" value='5' /><span class="sheet-bg">N</span>
-            &nbsp;&nbsp;<input type='radio' class='sheet-tab sheet-documentatioN' name='attr_sheetTab' data-i18n-title="sheet-documentation" title="Sheet Documentation" value='6' /><span class="sheet-bg">i</span>
-			<button class="sheet-benniesxp" type="roll" name="roll_convertBennies" value="&{template:emote} {{name=@{character_name}}} {{does=rolls for XP on ?{Number of Bennies|1} un/spent bennies and gets [[?{Number of Bennies|1}d6>5]] extra experience point(s)!}}">S</button>
+            &nbsp;&nbsp;<input type='radio' class='sheet-tab sheet-documentatioN' name='attr_sheetTab' data-i18n-title="sheet-documentation" title="Sheet Documentation" value='6' /><span class="sheet-bg">i</span>-->
+			<input type='radio' class='sheet-characterT' name='attr_sheetTab' style="display: none;" value='1' checked />
+            <input type="radio" class="sheet-journalT" name="attr_sheetTab" style="display: none;" value="4" />
+            <input type='radio' class='sheet-vehiclesT' name='attr_sheetTab' style="display: none;" value='3' />
+            <input type='radio' class='sheet-configT' name='attr_sheetTab' style="display: none;" value='2' />
+            <input type='radio' class='sheet-releaseN' name='attr_sheetTab' style="display: none;" value='5' />
+            <input type='radio' class='sheet-documentatioN' name='attr_sheetTab' style="display: none;" value='6' />
 			<!--<div class="sheet-toprow">
                 Trait Test Modifier:
                 Damage Modifier:
@@ -4459,7 +4520,7 @@
     					    </div>
     					    <!-- Pace -->
     					    <div class="sheet-basederived">
-    					        <div class="sheet-derivelabel"><button class="sheet-traitbutton sheet-deriveflexbutton" type='roll' name='roll_RunningRoll' title="@{RunningRoll}" value='&{template:runs} @{rolltrun}' data-i18n="pace">&nbsp;Pace</button></div>
+    					        <div class="sheet-derivelabel"><button class="sheet-traitbutton sheet-deriveflexbutton" type='roll' name='roll_RunningRoll' title="@{RunningRoll}" value='&{template:emote} {{name=@{character_name}}} {{does=^{running-text-before-number} [[@{paceCur}+@{runningDie}]] ^{running-text-after-number} }}' data-i18n="pace">&nbsp;Pace</button></div>
     					        <div class="sheet-derivebase"><input type="number" name="attr_pace" title="@{pace}" class="sheet-derivedStat" style="text-align: center;" value="6" /></div>
     							<div class="sheet-derivemod"><input type="number" name="attr_paceMod" title="@{paceMod}" class="sheet-derivedStat" value="0" /></div>
     							<div class="sheet-derivecurrent"><input type="number" name="attr_paceCur" title="@{paceCur}" class="sheet-derivedStat" value="" readonly />
@@ -4823,21 +4884,24 @@
                                 </div>
                             </fieldset>
                         </div>
-                        <h1 class='sheet-colHeader' style="margin-top:-35px;" data-i18n="advancements">Advancements</h1>
-                        <input type="checkbox" class="sheet-hideAdv" name="attr_hideAdv" /><span class="sheet-showhide"></span>
-                        <div class='sheet-base sheet-advancements'>
-                            <div class="sheet-xp">
-                                <input type="checkbox" class="sheet-useXP" name="attr_useXP" style="display: none;" value="1" />
-                                <h4 class='sheet-trackXP' data-i18n="experience-points-abbr-u">XP</h4>
-                                <h4 class='sheet-advances' data-i18n="advance">Advance</h4>
+                        <input type='checkbox' name='attr_advanceonjournal' class="sheet-advanceonjournal" style='display: none;' />
+                        <div class="sheet-showadvancements">
+                            <h1 class='sheet-colHeader' style="margin-top:-35px;" data-i18n="advancements">Advancements</h1>
+                            <input type="checkbox" class="sheet-hideAdv" name="attr_hideAdv" /><span class="sheet-showhide"></span>
+                            <div class='sheet-base sheet-advancements'>
+                                <div class="sheet-xp">
+                                    <input type="checkbox" class="sheet-useXP" name="attr_useXP" style="display: none;" value="1" />
+                                    <h4 class='sheet-trackXP' data-i18n="experience-points-abbr-u">XP</h4>
+                                    <h4 class='sheet-advances' data-i18n="advance">Advance</h4>
+                                </div>
+                                <div class="sheet-advancement">
+                                    <h4 data-i18n="advancement">Advancement</h4>
+                                </div>
+                                <fieldset class="repeating_advancement">
+                                        <input class="sheet-xp sheet-advfield" type="text" name="attr_tookat" title="@{repeating_advancement_$#_tookat}" />
+                                        <input class="sheet-advancement sheet-advfield" type="text" name="attr_advancement" title="@{repeating_advancement_$#_advancement}" />
+                                </fieldset>
                             </div>
-                            <div class="sheet-advancement">
-                                <h4 data-i18n="advancement">Advancement</h4>
-                            </div>
-                            <fieldset class="repeating_advancement">
-                                    <input class="sheet-xp sheet-advfield" type="text" name="attr_tookat" title="@{repeating_advancement_$#_tookat}" />
-                                    <input class="sheet-advancement sheet-advfield" type="text" name="attr_advancement" title="@{repeating_advancement_$#_advancement}" />
-                            </fieldset>
                         </div>
                     </div>
                 </div>
@@ -5398,10 +5462,36 @@
 				</div>
     			<!-- End Hero's Journey -->
     			<!-- Notes -->
-				<div class="sheet-standardDiv">
-					<h4 class="sheet-subsectionHeader" data-i18n="notes">Notes</h4>
-					<textarea name="attr_CharNotes" class="sheet-standardTextArea" title="@{CharNotes}"></textarea>
-				</div>
+                <div class="sheet-flexdiv">
+                    <div class="sheet-charnotes">
+    					<h4 class="sheet-subsectionHeader" data-i18n="notes">Notes</h4>
+    					<textarea name="attr_CharNotes" class="sheet-standardTextArea" title="@{CharNotes}"></textarea>
+                    </div>
+                    <input type='checkbox' name='attr_advanceonjournal' class="sheet-advanceonjournal" style='display: none;' />
+                    <div class="sheet-journaladvances">
+                        <div class="sheet-buttonwrapper">
+                            <button type="action" name="act_hideadvance" class="sheet-showhidebutton"><span name="attr_journaladvancehideicon"></span></button>
+                        </div>
+                        <h1 class='sheet-colHeader' data-i18n="advancements">Advancements</h1>
+                        <!--<input type="checkbox" class="sheet-hideAdv" name="attr_hideAdv" /><span class="sheet-showhide"></span>-->
+                        <input type="checkbox" class="sheet-hideAdv" name="attr_hideAdv" style="display: none;" />
+                        <div class='sheet-base sheet-jadvancements'>
+                            <div class="sheet-xp">
+                                <input type="checkbox" class="sheet-useXP" name="attr_useXP" style="display: none;" value="1" />
+                                <h4 class='sheet-trackXP' data-i18n="experience-points-abbr-u">XP</h4>
+                                <h4 class='sheet-advances' data-i18n="advance">Advance</h4>
+                            </div>
+                            <div class="sheet-advancement">
+                                <h4 data-i18n="advancement">Advancement</h4>
+                            </div>
+                            <fieldset class="repeating_advancement">
+                                    <input class="sheet-xp sheet-advfield" type="text" name="attr_tookat" title="@{repeating_advancement_$#_tookat}" />
+                                    <input class="sheet-advancement sheet-advfield" type="text" name="attr_advancement" title="@{repeating_advancement_$#_advancement}" />
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
     			<!-- Party Bag -->
 				<input type="checkbox" class="sheet-usePartyBag" style="display:none;" name="attr_usePG" checked />
 				<div class="sheet-PartyBag sheet-standardDiv">
@@ -6283,7 +6373,7 @@
 											</div>
 										</div>
 										<!-- Hidden Fields for the roll button(s), etc -->
-										<input type='hidden' name='attr_raweaponroll' />
+										<input type='hidden' name='attr_raweaponroll' value="@{radamageOnly}" />
 										<input type='hidden' name='attr_raskillNDamage' value="&{template:roll} {{trait=Fighting}} {{source=@{raweapon}}} @{rolltFighting} {{button=y}} {{DmgRoll=[Roll Damage](~repeating_raweapons_radmg) }}" /> <!--Used for Skill and Damage roll -->
 										<input type='hidden' name='attr_radamageOnly' value='@{radmgTemplate}' /> <!-- Used for Damage Only -->
 										<!-- Build the Damage Roll Template Info -->
@@ -6380,6 +6470,7 @@
 							<option value="1">Atk^ roll query sorted Low to High</option>
 							<option value="2">Atk^ always roll max (no roll query)</option>
 						</select>
+                        <label class='sheet-miscItem'><input type='checkbox' class="sheet-advanceonjournal" name='attr_advanceonjournal' /> <span data-i18n="move-advances-to-journal-tab">Move Advances to the Journal Tab</span></label>
     			        <label class='sheet-miscItem'><input type="checkbox" class="sheet-hideArcanum" name="attr_ArcanumTab" style="width: 15px;"> <span data-i18n="hide-powers-section">Hide Powers Section</span></label>
     			        <label class='sheet-miscItem'><input type="checkbox" name="attr_promptmods" title="Wounds, Fatigue, Distracted, and Encumbrance are not part of Misc. Modifiers and are accounted for automatically" /> <span data-i18n="prompt-modifiers-text">Prompt for Misc. Modifiers</span></label>
 						<label class='sheet-miscItem'><input type="checkbox" name="attr_useBGPhysicalDesc" checked /> <span data-i18n="show-background-description">Show Background and Description</span></label>
@@ -6561,6 +6652,7 @@
                         <input type='checkbox' class="sheet-usegritty" name='attr_gritty' value="{{getgritty=gritty}}" style="display: none;" />
                         <label class="sheet-srmItem sheet-injurytable" data-i18n-title="injury-table-name">Injury Table Name: <input type='text' class="sheet-injury" name="attr_injurytablename" /></label>
                         <label class="sheet-srmItem" data-i18n-title="use-xp"><input type="checkbox" name="attr_setrank" /><span data-i18n="manually-set-rank">Manually set Rank</span></label>
+                        <label class="sheet-srmItem"><input type="checkbox" class="sheet-useCharisma" name="attr_paceignoreswounds" /><span data-i18n="pace-ignores-wounds">Pace Ignores Wounds</span></label>
 						<input type="checkbox" class="sheet-usexp" name="attr_usexp" style="display: none;" checked />
     				    <label class="sheet-srmItem sheet-xpmod" data-i18n-title="roll-for-extra-xp-left-text"><input type='checkbox' name='attr_bennies' class='sheet-Bennies' value='1' /><span data-i18n="roll-extra-xp-for-bennies">Roll XP for un-/spent Bennies</span></label>
     				    <label class="sheet-srmItem" data-i18n-title="variable-bonus-damage-die"><input type="checkbox" class="sheet-useRaiseHB" name="attr_RaiseHBRule" value="1" /><span data-i18n="variable-bonus-damage-raise-based">Variable Bonus Damage (Raise based)</span></label>
@@ -7010,7 +7102,7 @@
 	</div>
 </rolltemplate>
 
-<rolltemplate class="sheet-rolltemplate-runs">
+<rolltemplate class="sheet-rolltemplate-running">
 	<div class="sheet-emoteish">
 		{{name}} <span data-i18n="runs">runs for</span> {{roll}} <span data-i18n="inches">inches</span>.
 	</div>

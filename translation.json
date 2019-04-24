@@ -1014,5 +1014,9 @@
     "agility-roll-bug": "Agility roll was odd when Attributes were collapsed",
     "occult-roll-bug": "Occult rolls had an error",
 	"injury-roll": "Injury Roll",
-	"use-gritty-damage": "Use Gritty Damage"
+	"use-gritty-damage": "Use Gritty Damage",
+	"move-advances-to-journal-tab": "Move Advances to the Journal Tab",
+	"running-text-before-number": "runs for",
+	"running-text-after-number": "inches",
+	"pace-ignores-wounds": "Pace ignore wounds"
 }
