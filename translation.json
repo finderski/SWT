@@ -1018,5 +1018,6 @@
 	"move-advances-to-journal-tab": "Move Advances to the Journal Tab",
 	"running-text-before-number": "runs for",
 	"running-text-after-number": "inches",
-	"pace-ignores-wounds": "Pace ignore wounds"
+	"pace-ignores-wounds": "Pace ignore wounds",
+	"wild-card-icon-info": "Wild Card Icon can be up to two (2) characters, including unicode. Some examples include (copy/paste from below):"
 }

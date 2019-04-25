@@ -6504,13 +6504,13 @@
                         <!--<label class='sheet-miscItem'><input type="checkbox" name="attr_whisperrolls" value='1' style="width: 15px;"> <span data-i18n="whisper-all-rolls-to-gm">Whisper all rolls to GM</span></label>-->
                         <input type='hidden' name='attr_whisperall' />
                         <label class='sheet-miscItem'>
-            			    <span data-i18n="wild-card-icon">Wild Card Icon</span>: <select name='attr_WCI' class="sheet-wcIcon">
+            			    <span data-i18n="wild-card-icon">Wild Card Icon</span>: <!--<select name='attr_WCI' class="sheet-wcIcon">
             			        <option value="⊛">⊛</option>
             			        <option value="✪">✪</option>
             			        <option value="♕">♕</option>
             			        <option value="†">†</option>
             			        <option value="༒">༒</option>
-            			    </select>
+            			    </select>--><input type='text' class="sheet-wci" name='attr_WCI' maxlength="2" />
             			</label>
             			<label class="sheet-miscItem"><button type="roll" class="sheet-APIOutput" name="roll_apifield" value="!deal-init --help">i</button><span data-i18n="api-initiative-edge">API Iniative Edges</span> <input class="sheet-standard" type="text" title="@{InitEdges}" name="attr_InitEdges"/></label>
     			    </div>
@@ -6879,6 +6879,8 @@
                                 <li data-i18n='hide-sections-explanation'>Hide different sections and tabs (e.g. Powers and Vehicles)</li>
                                 <li data-i18n='configure-modifiers-explanation'>Configure modifiers; the sheet can prompt for roll modifiers and you can choose to have them display in the roll template when rolls are made</li>
 								<li data-i18n='configure-rate-of-fire-abbr-rolling'>Configure Rate of Fire rolling</li>
+                                <li data-i18n="wild-card-icon-info">Wild Card Icon can be up to two (2) characters, including unicode. Some examples include (copy/paste from below):</li>
+                                <textarea class="sheet-configtextarea" readonly name="attr_iconexamples">⊛ ✪ ♕ † ༒</textarea>
 								<li data-i18n='configure-api-settings'>Configure API settings</li>
                             </ul>
                         <li data-i18n='additional-derived-stats'>Additional Derived Stats</li>
@@ -7119,5 +7121,13 @@
     <div class="sheet-card">
         <h2 data-i18n="injury-roll">Injury Roll</h2>
         <div class='sheet-injuryresult'>{{result}}</div>
+    </div>
+</rolltemplate>
+<rolltemplate class="sheet-rolltemplate-statblock">
+    <div class="sheet-statblockheader">
+        <h2>{{name}}</h2>
+    </div>
+    <div class="sheet-statblockbod">
+
     </div>
 </rolltemplate>

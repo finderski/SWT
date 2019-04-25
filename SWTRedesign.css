@@ -3494,6 +3494,18 @@ input.sheet-releasenotes:not(:checked) + span.sheet-releasenotes::before {
 .sheet-infotable th {
     background-color: silver;
 }
+
+.sheet-configtextarea {
+    font-size: 2em;
+    max-width: 145px;
+    max-height: 25px;
+    resize: none;
+}
+
+.sheet-wci {
+    width: 50px;
+    font-size: 1.35em;
+}
 /*----------- End Documentation Stuff -----------*/
 
 /*----------- Start ETU Stuff -----------*/
@@ -4232,5 +4244,14 @@ label.sheet-ddmenu:hover {
     align-items: center;
     height: 250px;
     text-align: center;
+}
+
+.sheet-rolltemplate-statblock .sheet-statblockheader,
+.sheet-rolltemplate-statblock .sheet-statblockbod {
+    background-color: #efebe0;
+}
+
+.sheet-rolltemplate-statblock .sheet-statblockheader {
+    background-image: url();
 }
 /*----------- End Roll Template --------------------*/
