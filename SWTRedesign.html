@@ -2655,6 +2655,11 @@
                     descStatBlock();
                     setAttrs({initdesc: "1"});
                 }
+                if(v.initskills === "0") {
+                    console.log("⚠⚠ Character Skills Not Initilized...create it ⚠⚠");
+                    skillsStatBlock();
+                    setAttrs({initskills: "1"});
+                }
             }
         });
     });
@@ -2687,22 +2692,93 @@
             let charskills = '';
             for(let i = 0; i < staticlist.length; i++) {
                 //cycle through the array
-                if (i === 9) {
-                    //on Fighting
+                if (staticlist[i] === "staticFighting" || staticlist[i] === "staticAcademics" || staticlist[i] === "staticCommonKnowledge" || staticlist[i] === "staticLanguage") {
+                    switch(staticlist[i]) {
+                        case 'staticFighting':
+                            if(charskills.length < 1) {
+                                //no skills added to the list yet
+                                charskills = "[@{fightingname} @{fighting_display}](~tFightingRoll)";
+                            }
+                            else {
+                                charskills += ", [@{fightingname} @{fighting_display}](~tFightingRoll)";
+                            }
+                            break;
+                        case 'staticAcademics':
+                            if(v[staticlist[i]] != "0") {
+                                if(charskills.length < 1) {
+                                    //no skills added to the list yet
+                                    charskills = "[@{academicsname} @{academicsskill_display}](~tAcademicsRoll)";
+                                }
+                                else {
+                                    charskills += ", [@{academicsname} @{academicsskill_display}](~tAcademicsRoll)";
+                                }
+                            }
+                            break;
+                        case 'staticCommonKnowledge':
+                            if(v[staticlist[i]] != "0") {
+                                if(charskills.length < 1) {
+                                    //no skills added to the list yet
+                                    charskills = "[@{common-knowledgename} @{commonknowledge_display}](~tCommonKnowledgeRoll)";
+                                }
+                                else {
+                                    charskills += ", [@{common-knowledgename} @{commonknowledge_display}](~tCommonKnowledgeRoll)";
+                                }
+                            }
+                            break;
+                        case 'staticLanguage':
+                            if(v[staticlist[i]] != "0") {
+                                if(charskills.length < 1) {
+                                    //no skills added to the list yet
+                                    charskills = "[@{native-languagename} @{language_display}](~tLanguageRoll)";
+                                }
+                                else {
+                                    charskills += ", [@{native-languagename} @{language_display}](~tLanguageRoll)";
+                                }
+                            }
+                            break;
+                        default:
+                            console.log("Nothing to report");
+                    }
+                }
+                else if(v[staticlist[i]] != "0") {
+                    //skill is turned on
+                    let skillname = staticlist[i];
+                    let uskillname = staticlist[i];
+                    skillname = skillname.replace('static','');
+                    uskillname = uskillname.replace('static','');
+                    skillname = skillname.toLowerCase();
                     if(charskills.length < 1) {
                         //no skills added to the list yet
-                        charskills = "[@{fightingname} @{fighting_display}](~tFightingRoll)";
+                        charskills = `[@{${skillname}name} @{${skillname}_display}](~t${uskillname}Roll)`;
                     }
                     else {
-                        charskills += ", [@{fightingname} @{fighting_display}](~tFightingRoll)";
+                        charskills += `, [@{${skillname}name} @{${skillname}_display}](~t${uskillname}Roll)`;
                     }
                 }
-                else(v[staticlist[i]] != "0") {
-                    //skill is turned on
+                else {
+                    console.log(staticlist[i]+" isn't a shown character skill");
                 }
             }
+            //Need to do custom skill
+            getSectionIDs("repeating_skills", function(idArray) {
+                for (a = 0; a < idArray.length; a++) {
+                    if(charskills.length < 1) {
+                        charskills = `[@{repeating_skills_${idArray[a]}_SkillName} @{repeating_skills_${idArray[a]}_skillnamerank_display}](~repeating_skills_${idArray[a]}_tSkillRoll)`;
+                    }
+                    else {
+                        charskills += `, [@{repeating_skills_${idArray[a]}_SkillName} @{repeating_skills_${idArray[a]}_skillnamerank_display}](~repeating_skills_${idArray[a]}_tSkillRoll)`;
+                    }
+                }
+                setAttrs({ charskills: charskills });
+            });
         });
     }
+
+    staticlist.forEach(staticlist => {
+        on(`change:${staticlist} change:repeating_skills remove:repeating_skills`, function() {
+            skillsStatBlock();
+        })
+    });
     //End Statblock stuff
 
 </script>
@@ -2714,6 +2790,7 @@
 <input type="hidden" name="attr_chardesc" value="{{name=@{character_name}}}" />
 <input type="hidden" name="attr_charatts" value="[^{agility} @{agility_display}](~tAgilityRoll), [^{smarts} @{smarts_display}](~tSmartRoll), [^{spirit} @{spirit_display}](~tSpirRoll), [^{strength} @{strength_display}](~tStrengthRoll), [^{vigor} @{vigor_display}](~tVigorRoll)" />
 <input type="hidden" name="attr_initskills" value="0" />
+<input type="hidden" name="attr_charskills" />
 <input type="hidden" name="attr_initderived" value="0" />
 <input type="hidden" name="attr_initgear" value="0" />
 <input type="hidden" name="attr_inithindrances" value="0" />
@@ -2746,7 +2823,7 @@
                     <input type="checkbox" class="sheet-useBenniesXP" name="attr_bennies" value="1" style="display: none;" />
                     <button class="sheet-benniesxp" type="roll" name="roll_convertBennies" value="&{template:emote} {{name=@{character_name}}} {{does=rolls for XP on ?{Number of Bennies|1} un/spent bennies and gets [[?{Number of Bennies|1}d6>5]] extra experience point(s)!}}">S</button>
                     <input class="sheet-isWC" type="hidden" name="attr_is_npc" />
-                    <button class="sheet-statblock" type="roll" name="roll_fullstatblock" value="&{template:statblock} @{chardesc} {{charatts=@{charatts}}}"><span class="sheet-showWCicon" name="attr_WCI"></span><img style="height: 28px;" src="http://imgsrv.roll20.net/?src=github.com/finderski/SWT/blob/master/BackgroundImages/statblock_profile.png%3Fraw%3Dtrue"</button>
+                    <button class="sheet-statblock" type="roll" name="roll_fullstatblock" value="&{template:statblock} @{chardesc} {{charatts=@{charatts}}} {{charskills=@{charskills}}}"><span class="sheet-showWCicon" name="attr_WCI"></span><img style="height: 28px;" src="http://imgsrv.roll20.net/?src=github.com/finderski/SWT/blob/master/BackgroundImages/statblock_profile.png%3Fraw%3Dtrue"</button>
                 </div>
                 <div class="sheet-docbuttons">
                     <button type="action" name="act_releasetab5" class="sheet-topbuttons">N</button>
