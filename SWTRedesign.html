@@ -2644,9 +2644,55 @@
         });
     });
 
+    //Statblock Stuff
+    on("sheet:opened", function() {
+        getAttrs(["initstatblock","initdesc","initatts","initskills","initderived","initgear","inithindrances","initedges"], function(v) {
+            if(v.initstatblock === "0") {
+                //stat block isn't fully initialized
+                console.log("⚠⚠ Stat Block Not Initilized...create it ⚠⚠");
+                if(v.initdesc === "0") {
+                    console.log("⚠⚠ Character Description Not Initilized...create it ⚠⚠");
+                    descStatBlock();
+                    setAttrs({initdesc: "1"});
+                }
+            }
+        });
+    });
+
+    const descStatBlock = function() {
+        let chardesc = "{{name}}";
+        getAttrs(["is_npc","physdescription"], function(v) {
+            if(v.is_npc === "0") {
+                //is Wild Card
+                chardesc +=" {{wci=@{WCI}}}";
+            }
+            let physdesc = v.physdescription;
+            if(physdesc.lengh > 0) {
+                chardesc += " {{description=@{physdescription}}}"
+            }
+            setAttrs({chardesc: chardesc});
+        });
+    }
+
+    on("change:is_npc change:physdescription", function() {
+        descStatBlock();
+    });
+    //End Statblock stuff
+
 </script>
 <input type='hidden' name='attr_dopay' value="init" />
 <input type='text' style='display: none;' name='attr_wdNum' value='1' />
+<!-- Stat Block Fields -->
+<input type="hidden" name="attr_initstatblock" value="0" />
+<input type="hidden" name="attr_initdesc" value="0" />
+<input type="hidden" name="attr_chardesc" value="{{name=@{character_name}}}" />
+<input type="hidden" name="attr_initatts" value="0" />
+<input type="hidden" name="attr_initskills" value="0" />
+<input type="hidden" name="attr_initderived" value="0" />
+<input type="hidden" name="attr_initgear" value="0" />
+<input type="hidden" name="attr_inithindrances" value="0" />
+<input type="hidden" name="attr_initedges" value="0" />
+<!-- End Stat Block Fields -->
 <div class='sheet-maindiv'>
     <input type="checkbox" class="sheet-useBackground" style="display: none;" name="attr_background" value="1" checked />
     <input type="checkbox" class="sheet-useBackground" style="display: none;" name="attr_background" value="2" />
@@ -2702,7 +2748,7 @@
                 XP/Rank:
             </div>-->
         	<div class='sheet-character'> <!--Character Sheet Tab-->
-            	<div class='sheet-left' style='width: 250px;'>
+            	<div class='sheet-left'>
                     <!--Logo-->
                     <!--<img src="http://i.imgur.com/iwIoTlT.png" />-->
                     <input type="radio" name="attr_logo" value="1" title="Savage Worlds Deluxe" checked style="display:none;"/>
@@ -7123,11 +7169,18 @@
         <div class='sheet-injuryresult'>{{result}}</div>
     </div>
 </rolltemplate>
+
 <rolltemplate class="sheet-rolltemplate-statblock">
     <div class="sheet-statblockheader">
-        <h2>{{name}}</h2>
+        <h2>{{#wci}}{{wci}} {{/wci}}{{name}}</h2>
     </div>
     <div class="sheet-statblockbod">
-
+        {{#description}}<div class="sheet-justify">{{description}}</div>{{/description}}
+        {{#charatts}}<div class="sheet-bodsection">**<span data-i18n="attributes">Attributes</span>**: {{charatts}}</div>{{/charatts}}
+        {{#charskills}}<div class="sheet-bodsection">**<span data-i18n="skills">Skills</span>**: {{charskills}}</div>{{/charskills}}
+        {{#charderived}}<div class="sheet-bodsection">{{charderived}}</div>{{/charderived}}
+        {{#chargear}}<div class="sheet-bodsection">**<span data-i18n="gear">Gear</span>**: {{chargear}}</div>{{/chargear}}
+        {{#charhindrances}}<div class="sheet-bodsection">**<span data-i18n="hinddrances">Hindrances</span>**: {{charhindrances}}</div>{{/charhindrances}}
+        {{#charedges}}<div>**<span data-i18n="edges">Edges</span>**: {{charedges}}</div>{{/charedges}}
     </div>
 </rolltemplate>

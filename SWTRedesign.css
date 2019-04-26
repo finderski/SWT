@@ -4246,12 +4246,41 @@ label.sheet-ddmenu:hover {
     text-align: center;
 }
 
-.sheet-rolltemplate-statblock .sheet-statblockheader,
-.sheet-rolltemplate-statblock .sheet-statblockbod {
-    background-color: #efebe0;
+.sheet-rolltemplate-statblock {
+    background: url(http://imgsrv.roll20.net/?src=github.com/finderski/SWT/blob/master/BackgroundImages/SWADE_Card.jpg%3Fraw%3Dtrue) top left;
+    background-size: 250px;
+    background-repeat: no-repeat;
+    align-items: center;
+    border: 1px solid darkgoldenrod;
+    margin: none;
+    padding: none;
+}
+
+.sheet-rolltemplate-statblock .sheet-statblockheaer h2 {
+    width: 100%;
+    text-align: center;
 }
 
 .sheet-rolltemplate-statblock .sheet-statblockheader {
-    background-image: url();
+    display: flex;
+    background: url(https://github.com/finderski/SWT/blob/master/BackgroundImages/notebook-ripped-shadow-full.png?raw=true) top left;
+    background-size: 250px 90px;
+    height: 90px;
+    background-repeat: no-repeat;
+    align-items: center;
+}
+
+.sheet-rolltemplate-statblock .sheet-statblockbod {
+    padding: 0px 5px 5px 5px;
+}
+
+.sheet-rolltemplate-statblock .sheet-justify {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.sheet-rolltemplate-statblock .sheet-bodsection {
+    margin: 0 5px 10px 15px;
+    font-size: .85em;
 }
 /*----------- End Roll Template --------------------*/
