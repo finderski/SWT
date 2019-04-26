@@ -409,7 +409,8 @@ button[type=roll].sheet-hindranceOutput,
 button[type=roll].sheet-edgeOutput,
 button[type=roll].sheet-shipcrewbutton,
 button[type=roll].sheet-APIOutput,
-button[type=roll].sheet-benniesxp {
+button[type=roll].sheet-benniesxp,
+button[type=roll].sheet-statblock {
     border: none;
     background-color: transparent;
     background-image: none;
@@ -426,7 +427,8 @@ button[type=roll].sheet-hindranceOutput::before,
 button[type=roll].sheet-shipcrewbutton::before,
 button[type=roll].sheet-edgeOutput::before,
 button[type=roll].sheet-APIOutput::before,
-button[type=roll].sheet-benniesxp::before {
+button[type=roll].sheet-benniesxp::before,
+button[type=roll].sheet-statblock::before {
     content: '';
 }
 
@@ -857,8 +859,8 @@ button[type=roll].sheet-benniesxp {
     margin: 0px 2px 2px 2px;
     width: 31%;
     -webkit-box-flex: 1;
-	    -ms-flex: 1 0 31%;
-	        flex: 1 0 31%%;
+	-ms-flex: 1 0 31%;
+	flex: 1 0 31%;
 }
 
 .sheet-conditionlabel {
@@ -4173,7 +4175,7 @@ label.sheet-ddmenu:hover {
     font-style: italic;
 }
 
-.sheet-rolltemplate-roll .sheet-templateButton > a[href^="~"],
+/*.sheet-rolltemplate-roll .sheet-templateButton > a[href^="~"],
 .sheet-rolltemplate-damage .sheet-templateButton > a[href^="~"] {
     background-color: #900C3F;
     font-weight: bold;
@@ -4192,15 +4194,7 @@ label.sheet-ddmenu:hover {
 	margin: 5px;
 }
 
-.sheet-rolltemplate-statblock a[href^='~'] {
-    background-color:transparent;
-    border:0;
-    color:#ce0f69;
-    display:inline;
-    padding:0;
-}
-
-.sheet-rolltemplate-statblock .inlinerollresult,
+.sheet-rolltemplate-statblock .inlinerollresult,*/
 .sheet-rolltemplate-gritty .inlinerollresult {
     background-color: transparent;
     border: inherit;
@@ -4247,8 +4241,8 @@ label.sheet-ddmenu:hover {
 }
 
 .sheet-rolltemplate-statblock {
-    background: url(http://imgsrv.roll20.net/?src=github.com/finderski/SWT/blob/master/BackgroundImages/SWADE_Card.jpg%3Fraw%3Dtrue) top left;
-    background-size: 250px;
+    background: url(http://imgsrv.roll20.net/?src=github.com/finderski/SWT/blob/master/BackgroundImages/newcardback.jpg%3Fraw%3Dtrue) top left;
+    background-size: 250px 100%;
     background-repeat: no-repeat;
     align-items: center;
     border: 1px solid darkgoldenrod;
@@ -4256,7 +4250,7 @@ label.sheet-ddmenu:hover {
     padding: none;
 }
 
-.sheet-rolltemplate-statblock .sheet-statblockheaer h2 {
+.sheet-rolltemplate-statblock h2.sheet-fullwidth {
     width: 100%;
     text-align: center;
 }
@@ -4277,10 +4271,34 @@ label.sheet-ddmenu:hover {
 .sheet-rolltemplate-statblock .sheet-justify {
     text-align: justify;
     text-justify: inter-word;
+    margin: 0 5px 10px 15px;
+    font-size: .85em;
 }
 
 .sheet-rolltemplate-statblock .sheet-bodsection {
     margin: 0 5px 10px 15px;
     font-size: .85em;
+}
+
+.sheet-statblock {
+    height: 28px;
+}
+
+.sheet-showWCicon {
+    display: none;
+}
+
+.sheet-isWC[value="0"] + button.sheet-statblock > .sheet-showWCicon {
+    display: inline-block;
+    font-size: 1.8em;
+}
+
+.sheet-rolltemplate-statblock a[href^='~'] {
+    background-color:transparent;
+    border: 0;
+    color: darkslategray;
+    display:inline;
+    padding:0;
+    text-decoration: underline;
 }
 /*----------- End Roll Template --------------------*/
