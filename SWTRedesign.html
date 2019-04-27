@@ -1,4 +1,4 @@
-<input type='hidden' name='attr_character_sheet' value='Savage Worlds Tabbed v3.3' />
+<input type='hidden' name='attr_character_sheet' value='Savage Worlds Tabbed v3.4' />
 <script type="text/worker">
     /*----- Things I need to Care For -----
     -- o Option to ignore encumbrance    --
@@ -638,6 +638,29 @@
     	        });
 	        });
         }
+        if (version < 3.4) {
+            //Need to update all derived stats to now use Sheetworkers
+	        setWildDie(); //set wdNum
+	        console.log("!!!! Setting WoundsMod !!!!");
+	        setWoundsMod("silent"); //set wounds
+	        setModSums(); //various mods variables used in sheet rolls, etc
+	        baseToughness();
+	        setToughness();
+	        setNToughness();
+	        setPace(); //set pace
+	        setCharisma(); //set charisma
+	        setAcademics();
+	        setSanity();
+	        setFame();
+	        setReason();
+	        setStatus();
+	        setGlory();
+	        setFirewall();
+	        setGrit();
+	        setCorruption();
+	        setStreetCred();
+	        setStrain();
+        }
 		else {
 	        console.log("!!! Sheet Already Upgraded !!!");
 	    }
@@ -1179,7 +1202,7 @@
 	}
 
 	//Set charisma
-	on("change:charisma change:charismamod", function() {
+	on("change:charisma change:charismamod change:usecharisma", function() {
 		setCharisma();
 	});
 
@@ -1195,7 +1218,7 @@
 	}
 
 	//Set Fame
-	on("change:fame change:famemod", function() {
+	on("change:fame change:famemod change:potsmFame", function() {
 		setFame();
 	});
 
@@ -1211,7 +1234,7 @@
 	}
 
 	//Set Academics
-	on("change:academics change:academicsmod", function() {
+	on("change:academics change:academicsmod change:change:useacademics", function() {
 		setAcademics();
 	});
 
@@ -1225,12 +1248,15 @@
 			let sanity_mod = parseInt(pvalue.sanityMod) || 0;
 			let totSpirit = spirit + sp_mod;
             let sanity_value = Math.floor(totSpirit/2) + 2;
-      		setAttrs({ sanityCur: sanity_value + sanity_mod  });
+      		setAttrs({
+                sanity: sanity_value,
+                sanityCur: sanity_value + sanity_mod
+            });
    		});
 	}
 
 	//Set Sanity
-	on("change:spirit change:spiritmod change:sanitymod", function() {
+	on("change:spirit change:spiritmod change:sanitymod change:tdsanity", function() {
 		setSanity();
 	});
 
@@ -1246,7 +1272,7 @@
 	}
 
 	//Set Reason
-	on("change:reason change:reasonmod", function() {
+	on("change:reason change:reasonmod change:ripreason", function() {
 		setReason();
 	});
 
@@ -1262,7 +1288,7 @@
 	}
 
 	//Set Status
-	on("change:status change:statusmod", function() {
+	on("change:status change:statusmod change:ripstatus", function() {
 		setStatus();
 	});
 
@@ -1278,7 +1304,7 @@
 	}
 
 	//Set Glory
-	on("change:glory change:glorymod", function() {
+	on("change:glory change:glorymod change:hfglory", function() {
 		setGlory();
 	});
 
@@ -1294,7 +1320,7 @@
 	}
 
 	//Set Firewall
-	on("change:firewall change:firewallmod", function() {
+	on("change:firewall change:firewallmod change:izfirewall", function() {
 		setFirewall();
 	});
 
@@ -1311,7 +1337,7 @@
 	}
 
 	//Set grit
-	on("change:rank change:gritmod", function() {
+	on("change:rank change:gritmod change:dlgrit", function() {
 		setGrit();
 	});
 
@@ -1327,7 +1353,7 @@
 	}
 
 	//Set Corruption
-	on("change:corruptionstat change:corruptionmod", function() {
+	on("change:corruptionstat change:corruptionmod change:corruption", function() {
 		setCorruption();
 	});
 
@@ -1345,7 +1371,7 @@
 	}
 
 	//Set street cred
-	on("change:rank change:streetcredmod", function() {
+	on("change:rank change:streetcredmod change:izstreetcred", function() {
 		setStreetCred();
 	});
 
@@ -1354,7 +1380,7 @@
 	}
 
 	// Calculate Strain
-	on('change:repeating_augmentation remove:repeating_augmentation',function(){
+	on('change:repeating_augmentation remove:repeating_augmentation change:izstrain',function(){
 		calcStrain();
 	});
 
@@ -2644,7 +2670,9 @@
         });
     });
 
-    //Statblock Stuff
+    /*****************************
+	* Skill Block functions
+	*****************************/
     on("sheet:opened", function() {
         getAttrs(["initstatblock","initdesc","initskills","initderived","initgear","inithindrances","initedges"], function(v) {
             if(v.initstatblock === "0") {
@@ -2656,9 +2684,14 @@
                     setAttrs({initdesc: "1"});
                 }
                 if(v.initskills === "0") {
-                    console.log("⚠⚠ Character Skills Not Initilized...create it ⚠⚠");
+                    console.log("⚠⚠ Character Skills Not Initilized...create them ⚠⚠");
                     skillsStatBlock();
                     setAttrs({initskills: "1"});
+                }
+                if(v.initderived === "0") {
+                    console.log("⚠⚠ Character Derived Stats Not Initilized...create them ⚠⚠");
+                    derivedStatBlock();
+                    setAttrs({initderived: "1"});
                 }
             }
         });
@@ -2779,6 +2812,41 @@
             skillsStatBlock();
         })
     });
+
+    const derivedstats = ["usecharisma","useacademics","Corruption","potsmFame","izFirewall","hfGlory","DLGrit","neuraltoughness","ripReason","tdsanity","ripStatus","izStrain","izStreetCred"];
+    const derivedlabels = ["Charisma","Academics","Corruption","Fame","Firewall","Glory","Grit","Neural Toughness","Reason","Sanity","Status","Strain","Street Cred"];
+    const derivedcurfields = ["@{charismaCur}","@{academicsCur}","@{corruptionCur}","@{fameCur}","@{FirewallCur}","@{gloryCur}","@{gritCur}","@{ntoughnesscur}","@{reasonCur}","@{sanityCur}","@{statusCur}","@{StrainCur}","@{StreetCredCur}"];
+    const derivedStatBlock = function() {
+        const toughnessstats = ["toughnessArmor","ntoughnessArmor"];
+        let valuelist = derivedstats.concat(toughnessstats);
+        let charderived = "[**^{pace}:** @{paceCur}](~RunningRoll); **^{parry}:** @{parryCur}; **^{toughness}:** @{toughnesscur}";
+        let dstat = '';
+        getAttrs(valuelist, function(v) {
+            if(v.toughnessArmor != "0") {
+                charderived += "(@{toughnessArmor})";
+            }
+            for(a=0; a < derivedstats.length; a++) {
+                dstat = v[derivedstats[a]];
+                dstatlab = derivedlabels[a];
+                console.log(`^^^ ${dstatlab}: ${dstat} ^^^`);
+                if(dstat != "0") {
+                    charderived += `; **${derivedlabels[a]}:** ${derivedcurfields[a]}`;
+                    if(dstatlab === "Neural Toughness") {
+                        console.log("Derived Stat: " + derivedstats[a]);
+                        //add armor
+                        charderived += `(@{ntoughnessArmor})`;
+                    }
+                }
+                else { console.log("Not needed for stat block");}
+            }
+            setAttrs({charderived: charderived});
+        });
+    }
+
+    on("change:toughnessarmor change:ntoughnessarmor change:usecharisma change:useacademics change:corruption change:potsmfame change:izfirewall change:hfglory change:dlgrit change:neuraltoughness change:ripreason change:tdsanity change:ripstatus change:izstrain change:izstreetcred", function() {
+        derivedStatBlock();
+    });
+
     //End Statblock stuff
 
 </script>
@@ -2792,9 +2860,15 @@
 <input type="hidden" name="attr_initskills" value="0" />
 <input type="hidden" name="attr_charskills" />
 <input type="hidden" name="attr_initderived" value="0" />
+<input type="hidden" name="attr_charderived" />
 <input type="hidden" name="attr_initgear" value="0" />
+<input type="hidden" name="attr_chargear" />
 <input type="hidden" name="attr_inithindrances" value="0" />
+<input type="hidden" name="attr_charhindrances" />
 <input type="hidden" name="attr_initedges" value="0" />
+<input type="hidden" name="attr_charedges" />
+<input type="hidden" name="attr_initspecabilities" value="0" />
+<input type="hidden" name="attr_charspecabilities" />
 <!-- End Stat Block Fields -->
 <div class='sheet-maindiv'>
     <input type="checkbox" class="sheet-useBackground" style="display: none;" name="attr_background" value="1" checked />
@@ -2823,7 +2897,7 @@
                     <input type="checkbox" class="sheet-useBenniesXP" name="attr_bennies" value="1" style="display: none;" />
                     <button class="sheet-benniesxp" type="roll" name="roll_convertBennies" value="&{template:emote} {{name=@{character_name}}} {{does=rolls for XP on ?{Number of Bennies|1} un/spent bennies and gets [[?{Number of Bennies|1}d6>5]] extra experience point(s)!}}">S</button>
                     <input class="sheet-isWC" type="hidden" name="attr_is_npc" />
-                    <button class="sheet-statblock" type="roll" name="roll_fullstatblock" value="&{template:statblock} @{chardesc} {{charatts=@{charatts}}} {{charskills=@{charskills}}}"><span class="sheet-showWCicon" name="attr_WCI"></span><img style="height: 28px;" src="http://imgsrv.roll20.net/?src=github.com/finderski/SWT/blob/master/BackgroundImages/statblock_profile.png%3Fraw%3Dtrue"</button>
+                    <button class="sheet-statblock" type="roll" name="roll_fullstatblock" value="&{template:statblock} @{chardesc} {{charatts=@{charatts}}} {{charskills=@{charskills}}} {{charderived=@{charderived}}}"><span class="sheet-showWCicon" name="attr_WCI"></span><img style="height: 28px;" src="http://imgsrv.roll20.net/?src=github.com/finderski/SWT/blob/master/BackgroundImages/statblock_profile.png%3Fraw%3Dtrue"</button>
                 </div>
                 <div class="sheet-docbuttons">
                     <button type="action" name="act_releasetab5" class="sheet-topbuttons">N</button>
@@ -4721,16 +4795,16 @@
     					        <div class="sheet-derivelabel" data-i18n="academics">Academics</div>
     					        <div class="sheet-derivebase"><input type="number" name="attr_academics" class="sheet-derivedStat" title="@{academics}" value="0"/></div>
     							<div class="sheet-derivemod"><input type="number" name="attr_academicsMod" class="sheet-derivedStat" title="@{academicsMod}" value="0"/></div>
-    							<div class="sheet-derivecurrent"><input type="number" name="attr_academicsCur" title="@{academicsCur}" class="sheet-derivedStat" value="@{academics} + @{academicsMod}" disabled="true" /></div>
+    							<div class="sheet-derivecurrent"><input type="number" name="attr_academicsCur" title="@{academicsCur}" class="sheet-derivedStat" readonly /></div>
     							<div class="sheet-derivemisc">&nbsp;</div>
     					    </div>
     					    <!-- Sanity -->
     					    <input type="checkbox" class="sheet-useSanity" name="attr_tdsanity" style="width: 15px; display: none;" />
     					    <div class="sheet-basederived sheet-Sanity">
     					        <div class="sheet-derivelabel" data-i18n="sanity">Sanity</div>
-    					        <div class="sheet-derivebase"><input type="number" name="attr_sanity" title="@{sanity}" class="sheet-derivedStat" value="floor((@{spirit}+@{spiritmod})/2)+2" disabled="true" /></div>
+    					        <div class="sheet-derivebase"><input type="number" name="attr_sanity" title="@{sanity}" class="sheet-derivedStat" readonly /></div>
     							<div class="sheet-derivemod"><input type="number" name="attr_sanityMod" title="@{sanityMod}" class="sheet-derivedStat" value="0" /></div>
-    							<div class="sheet-derivecurrent"><input type="number" name="attr_sanityCur" title="@{sanityCur}" class="sheet-derivedStat" value="@{sanity} + @{sanityMod}" disabled="true" /></div>
+    							<div class="sheet-derivecurrent"><input type="number" name="attr_sanityCur" title="@{sanityCur}" class="sheet-derivedStat" readonly /></div>
     							<div class="sheet-derivemisc">&nbsp;</div>
     					    </div>
     					    <!-- Fame -->
@@ -4739,7 +4813,7 @@
     					        <div class="sheet-derivelabel" data-i18n="fame">Fame</div>
     					        <div class="sheet-derivebase"><input class="sheet-derivedStat" type="number" name="attr_fame" title="@{fame}" value="0"/></div>
     							<div class="sheet-derivemod"><input type="number" name="attr_fameMod" title="@{fameMod}" class="sheet-derivedStat" value="0" /></div>
-    							<div class="sheet-derivecurrent"><input type="number" name="attr_fameCur" title="@{fameCur}" class="sheet-derivedStat" value="@{fame} + @{fameMod}" disabled="true" /></div>
+    							<div class="sheet-derivecurrent"><input type="number" name="attr_fameCur" title="@{fameCur}" class="sheet-derivedStat" readonly /></div>
     							<div class="sheet-derivemisc">&nbsp;</div>
     					    </div>
     					    <!-- Reason -->
@@ -4748,7 +4822,7 @@
     					        <div class="sheet-derivelabel" data-i18n="reason">Reason</div>
     					        <div class="sheet-derivebase"><input class="sheet-derivedStat" type="number" name="attr_reason" title="@{reason}" value="0"/></div>
     							<div class="sheet-derivemod"><input type="number" name="attr_reasonMod" title="@{reasonMod}" class="sheet-derivedStat" value="0" /></div>
-    							<div class="sheet-derivecurrent"><input type="number" name="attr_reasonCur" title="@{reasonCur}" class="sheet-derivedStat" value="@{reason} + @{reasonMod}" disabled="true" /></div>
+    							<div class="sheet-derivecurrent"><input type="number" name="attr_reasonCur" title="@{reasonCur}" class="sheet-derivedStat" readonly /></div>
     							<div class="sheet-derivemisc">&nbsp;</div>
     					    </div>
     					    <!-- Status -->
@@ -4757,7 +4831,7 @@
     					        <div class="sheet-derivelabel" data-i18n="status">Status</div>
     					        <div class="sheet-derivebase"><input class="sheet-derivedStat" type="number" name="attr_status" title="@{status}" value="0"/></div>
     							<div class="sheet-derivemod"><input type="number" name="attr_statusMod" title="@{statusMod}" class="sheet-derivedStat" value="0" /></div>
-    							<div class="sheet-derivecurrent"><input type="number" name="attr_statusCur" title="@{statusCur}" class="sheet-derivedStat" value="@{status} + @{statusMod}" disabled="true" /></div>
+    							<div class="sheet-derivecurrent"><input type="number" name="attr_statusCur" title="@{statusCur}" class="sheet-derivedStat" readonly /></div>
     							<div class="sheet-derivemisc">&nbsp;</div>
     					    </div>
     					    <!-- Glory -->
@@ -4766,7 +4840,7 @@
     					        <div class="sheet-derivelabel" data-i18n="glory">Glory</div>
     					        <div class="sheet-derivebase"><input class="sheet-derivedStat" type="number" name="attr_glory" title="@{glory}" value="0" /></div>
     							<div class="sheet-derivemod"><input type="number" name="attr_gloryMod" title="@{gloryMod}" class="sheet-derivedStat" value="0" /></div>
-    							<div class="sheet-derivecurrent"><input type="number" name="attr_gloryCur" title="@{gloryCur}" class="sheet-derivedStat" value="@{glory} + @{gloryMod}" disabled="true" /></div>
+    							<div class="sheet-derivecurrent"><input type="number" name="attr_gloryCur" title="@{gloryCur}" class="sheet-derivedStat" readonly /></div>
     							<div class="sheet-derivemisc">&nbsp;</div>
     					    </div>
     					    <!-- Firewall -->
@@ -4775,16 +4849,16 @@
     					        <div class="sheet-derivelabel" data-i18n="firewall">Firewall</div>
     					        <div class="sheet-derivebase"><input class="sheet-derivedStat" type="number" name="attr_Firewall" title="@{Firewall}" value="4"/></div>
     							<div class="sheet-derivemod"><input type="number" name="attr_FirewallMod" title="@{FirewallMod}" class="sheet-derivedStat" value="0" /></div>
-    							<div class="sheet-derivecurrent"><input type="number" name="attr_FirewallCur" title="@{FirewallCur}" class="sheet-derivedStat" value="@{Firewall} + @{FirewallMod}" disabled="true" /></div>
+    							<div class="sheet-derivecurrent"><input type="number" name="attr_FirewallCur" title="@{FirewallCur}" class="sheet-derivedStat" readonly /></div>
     							<div class="sheet-derivemisc">&nbsp;</div>
     					    </div>
     					    <!-- Grit -->
     					    <input type="checkbox" class="sheet-useGrit" name="attr_DLGrit" style="width: 15px; display: none;" />
     					    <div class="sheet-basederived sheet-Grit">
     					        <div class="sheet-derivelabel" data-i18n="grit">Grit</div>
-    					        <div class="sheet-derivebase"><input type="number" name="attr_grit" title="@{grit}" class="sheet-derivedStat" style='color: black;' value="@{rank}" disabled="true" /></div>
+    					        <div class="sheet-derivebase"><input type="number" name="attr_grit" title="@{grit}" class="sheet-derivedStat" style='color: black;' readonly /></div>
     							<div class="sheet-derivemod"><input type="number" name="attr_gritMod" title="@{gritMod}" class="sheet-derivedStat" value="0" /></div>
-    							<div class="sheet-derivecurrent"><input type="number" name="attr_gritCur" title="@{gritCur}" class="sheet-derivedStat" value="@{grit} + @{gritMod}" disabled="true" /></div>
+    							<div class="sheet-derivecurrent"><input type="number" name="attr_gritCur" title="@{gritCur}" class="sheet-derivedStat" readonly /></div>
     							<div class="sheet-derivemisc">&nbsp;</div>
     					    </div>
     					    <!-- Corruption -->
@@ -4793,12 +4867,11 @@
     					        <div class="sheet-derivelabel" data-i18n="corruption">Corruption</div>
     					        <div class="sheet-derivebase"><input type="number" name="attr_corruptionStat" title="@{corruptionStat}" class="sheet-derivedStat" style='color: black;' value="0" /></div>
     							<div class="sheet-derivemod"><input type="number" name="attr_corruptionMod" title="@{corruptionMod}" class="sheet-derivedStat" value="0" /></div>
-    							<div class="sheet-derivecurrent"><input type="number" name="attr_corruptionCur" title="@{corruptionCur}" class="sheet-derivedStat" value="@{corruptionStat} + @{corruptionMod}" disabled="true" /></div>
+    							<div class="sheet-derivecurrent"><input type="number" name="attr_corruptionCur" title="@{corruptionCur}" class="sheet-derivedStat" readonly /></div>
     							<div class="sheet-derivemisc">&nbsp;</div>
     					    </div>
     					    <!-- Street Cred -->
     					    <input type="checkbox" class="sheet-useStreetCred" style="width: 15px; display: none;" name="attr_izStreetCred" />
-
     					    <input type="checkbox" class="sheet-useStrain" style="width: 15px; display: none;" name="attr_izStrain" />
     					    <div class="sheet-basederived sheet-StreetCred sheet-Strain" style='font-weight: bold; font-size: .75em;'>
     					        <div class="sheet-derivelabel">&nbsp;</div>
@@ -4811,7 +4884,7 @@
     					        <div class="sheet-derivelabel" data-i18n="street-cred">Street Cred</div>
     					        <div class="sheet-derivebase"><input class="sheet-derivedStat" type="number" name="attr_StreetCred" title="@{StreetCred}" value="@{Rank}*2" readonly /></div>
     							<div class="sheet-derivemod"><input type="number" name="attr_StreetCredMod" title="@{StreetCredMod}" class="sheet-derivedStat" value="0" /></div>
-    							<div class="sheet-derivecurrent"><input type="number" name="attr_StreetCredCur" title="@{StreetCredCur}" class="sheet-derivedStat" value="@{StreetCred} + @{StreetCredMod}" disabled="true" /></div>
+    							<div class="sheet-derivecurrent"><input type="number" name="attr_StreetCredCur" title="@{StreetCredCur}" class="sheet-derivedStat" readonly /></div>
     							<div class="sheet-derivemisc"><input type="number" name="attr_maxStreetCredCur" title="@{maxStreetCredCur}" class="sheet-derivedStat" value="10" /></div>
     					    </div>
     					    <!-- Strain -->
@@ -4948,14 +5021,14 @@
     							</tr>
     							<tr class='sheet-taprow'>
     								<td>
-    								    <input type="number" name="attr_FirewallCur" title="@{FirewallCur}" value="@{Firewall} + @{FirewallMod}" disabled="true" style='width: 100%; text-align: center; border: none; background-color: none;' />
+    								    <input type="number" name="attr_FirewallCur" title="@{FirewallCur}" readonly style='width: 100%; text-align: center; border: none; background-color: none;' />
         								<input class='sheet-moreTAP' type='checkbox' name='attr_showFirewallConfig' /><span>y</span>
     								</td>
     								<td>
     								    <input type='number' name='attr_ams' value='4' class='sheet-derivedStat' style='width: 100%; text-align: center; border: none; background-color: none;' />
     								</td>
     								<td>
-    								    <input type="number" name="attr_ntoughnesscur" title="@{ntoughnesscur}" class="sheet-derivedStat" value="(@{ntoughness})+(@{ntufnessMod})+(@{ntoughnessArmor})" disabled="true" style='width: 100%; text-align: center; border: none; background-color: none;' />
+    								    <input type="number" name="attr_ntoughnesscur" title="@{ntoughnesscur}" class="sheet-derivedStat" readonly style='width: 100%; text-align: center; border: none; background-color: none;' />
     								    <input class='sheet-moreTAP' type='checkbox' name='attr_showNTConfig' /><span>y</span>
     								</td>
     								<td>
@@ -7287,5 +7360,6 @@
         {{#chargear}}<div class="sheet-bodsection">**<span data-i18n="gear">Gear</span>**: {{chargear}}</div>{{/chargear}}
         {{#charhindrances}}<div class="sheet-bodsection">**<span data-i18n="hinddrances">Hindrances</span>**: {{charhindrances}}</div>{{/charhindrances}}
         {{#charedges}}<div class="sheet-bodsection">**<span data-i18n="edges">Edges</span>**: {{charedges}}</div>{{/charedges}}
+		{{#charspecabilities}}<div class="sheet-bodsection">**<span data-i18n="special-abilities">Special Abilities</span>**: {{charspecabilities}}</div>{{/charspecabilities}}
     </div>
 </rolltemplate>
