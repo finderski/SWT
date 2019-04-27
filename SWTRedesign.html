@@ -106,11 +106,18 @@
 							let tRank = '1d'+v[`${fieldArray[i]}`]+'!';
 							let tDisplay = 'd'+v[`${fieldArray[i]}`];
 							let intMod = v[`${fieldModArray[i]}`];
-							if (intMod !== "0") {
-							    console.log(`==== ${repeatingField} intMod (should not be 0): ${intMod} ====`);
+                            intMod = parseInt(intMod)||0;
+							if (intMod > 0) {
+							    console.log(`==== ${repeatingField} intMod (should not be > 0): ${intMod} ====`);
 								tRank += '+'+intMod+'['+getfields[1]+']';
 								tDisplay += '+' + intMod;
 							}
+                            else if(intMod < 0) {
+                                console.log(`==== ${repeatingField} intMod (should not be < 0): ${intMod} ====`);
+								tRank += intMod+'['+getfields[1]+']';
+								tDisplay += intMod;
+                            }
+                            else { console.log("Mod is 0, so don't need to do anything");}
 							console.log("++++ Creating: "+sAttrRank+": "+tRank+" ++++");
 							console.log("++++ Creating: "+sAttrDisplay+": "+tDisplay+" ++++");
 							sattrs[sAttrRank]=tRank;
@@ -130,10 +137,16 @@
 	            let tRank = '1d'+v[field]+'!';
 	            let tDisplay = 'd'+v[field];
 	            let intMod = v[`${field}mod`];
-	            if(intMod !== "0") {
+                intMod = parseInt(intMod)||0;
+	            if(intMod > 0) {
     				tRank += '+'+intMod+'['+field+']';
     				tDisplay += '+' + intMod;
     			}
+                else if(intMod < 0) {
+                    tRank += intMod+'['+field+']';
+    				tDisplay += intMod;
+                }
+                else { console.log("Mod is 0, so don't need to do anything");}
 	            const sAttRank = field + '_rank', sAttDisplay = field + '_display';
     			sattrs[sAttRank]=tRank;
     			sattrs[sAttDisplay]=tDisplay;
@@ -2128,10 +2141,18 @@
 	            let tRank = '1d'+v[trait]+'!';
 	            let tDisplay = 'd'+v[trait];
 	            let intMod = v[`${trait}mod`];
-	            if(intMod !== "0") {
+                intMod = parseInt(intMod)||0;
+	            if(intMod > 0) {
+                    console.log("Mod is > 0...use +");
     				tRank += '+'+intMod+'[trait]';
     				tDisplay += '+' + intMod;
     			}
+                else if(intMod < 0) {
+                    console.log("Mod is < 0...use +");
+    				tRank += intMod+'[trait]';
+    				tDisplay += intMod;
+                }
+                else {console.log("Mod is 0...don't do anything");}
 	            const sAttRank = trait + '_rank', sAttDisplay = trait + '_display';
     			const sattrs = {};
     			sattrs[sAttRank]=tRank;
@@ -2693,6 +2714,11 @@
                     derivedStatBlock();
                     setAttrs({initderived: "1"});
                 }
+                if(v.initgear === "0") {
+                    console.log("⚠⚠ Character Gear Not Initilized...create them ⚠⚠");
+                    gearStatBlock();
+                    setAttrs({initgear: "1"});
+                }
             }
         });
     });
@@ -2847,6 +2873,104 @@
         derivedStatBlock();
     });
 
+    const armorfields = ["armorWorn","ArmorType","ArmorTypeProtection"];
+    const weaponfields = ["weapon","weapondamage",""]
+    const gearStatBlock = function() {
+        //Includes Armor, Weapons, Gear
+        console.log("Started gearStatBlock");
+        let chargear = '';
+        let gearvals = [];
+        let armorrows = [];
+        let weaponrows = [];
+        getSectionIDs(["armor"], function(armoridArray) {
+            console.log("Got Armor Section IDs");
+            for(a=0; a<armoridArray.length; a++) {
+                gearvals[gearvals.length] = `repeating_armor_${armoridArray[a]}_armorWorn`;
+                armorrows[armorrows.length] = `repeating_armor_${armoridArray[a]}_`;
+                weaponrows[weaponrows.length] = 'empty';
+            }
+            console.log("Armor ID Array: "+armoridArray);
+            getSectionIDs(["weapons"], function(weaponidArray) {
+                console.log("Got Weapon Section IDs");
+                console.log("Armor ID Array (again): "+armoridArray);
+                console.log("Weapon ID Array: "+weaponidArray);
+                for(b=0; b<weaponidArray.length; b++) {
+                    gearvals[gearvals.length] = `repeating_weapons_${weaponidArray[b]}_weaponcarried`;
+                    weaponrows[weaponrows.length] = `repeating_weapons_${weaponidArray[b]}_`;
+                }
+                getSectionIDs(["gear"], function(gearidArray) {
+                    console.log("Got Gear Section IDs");
+                    console.log("gearvals: "+gearvals);
+                    console.log("Armor ID Array (again x2): "+armoridArray);
+                    console.log("Weapon ID Array (again): "+weaponidArray);
+                    console.log("Gear ID Array: "+gearidArray);
+                    getAttrs(gearvals, function(v) {
+                        console.log("Got Armor and Weapon Values");
+                        for(c=0; c<gearvals.length; c++) {
+                            console.log("Cycling through Armor and Weapons: "+c);
+                            if(c < armoridArray.length) {
+                                //getting Armor
+                                let worn = gearvals[c];
+                                console.log("⍚⍚⍚ Worn: "+worn+" ⍚⍚⍚");
+                                console.log("worn value: "+v[worn]);
+                                if (v[worn] !== "0") {
+                                    console.log("Armor is Worn");
+                                    if (chargear.length < 1) {
+                                        //First Item in List
+                                        chargear = `@{${armorrows[c]}ArmorType} (+@{${armorrows[c]}ArmorTypeProtection})`;
+                                    }
+                                    else {
+                                        //not first item in list
+                                        chargear += `, @{${armorrows[c]}ArmorType} (+@{${armorrows[c]}ArmorTypeProtection})`;
+                                    }
+                                }
+                                else { console.log("Armor is NOT Worn"); }
+                            }
+                            else {
+                                //getting weapons
+                                let carried = gearvals[c];
+                                console.log("⍚⍚⍚ carried: "+carried+" ⍚⍚⍚");
+                                if (v[carried] !== "0") {
+                                    console.log("Weapons is Carried");
+                                    if (chargear.length < 1) {
+                                        //First Item in List
+                                        chargear = `[@{${weaponrows[c]}weapon} (@{${weaponrows[c]}weapondamage})](~${weaponrows[c]}tWeapon)`;
+                                    }
+                                    else {
+                                        //not first item in list
+                                        chargear += `, [@{${weaponrows[c]}weapon} (@{${weaponrows[c]}weapondamage})](~${weaponrows[c]}tWeapon)`;
+                                    }
+                                }
+                                else { console.log("Weapon is NOT Carried"); }
+                            }
+                        }
+                        for(d=0; d<gearidArray.length; d++) {
+                            if (chargear.length < 1) {
+                                //First Item in List
+                                chargear = `@{repeating_gear_${gearidArray[d]}_item}`;
+                            }
+                            else {
+                                //not first item in list
+                                chargear += `, @{repeating_gear_${gearidArray[d]}_item}`;
+                            }
+                        }
+                        setAttrs({ chargear: chargear });
+                    });
+                });
+            });
+        });
+    }
+
+    on("change:repeating_armor change:repeating_weapons change:repeating_gear remove:repeating_armor remove:repeating_weapons remove:repeating_gear", function() {
+        gearStatBlock();
+    })
+
+    const specabilityStatBlock = function() {
+        let charhindrances = '';
+        let charedges = '';
+        let charspecabilities = '';
+        
+    }
     //End Statblock stuff
 
 </script>
@@ -2897,7 +3021,7 @@
                     <input type="checkbox" class="sheet-useBenniesXP" name="attr_bennies" value="1" style="display: none;" />
                     <button class="sheet-benniesxp" type="roll" name="roll_convertBennies" value="&{template:emote} {{name=@{character_name}}} {{does=rolls for XP on ?{Number of Bennies|1} un/spent bennies and gets [[?{Number of Bennies|1}d6>5]] extra experience point(s)!}}">S</button>
                     <input class="sheet-isWC" type="hidden" name="attr_is_npc" />
-                    <button class="sheet-statblock" type="roll" name="roll_fullstatblock" value="&{template:statblock} @{chardesc} {{charatts=@{charatts}}} {{charskills=@{charskills}}} {{charderived=@{charderived}}}"><span class="sheet-showWCicon" name="attr_WCI"></span><img style="height: 28px;" src="http://imgsrv.roll20.net/?src=github.com/finderski/SWT/blob/master/BackgroundImages/statblock_profile.png%3Fraw%3Dtrue"</button>
+                    <button class="sheet-statblock" type="roll" name="roll_fullstatblock" value="&{template:statblock} @{chardesc} {{charatts=@{charatts}}} {{charskills=@{charskills}}} {{charderived=@{charderived}}} {{chargear=@{chargear}}}"><span class="sheet-showWCicon" name="attr_WCI"></span><img style="height: 28px;" src="http://imgsrv.roll20.net/?src=github.com/finderski/SWT/blob/master/BackgroundImages/statblock_profile.png%3Fraw%3Dtrue"</button>
                 </div>
                 <div class="sheet-docbuttons">
                     <button type="action" name="act_releasetab5" class="sheet-topbuttons">N</button>
@@ -7361,5 +7485,6 @@
         {{#charhindrances}}<div class="sheet-bodsection">**<span data-i18n="hinddrances">Hindrances</span>**: {{charhindrances}}</div>{{/charhindrances}}
         {{#charedges}}<div class="sheet-bodsection">**<span data-i18n="edges">Edges</span>**: {{charedges}}</div>{{/charedges}}
 		{{#charspecabilities}}<div class="sheet-bodsection">**<span data-i18n="special-abilities">Special Abilities</span>**: {{charspecabilities}}</div>{{/charspecabilities}}
+		{{#charpowers}}<div class="sheet-bodsection">**{{power label}}**: {{charpowers}}</div>{{/charpowers}}
     </div>
 </rolltemplate>
