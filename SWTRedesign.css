@@ -4241,7 +4241,7 @@ label.sheet-ddmenu:hover {
 }
 
 .sheet-rolltemplate-statblock {
-    background: url(http://imgsrv.roll20.net/?src=github.com/finderski/SWT/blob/master/BackgroundImages/newcardback.jpg%3Fraw%3Dtrue) top left;
+    background: url(https://github.com/finderski/SWT/blob/master/RollTemplate/rt_back.jpg?raw=true) top left;
     background-size: 250px 100%;
     background-repeat: no-repeat;
     align-items: center;
@@ -4257,7 +4257,7 @@ label.sheet-ddmenu:hover {
 
 .sheet-rolltemplate-statblock .sheet-statblockheader {
     display: flex;
-    background: url(https://github.com/finderski/SWT/blob/master/BackgroundImages/notebook-ripped-shadow-full.png?raw=true) top left;
+    background: url(https://github.com/finderski/SWT/blob/master/RollTemplate/rt_header.png?raw=true) top left;
     background-size: 250px 90px;
     height: 90px;
     background-repeat: no-repeat;
