@@ -2695,7 +2695,7 @@
 	* Skill Block functions
 	*****************************/
     on("sheet:opened", function() {
-        getAttrs(["initstatblock","initdesc","initskills","initderived","initgear","inithindrances","initedges"], function(v) {
+        getAttrs(["initstatblock","initdesc","initskills","initderived","initgear","initspecabilities","initpowers"], function(v) {
             if(v.initstatblock === "0") {
                 //stat block isn't fully initialized
                 console.log("⚠⚠ Stat Block Not Initilized...create it ⚠⚠");
@@ -2718,6 +2718,15 @@
                     console.log("⚠⚠ Character Gear Not Initilized...create them ⚠⚠");
                     gearStatBlock();
                     setAttrs({initgear: "1"});
+                }
+                if(v.initspecabilities === "0") {
+                    console.log("⚠⚠ Character Hindranes, Edges, and Spec Abilities Not Initilized...create them ⚠⚠");
+                    specabilityStatBlock();
+                    setAttrs({
+                        inithindrances: "1",
+                        initsbedges: "1",
+                        initspecabilities: "1"
+                    });
                 }
             }
         });
@@ -2873,8 +2882,6 @@
         derivedStatBlock();
     });
 
-    const armorfields = ["armorWorn","ArmorType","ArmorTypeProtection"];
-    const weaponfields = ["weapon","weapondamage",""]
     const gearStatBlock = function() {
         //Includes Armor, Weapons, Gear
         console.log("Started gearStatBlock");
@@ -2969,8 +2976,83 @@
         let charhindrances = '';
         let charedges = '';
         let charspecabilities = '';
-        
+        let abilityvals = [];
+        let hindrancerow = [];
+        let edgerow = [];
+        getSectionIDs("repeating_hindrances", function(hindranceidArray) {
+            for(a=0; a<hindranceidArray.length; a++) {
+                abilityvals[abilityvals.length] = `repeating_hindrances_${hindranceidArray[a]}_hindranceType`;
+                hindrancerow[hindrancerow.length] = `repeating_hindrances_${hindranceidArray[a]}_`;
+                edgerow[edgerow.length] = "empty";
+            }
+            getSectionIDs("repeating_edges", function(edgeidArray) {
+                for(b=0; b<edgeidArray.length; b++) {
+                    abilityvals[abilityvals.length] = `repeating_edges_${edgeidArray[b]}_tookat`;
+                    edgerow[edgerow.length] = `repeating_edges_${edgeidArray[b]}_`;
+                }
+                getAttrs(abilityvals, function(v) {
+                    for(c=0; c<abilityvals.length; c++) {
+                        let evalval = '';
+                        if (c < hindrancerow.length) {
+                            console.log("Found a Hindrance for Evaluation");
+                            evalval = hindrancerow[c]+"hindranceType";
+                            let speccheck = v[evalval];
+                            console.log("Spec Check: "+speccheck);
+                            speccheck = speccheck.toLowerCase();
+                            console.log("Spec Check: "+speccheck);
+                            if (speccheck === "racial") {
+                                //Special ability
+                                charspecabilities += `<li>**@{${hindrancerow[c]}hindrance}:** @{${hindrancerow[c]}hindrancedescription}</li>`
+                            }
+                            else {
+                                //hindrance
+                                if (charhindrances.length < 1) {
+                                    charhindrances = `[@{${hindrancerow[c]}hindrance}](~${hindrancerow[c]}tHindrance)`;
+                                }
+                                else {
+                                    charhindrances += `, [@{${hindrancerow[c]}hindrance}](~${hindrancerow[c]}tHindrance)`;
+                                }
+                            }
+                        }
+                        else {
+                            console.log("Found an Edge for evaluation");
+                            evalval = edgerow[c]+"tookat";
+                            if (v[evalval].toLowerCase() === "racial") {
+                                //Special ability
+                                charspecabilities += `<li>**@{${edgerow[c]}edge}:** @{${edgerow[c]}edgedescription}</li>`
+                            }
+                            else {
+                                //edge
+                                if (charedges.length > 0) {
+                                    charedges += `, `;
+                                }
+                                else {
+                                    charedges += `[@{${edgerow[c]}edge}](~${edgerow[c]}tEdge)`;
+                                }
+                            }
+                        }
+                    }
+                    let salength = charspecabilities.length;
+                    let showspec = 0;
+                    if (salength > 0) {
+                        showspec = `{{showspec=[[1d0+${salength}]]}}`;
+                    }
+                    if (charhindrances.length < 1) { charhindrances = "&mdash;"; }
+                    if (charedges.length < 1) { charedges = "&mdash;"; }
+                    setAttrs({
+                        charhindrances: charhindrances,
+                        charedges: charedges,
+                        showspec: showspec,
+                        charspecabilities: charspecabilities
+                    });
+                });
+            });
+        });
     }
+
+    on("change:repeating_hindrances change:repeating_edges remove:repeating_hindrances remove:repeating_edges", function() {
+        specabilityStatBlock();
+    });
     //End Statblock stuff
 
 </script>
@@ -2989,9 +3071,10 @@
 <input type="hidden" name="attr_chargear" />
 <input type="hidden" name="attr_inithindrances" value="0" />
 <input type="hidden" name="attr_charhindrances" />
-<input type="hidden" name="attr_initedges" value="0" />
+<input type="hidden" name="attr_initsbedges" value="0" />
 <input type="hidden" name="attr_charedges" />
 <input type="hidden" name="attr_initspecabilities" value="0" />
+<input type="hidden" name="attr_showspec" />
 <input type="hidden" name="attr_charspecabilities" />
 <!-- End Stat Block Fields -->
 <div class='sheet-maindiv'>
@@ -3021,7 +3104,7 @@
                     <input type="checkbox" class="sheet-useBenniesXP" name="attr_bennies" value="1" style="display: none;" />
                     <button class="sheet-benniesxp" type="roll" name="roll_convertBennies" value="&{template:emote} {{name=@{character_name}}} {{does=rolls for XP on ?{Number of Bennies|1} un/spent bennies and gets [[?{Number of Bennies|1}d6>5]] extra experience point(s)!}}">S</button>
                     <input class="sheet-isWC" type="hidden" name="attr_is_npc" />
-                    <button class="sheet-statblock" type="roll" name="roll_fullstatblock" value="&{template:statblock} @{chardesc} {{charatts=@{charatts}}} {{charskills=@{charskills}}} {{charderived=@{charderived}}} {{chargear=@{chargear}}}"><span class="sheet-showWCicon" name="attr_WCI"></span><img style="height: 28px;" src="http://imgsrv.roll20.net/?src=github.com/finderski/SWT/blob/master/BackgroundImages/statblock_profile.png%3Fraw%3Dtrue"</button>
+                    <button class="sheet-statblock" type="roll" name="roll_fullstatblock" value="&{template:statblock} @{chardesc} {{charatts=@{charatts}}} {{charskills=@{charskills}}} {{charderived=@{charderived}}} {{chargear=@{chargear}}} {{charhindrances=@{charhindrances}}} {{charedges=@{charedges}}} {{showspec=@{showspec}}} {{charspecabilities=@{charspecabilities}}}"><span class="sheet-showWCicon" name="attr_WCI"></span><img style="height: 28px;" src="http://imgsrv.roll20.net/?src=github.com/finderski/SWT/blob/master/BackgroundImages/statblock_profile.png%3Fraw%3Dtrue"</button>
                 </div>
                 <div class="sheet-docbuttons">
                     <button type="action" name="act_releasetab5" class="sheet-topbuttons">N</button>
@@ -5221,7 +5304,7 @@
                         <div class='sheet-base sheet-edges'>
                             <fieldset class="repeating_edges">
                                 <div class="sheet-base sheet-hindranceNedge">
-                                    <button type='roll' class="sheet-edgeOutput" name='roll_tHindrance' value="@{whisperEdgeDeets} &{template:info} {{name=@{character_name}}} {{type=Edge}} {{item=@{edge}}} {{description=@{edgedescription}}}">w</button>
+                                    <button type='roll' class="sheet-edgeOutput" name='roll_tEdge' value="@{whisperEdgeDeets} &{template:info} {{name=@{character_name}}} {{type=Edge}} {{item=@{edge}}} {{description=@{edgedescription}}}">w</button>
                                     <input class="sheet-edgefield" type="text" name="attr_edge" title="@{repeating_edges_$#_edge}" style='width:90%;' />
                                     <input class='sheet-moremods' type='checkbox' name='attr_showEdgeDesc' checked /><span>y</span>
             						<div class='sheet-basetrait sheet-traitmodplus'>
@@ -7482,9 +7565,9 @@
         {{#charskills}}<div class="sheet-bodsection">**<span data-i18n="skills">Skills</span>**: {{charskills}}</div>{{/charskills}}
         {{#charderived}}<div class="sheet-bodsection">{{charderived}}</div>{{/charderived}}
         {{#chargear}}<div class="sheet-bodsection">**<span data-i18n="gear">Gear</span>**: {{chargear}}</div>{{/chargear}}
-        {{#charhindrances}}<div class="sheet-bodsection">**<span data-i18n="hinddrances">Hindrances</span>**: {{charhindrances}}</div>{{/charhindrances}}
+        {{#charhindrances}}<div class="sheet-bodsection">**<span data-i18n="hindrances">Hindrances</span>**: {{charhindrances}}</div>{{/charhindrances}}
         {{#charedges}}<div class="sheet-bodsection">**<span data-i18n="edges">Edges</span>**: {{charedges}}</div>{{/charedges}}
-		{{#charspecabilities}}<div class="sheet-bodsection">**<span data-i18n="special-abilities">Special Abilities</span>**: {{charspecabilities}}</div>{{/charspecabilities}}
+		{{#rollGreater() showspec 0}}{{#charspecabilities}}<div class="sheet-bodsection">**<span data-i18n="special-abilities">Special Abilities</span>**:<br /><ul>{{charspecabilities}}</ul></div>{{/charspecabilities}}{{/rollGreater() showspec 0}}
 		{{#charpowers}}<div class="sheet-bodsection">**{{power label}}**: {{charpowers}}</div>{{/charpowers}}
     </div>
 </rolltemplate>
