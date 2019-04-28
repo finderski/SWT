@@ -3026,9 +3026,7 @@
                                 if (charedges.length > 0) {
                                     charedges += `, `;
                                 }
-                                else {
-                                    charedges += `[@{${edgerow[c]}edge}](~${edgerow[c]}tEdge)`;
-                                }
+                                charedges += `[@{${edgerow[c]}edge}](~${edgerow[c]}tEdge)`;
                             }
                         }
                     }
@@ -7100,6 +7098,43 @@
 			<!--                     -->
 			<div class="sheet-release">
 			    <h3 class='subsectionHeader' data-i18n="release-notes">Release Notes</h3>
+                <label class="sheet-rowlabel">
+			        <input type='checkbox' class='sheet-releasenotes' name='attr_releasenotes34' value='1' /><span class='sheet-releasenotes' style='color: red;'><h4 class="sheet-rnversion"><span data-i18n="version">Version</span> 3.4</h4></span>
+			    </label>
+			    <input type='checkbox' class='sheet-releasenotes' style='display: none;' name='attr_releasenotes33' value='1' />
+        		<div class='sheet-releasenotes'>
+        		   <p data-i18n="changes-this-release">
+        		       Changes this release:
+        		   </p>
+				   <ul>
+						<li><strong data-i18n="bug-fixes">Bug Fixes</strong></li>
+						<ul>
+							<li data-i18n="robot-armor-wasn't-working">Robot Armor Weapon wasn't working</li>
+                            <li data-i18n="running-roll-output-wasnt-display-properly">Running Roll output wasn't displaying properly</li>
+                            <li data-i18n="wounds-werent-reducing-pace">Wounds weren't reducing Pace</li>
+                            <li data-i18n="derived-stats-not-using-sheet-workers">Derived Stats weren't using Sheet Workers and should have been.</li>
+						</ul>
+                        <li><strong data-i18n="sheet-enhancements">Functionality Enhancements</strong></li>
+                        <ul>
+                            <li data-i18n="support-for-gritty-damage">Support for Gritty Damage (see documentation tab for details)</li>
+                            <li data-i18n="option-to-move-advancements-to-journal">Option to move Advancements to the Journal Tab</li>
+                            <li data-i18n="setting-to-allow-pace-to-ignore-wounds">Setting to allow Pace to ignore Wounds</li>
+                            <li data-i18n="option-for-custom-wild-card-icon">Option for custom Wild Card Icon (supports unicode characters)</li>
+                            <li data-i18n="statblock-output-button">Statblock Output button</li>
+                        </ul>
+                        <li><strong data-i18n="known-issues">Known Issues</strong></li>
+                        <ul>
+                            <li data-i18n="statblock-doesnt-support">Statblock Output Button doesn't currently output:</li>
+                            <ul>
+                                <li data-i18n="spell-information">Spell information</li>
+                                <li data-i18n="talismans">Talismans</li>
+                                <li data-i18n="cybernetics-augmentations">Cybernetics/Augmentations</li>
+                                <li data-i18n="rippertech">Rippertech</li>
+                            </ul>
+                            <li data-i18n="talismans-are-missing-from-sheet">Talismans are missing from the sheet completely</li>
+                        </ul>
+				   </ul>
+				</div>
                 <label class="sheet-rowlabel">
 			        <input type='checkbox' class='sheet-releasenotes' name='attr_releasenotes33' value='1' /><span class='sheet-releasenotes' style='color: red;'><h4 class="sheet-rnversion"><span data-i18n="version">Version</span> 3.3</h4></span>
 			    </label>
