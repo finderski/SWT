@@ -3074,6 +3074,8 @@
 <input type="hidden" name="attr_initspecabilities" value="0" />
 <input type="hidden" name="attr_showspec" />
 <input type="hidden" name="attr_charspecabilities" />
+<input type="hidden" name='attr_initpowers' value="0" />
+<input type="hidden" name="attr_charpowers" />
 <!-- End Stat Block Fields -->
 <div class='sheet-maindiv'>
     <input type="checkbox" class="sheet-useBackground" style="display: none;" name="attr_background" value="1" checked />
@@ -5474,10 +5476,57 @@
 						</div>
 					</div> <!-- End Weapons -->
 					<hr class="sheet-sectionSeperator" />
+                    <!-- ------------- -->
+                    <!-- Power Section -->
+                    <!-- ------------- -->
 					<input type="checkbox" class="sheet-hideArcanum" name="attr_ArcanumTab" style="display: none;">
 					<div class="sheet-arcanum">
 					    <input type="checkbox" class="sheet-hidePowers" name="attr_hidepowers" /><span class="sheet-showNhide"></span>
     					<h1 class="sheet-gearcolHeader"><span name="attr_powerlabelplural"></span></h1>
+                        <!-- Powers Section Config window -->
+                        <div class="sheet-powerconfig">
+                            <label class="sheet-powerconfiglabel">Section Header: <input type="text" name="attr_powerlabelplural" value="Powers" /></label>
+                            <label class="sheet-powerconfiglabel">Column Header: <input type="text" name="attr_powerlabelsingular" value="Power" /></label>
+                            <label class="sheet-powerconfiglabel">Power Points Abbreviation: <input type="text" name="attr_ppabbr" value="PP" /></label>
+                            <hr />
+                            <input type="hidden" name="attr_numberofabs" value="1" />
+                            <label class="sheet-powerconfiglabel sheet-label1">Arcane Background: <input type="text" name="attr_ablabel" />
+                            <label class="sheet-powerconfiglabel sheet-label1">Power Points Label: <input type="text" name="attr_ppelabel" value="Power Points" /></label>
+                            <div class="sheet-container">
+                                <div class="sheet-child">
+                                    <label class="sheet-ddmenu sheet-white"><input type="radio" class="sheet-select-radio sheet-white" name="attr_ab1color" value="white" checked="checked" /><span data-i18n='white'>White</span></label>
+                                    <label class="sheet-ddmenu sheet-red"><input type="radio" class="sheet-select-radio sheet-red" name="attr_ab1color" value="red" /><span data-i18n='red'>Red</span></label>
+                                    <label class="sheet-ddmenu sheet-blue"><input type="radio" class="sheet-select-radio sheet-blue" name="attr_ab1color" value="blue" /><span data-i18n='blue'>Blue</span></label>
+                                    <label class="sheet-ddmenu sheet-green"><input type="radio" class="sheet-select-radio sheet-green" name="attr_ab1color" value="green" /><span data-i18n='green'>Green</span></label>
+                                    <label class="sheet-ddmenu sheet-purple"><input type="radio" class="sheet-select-radio sheet-purple" name="attr_ab1color" value="purple" /><span data-i18n='purple'>Purple</span></label>
+                                    <input type="checkbox" class="sheet-select-radio sheet-white" name="attr_ab1color" value="white" checked="checked" style='display:none;' />
+                                    <input type="checkbox" class="sheet-select-radio sheet-red" name="attr_ab1color" value="red" style='display:none;' />
+                                    <input type="checkbox" class="sheet-select-radio sheet-blue" name="attr_ab1color" value="blue" style='display:none;' />
+                                    <input type="checkbox" class="sheet-select-radio sheet-green" name="attr_ab1color" value="green" style='display:none;' />
+                                    <input type="checkbox" class="sheet-select-radio sheet-purple" name="attr_ab1color" value="purple" style='display:none;' />
+                                    <div class="sheet-white"><span data-i18n='white'>White</span></div>
+                                    <div class="sheet-red"><span data-i18n='red'>Red</span></div>
+                                    <div class="sheet-blue"><span data-i18n='blue'>Blue</span></div>
+                                    <div class="sheet-green"><span data-i18n='green'>Green</span></div>
+                                    <div class="sheet-purple"><span data-i18n='purple'>Purple</span></div>
+                                </div>
+                            </div>
+                            <hr class="sheet-label2" />
+                            <label class="sheet-powerconfiglabel sheet-label2">Arcane Background: <input type="text" name="attr_ablabel" />
+                            <label class="sheet-powerconfiglabel sheet-label2">Power Points Label: <input type="text" name="attr_pplabel2" value="Power Points" /></label>
+                            <hr class="sheet-label3" />
+                            <label class="sheet-powerconfiglabel sheet-label3">Arcane Background: <input type="text" name="attr_ablabel" />
+                            <label class="sheet-powerconfiglabel sheet-label3">Power Points Label: <input type="text" name="attr_pplabel3" value="Power Points" /></label>
+                            <hr class="sheet-label4" />
+                            <label class="sheet-powerconfiglabel sheet-label4">Arcane Background: <input type="text" name="attr_ablabel" />
+                            <label class="sheet-powerconfiglabel sheet-label4">Power Points Label: <input type="text" name="attr_pplabel4" value="Power Points" /></label>
+                            <hr class="sheet-label5" />
+                            <label class="sheet-powerconfiglabel sheet-label5">Arcane Background: <input type="text" name="attr_ablabel" />
+                            <label class="sheet-powerconfiglabel sheet-label5">Power Points Label: <input type="text" name="attr_pplabel5" value="Power Points" /></label>
+                            <button type="action" class="sheet-addab" name="act_addab">Add</button><button type="action" class="sheet-removeab" name="act_removeab">Remove</button>
+
+                        </div>
+                        <!-- End Section Config Window -->
     					<div class="sheet-arcane">
     					    <input type="checkbox" class="sheet-NoPP" name="attr_NoPPRule" style="display: none;" />
     					    <div class="sheet-powerpoints">
@@ -5509,7 +5558,7 @@
     					    </div>
 							<input class="sheet-vdamage" type="checkbox" name="attr_RaiseHBRule" value="2" style="display: none;" />
     					    <fieldset class='repeating_spells'>
-                    <div class='sheet-fullrow'>
+                                <div class='sheet-fullrow'>
 	    					        <div class='sheet-powerrow'>
 										<div class="sheet-spellOutput">
 											<button type="roll" name="roll_spellinfo" class="sheet-hindranceOutput" value="&{template:info} {{name=@{character_name}}} {{item=@{power}}} {{trappings=@{trappings}}} {{Notes=@{spellnotes}}}">w</button>
