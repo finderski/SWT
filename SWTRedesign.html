@@ -3399,7 +3399,7 @@
                     <input type="checkbox" class="sheet-useBenniesXP" name="attr_bennies" value="1" style="display: none;" />
                     <button class="sheet-benniesxp" type="roll" name="roll_convertBennies" value="&{template:emote} {{name=@{character_name}}} {{does=rolls for XP on ?{Number of Bennies|1} un/spent bennies and gets [[?{Number of Bennies|1}d6>5]] extra experience point(s)!}}">S</button>
                     <input class="sheet-isWC" type="hidden" name="attr_is_npc" />
-                    <button class="sheet-statblock" type="roll" name="roll_fullstatblock" value="/w gm &{template:statblock} @{chardesc} {{charatts=@{charatts}}} {{charskills=@{charskills}}} {{charderived=@{charderived}}} {{chargear=@{chargear}}} {{charhindrances=@{charhindrances}}} {{charedges=@{charedges}}} {{showspec=@{showspec}}} {{charspecabilities=@{charspecabilities}}} {{powercount=[[1d0+@{powercount}]]}} {{charpowers=@{charpowers}}}"><span class="sheet-showWCicon" name="attr_WCI"></span><img style="height: 28px;" src="http://imgsrv.roll20.net/?src=github.com/finderski/SWT/blob/master/BackgroundImages/statblock_profile.png%3Fraw%3Dtrue"</button>
+                    <button class="sheet-statblock" type="roll" name="roll_fullstatblock" value="@{whisperstatblock} &{template:statblock} @{chardesc} {{charatts=@{charatts}}} {{charskills=@{charskills}}} {{charderived=@{charderived}}} {{chargear=@{chargear}}} {{charhindrances=@{charhindrances}}} {{charedges=@{charedges}}} {{showspec=@{showspec}}} {{charspecabilities=@{charspecabilities}}} {{powercount=[[1d0+@{powercount}]]}} {{charpowers=@{charpowers}}}"><span class="sheet-showWCicon" name="attr_WCI"></span><img style="height: 28px;" src="http://imgsrv.roll20.net/?src=github.com/finderski/SWT/blob/master/BackgroundImages/statblock_profile.png%3Fraw%3Dtrue"</button>
                 </div>
                 <div class="sheet-docbuttons">
                     <input type="hidden" name="attr_newcontent" value="read" class="sheet-newcontent" />
@@ -5674,7 +5674,9 @@
     						    <input type='hidden' class='sheet-weaponItem sheet-damage' name='attr_weapondamage' value="Str+d4" readonly />
 								<button type="action" name="act_wdamage" class="sheet-weaponItem sheet-damage sheet-invisbutton"><span name="attr_weapondamage"></span></button>
 								<input type="number" class='sheet-weaponItem sheet-weaponap' name='attr_weaponap' title="@{repeating_weapons_$#_weaponap}" />
-    						    <input type='number' class='sheet-weaponItem sheet-shots' name='attr_shots' title="@{repeating_weapons_$#_shots}" data-i18n-placeholder="number-of-shots-shortened" placeholder="Shots" />
+                                <div class="sheet-weaponItem sheet-shots">
+    						        <input type='number' class="sheet-weaponshots" name='attr_shots' title="@{repeating_weapons_$#_shots}" /> of <input type='number' class="sheet-weaponshots" name='attr_shots_max' title="@{repeating_weapons_$#_shots_max}" />
+                                </div>
     						    <input type='number' class='sheet-weaponItem sheet-weaponweight' step="any" name='attr_weaponweight' title="@{repeating_weapons_$#_weaponweight}" data-i18n-placeholder="weight-abbr" placeholder="Wt" />
     						    <div class='sheet-weaponItem sheet-weaponcarried'><input type='checkbox' class='sheet-itemCarried sheet-isCarried' name='attr_weaponcarried' title="@{repeating_weapons_$#_weaponcarried}" /><span class="sheet-isCarriedIcon"></span></div>
     						    <input class='sheet-moreweapon' type='checkbox' name='attr_showweaponconfig' checked /><span>y</span>
@@ -7439,6 +7441,7 @@
         			    <label class="sheet-miscItem sheet-vehicleTypes"><input class="sheet-useRobotArmor" type="checkbox" name="attr_RobotArmor" /> <span data-i18n="show-robot-armor">Show Robot Armor</span></label>
         			    <label class="sheet-miscItem sheet-vehicleTypes"><input class="sheet-useWalker" type="checkbox" name="attr_Walker" /> <span data-i18n="show-walker">Show Walker</span></label>
                         <!--<label class='sheet-miscItem'><input type="checkbox" name="attr_whisperrolls" value='1' style="width: 15px;"> <span data-i18n="whisper-all-rolls-to-gm">Whisper all rolls to GM</span></label>-->
+                        <label class="sheet-miscItem"><input type="checkbox" name="attr_whisperstatblock" value="/w gm" checked /> <span data-i18n="whisper-stat-block">Whisper Stat Block</span></label>
                         <input type='hidden' name='attr_whisperall' />
                         <label class='sheet-miscItem'>
             			    <span data-i18n="wild-card-icon">Wild Card Icon</span>: <input type='text' class="sheet-wci" name='attr_WCI' maxlength="2" />

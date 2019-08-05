@@ -1714,6 +1714,10 @@ input.sheet-armorCarried {
    width: 85px !important;
  }
 
+ input[type="number"].sheet-weaponshots {
+    width: 33px;
+ }
+
  .sheet-invisbutton {
     border: none;
     border-bottom: 1px solid black;
